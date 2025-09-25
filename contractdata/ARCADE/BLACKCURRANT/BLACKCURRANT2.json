@@ -42,12 +42,6 @@
             "f42433c0-9574-49fa-bfb4-ddb9e55b1474",
             "9f409781-0a06-4748-b08d-784e78c6d481"
         ],
-        "Entrances": [
-            "74062d4a-3386-44b8-83e0-1d0348e5976f",
-            "67aec874-287f-4c82-9e01-3dbd7683faac",
-            "3bdb62b5-15ef-4eb6-94b1-7f2e0cdf1d31",
-            "4c548094-0903-4ea2-8c20-8bf1461b6674"
-        ],
         "Objectives": [
             {
                 "_comment": "----- Eliminate target -----",
@@ -71,9 +65,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "EnableOptionalTarget": {
-                                "Transition": "Success"
-                            }
+                            "EnableOptionalTarget": { "Transition": "Success" }
                         }
                     }
                 }
@@ -103,25 +95,15 @@
                 "ExcludeFromScoring": true,
                 "Type": "statemachine",
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "47Poisoned": {
-                                "Transition": "Failure"
-                            }
-                        }
+                        "Start": { "47Poisoned": { "Transition": "Failure" } }
                     }
                 }
             },
@@ -134,15 +116,9 @@
                     "$eq": ["$db93108b-137f-42f6-af1e-81cf1a1959fe", "Failed"]
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "HUDTemplate": {
                     "display": "$loc UI_ET_FRENCHMARTINI_OPPORTUNITY_STEP_ANTIDOTE"
@@ -161,28 +137,18 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "BeginTimer": {
-                                "Transition": "TimerRunning"
-                            }
+                            "BeginTimer": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 70
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 70 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             },
-                            "EndTimer": {
-                                "Transition": "Failure"
-                            }
+                            "EndTimer": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -193,24 +159,16 @@
                 "ExcludeFromScoring": true,
                 "Type": "statemachine",
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "TargetEscapeStarted": {
-                                "Transition": "Failure"
-                            }
+                            "TargetEscapeStarted": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -223,16 +181,8 @@
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_TARGETESCAPING_HUD"
                 },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Activation": {
                     "$eq": ["$01821807-ff15-4ee3-94ec-d6633cb645ca", "Failed"]
                 },
@@ -271,8 +221,8 @@
         "InGroup": "80582fdb-c77e-4d6a-b33f-1f14f34b72c4",
         "Location": "LOCATION_PARIS",
         "IsPublished": true,
-        "LastUpdate": "2025-05-01T12:00:00.441Z",
-        "CreationTimestamp": "2025-06-06T22:46:36.2830011Z",
+        "LastUpdate": "2025-09-25T10:59:54.9492363Z",
+        "CreationTimestamp": "2025-05-01T10:56:49.9796175Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Release": "3.230.x Arcade",
         "Type": "arcade",

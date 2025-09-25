@@ -39,12 +39,6 @@
             }
         ],
         "GameChangers": ["f42433c0-9574-49fa-bfb4-ddb9e55b1474"],
-        "Entrances": [
-            "74062d4a-3386-44b8-83e0-1d0348e5976f",
-            "67aec874-287f-4c82-9e01-3dbd7683faac",
-            "3bdb62b5-15ef-4eb6-94b1-7f2e0cdf1d31",
-            "4c548094-0903-4ea2-8c20-8bf1461b6674"
-        ],
         "Objectives": [
             {
                 "_comment": "----- Eliminate target -----",
@@ -68,9 +62,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "EnableOptionalTarget": {
-                                "Transition": "Success"
-                            }
+                            "EnableOptionalTarget": { "Transition": "Success" }
                         }
                     }
                 }
@@ -100,25 +92,15 @@
                 "ExcludeFromScoring": true,
                 "Type": "statemachine",
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "47Poisoned": {
-                                "Transition": "Failure"
-                            }
-                        }
+                        "Start": { "47Poisoned": { "Transition": "Failure" } }
                     }
                 }
             },
@@ -131,15 +113,9 @@
                     "$eq": ["$db93108b-137f-42f6-af1e-81cf1a1959fe", "Failed"]
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "HUDTemplate": {
                     "display": "$loc UI_ET_FRENCHMARTINI_OPPORTUNITY_STEP_ANTIDOTE"
@@ -158,28 +134,18 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "BeginTimer": {
-                                "Transition": "TimerRunning"
-                            }
+                            "BeginTimer": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 70
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 70 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             },
-                            "EndTimer": {
-                                "Transition": "Failure"
-                            }
+                            "EndTimer": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -190,24 +156,16 @@
                 "ExcludeFromScoring": true,
                 "Type": "statemachine",
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "TargetEscapeStarted": {
-                                "Transition": "Failure"
-                            }
+                            "TargetEscapeStarted": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -220,16 +178,8 @@
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_TARGETESCAPING_HUD"
                 },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Activation": {
                     "$eq": ["$01821807-ff15-4ee3-94ec-d6633cb645ca", "Failed"]
                 },
@@ -269,11 +219,12 @@
         "TileImage": "images/contracts/elusive/s3_frenchmartini/Title.jpg",
         "Location": "LOCATION_PARIS",
         "IsPublished": true,
-        "LastUpdate": "2015-03-10T12:00:00.441Z",
-        "CreationTimestamp": "2025-06-06T22:46:19.3168883Z",
+        "LastUpdate": "2025-09-25T10:59:35.1985882Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Entitlements": ["LOCATION_PARIS"],
         "PublicId": "002100552847",
         "Season": 3
-    }
+    },
+    "UserData": {}
 }
