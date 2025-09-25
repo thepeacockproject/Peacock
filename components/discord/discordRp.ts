@@ -199,6 +199,8 @@ export function scenePathToRpAsset(
             return ["bangkokclub27", "Club 27", "Bangkok"]
         case "assembly:/_pro/scenes/missions/bangkok/scene_zika.entity":
             return ["bangkokpzsource", "The Source", "Bangkok"]
+        case "assembly:/_pro/scenes/missions/bangkok/scene_baiju.entity":
+            return ["elusivebaiju", "The Infiltrator", "Bangkok"]
 
         // colorado missions
         case "assembly:/_pro/scenes/missions/colorado_2/_scene_bull.entity":
