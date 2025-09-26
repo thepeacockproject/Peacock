@@ -13,6 +13,49 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
+                    "Id": "5ce6ca62-a639-4941-ac9e-672975c6ac64",
+                    "Name": "UI_PITAYA_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Pitaya_Group.jpg",
+                    "Description": "UI_PITAYA_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "a8365dec-bb2c-44ad-9ce6-7cc3198d351a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["3fa83d8d-eb75-4973-926a-6052ee5b2aa4"]
+                    }
+                },
+                {
                     "Id": "1d73703c-c25b-4213-85f8-f988ab47200e",
                     "Name": "UI_BLACKCURRANT_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Blackcurrant_Group.jpg",
