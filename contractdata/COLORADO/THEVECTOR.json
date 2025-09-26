@@ -22,15 +22,9 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "DoctorEscaped": {
-                                "Transition": "Failure"
-                            }
+                            "DoctorEscaped": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -98,9 +92,7 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$dec": "TargetsCounter"
-                                    },
+                                    "Actions": { "$dec": "TargetsCounter" },
                                     "Condition": {
                                         "$inarray": {
                                             "in": "$.Targets",
@@ -144,15 +136,9 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "InfectedEscaped": {
-                                "Transition": "Failure"
-                            }
+                            "InfectedEscaped": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -160,6 +146,25 @@
         ],
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/Colorado_2/mission_rabies.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_rabies.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_rabies.brick"
+                ]
+            }
         ],
         "EnableSaving": true,
         "Entrances": ["237e7963-574a-48c8-8d8a-e415b30f5643"],
@@ -183,13 +188,14 @@
         "Description": "UI_CONTRACT_RABIES_DESC",
         "Id": "ada6205e-6ee8-4189-9cdb-4947cccd84f4",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:08:04.571199Z",
+        "LastUpdate": "2025-09-25T10:59:54.1016475Z",
         "Location": "LOCATION_COLORADO_RABIES",
         "Release": "1.13.x",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/scene_rabies.entity",
         "TileImage": "images/contracts/whitespider/003_rabies/tile.jpg",
         "Title": "UI_CONTRACT_RABIES_TITLE",
         "Type": "campaign",
+        "OnlyNeoVR": true,
         "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
         "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
         "RequiredUnlockable": "ACCESS_HIT_RABIES",
