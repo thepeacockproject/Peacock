@@ -13,13 +13,21 @@
                 "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_FINISH",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_FINISH_DESC",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
-                "HUDTemplate": { "display": "$loc UI_PEACOCK_ROSEBUSH_FINISH" },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_FINISH"
+                },
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
+                            "AmbientChanged": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -274,7 +282,24 @@
             }
         ],
         "Bricks": [],
-        "GameChangers": []
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "0fc24d6e-5870-44d3-897a-15f19c4ccef2",
@@ -286,11 +311,26 @@
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
         "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupObjectiveDisplayOrder": [
-            { "Id": "0706f101-9814-40b1-82e1-2eb2fff82931", "IsNew": true },
-            { "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8", "IsNew": true },
-            { "Id": "1b6a050f-162e-4038-898f-859c5c956a7b", "IsNew": true },
-            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true },
-            { "Id": "bca06014-1580-4837-916a-95bc9f64d76a", "IsNew": true }
+            {
+                "Id": "0706f101-9814-40b1-82e1-2eb2fff82931",
+                "IsNew": true
+            },
+            {
+                "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8",
+                "IsNew": true
+            },
+            {
+                "Id": "1b6a050f-162e-4038-898f-859c5c956a7b",
+                "IsNew": true
+            },
+            {
+                "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c",
+                "IsNew": true
+            },
+            {
+                "Id": "bca06014-1580-4837-916a-95bc9f64d76a",
+                "IsNew": true
+            }
         ]
     }
 }
