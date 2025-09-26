@@ -944,7 +944,10 @@ export class Controller {
             gameVersion === "h3" &&
             getFlag("legacyContractDownloader") !== true
         ) {
-            const result = await Controller._hitmapsFetchContract(pubId)
+            const result = await Controller._hitmapsFetchContract(
+                pubId,
+                gameVersion,
+            )
 
             if (result) {
                 contractData = result
@@ -1044,10 +1047,12 @@ export class Controller {
      * Fetch a contract from HITMAPS.
      *
      * @param publicId The contract's public ID.
+     * @param gameVersion The game version.
      * @internal
      */
     static async _hitmapsFetchContract(
         publicId: string,
+        gameVersion: GameVersion,
     ): Promise<MissionManifest | undefined> {
         const id = addDashesToPublicId(publicId)
 
@@ -1063,6 +1068,7 @@ export class Controller {
         const resp = await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: id,
+                gameVersion,
             },
         })
 
@@ -1499,12 +1505,17 @@ export function contractIdToHitObject(
 /**
  * Sends an array of publicIds to the contract preservation backend.
  * @param publicIds The contract publicIds to send.
+ * @param gameVersion The contracts' game version.
  */
-export async function preserveContracts(publicIds: string[]): Promise<void> {
+export async function preserveContracts(
+    publicIds: string[],
+    gameVersion: GameVersion,
+): Promise<void> {
     for (const id of publicIds) {
         await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: addDashesToPublicId(id),
+                gameVersion,
             },
         })
     }

@@ -243,7 +243,7 @@ async function downloadContract(): Promise<void> {
     log(LogLevel.INFO, "Contract downloading tool - powered by HITMAPS")
     log(
         LogLevel.INFO,
-        "NOTE: This tool only works for HITMAN 3 contracts that are on Stadia, Steam, Epic, or PlayStation.",
+        "NOTE: This tool only works for HITMAN 3 contracts that are on Steam, Epic, or PlayStation.",
     )
 
     const { contractId } = await prompts({
@@ -252,7 +252,7 @@ async function downloadContract(): Promise<void> {
         message: "Enter the contract ID (with dashes)",
     })
 
-    const result = await Controller._hitmapsFetchContract(contractId)
+    const result = await Controller._hitmapsFetchContract(contractId, "h3")
 
     if (!result) {
         log(

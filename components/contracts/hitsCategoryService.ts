@@ -298,13 +298,16 @@ export class HitsCategoryService {
             `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
             true,
         )
+
         const hits = resp.data.data.Data.Hits
+
         void preserveContracts(
             hits
                 .map(
                     (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
                 )
                 .filter(Boolean) as string[],
+            gameVersion,
         )
 
         // Fix completion and favorite status for retrieved contracts

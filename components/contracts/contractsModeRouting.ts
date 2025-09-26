@@ -98,10 +98,11 @@ export async function officialSearchContract(
         controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
     }
 
-    preserveContracts(
+    void preserveContracts(
         resp.data.data.Data.Contracts.map(
             (c) => c.UserCentricContract.Contract.Metadata.PublicId,
         ).filter(Boolean) as string[],
+        gameVersion,
     )
 
     return resp.data.data
