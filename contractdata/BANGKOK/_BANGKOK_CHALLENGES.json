@@ -34,19 +34,92 @@
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
-                        "Context": {},
+                        "Constants": {
+                            "NumberOfTargets": 2
+                        },
+                        "Context": {
+                            "KilledTargets": []
+                        },
+                        "ContextListeners": {
+                            "KilledTargets": {
+                                "type": "challengecounter",
+                                "count": "($.KilledTargets).Count",
+                                "total": "$.NumberOfTargets"
+                            }
+                        },
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "Level_Setup_Events": {
+                                "EnteredOtherWing": {
+                                    "Transition": "InPosition"
+                                },
+                                "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.Event_metricvalue",
-                                            "SniperKill2"
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
-                                    "Transition": "Success"
+                                    "Transition": "Failure"
                                 }
+                            },
+                            "InPosition": {
+                                "LeftOtherWing": {
+                                    "Transition": "Start"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "sniperrifle"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillMethodBroad",
+                                                            "sniperrifle"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.KilledTargets).Count",
+                                                "$.NumberOfTargets"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -349,11 +422,29 @@
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "Level_Setup_Events": {
+                                "EnteredOtherWing": {
+                                    "Transition": "InPosition"
+                                }
+                            },
+                            "InPosition": {
+                                "LeftOtherWing": {
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.Event_metricvalue",
-                                            "SniperKill"
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "010e451b-99de-4a73-a6df-520158636654"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
