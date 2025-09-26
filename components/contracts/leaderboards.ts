@@ -29,10 +29,8 @@ type ApiLeaderboardEntry = {
             displayName: string
         }
     }
-    gameVersion: string
     entryId: number
     platformId: string
-    platform: string
     // TODO: finish this type
     // https://darca.localhost/leaderboards/contracts/00000000-0000-0000-0000-000000000200/h3/steam/normal/entries?page=1
     detailedscore: unknown
@@ -107,7 +105,7 @@ export async function getLeaderboardEntries(
     const ids: readonly string[] = entries.map((te) =>
         fakePlayerRegistry.index(
             te.LeaderboardData.Player.displayName,
-            te.platform,
+            platform,
             te.platformId,
         ),
     )
