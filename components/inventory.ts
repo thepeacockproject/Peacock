@@ -74,6 +74,7 @@ const DELUXE_DATA = [
     ...PENICILLIN_UNLOCKABLES,
     ...TOMORROWLAND_UNLOCKABLES,
     ...LAMBIC_UNLOCKABLES,
+    ...FRENCHMARTINI_UNLOCKABLES,
 ]
 
 /**
@@ -197,9 +198,9 @@ function filterUnlockedContent(
 
             if (isEvergreen || isDeluxe) {
                 acc[0].push(unlockable)
-            } else {
+            } else if (getFlag("enableIsolatedUnlockables")) {
                 /**
-                 *  List of untracked items (to award to user until they are tracked to corresponding challenges)
+                 *  List of untracked items when they are enabled (to award to user until they are tracked to corresponding challenges)
                  */
                 acc[1].push(unlockable)
             }
