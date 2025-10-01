@@ -55,6 +55,12 @@ export const defaultFlags: Flags = {
                 desc: "When set to false, mastery progression will be disabled and all unlockables will be awarded at the beginning",
                 default: true,
             },
+            enableIsolatedUnlockables: {
+                category: "Gameplay",
+                title: "enableIsolatedUnlockables",
+                desc: "Decides if items are unlocked when there are no associated unlocking approaches. Requires enableMasteryProgression to be true.",
+                default: false,
+            },
             elusivesAreShown: {
                 category: "Gameplay",
                 title: "elusivesAreShown",
