@@ -1,6 +1,5 @@
 {
     "Data": {
-        "EnableSaving": false,
         "EnableExits": {
             "$eq": ["$a406080b-a868-4b40-8033-26c99c2e0323", "Completed"]
         },
@@ -46,10 +45,10 @@
                         "HardCondition": true
                     }
                 ],
+                "Image": "",
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_ARRAYAN_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_ARRAYAN_OBJ_2",
                 "Type": "statemachine",
-                "Image": "images/actors/actor_6a304e5c-d15b-4ac5-bd84-fd05b7105f3f_0_0_0.jpg",
                 "Definition": {
                     "Scope": "session",
                     "Context": {
@@ -134,11 +133,28 @@
             "c361cdc8-3182-46d0-9999-a4cf00922146",
             "51c8a014-dcc6-4714-a843-0295f9718c7a"
         ],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ],
+        "EnableSaving": false
     },
     "Metadata": {
         "Id": "5d6f7b13-13be-414f-8010-3e97e5b7b490",
-        "InGroup": "41ecf8ce-dfd4-4c08-8f44-52dedc3f089a",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-11T14:38:37.2005369Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -149,9 +165,7 @@
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
         "Type": "escalation",
         "Release": "2.1.x Escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_arrayan.jpg",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-05-11T10:33:13.9485522Z",
+        "InGroup": "41ecf8ce-dfd4-4c08-8f44-52dedc3f089a",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "c361cdc8-3182-46d0-9999-a4cf00922146" },
             { "IsNew": true, "Id": "d2fb89c1-03a4-4c64-ab7f-5b39967708d2" },
@@ -159,6 +173,8 @@
             { "Id": "6969e4a2-c3fe-4d6b-ac3a-f24c1f85acd1" },
             { "Id": "a406080b-a868-4b40-8033-26c99c2e0323" }
         ],
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:37.6618764Z",
         "PublicId": "012358386347"
     },
     "UserData": {}

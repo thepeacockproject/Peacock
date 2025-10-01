@@ -12,21 +12,21 @@ jobs:
 
     steps:
       - name: Checkout Peacock
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           path: "./Peacock"
 
       - name: Checkout Peacock Strings
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           repository: thepeacockproject/peacock-strings
           path: "./PeacockStrings"
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: "./Peacock/.nvmrc"
           cache: "yarn"
@@ -39,7 +39,7 @@ jobs:
 
       - name: Download RPKG-CLI
         id: rpkgcli
-        uses: robinraju/release-downloader@v1.11
+        uses: robinraju/release-downloader@v1.12
         with:
           repository: "glacier-modding/RPKG-Tool"
           latest: true
@@ -48,7 +48,7 @@ jobs:
 
       - name: Download HMLanguageTools
         id: hmlt
-        uses: robinraju/release-downloader@v1.11
+        uses: robinraju/release-downloader@v1.12
         with:
           repository: "AnthonyFuller/TonyTools"
           latest: true

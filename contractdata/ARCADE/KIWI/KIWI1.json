@@ -8,6 +8,23 @@
             "assembly:/_pro/scenes/missions/wet/dev_lambic.brick"
         ],
         "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
         "Entrances": ["bd3df5ac-b7b8-45dd-99ed-681428786384"],
         "Objectives": [
             {
@@ -26,19 +43,10 @@
                 },
                 "DisplayAsKillObjective": true,
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "Hit",
@@ -81,16 +89,9 @@
                     ]
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": true
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": true }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": true } },
                 "SuccessEvent": {
                     "EventName": "Kill",
                     "EventValues": {
@@ -106,28 +107,16 @@
                 "IsHidden": true,
                 "ExcludeFromScoring": true,
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
-                    "Context": {
-                        "Targets": [],
-                        "TargetCount": 0
-                    },
+                    "Context": { "Targets": [], "TargetCount": 0 },
                     "States": {
                         "Start": {
                             "AddTarget": [
@@ -154,9 +143,7 @@
                                             }
                                         }
                                     },
-                                    "Actions": {
-                                        "$dec": "TargetCount"
-                                    }
+                                    "Actions": { "$dec": "TargetCount" }
                                 },
                                 {
                                     "Condition": {
@@ -194,16 +181,10 @@
                     ]
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": true
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": true }
                 },
                 "Definition": {
-                    "Context": {
-                        "Targets": [],
-                        "TargetCount": 0
-                    },
+                    "Context": { "Targets": [], "TargetCount": 0 },
                     "ContextListeners": {
                         "TargetCount": {
                             "type": "objective-counter",
@@ -236,9 +217,7 @@
                                             }
                                         }
                                     },
-                                    "Actions": {
-                                        "$dec": "TargetCount"
-                                    }
+                                    "Actions": { "$dec": "TargetCount" }
                                 },
                                 {
                                     "Condition": {
@@ -265,8 +244,8 @@
         "InGroup": "e9168f42-882e-4c7e-8353-33d2bd8bb864",
         "Location": "LOCATION_WET_RAT",
         "IsPublished": true,
-        "LastUpdate": "2015-03-10T12:00:00.441Z",
-        "CreationTimestamp": "2024-12-12T10:57:12.1395974Z",
+        "LastUpdate": "2025-09-25T10:59:55.3704804Z",
+        "CreationTimestamp": "2018-10-17T10:56:49.9796175Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Release": "3.210.x Arcade",
         "Type": "arcade",

@@ -100,7 +100,6 @@
                 "ObjectiveType": "customkill",
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_2",
-                "Image": "images/actors/actor_06fb2890-e820-45f2-aef3-0cb7d0528ee1_3_0_0.jpg",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -193,7 +192,6 @@
                 "ObjectiveType": "customkill",
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_3" },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_3",
-                "Image": "images/actors/actor_6edb224d-0970-4d1d-8740-5e86d1e7af59_0_0_0.jpg",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -257,11 +255,27 @@
             "assembly:/_pro/scenes/missions/mumbai/gamechanger_protea_kashmirians_knowledge.brick"
         ],
         "GameChangers": ["b08828b3-173e-4f01-88f6-8355732702c7"],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
-        "InGroup": "a10472e4-0eb3-451d-814d-38837dd0f407",
         "IsPublished": true,
         "CreationTimestamp": "2018-11-21T10:34:16.3687604Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -272,15 +286,15 @@
         "ScenePath": "assembly:/_pro/scenes/missions/mumbai/scene_mongoose.entity",
         "Type": "escalation",
         "Release": "2.3.x escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_mumbai_protea.jpg",
+        "InGroup": "a10472e4-0eb3-451d-814d-38837dd0f407",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "31c9c9dc-c43b-4f2d-8071-385dc251cbfe" },
             { "IsNew": true, "Id": "b08828b3-173e-4f01-88f6-8355732702c7" },
             { "Id": "f7bcc857-2698-437d-acfb-fe07e41cd3eb" },
             { "Id": "6875ebc9-49c3-44f5-a986-75277e2d2ef5" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-05-11T10:33:16.4728277Z",
+        "Entitlements": ["LOCATION_MUMBAI"],
+        "LastUpdate": "2025-09-25T10:59:41.2457973Z",
         "PublicId": "013554681247"
     },
     "UserData": {}

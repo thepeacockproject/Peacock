@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -303,6 +303,20 @@ export const LAMBIC_UNLOCKABLES = [
     "FIREARMS_HERO_SMG_HX_10_LAMBIC",
     "PROP_MELEE_KUKRI_KNIFE_LAMBIC",
     "PROP_MELEE_VHS_LAMBIC",
+]
+
+export const FRENCHMARTINI_UNLOCKABLES = [
+    "TOKEN_OUTFIT_FRENCHMARTINI_POKER_REWARD",
+    "TOKEN_PROP_MELEE_FIBERWIRE_ROPE",
+    "TOKEN_PROP_TOOL_COIN_POKERCHIP_FRENCHMARTINI",
+    "FIREARMS_HERO_PISTOL_HWK_99_FRENCHMARTINI",
+]
+
+export const BAIJU_UNLOCKABLES = [
+    "TOKEN_OUTFIT_REWARD_HERO_YELLOW_TRACKSUIT",
+    "TOKEN_PROP_MELEE_KALI_STICKS",
+    "TOKEN_PROP_MELEE_JADE_DAGGER",
+    "TOKEN_PROP_MELEE_SCISSORS_BAIJU",
 ]
 
 export const brokenItems = [

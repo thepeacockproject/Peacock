@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PEONY_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -71,7 +73,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PEONY_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -126,7 +130,9 @@
                 "Id": "6445146d-c961-4b3d-a658-0406f39f19bd",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PEONY_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_3",
                 "Type": "statemachine",
                 "Definition": {
@@ -174,7 +180,26 @@
         ],
         "Bricks": [],
         "GameChangers": ["c857ca64-24be-44e7-be91-b74f1394d3b8"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "b3076a7d-247b-4252-8c2b-eabddae71ef2",
@@ -189,14 +214,23 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "c857ca64-24be-44e7-be91-b74f1394d3b8" },
-            { "Id": "6445146d-c961-4b3d-a658-0406f39f19bd" },
-            { "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79" },
-            { "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14" }
+            {
+                "IsNew": true,
+                "Id": "c857ca64-24be-44e7-be91-b74f1394d3b8"
+            },
+            {
+                "Id": "6445146d-c961-4b3d-a658-0406f39f19bd"
+            },
+            {
+                "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79"
+            },
+            {
+                "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:47.4294099Z",
         "PublicId": "002862212447",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

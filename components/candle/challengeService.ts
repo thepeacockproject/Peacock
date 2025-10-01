@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -49,7 +49,12 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { ChallengeContext, SavedChallengeGroup } from "../types/challenges"
-import { fastClone, gameDifficulty, isSniperLocation } from "../utils"
+import {
+    fastClone,
+    gameDifficulty,
+    isSniperLocation,
+    ServerVer,
+} from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -64,6 +69,8 @@ import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
 import { getUnlockableById } from "../inventory"
+import { enqueueEvent } from "../eventHandler"
+import { randomUUID } from "crypto"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -667,6 +674,13 @@ export class ChallengeService extends ChallengeRegistry {
                 (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
 
+        if (data[challengeId].CurrentState !== "Start") {
+            // this is how the game reads the current state
+            data[challengeId].State.CurrentState =
+                data[challengeId].CurrentState
+            // TODO: also add $StateEntryTime here
+        }
+
         const dependencies = this.getDependenciesForChallenge(
             challengeId,
             gameVersion,
@@ -1052,9 +1066,10 @@ export class ChallengeService extends ChallengeRegistry {
                         Ticked: false,
                         Completed: false,
                         CurrentState: "Start",
-                        State:
-                            (<ChallengeDefinitionLike>challenge?.Definition)
+                        State: fastClone(
+                            (<ChallengeDefinitionLike>challenge.Definition)
                                 ?.Context || {},
+                        ),
                     }
 
                     challengeContexts[challenge.Id].context =
@@ -1128,12 +1143,17 @@ export class ChallengeService extends ChallengeRegistry {
             )
 
             if (this.needSaveProgression(challenge)) {
-                userData.Extensions.ChallengeProgression[challengeId].State =
-                    result.context
+                if (result.state === "Failure") {
+                    delete userData.Extensions.ChallengeProgression[challengeId]
+                } else {
+                    userData.Extensions.ChallengeProgression[
+                        challengeId
+                    ].State = result.context
 
-                userData.Extensions.ChallengeProgression[
-                    challengeId
-                ].CurrentState = result.state
+                    userData.Extensions.ChallengeProgression[
+                        challengeId
+                    ].CurrentState = result.state
+                }
 
                 writeUserData(session.userId, session.gameVersion)
             }
@@ -1820,19 +1840,22 @@ export class ChallengeService extends ChallengeRegistry {
             log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
         }
 
-        this.onContractEvent(
-            {
-                Value: {
-                    ChallengeId: challenge.Id,
-                },
-                ContractSessionId: session.Id,
-                ContractId: session.contractId,
-                Name: "ChallengeCompleted",
-                // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
-                Timestamp: 0,
+        const event = {
+            Value: {
+                ChallengeId: challenge.Id,
+                ChallengeTags: challenge.Tags,
             },
-            session,
-        )
+            ContractSessionId: session.Id,
+            ContractId: session.contractId,
+            Name: "ChallengeCompleted",
+            // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
+            Timestamp: 0,
+            Id: randomUUID(),
+            Version: ServerVer,
+        }
+
+        this.onContractEvent(event, session)
+        enqueueEvent(userId, event)
 
         const userData = getUserData(userId, gameVersion)
 

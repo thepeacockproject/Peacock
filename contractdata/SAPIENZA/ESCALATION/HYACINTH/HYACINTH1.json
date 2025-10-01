@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HYACINTH_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HYACINTH_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HYACINTH_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -65,7 +67,24 @@
             "assembly:/_pro/scenes/missions/coastaltown/hyacinth_escalation_level_addition.brick"
         ],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "579942d4-5df2-4342-8c04-26840aa996e1",
@@ -80,11 +99,13 @@
         "Type": "escalation",
         "InGroup": "ee7e831b-f7ea-4803-8eba-80b42d020a7c",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "9b837bb0-0e2a-4d01-a22a-7295342d8b13" }
+            {
+                "Id": "9b837bb0-0e2a-4d01-a22a-7295342d8b13"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:40.7418683Z",
         "PublicId": "003251569947",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

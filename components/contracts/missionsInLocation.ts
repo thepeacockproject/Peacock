@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -577,11 +577,13 @@ export const missionsInLocation = {
                 "7569d5e4-5270-4b69-96c8-e47b99876390",
                 "479ec396-b96f-4e01-94d9-aedaa0582ed9",
                 "09ea9b32-dc85-4633-9f6a-c5c4bfded5ac",
+                "80582fdb-c77e-4d6a-b33f-1f14f34b72c4",
             ],
             LOCATION_COASTALTOWN: [
                 "8db8fa33-cb41-4a0d-a2de-e30d884afb95",
                 "9e469023-e0c4-42bf-8527-f9fcaf624421",
             ],
+            LOCATION_BANGKOK: ["80582fdb-c77e-4d6a-b33f-1f14f34b72c4"],
             LOCATION_COLORADO: [
                 "ff5b4e53-49ea-4d85-b94e-d3c8b3fc7ab3",
                 "b4d555eb-e2c9-40c2-b155-328a7019fd28",

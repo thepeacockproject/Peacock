@@ -29,9 +29,7 @@
                 "BriefingName": "$loc UI_CONTRACT_OCTOPUS_VIRUS_BRIEFING_NAME",
                 "LongBriefingText": "$loc UI_CONTRACT_OCTOPUS_VIRUS_BRIEFING_DESC",
                 "Category": "primary",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_OCTOPUS_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -40,11 +38,7 @@
                     },
                     "States": {
                         "Start": {
-                            "VirusDestroyed": [
-                                {
-                                    "Transition": "Success"
-                                }
-                            ]
+                            "VirusDestroyed": [{ "Transition": "Success" }]
                         }
                     }
                 }
@@ -53,24 +47,14 @@
                 "Id": "5ff67d0f-9fcc-4775-ad60-364e69571388",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_OCTOPUS_FAIL_SILVIO_ESCAPED",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_3"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_3" },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "SilvioSeaplaneEscaping": {
                                 "Transition": "EscapeCountdownStart"
@@ -78,9 +62,7 @@
                         },
                         "EscapeCountdownStart": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 90
-                                },
+                                "Condition": { "$after": 90 },
                                 "Transition": "Failure"
                             },
                             "Kill": [
@@ -106,10 +88,7 @@
                     "assembly:/_pro/scenes/missions/coastaltown/difficulty_easy_sapienza_octopus.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -120,18 +99,28 @@
         "Bricks": [],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
-                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus_mission.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus_mission.brick"
                 ]
             }
         ],
@@ -144,41 +133,34 @@
         "Location": "LOCATION_COASTALTOWN",
         "BriefingVideo": "briefing_octopus",
         "DebriefingVideo": "debriefing_octopus",
-        "MissionData": {
-            "Context": "BIO LAB",
-            "MissionType": "Assasination"
-        },
+        "MissionData": { "Context": "BIO LAB", "MissionType": "Assasination" },
         "Description": "UI_CONTRACT_OCTOPUS_DESC",
         "Title": "UI_CONTRACT_OCTOPUS_TITLE",
         "CodeName_Hint": "Octopus",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/Mission01.entity",
         "IsPublished": true,
         "IsLocked": false,
-        "Stats": {
-            "PlayCount": 32,
-            "Likes": 2,
-            "Dislikes": 1
-        },
+        "Stats": { "PlayCount": 32, "Likes": 2, "Dislikes": 1 },
         "Id": "00000000-0000-0000-0000-000000000600",
         "CreationTimestamp": "2014-04-04T09:41:27.06Z",
-        "LastUpdate": "2022-01-20T18:29:24.5418067Z",
+        "LastUpdate": "2025-06-06T22:46:18.4871719Z",
         "Type": "mission",
         "Release": "1.1.x",
         "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
         "Drops": ["ACCESS_HIT_SPIDER"],
         "Opportunities": [
-            "3f6dea78-b0c4-4f29-961d-f7bb097b8be4",
-            "ecf76aeb-d4b0-4b3b-8768-f209aff09476",
-            "a725db5d-2564-4325-b38b-914426fff324",
-            "d6bb64d2-5c4d-497e-8c23-ce36a4dffd16",
-            "088e9238-6c4b-4644-934c-1d959706be2c",
-            "f43fe0cb-9be7-4c3a-a0a3-c7e19f8e0f3e",
-            "2d9530dd-843c-48d5-8964-2e67aa5d368f",
-            "1eef2ba3-8139-46c3-b05b-018aa0d30d95",
+            "27e773ad-ab9c-42a3-9e70-cde433b6f497",
             "0d24fffc-849c-4759-a86b-d8eebae95c4e",
-            "27e773ad-ab9c-42a3-9e70-cde433b6f497"
+            "1eef2ba3-8139-46c3-b05b-018aa0d30d95",
+            "2d9530dd-843c-48d5-8964-2e67aa5d368f",
+            "f43fe0cb-9be7-4c3a-a0a3-c7e19f8e0f3e",
+            "088e9238-6c4b-4644-934c-1d959706be2c",
+            "d6bb64d2-5c4d-497e-8c23-ce36a4dffd16",
+            "a725db5d-2564-4325-b38b-914426fff324",
+            "ecf76aeb-d4b0-4b3b-8768-f209aff09476",
+            "3f6dea78-b0c4-4f29-961d-f7bb097b8be4"
         ],
-        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Entitlements": ["LOCATION_COASTALTOWN"],
         "PublicId": "003221672347"
     },
     "UserData": {}

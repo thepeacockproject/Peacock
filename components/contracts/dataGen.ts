@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -201,7 +201,7 @@ export function generateUserCentric(
         return undefined
     }
 
-    subLocation.DisplayNameLocKey = `UI_${subLocation!.Id}_NAME`
+    subLocation.DisplayNameLocKey = `UI_${subLocation.Id}_NAME`
 
     if (gameVersion === "h1" || gameVersion === "h2") {
         // fix h1/h2 entitlements
@@ -628,6 +628,45 @@ const noRecordings = {
     ],
 }
 
+const noBodiesFound = {
+    IsCompleted: true,
+    ContractConditionType: "PrimarySecondary",
+    Primary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "fd37b209-4e11-461e-a11f-394c92fbbe80",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_no_bodies_found.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "primary",
+            },
+        },
+    ],
+    Secondary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "9673f602-3b2a-4bd3-94b3-b3b311b7bc7e",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_no_bodies_found.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "secondary",
+            },
+        },
+    ],
+}
+
 const headshotsOnly = {
     IsCompleted: true,
     ContractConditionType: "PrimarySecondary",
@@ -808,7 +847,7 @@ const doNotGetSpotted = {
         {
             Type: "gamechanger",
             Properties: {
-                Id: "a77cf01e-ab02-4b1c-a4bd-a37fb8be1114",
+                Id: "b48bb7f9-b630-48cb-a816-720ed7959319",
                 Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_NAME",
                 Description:
                     "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_DESC",
@@ -896,6 +935,7 @@ export function complications(timeString: string) {
         noDisguiseChanges,
         noPacifications,
         noRecordings,
+        noBodiesFound,
         noMissedShots,
         headshotsOnly,
         targetsOnly,

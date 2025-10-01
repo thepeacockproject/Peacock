@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -16,10 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import express, { Request, Router } from "express"
+import express, { NextFunction, Request, Response, Router } from "express"
 import http from "http"
 import {
     checkForUpdates,
+    extractServerVersion,
     extractToken,
     handleAxiosError,
     IS_LAUNCHER,
@@ -64,7 +65,7 @@ import { legacyMenuDataRouter } from "./2016/legacyMenuData"
 import { legacyContractRouter } from "./2016/legacyContractHandler"
 import { initRp } from "./discord/discordRp"
 import random from "random"
-import { json as jsonMiddleware, urlencoded } from "body-parser"
+import bodyParser from "body-parser"
 import { loadoutRouter, loadouts } from "./loadouts"
 import { setupHotListener } from "./hotReloadService"
 import type { AxiosError } from "axios"
@@ -77,6 +78,7 @@ import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
 import { initializePeacockMenu } from "./menus/settings"
+import { ConfigRouteParams } from "./types/gameSchemas"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -113,13 +115,19 @@ function uncaught(error: Error): void {
     }
 
     log(LogLevel.ERROR, error.message)
-    error.stack && log(LogLevel.ERROR, error.stack)
+    if (error.stack) log(LogLevel.ERROR, error.stack)
 }
 
 process.on("uncaughtException", uncaught)
 
 const app = express()
 
+const baseDir = __dirname
+
+app.use(function badPathRewritingMiddleware(req, _, next) {
+    req.url = req.url.replaceAll("//", "/")
+    next()
+})
 app.use(loggingMiddleware)
 
 if (getFlag("developmentLogRequests")) {
@@ -137,17 +145,25 @@ app.get("/", (_: Request, res) => {
         return
     }
 
-    const data = readFileSync("webui/dist/index.html").toString()
+    const data = readFileSync(`${baseDir}/webui/dist/index.html`).toString()
 
     res.contentType("text/html")
     res.send(data)
 })
 
-serveStatic.mime.define({ "application/javascript": ["js"] })
-app.use("/assets", serveStatic("webui/dist/assets"))
+app.use(
+    "/assets",
+    serveStatic(`${baseDir}/webui/dist/assets`, {
+        setHeaders: (res: Response, path) => {
+            if (path.includes(".js")) res.contentType("application/javascript")
+
+            if (path.includes(".css")) res.contentType("text/css")
+        },
+    }),
+)
 
 // make sure all responses have a default content-type set
-app.use(function (_req, res, next) {
+app.use(function ensurePlainContentType(_req, res, next) {
     res.contentType("text/plain")
 
     next()
@@ -158,9 +174,19 @@ if (getFlag("loadoutSaving") === "PROFILES") {
 }
 
 app.get(
-    "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
+    "/config/:audience/:serverVersion",
     // @ts-expect-error Has jwt props.
-    (req: RequestWithJwt<{ issuer: string }>, res) => {
+    (
+        req: RequestWithJwt<{ issuer: string }, never, ConfigRouteParams>,
+        res,
+    ) => {
+        const serverVersion = extractServerVersion(req.params.serverVersion)
+
+        if (!serverVersion) {
+            res.status(400).send("Bad/no server version.")
+            return
+        }
+
         const proto = req.protocol
         const config = getConfig(
             "ServerVersionConfig",
@@ -170,23 +196,17 @@ app.get(
 
         config.Versions[0].GAME_VER = "6.74.0"
 
-        if (req.params.serverVersion.startsWith("8")) {
+        if (serverVersion?._Major === 8) {
             config.Versions[0].GAME_VER = `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}`
-        } else if (req.params.serverVersion.startsWith("7")) {
-            config.Versions[0].GAME_VER = "7.17.0"
-        }
-
-        if (req.params.serverVersion.startsWith("8")) {
             config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
                 "pc-prod_8"
-        }
-
-        if (req.params.serverVersion.startsWith("7")) {
+        } else if (serverVersion?._Major === 7) {
+            config.Versions[0].GAME_VER = "7.17.0"
             config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
                 "pc-prod_7"
         }
 
-        if (req.params.serverVersion.startsWith("6")) {
+        if (serverVersion?._Major === 6) {
             config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
                 "pc-prod_6"
         }
@@ -222,15 +242,16 @@ app.get(
     },
 )
 
-app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (_, res) => {
+app.get("/files/privacypolicy/hm3/privacypolicy_:version.json", (_, res) => {
     res.set("Content-Type", "application/octet-stream")
+    // it silently fails on some game versions without this, no clue why
     res.set("x-ms-meta-version", "20181001")
     res.send(getConfig("PrivacyPolicy", false))
 })
 
 app.post(
-    "/api/metrics/*",
-    jsonMiddleware({ limit: "10Mb" }),
+    "/api/metrics/add",
+    bodyParser.json({ limit: "10Mb" }),
     // @ts-expect-error jwt props.
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
         for (const event of req.body) {
@@ -241,9 +262,18 @@ app.post(
     },
 )
 
+/**
+ * The game is a LIAR and does NOT give us `application/json` like it claims.
+ */
+function fixContentType(req: Request, _: Response, next: NextFunction): void {
+    req.headers["content-type"] = "application/x-www-form-urlencoded"
+    next()
+}
+
 app.post(
     "/oauth/token",
-    urlencoded(),
+    fixContentType,
+    express.urlencoded({ extended: false }),
     // @ts-expect-error jwt props.
     (req: RequestWithJwt<never, OAuthTokenBody>, res) => {
         handleOAuthToken(req)
@@ -274,7 +304,7 @@ app.get("/files/onlineconfig.json", (_, res) => {
 app.use(
     Router()
         .use(
-            "/resources-:serverVersion(\\d+-\\d+)/",
+            "/resources-:serverVersion/",
             // @ts-expect-error Has jwt props.
             (req: RequestWithJwt, _, next) => {
                 req.serverVersion = req.params.serverVersion
@@ -307,7 +337,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-18"
+                    req.serverVersion = "8-21"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -357,7 +387,7 @@ function generateBlobConfig(req: RequestWithJwt) {
 }
 
 app.get(
-    "/authentication/api/configuration/Init?*",
+    "/authentication/api/configuration/Init",
     // @ts-expect-error jwt props.
     extractToken,
     (req: RequestWithJwt, res) => {
@@ -416,8 +446,8 @@ primaryRouter.get(
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)
 primaryRouter.use("/profiles/page/", menuDataRouter)
-primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemPreRouter)
-primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
+primaryRouter.use("/resources-:serverVersion/", menuSystemPreRouter)
+primaryRouter.use("/resources-:serverVersion/", menuSystemRouter)
 
 app.use(
     Router()
@@ -442,7 +472,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-18"].includes(
+                ["6-74", "7-3", "7-17", "8-21"].includes(
                     <string>req.serverVersion,
                 )
             ) {
@@ -454,7 +484,7 @@ app.use(
         .use(primaryRouter),
 )
 
-app.all("*", (req, res) => {
+app.all("*splat", (req, res) => {
     log(LogLevel.WARN, `Unhandled URL: ${req.url}`)
     res.status(404).send("Not found!")
 })
@@ -526,6 +556,7 @@ export async function startServer(options: {
 
         const httpServer = http.createServer(app)
 
+        log(LogLevel.INFO, `Listening on ${host}:${port}...`)
         // @ts-expect-error Non-matching method sig
         httpServer.listen(port, host)
         log(LogLevel.INFO, "Server started.")

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -298,13 +298,16 @@ export class HitsCategoryService {
             `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
             true,
         )
+
         const hits = resp.data.data.Data.Hits
+
         void preserveContracts(
             hits
                 .map(
                     (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
                 )
                 .filter(Boolean) as string[],
+            gameVersion,
         )
 
         // Fix completion and favorite status for retrieved contracts

@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -66,7 +68,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -114,7 +118,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "1039e6e9-2961-4595-bf1b-c456a82c2653",
@@ -130,12 +153,17 @@
         "Type": "escalation",
         "InGroup": "e6be23e8-8602-42c8-a014-17ffbfa053f5",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "cf693f1a-ec1d-4a24-af91-cbbbfa3db1bc" },
-            { "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf" }
+            {
+                "IsNew": true,
+                "Id": "cf693f1a-ec1d-4a24-af91-cbbbfa3db1bc"
+            },
+            {
+                "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:38.8824902Z",
         "PublicId": "002909364447",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

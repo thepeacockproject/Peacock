@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import { existsSync, readFileSync } from "fs"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
 import { MissionManifest, SMFLastDeploy } from "./types/types"
-import { basename, join } from "path"
+import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
@@ -92,6 +92,14 @@ export class SMFSupport {
     }
 
     private async executePlugin(plugin: string) {
+        // Check if we are running on linux and got a wine path
+        if (
+            process.platform === "linux" &&
+            plugin.startsWith(`${process.env.WINE_DRIVE_PREFIX ?? "Z"}:\\`)
+        ) {
+            plugin = plugin.substring(2).replace(/\\/g, path.sep)
+        }
+
         if (!existsSync(plugin)) return
 
         await this.controller.executePlugin(

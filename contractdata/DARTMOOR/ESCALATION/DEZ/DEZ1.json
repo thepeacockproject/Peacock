@@ -13,7 +13,11 @@
                 "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_DESC",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_HUD"
                 },
@@ -37,7 +41,11 @@
                 "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_DISGUISE_STAFFROAR_DESC",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "HUDTemplate": {
                     "display": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME"
                 },
@@ -46,11 +54,15 @@
                     "States": {
                         "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "Disguise": { "Transition": "PleaseDoFail" }
+                            "Disguise": {
+                                "Transition": "PleaseDoFail"
+                            }
                         },
                         "PleaseDoFail": {
                             "$timer": {
-                                "Condition": { "$after": 2 },
+                                "Condition": {
+                                    "$after": 2
+                                },
                                 "Transition": "Failure"
                             }
                         }
@@ -183,13 +195,14 @@
             }
         ],
         "Bricks": [],
+        "GameChangers": [],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
-                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -199,9 +212,7 @@
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
                 ]
             }
-        ],
-        "GameChangers": [],
-        "GameChangerReferences": []
+        ]
     },
     "Metadata": {
         "Id": "4804d74a-96d9-40af-8a37-a1f377781fc1",

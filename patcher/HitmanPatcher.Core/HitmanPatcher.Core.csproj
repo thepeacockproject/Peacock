@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net46</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <PlatformTarget>x64</PlatformTarget>
+        <Prefer32bit>true</Prefer32bit>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+        <AssemblyName>PeacockPatcher.Core</AssemblyName>
+
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>TRACE;PLATFORM_STEAM;PLATFORM_EPIC;PLATFORM_GOG;PLATFORM_SCARLETT</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DefineConstants>TRACE;PLATFORM_STEAM;PLATFORM_EPIC</DefineConstants>
+    </PropertyGroup>
+</Project>

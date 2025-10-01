@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -22,6 +22,7 @@ import {
     contractCreationTutorialId,
     getMaxProfileLevel,
     isSuit,
+    parsePageNumber,
     unlockLevelComparer,
     uuidRegex,
 } from "./utils"
@@ -912,17 +913,9 @@ menuDataRouter.get(
             data: undefined,
         }
 
-        let pageNumber = req.query.page || 0
-
-        if (typeof pageNumber === "string") {
-            pageNumber = parseInt(pageNumber, 10)
-        }
-
-        pageNumber = pageNumber < 0 ? 0 : pageNumber
-
         response.data = await hitsCategoryService.paginateHitsCategory(
             category,
-            pageNumber as number,
+            parsePageNumber(req.query.page),
             req.gameVersion,
             req.jwt.unique_name,
         )
@@ -985,6 +978,7 @@ menuDataRouter.get(
             req.jwt.platform,
             req.gameVersion,
             req.query.difficultyLevel,
+            parsePageNumber(req.query.page),
         )
 
         res.json({
@@ -1013,6 +1007,7 @@ menuDataRouter.get(
             req.jwt.platform,
             req.gameVersion,
             req.query.difficulty,
+            parsePageNumber(req.query.page),
         )
 
         res.json({

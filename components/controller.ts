@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -193,6 +193,7 @@ function createPeacockRequire(pluginName: string): NodeRequire {
         }
 
         try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             return require(specifier)
         } catch (e) {
             log(LogLevel.ERROR, `PRMR: Unable to load ${specifier}.`)
@@ -332,7 +333,7 @@ export class Controller {
         >
         getContractManifest: SyncBailHook<
             [contractId: string, gameVersion: GameVersion, isGroup: boolean],
-            MissionManifest | undefined
+            MissionManifest | [MissionManifest, boolean] | undefined
         >
         fixContract: SyncHook<
             [contract: MissionManifest, gameVersion: GameVersion]
@@ -363,6 +364,21 @@ export class Controller {
         getVersionedConfig,
     }
     public missionsInLocation = missionsInLocation
+    /**
+     * @deprecated since v8, use `controller.missionsInLocation` instead
+     */
+    public missionsInLocations = new Proxy(missionsInLocation, {
+        get(target, propName) {
+            log(
+                LogLevel.WARN,
+                "controller.missionsInLocations is deprecated since v8, this plugin must be updated!",
+                "plugins",
+            )
+
+            // @ts-expect-error just forward the indexer to h3, don't care if it exists.
+            return target.h3[propName]
+        },
+    })
     /**
      * Note: if you are adding a contract, please use {@link addMission}!
      */
@@ -615,20 +631,21 @@ export class Controller {
     }
 
     private getGroupContract(
-        json: MissionManifest,
+        contract: MissionManifest,
         gameVersion: GameVersion,
     ): MissionManifest {
-        if (escalationTypes.includes(json.Metadata.Type)) {
-            if (!json.Metadata.InGroup) {
-                return json
+        if (escalationTypes.includes(contract.Metadata.Type)) {
+            if (!contract.Metadata.InGroup) {
+                return contract
             }
 
             return (
-                this.resolveContract(json.Metadata.InGroup, gameVersion) ?? json
+                this.resolveContract(contract.Metadata.InGroup, gameVersion) ??
+                contract
             )
         }
 
-        return json
+        return contract
     }
 
     /**
@@ -665,6 +682,33 @@ export class Controller {
                         (brick) =>
                             !brick.includes("override_constantjeff.brick"),
                     )
+
+                break
+            }
+            case "h3": {
+                if (!contract.Metadata.Entitlements) break
+
+                const locations =
+                    this.configManager.getConfig<PeacockLocationsData>(
+                        "LocationsData",
+                        false,
+                    )
+
+                // Entitlements changed in 3.230.1, thanks IOI
+                contract.Metadata.Entitlements =
+                    contract.Metadata.Entitlements.map((ent) => {
+                        const ents =
+                            locations.children[contract.Metadata.Location]
+                                ?.Properties.Entitlements
+
+                        if (ent.endsWith("LEGACY_STANDARD")) {
+                            // The entitlements 'H1_LEGACY_STANDARD' and 'H2_LEGACY_STANDARD' are no longer in the game as of v3.230.1
+                            // Either replace them with the corresponding new location entitlement or remove
+                            return ents?.[0]
+                        }
+
+                        return ent
+                    }).filter((ent) => ent !== undefined)
             }
         }
 
@@ -710,19 +754,33 @@ export class Controller {
             log(LogLevel.TRACE, `No game version.`, "Contracts")
         }
 
-        const optionalPluginJson = this.hooks.getContractManifest.call(
+        let optionalPluginJson = this.hooks.getContractManifest.call(
             id,
             gameVersion,
             getGroup,
         )
 
         if (optionalPluginJson) {
-            // We skip fixing plugins as we assume they know what they're doing.
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(optionalPluginJson, gameVersion)
-                    : optionalPluginJson,
-            )
+            // If a plugin returns [MissionManifest, true] instead of MissionManifest, do not fix the MissionManifest
+            if ((optionalPluginJson as [MissionManifest, boolean])[1]) {
+                optionalPluginJson = (
+                    optionalPluginJson as [MissionManifest, boolean]
+                )[0]
+            } else {
+                optionalPluginJson = this.fixContract(
+                    optionalPluginJson as MissionManifest,
+                    gameVersion,
+                )
+            }
+
+            if (getGroup) {
+                optionalPluginJson = this.getGroupContract(
+                    optionalPluginJson as MissionManifest,
+                    gameVersion,
+                )
+            }
+
+            return fastClone(optionalPluginJson as MissionManifest)
         }
 
         const registryJson: MissionManifest | undefined = internalContracts[id]
@@ -805,6 +863,17 @@ export class Controller {
         gameVersion: GameVersion,
         ...levels: MissionManifest[]
     ): void {
+        if (typeof gameVersion !== "string") {
+            levels = [gameVersion, ...levels]
+            gameVersion = "h3"
+            log(
+                LogLevel.WARN,
+                `Game version not specified. This plugin needs to be updated! Assuming h3.`,
+                "addEscalation",
+            )
+            log(LogLevel.TRACE, `No game version.`, "Contracts")
+        }
+
         const fixedLevels = [...levels].filter(Boolean)
 
         this.addMission(groupContract)
@@ -822,7 +891,34 @@ export class Controller {
 
         a.push(groupContract.Metadata.Id)
 
-        this.scanForGroups()
+        const escalationGroup: Record<number, string> = {}
+        const order = groupContract.Metadata.GroupDefinition?.Order
+
+        if (!order) {
+            log(
+                LogLevel.ERROR,
+                `A plugin tried to add an escalation (${groupContract.Metadata.Id}) without a GroupDefinition`,
+                "addEscalation",
+            )
+            return
+        }
+
+        for (let i = 0; i < order.length; i++) {
+            const next = this.resolveContract(order[i], "h3")
+
+            if (!next) {
+                log(
+                    LogLevel.ERROR,
+                    `Could not find next contract (${order[i]}) in group ${groupContract.Metadata.Id}!`,
+                    "addEscalation",
+                )
+                return
+            }
+
+            escalationGroup[i + 1] = next.Metadata.Id
+        }
+
+        this.escalationMappings.set(groupContract.Metadata.Id, escalationGroup)
     }
 
     /**
@@ -848,7 +944,10 @@ export class Controller {
             gameVersion === "h3" &&
             getFlag("legacyContractDownloader") !== true
         ) {
-            const result = await Controller._hitmapsFetchContract(pubId)
+            const result = await Controller._hitmapsFetchContract(
+                pubId,
+                gameVersion,
+            )
 
             if (result) {
                 contractData = result
@@ -948,10 +1047,12 @@ export class Controller {
      * Fetch a contract from HITMAPS.
      *
      * @param publicId The contract's public ID.
+     * @param gameVersion The game version.
      * @internal
      */
     static async _hitmapsFetchContract(
         publicId: string,
+        gameVersion: GameVersion,
     ): Promise<MissionManifest | undefined> {
         const id = addDashesToPublicId(publicId)
 
@@ -967,6 +1068,7 @@ export class Controller {
         const resp = await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: id,
+                gameVersion,
             },
         })
 
@@ -1403,12 +1505,17 @@ export function contractIdToHitObject(
 /**
  * Sends an array of publicIds to the contract preservation backend.
  * @param publicIds The contract publicIds to send.
+ * @param gameVersion The contracts' game version.
  */
-export async function preserveContracts(publicIds: string[]): Promise<void> {
+export async function preserveContracts(
+    publicIds: string[],
+    gameVersion: GameVersion,
+): Promise<void> {
     for (const id of publicIds) {
         await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: addDashesToPublicId(id),
+                gameVersion,
             },
         })
     }

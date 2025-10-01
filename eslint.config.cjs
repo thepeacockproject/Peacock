@@ -62,7 +62,6 @@ module.exports = [
             parserOptions: {
                 project: [
                     "./tsconfig.json",
-                    "./plugins/tsconfig.json",
                     "./webui/tsconfig.json",
                     "./tests/tsconfig.json",
                 ],

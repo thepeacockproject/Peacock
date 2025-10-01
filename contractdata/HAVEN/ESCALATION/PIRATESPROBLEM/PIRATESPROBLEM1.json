@@ -31,9 +31,19 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "Kill": [{ "Transition": "Failure" }]
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
                         },
-                        "Success": { "Kill": [{ "Transition": "Failure" }] }
+                        "Success": {
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
                     }
                 }
             },
@@ -90,7 +100,24 @@
             }
         ],
         "GameChangers": ["f41f18fe-0fe5-416a-a793-50727e594655"],
-        "GameChangerReferences": []
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "88725ca6-cf32-41e5-bd18-1c2c9aafd8aa",
@@ -111,7 +138,7 @@
             { "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f" },
             { "Id": "f41f18fe-0fe5-416a-a793-50727e594655" }
         ],
-        "Entitlements": ["H2_LEGACY_EXPANSION"]
+        "Entitlements": ["LOCATION_OPULENT_STINGRAY"]
     },
     "UserData": {}
 }

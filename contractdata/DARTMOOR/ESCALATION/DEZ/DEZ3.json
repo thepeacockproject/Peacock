@@ -20,7 +20,9 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } }
+                        "Start": {
+                            "AmbientChanged": { "Transition": "Success" }
+                        }
                     }
                 }
             },
@@ -274,13 +276,14 @@
             }
         ],
         "Bricks": [],
+        "GameChangers": [],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
-                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -290,9 +293,7 @@
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
                 ]
             }
-        ],
-        "GameChangers": [],
-        "GameChangerReferences": []
+        ]
     },
     "Metadata": {
         "Id": "0fc24d6e-5870-44d3-897a-15f19c4ccef2",

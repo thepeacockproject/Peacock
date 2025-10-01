@@ -68,6 +68,15 @@ namespace HitmanPatcher
                     tasks =>
                         tasks.Select(task => task.Result)
                             .Where(x => x != null));
+            
+            Task<IEnumerable<Patch[]>> getDynresEnablePatches =
+                Task.Factory.ContinueWhenAll(new Task<Patch[]>[]
+                    {
+                        findDynresEnable(exeData),
+                    },
+                    tasks =>
+                        tasks.Select(task => task.Result)
+                            .Where(x => x != null));
 
 
             Task<IEnumerable<Patch[]>>[] alltasks =
@@ -76,11 +85,13 @@ namespace HitmanPatcher
                 getProtocolPatches, getDynresForceofflinePatches
             };
             // ReSharper disable once CoVariantArrayConversion
-            Task.WaitAll(alltasks);
+            Task.WaitAll([..alltasks, getDynresEnablePatches]);
 
             bench.Stop();
-            Console.WriteLine(bench.Elapsed.ToString());
-
+#if DEBUG
+            Compositions.Logger.log(bench.Elapsed.ToString());
+#endif
+            
             // error out if any task does not have exactly 1 result
             if (alltasks.Any(task => task.Result.Count() != 1))
             {
@@ -94,7 +105,8 @@ namespace HitmanPatcher
             Note("AuthHeader2", getAuthheadPatches.Result.First()[1]);
             Note("ConfigDomain", getConfigdomainPatches.Result.First()[0]);
             Note("Protocol", getProtocolPatches.Result.First()[0]);
-            Note("DynamicResources", getDynresForceofflinePatches.Result.First()[0]);
+            Note("DynamicResources->ForceOffline", getDynresForceofflinePatches.Result.First()[0]);
+            Note("DynamicResources->Enable", getDynresEnablePatches.Result.FirstOrDefault()?[0]);
 #endif
 
             result = new HitmanVersion()
@@ -104,7 +116,9 @@ namespace HitmanPatcher
                 configdomain = getConfigdomainPatches.Result.First(),
                 protocol = getProtocolPatches.Result.First(),
                 dynres_noforceoffline =
-                    getDynresForceofflinePatches.Result.First()
+                    getDynresForceofflinePatches.Result.First(),
+                dynres_enable = 
+                    getDynresEnablePatches.Result.FirstOrDefault() ?? []
             };
 
             return true;
@@ -115,7 +129,14 @@ namespace HitmanPatcher
 #if DEBUG
         private static void Note(string name, Patch patch)
         {
-            MainForm.GetInstance().log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
+            if (patch == null)
+            {
+                Compositions.Logger.log($"{name}: n/a");
+                
+                return;
+            }
+            
+            Compositions.Logger.log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
         }
 #endif
 
@@ -510,6 +531,31 @@ namespace HitmanPatcher
                                 addr + 34 +
                                 BitConverter.ToInt32(data, addr + 26))
                             .ToArray())
+            }, tasks =>
+            {
+                IEnumerable<int> offsets =
+                    tasks.SelectMany(task => task.Result);
+                if (offsets.Count() != 1)
+                    return null;
+                return new[]
+                {
+                    new Patch(offsets.First(), "01", "00",
+                        MemProtection.PAGE_EXECUTE_READWRITE)
+                };
+            });
+        }
+
+        #endregion
+
+        #region dynres_enable
+
+        private static Task<Patch[]> findDynresEnable(byte[] data)
+        {
+            return Task.Factory.ContinueWhenAll(new[]
+            {
+                Task.Factory.StartNew(() => findPattern(data, 0x4, "ba502e23f1488d0d")) // 3.210
+					.ContinueWith(task =>
+                        task.Result.Select(addr => addr + 0x22 + BitConverter.ToInt32(data, addr + 0x1A)).ToArray()),
             }, tasks =>
             {
                 IEnumerable<int> offsets =

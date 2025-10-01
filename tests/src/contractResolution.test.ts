@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -80,7 +80,7 @@ describe("contracts folder", () => {
     testWithFakeFs(
         "can resolve a contract from the contracts folder",
         async ({ fakeFs, expect }) => {
-            const contract = contractFactory(["usercreated"])
+            const contract = contractFactory({}, ["usercreated"])
             await fakeFs.writeFile(
                 "contracts/test.json",
                 JSON.stringify(contract),

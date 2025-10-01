@@ -9,7 +9,9 @@
                 "BriefingName": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_BRIEFING_NAME",
                 "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1",
                 "LongBriefingText": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_LONGBRIEFING",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "States": {
@@ -47,7 +49,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -97,7 +101,26 @@
             "assembly:/_pro/scenes/missions/paris/cyclamen_level_addition.brick"
         ],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "eb340d27-39fa-4e42-baf1-216363dbcdfc",
@@ -112,12 +135,17 @@
         "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "467fabca-8756-4ad3-b47e-c4d10909e90e" },
-            { "Id": "029bd715-b178-4272-9d20-451ac53307b5" }
+            {
+                "IsNew": true,
+                "Id": "467fabca-8756-4ad3-b47e-c4d10909e90e"
+            },
+            {
+                "Id": "029bd715-b178-4272-9d20-451ac53307b5"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:35.1011709Z",
         "PublicId": "002986113147",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

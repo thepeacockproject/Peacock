@@ -17,7 +17,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -78,7 +80,9 @@
                 "Image": "images/contracts/gamechangers/Gamechanger_Marrakesh_DataExtraction_Consulate_02.jpg",
                 "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_DATA_EXTRACTION_CONSULATE_NAME",
                 "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_2",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMARANTH_OBJ_2"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {
@@ -86,8 +90,12 @@
                     },
                     "States": {
                         "Start": {
-                            "LaptopHacked": { "Transition": "Success" },
-                            "Laptop_Destroyed": { "Transition": "Failure" }
+                            "LaptopHacked": {
+                                "Transition": "Success"
+                            },
+                            "Laptop_Destroyed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -97,7 +105,26 @@
             "assembly:/_pro/scenes/missions/marrakesh/gamechanger_amaranth_level_overrides.brick"
         ],
         "GameChangers": ["881676bf-4560-4b2e-9e41-f4d66c66aae4"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "33300419-4aae-43ee-8c6a-7f01269abd6d",
@@ -113,13 +140,21 @@
         "RequiredUnlockable": "ACCESS_HIT_SPIDER",
         "InGroup": "c949817b-5212-42e8-9b06-9a2eb83de167",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "687dc054-0f20-43a6-8db0-2ea1af7e7c98" },
-            { "IsNew": true, "Id": "881676bf-4560-4b2e-9e41-f4d66c66aae4" },
-            { "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3" }
+            {
+                "IsNew": true,
+                "Id": "687dc054-0f20-43a6-8db0-2ea1af7e7c98"
+            },
+            {
+                "IsNew": true,
+                "Id": "881676bf-4560-4b2e-9e41-f4d66c66aae4"
+            },
+            {
+                "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:26.7890806Z",
         "PublicId": "006791978247",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_MARRAKECH"]
     },
     "UserData": {}
 }

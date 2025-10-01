@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -62,4 +62,6 @@ export const orderedETs = [
     "1f0f3c70-b559-48ea-aca4-b64c8c762b69",
     "d4a5f21f-3e4d-4226-9769-0fbe2a5e8639",
     "699ec9a3-102e-499b-ad60-6a329cc2054c",
+    "685c527d-2da2-49e7-9e9e-bf7f675ea779",
+    "7a303745-5d33-4db8-814a-3de1dda00a59",
 ]

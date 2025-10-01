@@ -13,7 +13,11 @@
                 "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_STAFF_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_STAFF_DESC",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_STAFF_HUD"
                 },
@@ -44,11 +48,15 @@
                     "States": {
                         "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "Disguise": { "Transition": "PleaseDoFail" }
+                            "Disguise": {
+                                "Transition": "PleaseDoFail"
+                            }
                         },
                         "PleaseDoFail": {
                             "$timer": {
-                                "Condition": { "$after": 2 },
+                                "Condition": {
+                                    "$after": 2
+                                },
                                 "Transition": "Failure"
                             }
                         }
@@ -181,13 +189,14 @@
             }
         ],
         "Bricks": [],
+        "GameChangers": [],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
-                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -197,9 +206,7 @@
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
                 ]
             }
-        ],
-        "GameChangers": [],
-        "GameChangerReferences": []
+        ]
     },
     "Metadata": {
         "Id": "1a9978ae-0cfa-44ff-bd16-ca3ffab226fe",

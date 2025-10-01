@@ -68,7 +68,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HIBISCUS_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIBISCUS_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HIBISCUS_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -123,7 +125,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HIBISCUS_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIBISCUS_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HIBISCUS_OBJ_3",
                 "Type": "statemachine",
                 "Definition": {
@@ -175,7 +179,24 @@
             "0cf5e693-35ec-457e-a004-da4672b90376"
         ],
         "GameChangerReferences": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "2e83eda3-230f-429c-965a-c89e7ada97e3",
@@ -191,15 +212,26 @@
         "Type": "escalation",
         "InGroup": "ccbde3e2-67e7-4534-95ec-e9bd7ef65273",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
-            { "Id": "52912383-f877-4e0d-8228-d094c5660082" },
-            { "Id": "ca9604ab-c712-45db-b1b4-e04ac60d2465" },
-            { "Id": "60bcf81b-cd45-4807-8b15-18f914bf9af0" },
-            { "Id": "76b616b8-d848-4251-86bd-c2bf3127428f" }
+            {
+                "IsNew": true,
+                "Id": "0cf5e693-35ec-457e-a004-da4672b90376"
+            },
+            {
+                "Id": "52912383-f877-4e0d-8228-d094c5660082"
+            },
+            {
+                "Id": "ca9604ab-c712-45db-b1b4-e04ac60d2465"
+            },
+            {
+                "Id": "60bcf81b-cd45-4807-8b15-18f914bf9af0"
+            },
+            {
+                "Id": "76b616b8-d848-4251-86bd-c2bf3127428f"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:39.8981191Z",
         "PublicId": "008166982047",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_BANGKOK"]
     },
     "UserData": {}
 }

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -29,6 +29,7 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
+import assert from "assert"
 
 /**
  * Change a registry challenge to the runtime format (for GetActiveChallenges).
@@ -190,6 +191,7 @@ export function isChallengeForDifficulty(
 /**
  * Judges whether a challenge should be included in the challenges list of a contract.
  * Requires the challenge and the contract share the same parent location.
+ * Will throw if the contract is not found.
  *
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
@@ -221,7 +223,20 @@ function isChallengeInContract(
         return false
     }
 
-    const contract = controller.resolveContract(contractId, gameVersion, true)
+    const groupContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+        true,
+    )
+    const individualContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+    )
+
+    assert.ok(
+        individualContract,
+        `Can't find contract ${contractId} for ${gameVersion}, but need to check if challenge ${challenge.Id} belongs to it`,
+    )
 
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -236,30 +251,28 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ) || [],
                   },
-            contract,
+            groupContract,
         )
     }
 
     if (
         challenge.Tags.includes("elusive") &&
-        contract?.Metadata.Type !== "elusive"
+        groupContract?.Metadata.Type !== "elusive"
     ) {
         return false
     }
 
     // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contract?.Metadata.Id || "",
+        groupContract?.Metadata.Id || "",
     )
 
     // Is this for the current contract type?
     // As of v6.1.0, this is only used for ET challenges.
-    // We have to resolve the non-group contract, `contract` is the group contract
+    // We have to resolve the non-group contract, `groupContract` is the group contract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
-    ).includes(
-        controller.resolveContract(contractId, gameVersion)!.Metadata.Type,
-    )
+    ).includes(individualContract.Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.

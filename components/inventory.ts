@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -21,8 +21,10 @@ import type { GameVersion, Unlockable, UserProfile } from "./types/types"
 import {
     brokenItems,
     CONCRETEART_UNLOCKABLES,
+    BAIJU_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
+    FRENCHMARTINI_UNLOCKABLES,
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
@@ -72,6 +74,7 @@ const DELUXE_DATA = [
     ...PENICILLIN_UNLOCKABLES,
     ...TOMORROWLAND_UNLOCKABLES,
     ...LAMBIC_UNLOCKABLES,
+    ...FRENCHMARTINI_UNLOCKABLES,
 ]
 
 /**
@@ -127,7 +130,9 @@ function filterUnlockedContent(
 
         // Handles unlockables that belong to a package or unlocked gear from evergreen
         if (packagedUnlocks.has(unlockable.Id)) {
-            packagedUnlocks.get(unlockable.Id) && acc[0].push(unlockable)
+            if (packagedUnlocks.get(unlockable.Id)) {
+                acc[0].push(unlockable)
+            }
         }
 
         // Handles packages
@@ -193,9 +198,9 @@ function filterUnlockedContent(
 
             if (isEvergreen || isDeluxe) {
                 acc[0].push(unlockable)
-            } else {
+            } else if (getFlag("enableIsolatedUnlockables")) {
                 /**
-                 *  List of untracked items (to award to user until they are tracked to corresponding challenges)
+                 *  List of untracked items when they are enabled (to award to user until they are tracked to corresponding challenges)
                  */
                 acc[1].push(unlockable)
             }
@@ -426,6 +431,20 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("70a9afcc8de84b6ab0f2b45b2018559b") ||
                 e.includes("3254350")
+            )
+        }
+
+        if (FRENCHMARTINI_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("256eeeb3d8044aa1840e1606d268e0b2") ||
+                e.includes("3711140")
+            )
+        }
+
+        if (BAIJU_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("04cb1b3e5b424308be25236f6bc1b2fb") ||
+                e.includes("3957470")
             )
         }
 

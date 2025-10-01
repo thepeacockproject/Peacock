@@ -67,21 +67,13 @@
                     },
                     "States": {
                         "Start": {
-                            "-": {
-                                "Actions": {
-                                    "$inc": "update_counter"
-                                }
-                            },
+                            "-": { "Actions": { "$inc": "update_counter" } },
                             "DiskPieceFound": {
-                                "Actions": {
-                                    "$inc": "PieceCounter"
-                                },
+                                "Actions": { "$inc": "PieceCounter" },
                                 "Transition": "DiskText"
                             },
                             "McGuffinGotEvent": {
-                                "Actions": {
-                                    "$set": ["Core", "$.Core_Got"]
-                                },
+                                "Actions": { "$set": ["Core", "$.Core_Got"] },
                                 "Transition": "Success"
                             }
                         },
@@ -91,33 +83,25 @@
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 0]
                                     },
-                                    "Actions": {
-                                        "$set": ["Disks", "$.Disk_0"]
-                                    }
+                                    "Actions": { "$set": ["Disks", "$.Disk_0"] }
                                 },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 1]
                                     },
-                                    "Actions": {
-                                        "$set": ["Disks", "$.Disk_1"]
-                                    }
+                                    "Actions": { "$set": ["Disks", "$.Disk_1"] }
                                 },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 2]
                                     },
-                                    "Actions": {
-                                        "$set": ["Disks", "$.Disk_2"]
-                                    }
+                                    "Actions": { "$set": ["Disks", "$.Disk_2"] }
                                 },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 3]
                                     },
-                                    "Actions": {
-                                        "$set": ["Core", ""]
-                                    },
+                                    "Actions": { "$set": ["Core", ""] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -135,15 +119,9 @@
                                     "$inc": "update_counter"
                                 }
                             },
-                            "McGuffinLostEvent": {
-                                "Transition": "DiskText"
-                            },
+                            "McGuffinLostEvent": { "Transition": "DiskText" },
                             "DiskPieceFound": [
-                                {
-                                    "Actions": {
-                                        "$inc": "PieceCounter"
-                                    }
-                                },
+                                { "Actions": { "$inc": "PieceCounter" } },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 3]
@@ -168,11 +146,7 @@
                 "Scope": "session",
                 "Definition": {
                     "States": {
-                        "Start": {
-                            "exit_gate": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "exit_gate": { "Transition": "Success" } }
                     }
                 }
             }
@@ -185,11 +159,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/greedy/mission_raccoon/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon.brick",
-                    "assembly:/_pro/scenes/missions/greedy/mission_raccoon/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/greedy/mission_raccoon/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -209,10 +191,7 @@
                     "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/difficulty_easy_raccoon.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -261,7 +240,7 @@
             "e18ca915-d2b6-4a8d-8ac2-661e51c2df84"
         ],
         "Entitlements": ["H2_LEGACY_EXPANSION"],
-        "LastUpdate": "2022-01-20T18:29:24.5934015Z",
+        "LastUpdate": "2025-03-27T14:29:02.5433585Z",
         "PublicId": "024502314547"
     },
     "UserData": {}
