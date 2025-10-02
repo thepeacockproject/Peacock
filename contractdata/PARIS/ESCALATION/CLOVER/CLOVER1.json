@@ -17,7 +17,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_CLOVER_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_CLOVER_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLOVER_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -74,7 +76,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "a8b5f606-99fa-4d50-a650-9598a121cf4b",
@@ -89,11 +110,13 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "05f08068-eadf-4710-a7bf-849ec9afd841" }
+            {
+                "Id": "05f08068-eadf-4710-a7bf-849ec9afd841"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:34.5386656Z",
         "PublicId": "002403058547",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

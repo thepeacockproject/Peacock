@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc $.ObjectiveText" },
+                "HUDTemplate": {
+                    "display": "$loc $.ObjectiveText"
+                },
                 "BriefingText": "$loc UI_CONTRACT_DAFFODIL_LEVEL_1_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -64,7 +66,24 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "fffda772-d51d-46e2-86fe-44c72e38bac4",
@@ -79,11 +98,13 @@
         "InGroup": "3d9dcf91-1708-4e22-88b3-41d184bcc8c3",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "659b6295-c1c9-42d7-89e0-e059310ec887" }
+            {
+                "Id": "659b6295-c1c9-42d7-89e0-e059310ec887"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:35.5074187Z",
         "PublicId": "003516787747",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

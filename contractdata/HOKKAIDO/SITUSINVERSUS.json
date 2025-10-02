@@ -20,11 +20,7 @@
                     },
                     "States": {
                         "Start": {
-                            "Soders_Dead": [
-                                {
-                                    "Transition": "Success"
-                                }
-                            ]
+                            "Soders_Dead": [{ "Transition": "Success" }]
                         }
                     }
                 }
@@ -43,11 +39,7 @@
                 "Id": "5b1534ef-7848-440c-855a-d2635663dd74",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_SNOWCRANE_FAIL_ESCAPE",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_SNOWCRANE_OBJ_ESCAPE"
@@ -56,24 +48,14 @@
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "TargetEscapeStarted": {
-                                "Transition": "Countdown"
-                            }
+                            "TargetEscapeStarted": { "Transition": "Countdown" }
                         },
                         "Countdown": {
-                            "TargetEscapeFoiled": {
-                                "Transition": "Success"
-                            },
+                            "TargetEscapeFoiled": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 45
-                                },
+                                "Condition": { "$after": 45 },
                                 "Transition": "Failure"
                             },
                             "Kill": {
@@ -97,10 +79,7 @@
                     "assembly:/_pro/scenes/missions/hokkaido/difficulty_easy_hokkaido_snowcrane.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -111,11 +90,19 @@
         "Bricks": [],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
-                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -146,16 +133,16 @@
         "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
         "Drops": ["ACCESS_HIT_S1_CONCLUSION"],
         "Opportunities": [
+            "a8e32356-493e-4f13-a6b7-910f995d9f0d",
+            "d52590af-3728-4996-b441-b05a777e4642",
             "b3a982f1-2773-4a97-8492-614b897a8f98",
-            "d2e5bf2d-b6cd-474f-88b1-6aa0c7e641c3",
-            "63471c19-f174-42f7-a4a4-099c6f71c6af",
             "15af2544-833e-459e-9de9-39c109b6f732",
             "dd0ef769-afd7-4754-8058-0677b958d91a",
-            "d52590af-3728-4996-b441-b05a777e4642",
-            "a8e32356-493e-4f13-a6b7-910f995d9f0d"
+            "63471c19-f174-42f7-a4a4-099c6f71c6af",
+            "d2e5bf2d-b6cd-474f-88b1-6aa0c7e641c3"
         ],
-        "Entitlements": ["H1_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.711767Z",
+        "Entitlements": ["LOCATION_HOKKAIDO"],
+        "LastUpdate": "2025-03-27T14:29:02.6030998Z",
         "PublicId": "010031396547"
     },
     "UserData": {}

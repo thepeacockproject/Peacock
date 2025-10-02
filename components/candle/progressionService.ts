@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -100,7 +100,8 @@ export class ProgressionService {
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
               theLocation[subPkgId]
-            : theLocation
+            : // @ts-expect-error Todo?
+              theLocation
     }
 
     // Return mastery drops from location from a level range
@@ -169,7 +170,7 @@ export class ProgressionService {
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : location ?? contract.Metadata.Location
+            : (location ?? contract.Metadata.Location)
 
         if (!parentLocationId) {
             return
@@ -186,8 +187,8 @@ export class ProgressionService {
                 userProfile,
                 parentLocationId,
                 contractSession.gameVersion === "h1"
-                    ? contract.Metadata.Difficulty ?? "normal"
-                    : sniperUnlockable ?? undefined,
+                    ? (contract.Metadata.Difficulty ?? "normal")
+                    : (sniperUnlockable ?? undefined),
             )
 
             const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
@@ -204,7 +205,10 @@ export class ProgressionService {
                         ? xpRequiredForEvergreenLevel(maxLevel)
                         : sniperUnlockable
                           ? xpRequiredForSniperLevel(maxLevel)
-                          : xpRequiredForLevel(maxLevel),
+                          : xpRequiredForLevel(
+                                maxLevel,
+                                masteryData.XpPerLevel,
+                            ),
                 )
 
                 locationData.Level = clampValue(
@@ -212,7 +216,7 @@ export class ProgressionService {
                         ? evergreenLevelForXp(locationData.Xp)
                         : sniperUnlockable
                           ? sniperLevelForXp(locationData.Xp)
-                          : levelForXp(locationData.Xp),
+                          : levelForXp(locationData.Xp, masteryData.XpPerLevel),
                     1,
                     maxLevel,
                 )

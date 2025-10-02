@@ -17,7 +17,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANEMONE_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -76,7 +78,9 @@
                 "Category": "primary",
                 "ObjectiveType": "customkill",
                 "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_2",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANEMONE_OBJ_2"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -146,7 +150,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_3",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANEMONE_OBJ_3"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -233,7 +239,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "KrugerDumpedInPond": { "Transition": "Failure" }
+                            "KrugerDumpedInPond": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -244,7 +252,26 @@
             "8343beae-2460-4a40-98f2-c782effa7db6",
             "ba550fb7-47f0-488d-9c37-accbaaf44e36"
         ],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "a08d65bc-3a72-4202-8d8e-c03444d2ba51",
@@ -259,15 +286,26 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "626c89d8-f89c-4a5b-a364-8a7ae06ef464" },
-            { "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36" },
-            { "Id": "8343beae-2460-4a40-98f2-c782effa7db6" },
-            { "Id": "6ee724f9-8138-460c-9c79-c360a955df89" },
-            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+            {
+                "IsNew": true,
+                "Id": "626c89d8-f89c-4a5b-a364-8a7ae06ef464"
+            },
+            {
+                "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36"
+            },
+            {
+                "Id": "8343beae-2460-4a40-98f2-c782effa7db6"
+            },
+            {
+                "Id": "6ee724f9-8138-460c-9c79-c360a955df89"
+            },
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:27.8042625Z",
         "PublicId": "002316954347",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

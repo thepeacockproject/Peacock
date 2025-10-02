@@ -86,7 +86,26 @@
         ],
         "Bricks": [],
         "GameChangers": ["3a8d4421-096e-4a1b-853a-c12886a51d1f"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "85c5c73b-eae2-4fcb-9791-68671ea595aa",
@@ -101,13 +120,20 @@
         "Location": "LOCATION_PARIS",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "2ae9bbf2-e87a-46b1-8545-00241455c4ba" },
-            { "Id": "3a8d4421-096e-4a1b-853a-c12886a51d1f" },
-            { "Id": "6d24b486-7a0c-44ec-881e-3a2540b39ff9" }
+            {
+                "IsNew": true,
+                "Id": "2ae9bbf2-e87a-46b1-8545-00241455c4ba"
+            },
+            {
+                "Id": "3a8d4421-096e-4a1b-853a-c12886a51d1f"
+            },
+            {
+                "Id": "6d24b486-7a0c-44ec-881e-3a2540b39ff9"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:32.007406Z",
         "PublicId": "002579294047",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

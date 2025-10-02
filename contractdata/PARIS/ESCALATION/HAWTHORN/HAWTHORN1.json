@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -59,7 +61,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "3554ebd7-b190-4cb5-a267-46f3bda8cdde",
@@ -75,11 +96,13 @@
         "Type": "escalation",
         "InGroup": "e6be23e8-8602-42c8-a014-17ffbfa053f5",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf" }
+            {
+                "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:38.7418612Z",
         "PublicId": "002624580847",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

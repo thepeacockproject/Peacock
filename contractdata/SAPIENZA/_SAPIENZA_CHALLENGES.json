@@ -7514,6 +7514,68 @@
                     "Tags": ["story", "medium", "feats"]
                 },
                 {
+                    "Id": "ae9f89d9-fa05-41ee-aa4a-2a98f963639a",
+                    "Name": "UI_CHALLENGES_SAPIENZA_FOOTBALL_NAME",
+                    "ImageName": "images/challenges/sapienza/sapienza_football.jpg",
+                    "Description": "UI_CHALLENGES_SAPIENZA_FOOTBALL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["PROP_MELEE_FOOTBALL_BOOT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "BeachBallsTotal": 4
+                        },
+                        "Context": {
+                            "BeachBallsDeflated": []
+                        },
+                        "ContextListeners": {
+                            "BeachBallsDeflated": {
+                                "count": "($.BeachBallsDeflated).Count",
+                                "total": "$.BeachBallsTotal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Octopus_Soccer_BeachBallDeflated": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "BeachBallsDeflated",
+                                                "$Value"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.BeachBallsDeflated).Count",
+                                                "$.BeachBallsTotal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
                     "Id": "b539f72b-215c-4c98-8ca4-3687af2fda59",
                     "Name": "UI_CHALLENGES_SAPIENZA_PLUMBER_PACIFY_NAME",
                     "ImageName": "images/challenges/sapienza/plumber_pacify.jpg",

@@ -14,25 +14,27 @@
             "8b1c3ba0-9c91-4b3e-96f9-7d3c8632b7c2"
         ],
         "Stashpoints": [],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/mumbai/mission_kingcobra.brick"
+        ],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
-                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_kingcobra.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_kingcobra.brick"
                 ]
             }
-        ],
-        "Bricks": [
-            "assembly:/_pro/scenes/missions/mumbai/mission_kingcobra.brick"
         ],
         "DevOnlyBricks": [
             "assembly:/_pro/scenes/missions/mumbai/dev_kingcobra.brick"
@@ -57,10 +59,7 @@
                     "assembly:/_pro/scenes/missions/mumbai/difficulty_easy_mumbai_kingcobra.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -72,14 +71,7 @@
     "Metadata": {
         "Id": "a8036782-de0a-4353-b522-0ab7a384bade",
         "CodeName_Hint": "KingCobra",
-        "Release": {
-            "Major": 2,
-            "Minor": 40,
-            "Build": 0,
-            "Revision": -1,
-            "MajorRevision": -1,
-            "MinorRevision": -1
-        },
+        "Release": { "Major": 2, "Minor": 40, "Build": 0, "Revision": -1 },
         "Type": "flashback",
         "Subtype": "specialassignment",
         "Title": "UI_CONTRACT_KINGCOBRA_TITLE",
@@ -90,7 +82,8 @@
         "TileImage": "Images/Contracts/KingCobra/Tile.jpg",
         "Location": "LOCATION_MUMBAI_KINGCOBRA",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:07:48.5682688Z",
+        "OnlyNeoVR": true,
+        "LastUpdate": "2025-06-06T22:46:18.7394855Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Entitlements": ["H2_LEGACY_EXPANSION"],

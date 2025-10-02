@@ -16,7 +16,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_JASMINE_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JASMINE_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -43,7 +45,9 @@
                                                     true
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -110,7 +114,9 @@
                                                     "bf9629e0-f25c-4e71-9561-4a99a93a43e8"
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -177,7 +183,9 @@
                                                     "bf9629e0-f25c-4e71-9561-4a99a93a43e8"
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -210,7 +218,24 @@
             "4ae5f0ed-5665-4825-bfca-490dad91cc02",
             "0cf5e693-35ec-457e-a004-da4672b90376"
         ],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "0519bc57-8666-49c5-aaef-52423707c3a7",
@@ -225,17 +250,32 @@
         "Type": "escalation",
         "InGroup": "641656f8-ab16-49c5-a09b-952738154b64",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
-            { "Id": "975a3f95-7316-4bfd-9b8d-38040e79102b" },
-            { "Id": "4ae5f0ed-5665-4825-bfca-490dad91cc02" },
-            { "Id": "03ca23e8-7daf-4346-8719-29970bc50d17" },
-            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
-            { "Id": "4c999e76-b4d4-44f4-9cd5-fa4bee6fa871" },
-            { "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b" }
+            {
+                "IsNew": true,
+                "Id": "0cf5e693-35ec-457e-a004-da4672b90376"
+            },
+            {
+                "Id": "975a3f95-7316-4bfd-9b8d-38040e79102b"
+            },
+            {
+                "Id": "4ae5f0ed-5665-4825-bfca-490dad91cc02"
+            },
+            {
+                "Id": "03ca23e8-7daf-4346-8719-29970bc50d17"
+            },
+            {
+                "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a"
+            },
+            {
+                "Id": "4c999e76-b4d4-44f4-9cd5-fa4bee6fa871"
+            },
+            {
+                "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:42.0856269Z",
         "PublicId": "003760396147",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

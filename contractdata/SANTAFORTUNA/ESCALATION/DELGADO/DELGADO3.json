@@ -1,16 +1,6 @@
 {
     "Data": {
         "EnableSaving": false,
-        "EnableExits": {
-            "$eq": [
-                "$a07d0133-8ca5-4c51-9da1-434d39e38141",
-                "$39949b30-8fad-4230-80cd-223eea36c07e",
-                "$9ee3c7bd-00c6-4545-8118-b95710ac1aaf",
-                "$dd582ef6-3d91-4ccc-b564-2fef90133a2e",
-                "$b3c401bc-194c-4d9a-afc8-48ae1ba16115",
-                "Completed"
-            ]
-        },
         "Objectives": [
             {
                 "Id": "6e9eb5e4-3787-4ef5-a8ab-53c4ef087406",
@@ -150,7 +140,7 @@
                 "Id": "9ee3c7bd-00c6-4545-8118-b95710ac1aaf",
                 "Category": "primary",
                 "BriefingName": "UI_CONTRACT_RAFFLESIA_OBJ_2_NAME",
-                "Image": "images/actors/actor_f0d1dfab-ac73-4fe9-bbac-a5587fbc0f91_2_0_0.jpg",
+                "Image": "images/actors/actor_2d30f9a0-5691-4902-9c18-2292f760c773.jpg",
                 "TargetConditions": [
                     {
                         "Type": "killmethod",
@@ -225,7 +215,7 @@
                     }
                 ],
                 "BriefingName": "UI_CONTRACT_RAFFLESIA_OBJ_3_NAME",
-                "Image": "images/actors/actor_f0d1dfab-ac73-4fe9-bbac-a5587fbc0f91_4_0_0.jpg",
+                "Image": "images/actors/actor_2d30f9a0-5691-4902-9c18-2292f760c773.jpg",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_RAFFLESIA_OBJ_3"
                 },
@@ -425,22 +415,38 @@
                 }
             }
         ],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "19623520-8a89-4cc5-93f1-a4356fda16b2",
-        "InGroup": "757fd132-0300-45ec-b5bd-bdd48c543b5c",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-17T14:37:03.9372876Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Title": "UI_CONTRACT_RAFFLESIA_LEVEL_3_NAME",
         "Description": "UI_CONTRACT_RAFFLESIA_LEVEL_3_DESC",
         "CodeName_Hint": "Rafflesia - Level 3",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_rafflesia.jpg",
         "Location": "LOCATION_COLOMBIA",
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo_rafflesia.entity",
         "Type": "escalation",
         "Release": "2.1.x Escalation",
+        "InGroup": "757fd132-0300-45ec-b5bd-bdd48c543b5c",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "b3c401bc-194c-4d9a-afc8-48ae1ba16115" },
             { "IsNew": true, "Id": "dd582ef6-3d91-4ccc-b564-2fef90133a2e" },
@@ -452,8 +458,8 @@
             { "Id": "6e9eb5e4-3787-4ef5-a8ab-53c4ef087406" },
             { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-05-11T10:33:16.5135175Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:41.3188384Z",
         "PublicId": "012979759547"
     },
     "UserData": {}

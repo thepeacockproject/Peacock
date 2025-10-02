@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -266,8 +266,6 @@ export function calculateScore(
         }
     }
 
-    totalScore = Math.max(0, totalScore)
-
     if (nonTargetKills === 0 || allowNonTargetKills) {
         scoringHeadlines.push(
             Object.assign(Object.assign({}, headlineObjTemplate), {
@@ -286,6 +284,8 @@ export function calculateScore(
         )
         totalScore += -5000 * nonTargetKills
     }
+
+    totalScore = Math.max(0, totalScore)
 
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
@@ -558,14 +558,12 @@ async function commitLeaderboardScore(
     sniperChallengeScore: undefined | CalculateSniperScoreResult,
 ): Promise<void> {
     try {
+        const host = getFlag("leaderboardsHost") as string
+
         // update leaderboards
         await axios.post(
-            `${getFlag("leaderboardsHost")}/leaderboards/commit`,
+            `${host}/leaderboards/contracts/${sessionDetails.contractId}/${sessionDetails.gameVersion}/${jwt["platform"]}/${difficultyToString(sessionDetails.difficulty)}`,
             {
-                contractId: sessionDetails.contractId,
-                gameDifficulty: difficultyToString(sessionDetails.difficulty),
-                gameVersion: sessionDetails.gameVersion,
-                platform: jwt.platform,
                 username: userData.Gamertag,
                 platformId:
                     jwt.platform === "epic"
@@ -574,7 +572,6 @@ async function commitLeaderboardScore(
                 score: calculateScoreResult.scoreWithBonus,
                 data: {
                     Score: {
-                        Total: calculateScoreResult.scoreWithBonus,
                         AchievedMasteries:
                             result.ScoreOverview.ContractScore
                                 ?.AchievedMasteries,
@@ -592,15 +589,10 @@ async function commitLeaderboardScore(
                     },
                     GroupIndex: 0,
                     SniperChallengeScore: sniperChallengeScore,
-                    PlayStyle: result.ScoreOverview.PlayStyle || null,
+                    PlayStyle: result.ScoreOverview.PlayStyle?.Name,
                     Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
                     ContractSessionId: sessionDetails.Id,
-                    Percentile: {
-                        Spread: Array(10).fill(0),
-                        Index: 0,
-                    },
-                    peacockHeadlines:
-                        result.ScoreOverview.ScoreDetails.Headlines,
+                    Headlines: result.ScoreOverview.ScoreDetails.Headlines,
                 },
             },
             {
@@ -641,6 +633,9 @@ export async function getMissionEndData(
         sessionDetails.userId === jwt.unique_name,
         "requested score for other user's session",
     )
+
+    // call hook
+    controller.hooks.onMissionEnd.call(sessionDetails)
 
     const realData = getUserData(jwt.unique_name, gameVersion)
     // Resolve userdata
@@ -866,27 +861,32 @@ export async function getMissionEndData(
         query.masteryUnlockableId,
     )
 
-    // Calculate the old location progression based on the current one and process it
-    const oldLocationXp = completionData.PreviouslySeenXp
-        ? completionData.PreviouslySeenXp
-        : completionData.XP - totalXpGain
-    let oldLocationLevel = levelForXp(oldLocationXp)
-
-    const newLocationXp = completionData.XP
-    let newLocationLevel = levelForXp(newLocationXp)
-
-    if (!query.masteryUnlockableId) {
-        userData.Extensions.progression.Locations[
-            locationParentId
-        ].PreviouslySeenXp = newLocationXp
-    }
-
-    if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
-
     const masteryData = controller.masteryService.getMasteryPackage(
         locationParentId,
         gameVersion,
     )
+
+    // Calculate the old location progression based on the current one and process it
+    const oldLocationXp = completionData.PreviouslySeenXp
+        ? completionData.PreviouslySeenXp
+        : completionData.XP - totalXpGain
+    let oldLocationLevel = levelForXp(oldLocationXp, masteryData?.XpPerLevel)
+
+    const newLocationXp = completionData.XP
+    let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
+    const userProgressionLocations = userData.Extensions.progression.Locations
+
+    if (!query.masteryUnlockableId) {
+        userProgressionLocations[locationParentId] ??= {
+            Xp: 0,
+            Level: 1,
+            PreviouslySeenXp: newLocationXp,
+        }
+        userProgressionLocations[locationParentId].PreviouslySeenXp =
+            newLocationXp
+    }
+
+    if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
 
     let maxLevel = 1
     let locationLevelInfo = [0]
@@ -900,15 +900,21 @@ export async function getMissionEndData(
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
-            return xpRequiredForLevel(i + 1)
+            return xpRequiredForLevel(i + 1, masteryData.XpPerLevel)
         })
     }
 
     // Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
-    const oldPlayerProfileLevel = levelForXp(oldPlayerProfileXp)
+    const oldPlayerProfileLevel = levelForXp(
+        oldPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
     const newPlayerProfileXp = playerProgressionData.Total
-    const newPlayerProfileLevel = levelForXp(newPlayerProfileXp)
+    const newPlayerProfileLevel = levelForXp(
+        newPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
 
     // NOTE: We assume the ProfileLevel is currently already up-to-date
     const profileLevelInfo = []
@@ -918,7 +924,9 @@ export async function getMissionEndData(
         level <= newPlayerProfileLevel + 1;
         level++
     ) {
-        profileLevelInfo.push(xpRequiredForLevel(level))
+        profileLevelInfo.push(
+            xpRequiredForLevel(level, masteryData?.XpPerLevel),
+        )
     }
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1

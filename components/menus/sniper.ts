@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -25,6 +25,7 @@ import type {
 import { getSubLocationByName } from "../contracts/dataGen"
 import { InventoryItem } from "../inventory"
 import assert from "assert"
+import { getFlag } from "../flags"
 
 export type SniperCharacter = {
     Id: string
@@ -117,8 +118,11 @@ export function createSniperLoadouts(
             const curUnlockable =
                 masteryData.CompletionData.Level === 1
                     ? masteryData.Unlockable
-                    : masteryData.Drops[masteryData.CompletionData.Level - 2]
-                          .Unlockable
+                    : masteryData.Drops[
+                          (getFlag("enableMasteryProgression")
+                              ? masteryData.CompletionData.Level
+                              : 20) - 2
+                      ].Unlockable
 
             assert.ok(curUnlockable, "Unlockable not found")
             assert.ok(

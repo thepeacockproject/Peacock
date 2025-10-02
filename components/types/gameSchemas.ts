@@ -189,3 +189,11 @@ export type ResolveGamerTagsBody = {
 export type GetMasteryCompletionDataForUnlockableQuery = {
     unlockableId: string
 }
+
+/**
+ * Params for `/config/:audience/:serverVersion`.
+ */
+export type ConfigRouteParams = {
+    audience: string
+    serverVersion: string
+}

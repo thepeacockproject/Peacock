@@ -1,21 +1,12 @@
 {
     "Data": {
         "EnableSaving": false,
-        "EnableExits": {
-            "$eq": [
-                "$4a7a0ca0-b482-4023-a9c2-d34cd7194cd8",
-                "$291ea3bc-d0e4-430c-ba47-056e77c5c04d",
-                "$5b9067b3-c76d-4f25-9199-e8c3b91c0b08",
-                "$a7b75b35-e6e7-438b-84d5-24d531aa30d0",
-                "Completed"
-            ]
-        },
         "Objectives": [
             {
                 "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0",
                 "Category": "primary",
                 "BriefingName": "UI_CONTRACT_HOLLY_OBJ_3_NAME",
-                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a_3_0_0.jpg",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
                 "TargetConditions": [
                     {
                         "Type": "killmethod",
@@ -81,7 +72,7 @@
                 "Id": "5b9067b3-c76d-4f25-9199-e8c3b91c0b08",
                 "Category": "primary",
                 "BriefingName": "UI_CONTRACT_HOLLY_OBJ_2",
-                "Image": "images/actors/actor_ab5a46a2-6e53-4b15-a48e-c336df1ef5ff_0_0_0.jpg",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
                 "TargetConditions": [
                     {
                         "Type": "killmethod",
@@ -154,7 +145,7 @@
                     }
                 ],
                 "BriefingName": "UI_CONTRACT_HOLLY_OBJ_1",
-                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a_0_0_0.jpg",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_HOLLY_OBJ_1" },
                 "BriefingText": "$loc UI_CONTRACT_HOLLY_OBJ_1",
                 "Type": "statemachine",
@@ -209,7 +200,7 @@
                 "Category": "primary",
                 "ObjectiveType": "customkill",
                 "BriefingName": "UI_CONTRACT_HOLLY_OBJ_4_NAME",
-                "Image": "images/actors/actor_1042c8b3-ce04-4701-a14f-ac2f3718a6a7_1_0_0.jpg",
+                "Image": "images/actors/actor_1042c8b3-ce04-4701-a14f-ac2f3718a6a7.jpg",
                 "TargetConditions": [{}],
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_HOLLY_OBJ_4" },
                 "BriefingText": "$loc UI_CONTRACT_HOLLY_OBJ_4",
@@ -263,11 +254,27 @@
             "015467e5-4e7f-435b-9efd-69aaa7b851e9",
             "0358233c-a85a-486d-9a0a-56fee0835917"
         ],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "a4013b71-f772-4e2a-8b35-6511ed132bcf",
-        "InGroup": "390ba7b6-de27-464a-b8af-6d0ff54c2aec",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-31T08:48:08.8993661Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -276,9 +283,9 @@
         "CodeName_Hint": "Holly - Level 3",
         "Location": "LOCATION_COLOMBIA",
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_holly.jpg",
         "Type": "escalation",
         "Release": "2.1.x escalation",
+        "InGroup": "390ba7b6-de27-464a-b8af-6d0ff54c2aec",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "4a7a0ca0-b482-4023-a9c2-d34cd7194cd8" },
             { "Id": "0358233c-a85a-486d-9a0a-56fee0835917" },
@@ -286,8 +293,8 @@
             { "Id": "5b9067b3-c76d-4f25-9199-e8c3b91c0b08" },
             { "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-05-11T10:33:15.5794092Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:39.8727797Z",
         "PublicId": "012807992747"
     },
     "UserData": {}

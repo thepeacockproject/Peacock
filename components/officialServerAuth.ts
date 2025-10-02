@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -45,7 +45,7 @@ function createUrlencodedBody(params: Record<string, string>): string {
 
 const requestHeadersH3 = {
     "User-agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
-    Version: "8.17.0",
+    Version: "8.21.0",
 }
 
 const requestHeadersH2 = {

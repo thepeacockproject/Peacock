@@ -12,7 +12,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUPINE_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -80,7 +82,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUPINE_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_3",
                 "Type": "statemachine",
                 "Definition": {
@@ -137,7 +141,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "d043c13c-c689-409e-8001-c617086dcffc",
@@ -153,13 +176,20 @@
         "RequiredUnlockable": "ACCESS_HIT_SPIDER",
         "InGroup": "11c93649-6b00-46ac-bf2d-a3599a6ab3a9",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "5c848109-1dd8-4c16-a639-53aac450cb77" },
-            { "Id": "ae817ab7-fdfe-4902-9f0c-30518a39207d" },
-            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+            {
+                "IsNew": true,
+                "Id": "5c848109-1dd8-4c16-a639-53aac450cb77"
+            },
+            {
+                "Id": "ae817ab7-fdfe-4902-9f0c-30518a39207d"
+            },
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:44.3668894Z",
         "PublicId": "006436123647",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_MARRAKECH"]
     },
     "UserData": {}
 }

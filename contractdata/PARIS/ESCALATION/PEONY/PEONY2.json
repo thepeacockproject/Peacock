@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PEONY_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -71,7 +73,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PEONY_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -125,7 +129,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "3d15a639-f5cb-484d-a167-ae5ababd6739",
@@ -140,12 +163,17 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79" },
-            { "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14" }
+            {
+                "IsNew": true,
+                "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79"
+            },
+            {
+                "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:47.2575233Z",
         "PublicId": "002848614047",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

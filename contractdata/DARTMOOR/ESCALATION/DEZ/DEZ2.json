@@ -13,7 +13,11 @@
                 "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_DESC",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_HUD"
                 },
@@ -21,7 +25,9 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
+                            "AmbientChanged": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -36,7 +42,11 @@
                 "IsHidden": false,
                 "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE2",
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "UpdateActivationWhileCompleted": true,
                 "HUDTemplate": {
                     "display": "UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME"
@@ -45,14 +55,20 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
+                            "AmbientChanged": {
+                                "Transition": "Success"
+                            }
                         },
                         "Success": {
-                            "Disguise": { "Transition": "PleaseDoFail" }
+                            "Disguise": {
+                                "Transition": "PleaseDoFail"
+                            }
                         },
                         "PleaseDoFail": {
                             "$timer": {
-                                "Condition": { "$after": 2 },
+                                "Condition": {
+                                    "$after": 2
+                                },
                                 "Transition": "Failure"
                             }
                         }
@@ -185,7 +201,24 @@
             }
         ],
         "Bricks": [],
-        "GameChangers": []
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "1a9978ae-0cfa-44ff-bd16-ca3ffab226fe",
@@ -197,10 +230,22 @@
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
         "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupObjectiveDisplayOrder": [
-            { "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f", "IsNew": true },
-            { "Id": "118041f6-34e5-4f33-9d6f-19b70d555189", "IsNew": true },
-            { "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8", "IsNew": true },
-            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true }
+            {
+                "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f",
+                "IsNew": true
+            },
+            {
+                "Id": "118041f6-34e5-4f33-9d6f-19b70d555189",
+                "IsNew": true
+            },
+            {
+                "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8",
+                "IsNew": true
+            },
+            {
+                "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c",
+                "IsNew": true
+            }
         ]
     }
 }

@@ -9,9 +9,7 @@
                 "BriefingName": "$loc UI_CONTRACT_HIPPO_RICO_NAME",
                 "BriefingText": "$loc UI_CONTRACT_HIPPO_RICO_OBJ",
                 "LongBriefingText": "$loc Actors_S2_004",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_HIPPO_RICO_OBJ"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HIPPO_RICO_OBJ" },
                 "DisplayAsKillObjective": true,
                 "SuccessEvent": {
                     "EventName": "Kill",
@@ -65,11 +63,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
-                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -89,10 +95,7 @@
                     "assembly:/_pro/scenes/missions/colombia/difficulty_easy_columbia_hippo.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -142,8 +145,8 @@
         ],
         "RequiredUnlockable": "ACCESS_HIT_HIPPO",
         "Drops": ["ACCESS_HIT_MONGOOSE"],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.4461527Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-03-27T14:29:02.4554965Z",
         "PublicId": "012286545247"
     },
     "UserData": {}

@@ -31,9 +31,19 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "Kill": [{ "Transition": "Failure" }]
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
                         },
-                        "Success": { "Kill": [{ "Transition": "Failure" }] }
+                        "Success": {
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
                     }
                 }
             },
@@ -72,7 +82,24 @@
             }
         ],
         "GameChangers": ["f41f18fe-0fe5-416a-a793-50727e594655"],
-        "Bricks": []
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_PIRATESPROBLEM1",
@@ -87,9 +114,15 @@
         "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5" },
-            { "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f" },
-            { "Id": "8618ebaa-f42b-42ce-be20-00d2b0a04897" }
+            {
+                "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5"
+            },
+            {
+                "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f"
+            },
+            {
+                "Id": "8618ebaa-f42b-42ce-be20-00d2b0a04897"
+            }
         ]
     },
     "UserData": {}

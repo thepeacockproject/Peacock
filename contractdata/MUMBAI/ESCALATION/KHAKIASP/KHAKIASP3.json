@@ -297,19 +297,33 @@
                     }
                 },
                 "Image": "images/contractconditions/condition_contrac_time_limit.jpg",
-                "OnActive": { "IfInProgress": { "State": "Completed" } },
+                "OnActive": {
+                    "IfInProgress": {
+                        "State": "Completed"
+                    }
+                },
                 "CombinedDisplayInHud": true,
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "IntroCutEnd": [{ "Transition": "TimerRunning" }]
+                            "IntroCutEnd": [
+                                {
+                                    "Transition": "TimerRunning"
+                                }
+                            ]
                         },
                         "TimerRunning": {
-                            "exit_gate": [{ "Transition": "Success" }],
+                            "exit_gate": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
                             "$timer": [
                                 {
-                                    "Condition": { "$after": 300.38995 },
+                                    "Condition": {
+                                        "$after": 300.38995
+                                    },
                                     "Transition": "Failure"
                                 }
                             ]
@@ -319,7 +333,24 @@
             }
         ],
         "GameChangers": [],
-        "Bricks": []
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_KHAKIASP_DOCUMENTATION3",
@@ -334,15 +365,31 @@
         "TileImage": "images/contracts/escalation/contractescalation_khakiasp_documentation.jpg",
         "InGroup": "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "6d71b002-36a6-4a0f-96e4-bcab723b2699", "IsNew": true },
-            { "Id": "b523eedc-9179-42d1-b950-32b7917ec4c4", "IsNew": true },
-            { "Id": "edf869f1-91bb-4d83-91f7-362e80d10f92", "IsNew": true },
-            { "Id": "1a596216-381e-4592-9798-26f156973942", "IsNew": true },
-            { "Id": "5a842427-f14c-457e-8c19-f281afc721db" },
-            { "Id": "634a5886-8979-470c-b6d7-0aac1da231c3" }
+            {
+                "Id": "6d71b002-36a6-4a0f-96e4-bcab723b2699",
+                "IsNew": true
+            },
+            {
+                "Id": "b523eedc-9179-42d1-b950-32b7917ec4c4",
+                "IsNew": true
+            },
+            {
+                "Id": "edf869f1-91bb-4d83-91f7-362e80d10f92",
+                "IsNew": true
+            },
+            {
+                "Id": "1a596216-381e-4592-9798-26f156973942",
+                "IsNew": true
+            },
+            {
+                "Id": "5a842427-f14c-457e-8c19-f281afc721db"
+            },
+            {
+                "Id": "634a5886-8979-470c-b6d7-0aac1da231c3"
+            }
         ],
         "CreationTimestamp": "2021-06-01T14:31:51.2376853Z",
-        "Entitlements": ["H2_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_MUMBAI"]
     },
     "UserData": {}
 }

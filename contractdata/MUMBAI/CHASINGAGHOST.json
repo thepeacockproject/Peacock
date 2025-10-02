@@ -21,9 +21,7 @@
                 "Definition": {
                     "States": {
                         "Start": {
-                            "IdentifyMaelstrom": {
-                                "Transition": "Success"
-                            }
+                            "IdentifyMaelstrom": { "Transition": "Success" }
                         }
                     }
                 }
@@ -46,16 +44,8 @@
                         "RepositoryId": "c7c9e213-16f9-4215-bf07-dd8f801ce3e0"
                     }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                }
+                "OnActive": { "IfCompleted": { "Visible": true } },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } }
             },
             {
                 "_comment": "----- Eliminate the Maelstrom Not identified -----",
@@ -77,18 +67,11 @@
                     }
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 }
             },
             {
@@ -126,11 +109,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
-                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -150,10 +141,7 @@
                     "assembly:/_pro/scenes/missions/mumbai/difficulty_easy_mumbai_mongoose.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -203,8 +191,8 @@
             "21eeff62-dc2b-4906-a271-4c3b2731b260",
             "8b7c3665-4ffc-4df0-8141-fd2a9d25d5a5"
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.5185038Z",
+        "Entitlements": ["LOCATION_MUMBAI"],
+        "LastUpdate": "2025-03-27T14:29:02.4999572Z",
         "PublicId": "013753175047"
     },
     "UserData": {}

@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SKULLCAP_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SKULLCAP_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SKULLCAP_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -60,7 +62,24 @@
         "Bricks": [],
         "GameChangers": [],
         "GameChangerReferences": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "c3c4a67d-891f-4de2-b47c-0a614369189c",
@@ -76,11 +95,13 @@
         "Type": "escalation",
         "InGroup": "e6f4d3a4-9a33-4bd9-b761-da297069cf8c",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "1601318b-d390-481b-b22d-c9cce3971f9e" }
+            {
+                "Id": "1601318b-d390-481b-b22d-c9cce3971f9e"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:49.7262861Z",
         "PublicId": "009782638747",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COLORADO"]
     },
     "UserData": {}
 }
