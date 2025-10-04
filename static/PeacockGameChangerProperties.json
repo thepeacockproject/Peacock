@@ -270,5 +270,434 @@
         ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
+    },
+    "737b0fea-7dd4-9acf-2b18-e317fe671879": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_frostywalker.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "c444ae93-4581-f8cb-62a5-84a3c7739be9",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_DESC",
+                "Definition": {
+                    "Scope": "hit",
+                    "Constants": {
+                        "FrostyWeapons": [
+                            "d689f87e-c3b1-4018-8e78-2f0025cde2a9",
+                            "a6706101-3aaf-4797-a0f8-a5b6aac9cdfe",
+                            "77f644ef-6dbb-4f30-afef-5c3a6a26a665",
+                            "b75010e8-ed6e-4646-ba22-73a30a7a990d",
+                            "683e2888-9e57-4ab8-a56e-38836585298d"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$or": [
+                                                    {
+                                                        "$any": {
+                                                            "in": "$.FrostyWeapons",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$any": {
+                                                    "in": "$.FrostyWeapons",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "b8cb2051-21ff-5d7a-311c-9f8606a7c28f": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_curatorswitch.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "5b9eb19d-668d-cac9-63ae-9aa869979e1c",
+                "Category": "primary",
+                "Type": "statemachine",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_DESC",
+                "ObjectiveType": "custom",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Allies": ["6c09bd70-6670-486b-9222-15db93222b56"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Saved"
+                                    ]
+                                },
+                                "Transition": "SwitchOn"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c09bd70-6670-486b-9222-15db93222b56"
+                                            ]
+                                        },
+                                        { "$eq": ["$Value.IsTarget", true] }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c09bd70-6670-486b-9222-15db93222b56"
+                                            ]
+                                        },
+                                        { "$eq": ["$Value.IsTarget", true] }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "SwitchOn": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Sad"
+                                    ]
+                                },
+                                "Transition": "SwitchOff"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c09bd70-6670-486b-9222-15db93222b56"
+                                            ]
+                                        },
+                                        { "$eq": ["$Value.IsTarget", true] }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c09bd70-6670-486b-9222-15db93222b56"
+                                            ]
+                                        },
+                                        { "$eq": ["$Value.IsTarget", true] }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ObjectiveCompleted": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Id",
+                                        "$8732a791-8d2a-4138-b08b-2759f53473e0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "SwitchOff": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Saved"
+                                    ]
+                                },
+                                "Transition": "SwitchOff"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6c09bd70-6670-486b-9222-15db93222b56"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6c09bd70-6670-486b-9222-15db93222b56"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ObjectiveCompleted": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Id",
+                                        "$8732a791-8d2a-4138-b08b-2759f53473e0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- check if switch unused ---",
+                "Id": "12e80405-1617-49b3-bc5e-b219d06398f5",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_curatorswitch.jpg",
+                "BriefingName": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHNOTUSE",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHNOTUSE",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHNOTUSE",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Saved"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- check if switch off ---",
+                "Id": "1618f218-4bce-4933-ba22-01a245962533",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_curatorswitch.jpg",
+                "BriefingName": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHOFF",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHOFF",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHOFF",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "SwitchOff": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Saved"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "ObjectiveCompleted": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Id",
+                                        "$8732a791-8d2a-4138-b08b-2759f53473e0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Sad"
+                                    ]
+                                },
+                                "Transition": "SwitchOff"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- check if switch on ---",
+                "Id": "100b3c8a-dd08-40d9-af73-f9878b637ead",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_curatorswitch.jpg",
+                "BriefingName": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHON",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHON",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_SWITCHON",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "SwitchOn": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Sad"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Curator_Saved"
+                                    ]
+                                },
+                                "Transition": "SwitchOn"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- check 4 targets ---",
+                "Id": "8732a791-8d2a-4138-b08b-2759f53473e0",
+                "Type": "statemachine",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Context": { "TargetsKilled": 0 },
+                    "Constants": { "TargetsGoal": 4 },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": { "$inc": "TargetsKilled" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.TargetsKilled",
+                                            "$.TargetsGoal"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
     }
 }
