@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -57,6 +57,7 @@ import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
+import { getFlag } from "../flags"
 
 const contractRoutingRouter = Router()
 
@@ -70,7 +71,10 @@ contractRoutingRouter.post(
             return // user sent some nasty info
         }
 
-        const contractData = controller.resolveContract(req.body.id)
+        const contractData = controller.resolveContract(
+            req.body.id,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(
@@ -93,6 +97,10 @@ contractRoutingRouter.post(
         }
 
         // Add escalation data to Contract data HERE
+        if (escalationTypes.includes(contractData.Metadata.Type)) {
+            contractData.Data.EnableSaving = false
+        }
+
         contractData.Metadata = {
             ...contractData.Metadata,
             ...(escalationTypes.includes(contractData.Metadata.Type)
@@ -102,14 +110,15 @@ contractRoutingRouter.post(
                       req.gameVersion,
                   )
                 : {}),
-            ...(loadoutData || {}),
-            ...{
-                OpportunityData: getContractOpportunityData(req, contractData),
-            },
+            ...loadoutData,
+            OpportunityData: getContractOpportunityData(req, contractData),
         }
 
         // Edit usercreated contract data HERE
-        if (contractTypes.includes(contractData.Metadata.Type)) {
+        if (
+            contractTypes.includes(contractData.Metadata.Type) &&
+            !getFlag("enableContractsModeSaving")
+        ) {
             contractData.Data.EnableSaving = false
         }
 
@@ -266,6 +275,7 @@ contractRoutingRouter.post(
 
         const contractData = controller.resolveContract(
             sessionDetails.contractId,
+            sessionDetails.gameVersion,
         )
 
         if (!contractData) {
@@ -347,7 +357,10 @@ contractRoutingRouter.post(
     jsonMiddleware(),
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<never, { contractId: string }>, res) => {
-        const contract = controller.resolveContract(req.body.contractId)
+        const contract = controller.resolveContract(
+            req.body.contractId,
+            req.gameVersion,
+        )
 
         if (!contract) {
             res.status(400).send("contract not found")

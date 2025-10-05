@@ -8,7 +8,9 @@
                 "BriefingName": "$loc UI_PEACOCK_ROCCO_OBJ1_TITLE",
                 "BriefingText": "$loc UI_PEACOCK_ROCCO_OBJ1_DESC",
                 "DisplayAsKillObjective": false,
-                "HUDTemplate": { "display": "$loc UI_PEACOCK_ROCCO_OBJ1_DESC" },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ROCCO_OBJ1_DESC"
+                },
                 "Category": "primary",
                 "Primary": true,
                 "Type": "statemachine",
@@ -146,6 +148,23 @@
                     "RepositoryId": "e70adb5b-0646-4f88-bd4a-85bea7a2a654"
                 }
             }
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
         ]
     },
     "Metadata": {
@@ -160,11 +179,18 @@
         "Type": "escalation",
         "InGroup": "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "423f12e8-5489-40b2-8759-037a458c851d", "IsNew": true },
-            { "Id": "1319032f-5b50-4488-a790-b3b25c4a50f1" },
-            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+            {
+                "Id": "423f12e8-5489-40b2-8759-037a458c851d",
+                "IsNew": true
+            },
+            {
+                "Id": "1319032f-5b50-4488-a790-b3b25c4a50f1"
+            },
+            {
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
         ],
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

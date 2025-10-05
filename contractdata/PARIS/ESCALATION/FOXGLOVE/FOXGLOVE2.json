@@ -12,7 +12,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_FOXGLOVE_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_FOXGLOVE_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOXGLOVE_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -63,7 +65,26 @@
         ],
         "Bricks": [],
         "GameChangers": ["ac9d24cb-75e5-4e13-bb96-eb1884bfd52d"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "b8b55d97-dfe9-4776-8f64-1cfcd2dfa20a",
@@ -78,12 +99,17 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "ac9d24cb-75e5-4e13-bb96-eb1884bfd52d" },
-            { "Id": "dd6e81ad-1768-4370-8238-ef94f8d3e8da" }
+            {
+                "IsNew": true,
+                "Id": "ac9d24cb-75e5-4e13-bb96-eb1884bfd52d"
+            },
+            {
+                "Id": "dd6e81ad-1768-4370-8238-ef94f8d3e8da"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:37.3043289Z",
         "PublicId": "002052465547",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

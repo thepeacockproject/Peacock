@@ -3,25 +3,27 @@
         "Bricks": [
             "assembly:/_pro/scenes/missions/skunk/mission_gartersnake.brick"
         ],
-        "DevOnlyBricks": [
-            "assembly:/_pro/scenes/missions/skunk/dev_gartersnake.brick"
-        ],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
-                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_gartersnake.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick"
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_gartersnake.brick"
                 ]
             }
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/skunk/dev_gartersnake.brick"
         ],
         "GameChangers": [],
         "GameDifficulties": [
@@ -31,10 +33,7 @@
                     "assembly:/_pro/scenes/missions/skunk/difficulty_easy_vermont_gartersnake.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -58,14 +57,7 @@
     "Metadata": {
         "Id": "0b616e62-af0c-495b-82e3-b778e82b5912",
         "CodeName_Hint": "GarterSnake",
-        "Release": {
-            "Major": 2,
-            "Minor": 70,
-            "Build": 0,
-            "Revision": -1,
-            "MajorRevision": -1,
-            "MinorRevision": -1
-        },
+        "Release": { "Major": 2, "Minor": 70, "Build": 0, "Revision": -1 },
         "Type": "flashback",
         "Subtype": "specialassignment",
         "Title": "UI_CONTRACT_GARTERSNAKE_TITLE",
@@ -76,7 +68,8 @@
         "TileImage": "Images/Contracts/GarterSnake/Tile.jpg",
         "Location": "LOCATION_NORTHAMERICA_GARTERSNAKE",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:07:48.5393038Z",
+        "OnlyNeoVR": true,
+        "LastUpdate": "2025-06-06T22:46:18.7249535Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "RequiredUnlockable": "ACCESS_HIT_GARTERSNAKE",

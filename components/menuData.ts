@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -16,16 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getMissionEndData, MissionEndError } from "./scoreHandler"
+import { getMissionEndData } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     getMaxProfileLevel,
     isSuit,
-    unlockOrderComparer,
+    parsePageNumber,
+    unlockLevelComparer,
     uuidRegex,
 } from "./utils"
-import { contractSessions, getSession } from "./eventHandler"
+import { contractSessions, enqueueEvent, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
 import { createLocationsData, getDestination } from "./menus/destinations"
@@ -37,6 +38,7 @@ import type {
     RequestWithJwt,
     SceneConfig,
     SelectEntranceOrPickupData,
+    Unlockable,
     UserCentricContract,
 } from "./types/types"
 import {
@@ -68,6 +70,7 @@ import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
 import {
     ChallengeLocationQuery,
+    ContractTypeChallengesQuery,
     DebriefingLeaderboardsQuery,
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
@@ -92,6 +95,7 @@ import {
 } from "./menus/stashpoints"
 import { getHubData } from "./menus/hub"
 import { getPlayerProfileData } from "./menus/playerProfile"
+import { ChallengeFilterType } from "./candle/challengeHelpers"
 
 const menuDataRouter = Router()
 
@@ -118,26 +122,108 @@ menuDataRouter.get(
             req.query.locationId,
         )
 
-        const location = getVersionedConfig<PeacockLocationsData>(
+        const locationData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
-        ).children[req.query.locationId]
+        )
+
+        const location = locationData.children[req.query.locationId]
 
         if (!pack && !location) {
             res.status(400).send("Invalid locationId")
             return
         }
 
-        const data = {
-            Name: pack ? pack.Name : location.DisplayNameLocKey,
-            Location: location,
-            Children: controller.challengeService.getChallengeDataForCategory(
-                pack ? req.query.locationId : null,
-                pack ? undefined : location,
-                req.gameVersion,
-                req.jwt.unique_name,
-            ),
+        let data
+
+        // If the location supports it, pass pro1 as well.
+        // The game can request the difficulty, but official serves both
+        // normal and pro1 even if `normal` is request.
+        if (req.gameVersion === "h1") {
+            const parent = pack
+                ? undefined
+                : locationData.parents[location.Properties.ParentLocation!]
+
+            if (parent?.Properties.DifficultyUnlock?.pro1) {
+                const inventory = createInventory(
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                const normal =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        false,
+                    )
+
+                const pro1 =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        true,
+                    )
+
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: { Children: normal },
+                        },
+                        {
+                            Name: "pro1",
+                            Available: inventory.some(
+                                (e) =>
+                                    e.Unlockable.Id ===
+                                    parent.Properties.DifficultyUnlock?.pro1,
+                            ),
+                            Data: { Children: pro1 },
+                        },
+                    ],
+                }
+            } else {
+                // This is either a challenge pack or a location with only
+                // normal difficulty.
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: {
+                                Children:
+                                    controller.challengeService.getChallengeDataForCategory(
+                                        pack ? req.query.locationId : null,
+                                        pack ? undefined : location,
+                                        req.gameVersion,
+                                        req.jwt.unique_name,
+                                    ),
+                            },
+                        },
+                    ],
+                }
+            }
+
+            data = {
+                ...data,
+                Name: pack ? pack.Name : location.DisplayNameLocKey,
+                Location: location,
+            }
+        } else {
+            data = {
+                Name: pack ? pack.Name : location.DisplayNameLocKey,
+                Location: location,
+                Children:
+                    controller.challengeService.getChallengeDataForCategory(
+                        pack ? req.query.locationId : null,
+                        pack ? undefined : location,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
+            }
         }
 
         res.json({
@@ -151,6 +237,34 @@ menuDataRouter.get(
     },
 )
 
+menuDataRouter.get(
+    "/ContractTypeChallenges",
+    // @ts-expect-error Jwt props.
+    (req: RequestWithJwt<ContractTypeChallengesQuery>, res) => {
+        if (!req.query.contractType) {
+            res.status(400).send("Invalid contractType")
+            return
+        }
+
+        res.json({
+            template: null,
+            data: {
+                ChallengeData: {
+                    Children:
+                        controller.challengeService.getFilteredChallengeTree(
+                            {
+                                type: ChallengeFilterType.ContractType,
+                                contractType: req.query.contractType,
+                            },
+                            req.jwt.unique_name,
+                            req.gameVersion,
+                        ),
+                },
+            },
+        })
+    },
+)
+
 // @ts-expect-error Jwt props.
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     const hubInfo = getHubData(req.gameVersion, req.jwt.unique_name)
@@ -160,10 +274,8 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     if (req.gameVersion === "h3" || req.gameVersion === "h2") {
         template = null
     } else {
-        template =
-            req.gameVersion === "scpc"
-                ? getConfig("FrankensteinHubTemplate", false)
-                : getConfig("LegacyHubTemplate", false)
+        // scpc hub will need to be contributed by a plugin
+        template = getVersionedConfig("HubTemplate", req.gameVersion, false)
     }
 
     res.json({
@@ -286,75 +398,122 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/missionrewards",
     // @ts-expect-error Jwt props.
-    (
+    async (
         req: RequestWithJwt<{
             contractSessionId: string
         }>,
         res,
     ) => {
-        const s = getSession(req.jwt.unique_name)
+        const s = contractSessions.get(req.query.contractSessionId)
 
         if (!s) {
             res.status(400).send("no session")
             return
         }
 
+        if (s.userId !== req.jwt.unique_name) {
+            res.status(403).send("requested score for other user's session")
+            return
+        }
+
         const { contractId } = s
-        const contractData = controller.resolveContract(contractId, true)
+        const contractData = controller.resolveContract(
+            contractId,
+            req.gameVersion,
+            true,
+        )
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
-        res.json({
-            template: getConfig("MissionRewardsTemplate", false),
-            data: {
-                LevelInfo: [
-                    0, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000,
-                    54000, 60000, 66000, 72000, 78000, 84000, 90000, 96000,
-                    102000, 108000, 114000,
-                ],
-                XP: 0,
-                Level: 1,
-                Completion: 0,
-                XPGain: 0,
-                Challenges: Object.values(
-                    controller.challengeService.getChallengesForContract(
-                        contractId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                        // TODO: Should a difficulty be passed here?
-                    ),
-                )
-                    .flat()
-                    // FIXME: This behaviour may not be accurate to original server
-                    .filter((challengeData) =>
-                        controller.challengeService.fastGetIsCompleted(
-                            userData,
-                            challengeData.Id,
+        assert.ok(contractData, "contract not found")
+        assert.ok(userData, "user data not found")
+
+        const difficulty =
+            contractData.Metadata.Difficulty === "pro1" ? "pro1" : "normal"
+
+        try {
+            const missionEndData = await getMissionEndData(
+                req.query,
+                req.jwt,
+                req.gameVersion,
+                true,
+            )
+
+            // Send all the drops, we technically only need to send the pro1 drop, but this is best practise.
+            if (missionEndData.MissionReward.Drops.length) {
+                enqueueEvent(req.jwt.unique_name, {
+                    Name: "UnlockableAddedToInventory",
+                    Value: {
+                        Items: missionEndData.MissionReward.Drops.map(
+                            (drop) => {
+                                return { UnlockableId: drop.Unlockable.Id }
+                            },
                         ),
-                    )
-                    .map((challengeData) =>
-                        controller.challengeService.compileRegistryChallengeTreeData(
-                            challengeData,
-                            controller.challengeService.getPersistentChallengeProgression(
-                                req.jwt.unique_name,
-                                challengeData.Id,
-                                req.gameVersion,
-                            ),
+                    },
+                    Version: {
+                        _Build: 61,
+                        _Major: 6,
+                        _Minor: 74,
+                        _Revision: 0,
+                    },
+                })
+            }
+
+            res.json({
+                template: getConfig("MissionRewardsTemplate", false),
+                data: {
+                    LevelInfo:
+                        missionEndData.MissionReward.LocationProgression
+                            .LevelInfo,
+                    XP: missionEndData.MissionReward.LocationProgression.XP,
+                    Level: missionEndData.MissionReward.LocationProgression
+                        .Level,
+                    Completion:
+                        missionEndData.MissionReward.LocationProgression
+                            .Completion,
+                    XPGain: missionEndData.MissionReward.LocationProgression
+                        .XPGain,
+                    Challenges: Object.values(
+                        controller.challengeService.getChallengesForContract(
+                            contractId,
                             req.gameVersion,
                             req.jwt.unique_name,
                         ),
+                    )
+                        .flat()
+                        .filter((challengeData) =>
+                            controller.challengeService.fastGetIsUnticked(
+                                userData,
+                                challengeData.Id,
+                            ),
+                        )
+                        .map((challengeData) => ({
+                            ChallengeId: challengeData.Id,
+                            ChallengeName: challengeData.Name,
+                            ChallengeImageUrl: challengeData.ImageName,
+                            ChallengeDescription: challengeData.Description,
+                            XPGain: challengeData.Rewards.MasteryXP,
+                        })),
+                    Drops: missionEndData.MissionReward.Drops.map((drop) => ({
+                        // legacy doesn't have the source challenge
+                        Unlockable: drop.Unlockable,
+                    })),
+                    ContractCompletionBonus: 0,
+                    GroupCompletionBonus: 0,
+                    LocationHideProgression:
+                        missionEndData.ScoreOverview.LocationHideProgression,
+                    Difficulty: difficulty,
+                    CompletionData: generateCompletionData(
+                        contractData?.Metadata.Location || "",
+                        req.jwt.unique_name,
+                        req.gameVersion,
                     ),
-                Drops: [],
-                ContractCompletionBonus: 0,
-                GroupCompletionBonus: 0,
-                LocationHideProgression: true,
-                Difficulty: "normal", // FIXME: is this right?
-                CompletionData: generateCompletionData(
-                    contractData?.Metadata.Location || "",
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            },
-        })
+                },
+            })
+        } catch (e) {
+            log(LogLevel.ERROR, e)
+            log(LogLevel.ERROR, (e as Error).stack)
+            res.status(400).send("error")
+        }
     },
 )
 
@@ -381,10 +540,12 @@ menuDataRouter.get(
 
         let template: unknown | null = null
 
-        if (req.gameVersion === "h1") {
-            template = getConfig("LegacyPlanningTemplate", false)
-        } else if (req.gameVersion === "scpc") {
-            template = getConfig("FrankensteinPlanningTemplate", false)
+        if (req.gameVersion === "h1" || req.gameVersion === "scpc") {
+            template = getVersionedConfig(
+                "PlanningTemplate",
+                req.gameVersion,
+                false,
+            )
         }
 
         res.json({
@@ -393,6 +554,124 @@ menuDataRouter.get(
         })
     },
 )
+
+function generateSelectPage(
+    page: "Entrance" | "Pickup",
+    contractId: string,
+    userId: string,
+    gameVersion: GameVersion,
+): number | object {
+    const sceneConfig = getConfig<SceneConfig>(
+        page === "Pickup" ? "AgencyPickups" : "Entrances",
+        false,
+    )
+
+    const inventory = createInventory(userId, gameVersion)
+
+    const allunlockables = getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        false,
+    )
+
+    const contractData = controller.resolveContract(contractId, gameVersion)
+
+    if (!contractData) {
+        log(
+            LogLevel.WARN,
+            `Unknown contract on select page ${page}: ${contractId}`,
+        )
+        return 404
+    }
+
+    const scenePath = contractData.Metadata.ScenePath.toLowerCase()
+
+    log(
+        LogLevel.DEBUG,
+        `Looking up details for contract - Id: ${contractId} (${scenePath})`,
+    )
+
+    if (!sceneConfig[scenePath]) {
+        log(
+            LogLevel.ERROR,
+            `Could not find scene data for ${scenePath} in select page ${page}! This may cause an unhandled promise rejection.`,
+        )
+    }
+
+    if (
+        contractData.Peacock?.noAgencyPickupsActive === true &&
+        page === "Pickup"
+    ) {
+        const data: SelectEntranceOrPickupData = {
+            Unlocked: [],
+            Contract: contractData,
+            OrderedUnlocks: [],
+            UserCentric: generateUserCentric(
+                contractData,
+                userId,
+                gameVersion,
+            )!,
+        }
+
+        return {
+            template: getVersionedConfig(
+                "SelectAgencyPickupTemplate",
+                gameVersion,
+                false,
+            ),
+            data,
+        }
+    }
+
+    const inScene = sceneConfig[scenePath]
+
+    const unlocked = inventory
+        .filter(
+            (item) =>
+                item.Unlockable[page === "Pickup" ? "Type" : "Subtype"] ===
+                    (page === "Pickup" ? "agencypickup" : "startinglocation") &&
+                item.Unlockable.Properties.Difficulty ===
+                    contractData.Metadata.Difficulty &&
+                item.Unlockable.Properties.RepositoryId,
+        )
+        .map((i) => i.Unlockable)
+
+    const data: SelectEntranceOrPickupData = {
+        Unlocked: unlocked.map(
+            (unlockable) => unlockable.Properties.RepositoryId!,
+        ),
+        Contract: contractData,
+        OrderedUnlocks: allunlockables
+            .filter(
+                (unlockable) =>
+                    inScene.includes(
+                        unlockable.Properties.RepositoryId || "",
+                    ) &&
+                    unlockable.Properties.Difficulty ===
+                        contractData.Metadata.Difficulty,
+            )
+            .map((unlockable) => {
+                unlockable.Properties.UnlockLevel =
+                    controller.masteryService
+                        .getMasteryForUnlockable(unlockable, gameVersion)
+                        ?.Level.toString() ?? "1"
+                return unlockable
+            })
+            .sort(unlockLevelComparer),
+        UserCentric: generateUserCentric(contractData, userId, gameVersion)!,
+    }
+
+    return {
+        template: getVersionedConfig(
+            page === "Pickup"
+                ? "SelectAgencyPickupTemplate"
+                : "SelectEntranceTemplate",
+            gameVersion,
+            false,
+        ),
+        data,
+    }
+}
 
 menuDataRouter.get(
     "/selectagencypickup",
@@ -403,96 +682,16 @@ menuDataRouter.get(
         }>,
         res,
     ) => {
-        const pickupData = getConfig<SceneConfig>("AgencyPickups", false)
-
-        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
-
-        const contractData = controller.resolveContract(req.query.contractId)
-
-        if (!contractData) {
-            log(
-                LogLevel.WARN,
-                `Unknown contract on SAP: ${req.query.contractId}`,
-            )
-            return res.status(404).end()
-        }
-
-        const scenePath = contractData.Metadata.ScenePath.toLowerCase()
-
-        log(
-            LogLevel.DEBUG,
-            `Looking up details for contract - Id:${req.query.contractId} (${scenePath})`,
+        const page = generateSelectPage(
+            "Pickup",
+            req.query.contractId,
+            req.jwt.unique_name,
+            req.gameVersion,
         )
 
-        if (!pickupData[scenePath]) {
-            log(
-                LogLevel.ERROR,
-                `Could not find AgencyPickup data for ${scenePath}! This may cause an unhandled promise rejection.`,
-            )
-        }
+        if (typeof page === "number") return res.status(page).end()
 
-        if (contractData.Peacock?.noAgencyPickupsActive === true) {
-            const data: SelectEntranceOrPickupData = {
-                Unlocked: [],
-                Contract: contractData,
-                OrderedUnlocks: [],
-                UserCentric: generateUserCentric(
-                    contractData,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                )!,
-            }
-
-            res.json({
-                template: getVersionedConfig(
-                    "SelectAgencyPickupTemplate",
-                    req.gameVersion,
-                    false,
-                ),
-                data,
-            })
-            return
-        }
-
-        const pickupsInScene = pickupData[scenePath]
-
-        const unlockedAgencyPickups = inventory
-            .filter(
-                (item) =>
-                    item.Unlockable.Type === "agencypickup" &&
-                    item.Unlockable.Properties.Difficulty ===
-                        contractData.Metadata.Difficulty &&
-                    item.Unlockable.Properties.RepositoryId,
-            )
-            .map((i) => i.Unlockable)
-
-        const data: SelectEntranceOrPickupData = {
-            Unlocked: unlockedAgencyPickups.map(
-                (unlockable) => unlockable.Properties.RepositoryId!,
-            ),
-            Contract: contractData,
-            OrderedUnlocks: unlockedAgencyPickups
-                .filter((unlockable) =>
-                    pickupsInScene.includes(
-                        unlockable.Properties.RepositoryId || "",
-                    ),
-                )
-                .sort(unlockOrderComparer),
-            UserCentric: generateUserCentric(
-                contractData,
-                req.jwt.unique_name,
-                req.gameVersion,
-            )!,
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "SelectAgencyPickupTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data,
-        })
+        res.json(page)
     },
 )
 
@@ -505,70 +704,16 @@ menuDataRouter.get(
         }>,
         res,
     ) => {
-        const entranceData = getConfig<SceneConfig>("Entrances", false)
-
-        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
-
-        const contractData = controller.resolveContract(req.query.contractId)
-
-        if (!contractData) {
-            log(LogLevel.WARN, `Unknown contract: ${req.query.contractId}`)
-            return res.status(404).end()
-        }
-
-        const scenePath = contractData.Metadata.ScenePath.toLowerCase()
-
-        log(
-            LogLevel.DEBUG,
-            `Looking up details for contract - Id:${req.query.contractId} (${scenePath})`,
+        const page = generateSelectPage(
+            "Entrance",
+            req.query.contractId,
+            req.jwt.unique_name,
+            req.gameVersion,
         )
 
-        if (!entranceData[scenePath]) {
-            log(
-                LogLevel.ERROR,
-                `Could not find Entrance data for ${scenePath}! This may cause an unhandled promise rejection.`,
-            )
-        }
+        if (typeof page === "number") return res.status(page).end()
 
-        const entrancesInScene = entranceData[scenePath]
-
-        const unlockedEntrances = inventory
-            .filter(
-                (item) =>
-                    item.Unlockable.Subtype === "startinglocation" &&
-                    item.Unlockable.Properties.Difficulty ===
-                        contractData.Metadata.Difficulty &&
-                    item.Unlockable.Properties.RepositoryId,
-            )
-            .map((i) => i.Unlockable)
-
-        const data: SelectEntranceOrPickupData = {
-            Unlocked: unlockedEntrances.map(
-                (unlockable) => unlockable.Properties.RepositoryId!,
-            ),
-            Contract: contractData,
-            OrderedUnlocks: unlockedEntrances
-                .filter((unlockable) =>
-                    entrancesInScene.includes(
-                        unlockable.Properties.RepositoryId!,
-                    ),
-                )
-                .sort(unlockOrderComparer),
-            UserCentric: generateUserCentric(
-                contractData,
-                req.jwt.unique_name,
-                req.gameVersion,
-            )!,
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "SelectEntranceTemplate",
-                req.gameVersion,
-                true,
-            ),
-            data,
-        })
+        res.json(page)
     },
 )
 
@@ -622,37 +767,30 @@ const missionEndRequest = async (
         return
     }
 
-    const missionEndOutput = await getMissionEndData(
-        req.query,
-        req.jwt,
-        req.gameVersion,
-    )
+    try {
+        const missionEndOutput = await getMissionEndData(
+            req.query,
+            req.jwt,
+            req.gameVersion,
+            false,
+        )
 
-    const isErrorPath = (
-        output: MissionEndResult | MissionEndError,
-    ): output is MissionEndError => {
-        return Boolean((output as MissionEndError).errorCode)
-    }
+        if (req.path.endsWith("/scoreoverview")) {
+            res.json({
+                template: getConfig("ScoreOverviewTemplate", false),
+                data: (missionEndOutput as MissionEndResult).ScoreOverview,
+            })
+            return
+        }
 
-    if (isErrorPath(missionEndOutput)) {
-        res.status(missionEndOutput.errorCode).send(missionEndOutput.error)
-    }
-
-    if (req.path.endsWith("/scoreoverview")) {
         res.json({
-            template: getConfig("ScoreOverviewTemplate", false),
-            data: (missionEndOutput as MissionEndResult).ScoreOverview,
+            template: null,
+            data: missionEndOutput,
         })
-        return
+    } catch (e) {
+        log(LogLevel.ERROR, e)
+        log(LogLevel.ERROR, (e as Error).stack)
     }
-
-    res.json({
-        template:
-            req.gameVersion === "scpc"
-                ? getConfig("FrankensteinScoreOverviewTemplate", false)
-                : null,
-        data: missionEndOutput,
-    })
 }
 
 // @ts-expect-error Has jwt props.
@@ -775,17 +913,9 @@ menuDataRouter.get(
             data: undefined,
         }
 
-        let pageNumber = req.query.page || 0
-
-        if (typeof pageNumber === "string") {
-            pageNumber = parseInt(pageNumber, 10)
-        }
-
-        pageNumber = pageNumber < 0 ? 0 : pageNumber
-
         response.data = await hitsCategoryService.paginateHitsCategory(
             category,
-            pageNumber as number,
+            parsePageNumber(req.query.page),
             req.gameVersion,
             req.jwt.unique_name,
         )
@@ -848,6 +978,7 @@ menuDataRouter.get(
             req.jwt.platform,
             req.gameVersion,
             req.query.difficultyLevel,
+            parsePageNumber(req.query.page),
         )
 
         res.json({
@@ -876,6 +1007,7 @@ menuDataRouter.get(
             req.jwt.platform,
             req.gameVersion,
             req.query.difficulty,
+            parsePageNumber(req.query.page),
         )
 
         res.json({
@@ -946,6 +1078,7 @@ menuDataRouter.get(
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.gameVersion,
     )
 
     res.json({
@@ -1001,7 +1134,7 @@ menuDataRouter.post(
 
             for (const contract of specialContracts) {
                 const userCentric = generateUserCentric(
-                    controller.resolveContract(contract),
+                    controller.resolveContract(contract, req.gameVersion),
                     req.jwt.unique_name,
                     req.gameVersion,
                 )
@@ -1130,7 +1263,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 
     // if for some reason the id is already in use, generate a new one
     // the math says this is like a one in a billion chance though, I think
-    while (controller.resolveContract(cUuid)) {
+    while (controller.resolveContract(cUuid, req.gameVersion)) {
         cUuid = randomUUID()
     }
 
@@ -1231,7 +1364,7 @@ const createLoadSaveMiddleware =
             if (e && !doneContracts.includes(e)) {
                 doneContracts.push(e)
 
-                const contract = controller.resolveContract(e)
+                const contract = controller.resolveContract(e, req.gameVersion)
 
                 if (!contract) {
                     log(LogLevel.WARN, `Unknown contract in L/S: ${e}`)

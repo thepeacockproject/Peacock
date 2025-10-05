@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -19,8 +19,10 @@
 const fs = require("fs")
 const { execSync } = require("child_process")
 
-const rpkgCli = `"resources/rpkg-cli.exe"`
-const hmlt = `"resources/HMLanguageTools.exe"`
+const usePath = process.env.USE_PATH === "true"
+
+const rpkgCli = usePath ? "rpkg-cli" : `"resources/rpkg-cli.exe"`
+const hmlt = usePath ? "HMLanguageTools" : `"resources/HMLanguageTools.exe"`
 
 const locale = JSON.parse(fs.readFileSync("resources/locale.json").toString())
 

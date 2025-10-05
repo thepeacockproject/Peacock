@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -19,12 +19,12 @@
 import { contractIdToHitObject, controller } from "../controller"
 import type {
     Campaign,
-    GameVersion,
-    GenSingleMissionFunc,
     CampaignMission,
     CampaignVideo,
-    Video,
+    GameVersion,
+    GenSingleMissionFunc,
     StoryData,
+    Video,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
@@ -47,7 +47,11 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
             "Plugin tried to generate mission with no game version",
         )
 
-        const actualContractData = controller.resolveContract(contractId, true)
+        const actualContractData = controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!actualContractData) {
             log(LogLevel.ERROR, `Failed to resolve contract ${contractId}!`)
@@ -69,7 +73,12 @@ function genSingleVideo(
     const video = videos[videoId]
 
     switch (gameVersion) {
-        // H1 is not included here as there should be no edits required for the videos from H1
+        case "h1": {
+            // h1 videos have no entitlements
+            video.Entitlements = []
+
+            break
+        }
         case "h2": {
             if (video.Data.DlcName === "GAME_STORE_METADATA_GAME_TITLE") {
                 video.Data.DlcName = "GAME_STORE_METADATA_S2_GAME_TITLE"
@@ -96,14 +105,6 @@ function genSingleVideo(
             video.Data = {
                 DlcName: "GAME_STORE_METADATA_S3_GAME_TITLE",
                 DlcImage: "images/livetile/dlc/tile_hitman3.jpg",
-            }
-
-            if (video.Entitlements.includes("GOTY_PATIENT_ZERO")) {
-                video.Entitlements = ["H1_LEGACY_STANDARD"]
-            }
-
-            if (video.Entitlements.includes("LOCATION_NEWZEALAND")) {
-                video.Entitlements = ["H2_LEGACY_STANDARD"]
             }
 
             break
@@ -195,6 +196,14 @@ export function makeCampaigns(
                 gameVersion,
             ),
             genSingleVideo("debriefing_skunk", gameVersion),
+            ...(gameVersion === "h3"
+                ? [
+                      genSingleMission(
+                          "b2aac100-dfc7-4f85-b9cd-528114436f6c",
+                          gameVersion,
+                      ),
+                  ]
+                : []),
             genSingleVideo("intro_magpie", gameVersion),
             genSingleMission(
                 "0d225edf-40cd-4f20-a30f-b62a373801d3",
@@ -205,10 +214,12 @@ export function makeCampaigns(
                 "7a03a97d-238c-48bd-bda0-e5f279569cce",
                 gameVersion,
             ),
+            genSingleVideo("debriefing_raccoon", gameVersion),
             genSingleMission(
                 "095261b5-e15b-4ca1-9bb7-001fb85c5aaa",
                 gameVersion,
             ),
+            genSingleVideo("debriefing_stingray", gameVersion),
         ]
 
         const s3StoryData: StoryData[] | undefined =
@@ -424,6 +435,35 @@ export function makeCampaigns(
                     },
                     pzCampaign,
                     {
+                        Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
+                        Image: "",
+                        Type: "campaign",
+                        BackgroundImage:
+                            "images/story/background_bonus_missions.jpg",
+                        StoryData: [
+                            genSingleMission(
+                                "00000000-0000-0000-0001-000000000006",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "00000000-0000-0000-0001-000000000005",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "ced93d8f-9535-425a-beb9-ef219e781e81",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
+                                gameVersion,
+                            ),
+                        ],
+                    },
+                    {
                         Name: "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_SARAJEVOSIX",
                         Image: "",
                         Type: "campaign",
@@ -452,35 +492,6 @@ export function makeCampaigns(
                             ),
                             genSingleMission(
                                 "781c68ca-9318-40bf-9cc1-232007be02bf",
-                                gameVersion,
-                            ),
-                        ],
-                    },
-                    {
-                        Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
-                        Image: "",
-                        Type: "campaign",
-                        BackgroundImage:
-                            "images/story/background_bonus_missions.jpg",
-                        StoryData: [
-                            genSingleMission(
-                                "00000000-0000-0000-0001-000000000006",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "00000000-0000-0000-0001-000000000005",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "ced93d8f-9535-425a-beb9-ef219e781e81",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
                                 gameVersion,
                             ),
                         ],

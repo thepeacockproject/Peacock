@@ -1,6 +1,5 @@
 {
     "Data": {
-        "EnableSaving": false,
         "EnableExits": {
             "$eq": [
                 "$a66f63a6-b617-4ea4-9ab5-225dd001dd1b",
@@ -24,7 +23,6 @@
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_1" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_1",
                 "Type": "statemachine",
-                "Image": "images/actors/actor_56a589d8-bf28-489f-a30c-2ecea87177f5_1_0_0.jpg",
                 "Definition": {
                     "Scope": "hit",
                     "Context": {
@@ -88,7 +86,6 @@
                 ],
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_2",
-                "Image": "images/actors/actor_56a589d8-bf28-489f-a30c-2ecea87177f5_5_0_0.jpg",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -139,7 +136,6 @@
                 "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_3" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_3",
                 "Type": "statemachine",
-                "Image": "images/actors/actor_ab5a46a2-6e53-4b15-a48e-c336df1ef5ff_0_0_0.jpg",
                 "Definition": {
                     "Scope": "hit",
                     "Context": {
@@ -195,11 +191,28 @@
             "857f627c-8297-4185-a07d-670b0a73c929"
         ],
         "GameChangerReferences": [],
-        "Entrances": ["d7013244-6f19-4895-bad8-3d75ceedd6fa"]
+        "Entrances": ["d7013244-6f19-4895-bad8-3d75ceedd6fa"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ],
+        "EnableSaving": false
     },
     "Metadata": {
         "Id": "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
-        "InGroup": "d336d894-024a-4cd4-9867-dee7de70ee79",
         "IsPublished": true,
         "CreationTimestamp": "2018-09-25T15:01:38.7653611Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -210,6 +223,7 @@
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo_calluna.entity",
         "Release": "2.1.x Escalation",
         "Type": "escalation",
+        "InGroup": "d336d894-024a-4cd4-9867-dee7de70ee79",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "857f627c-8297-4185-a07d-670b0a73c929" },
             { "IsNew": true, "Id": "1ec56e15-d9d8-493e-ad28-c2592a0a7f77" },
@@ -217,8 +231,8 @@
             { "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b" },
             { "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-05-11T10:33:14.4335477Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:38.316234Z",
         "PublicId": "012321761947"
     },
     "UserData": {}

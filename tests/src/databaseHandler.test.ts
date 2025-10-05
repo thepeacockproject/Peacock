@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -17,11 +17,7 @@
  */
 
 import { afterEach, describe, expect, vi } from "vitest"
-import {
-    ContractSession,
-    PeacockCameraStatus,
-    UserProfile,
-} from "../../components/types/types"
+import { UserProfile } from "../../components/types/types"
 import {
     asyncGuard,
     getContractSession,
@@ -32,63 +28,18 @@ import {
 } from "../../components/databaseHandler"
 import { testWithFakeFs } from "../helpers/testHelpers"
 import { npath } from "@yarnpkg/fslib"
+import { contractSessionFactory } from "../factories/contractSession"
 
 afterEach(() => {
     vi.restoreAllMocks()
 })
 
-const basicFakeSession: ContractSession = {
-    Id: "fakeSessionId",
-    gameVersion: "h3",
-    sessionStart: 1234,
-    lastUpdate: 1234,
-    contractId: "1f87dec7-23a3-4052-bf91-52162e4dbdd6",
-    userId: "1273f7aa-e53b-4446-b940-0c32430dec0c",
-    timerStart: 0,
-    timerEnd: 0,
-    duration: 0,
-    crowdNpcKills: 0,
-    targetKills: new Set(),
-    npcKills: new Set(),
-    bodiesHidden: new Set(),
-    pacifications: new Set(),
-    disguisesUsed: new Set(),
-    disguisesRuined: new Set(),
-    spottedBy: new Set(),
-    witnesses: new Set(),
-    bodiesFoundBy: new Set(),
-    legacyHasBodyBeenFound: false,
-    killsNoticedBy: new Set(),
-    completedObjectives: new Set(),
-    failedObjectives: new Set(),
-    recording: PeacockCameraStatus.NotSpotted,
-    lastAccident: 0,
-    lastKill: {},
-    kills: new Set(),
-    compat: true,
-    markedTargets: new Set(),
-    currentDisguise: "4fc9396e-2619-4e66-a51e-2bd366230da7", // sig suit
-    difficulty: 2,
-    objectiveContexts: new Map(),
-    objectiveStates: new Map(),
-    objectiveDefinitions: new Map(),
-    ghost: {
-        deaths: 0,
-        unnoticedKills: 0,
-        Opponents: [],
-        OpponentScore: 0,
-        Score: 0,
-        IsDraw: false,
-        IsWinner: false,
-        timerEnd: null,
-    },
-    challengeContexts: {},
-}
-
 describe("contract session storage", () => {
     testWithFakeFs(
         "can read and write a basic contract session",
         async ({ fakeFs, expect }) => {
+            const basicFakeSession = contractSessionFactory()
+
             await writeContractSession(
                 "nullSlot_jeff_fakeSessionId",
                 basicFakeSession,

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -95,7 +95,7 @@ async function findEndpoint(tries = 0): Promise<string> {
         }
 
         return findEndpoint(tries + 1)
-    } catch (e) {
+    } catch {
         return findEndpoint(tries + 1)
     }
 }
@@ -138,7 +138,7 @@ function decode(socket: net.Socket, callback): void {
         callback({ op, data })
         working.full = ""
         working.op = undefined
-    } catch (err) {
+    } catch {
         working.full += raw
     }
 

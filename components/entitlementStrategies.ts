@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import {
     EPIC_NAMESPACE_2021,
-    FRANKENSTEIN_SNIPER_ENTITLEMENTS,
+    SCPC_ENTITLEMENTS,
     getEpicEntitlements,
     H2_STEAM_ENTITLEMENTS,
     STEAM_NAMESPACE_2016,
@@ -132,7 +132,7 @@ export class EpicH1Strategy extends EntitlementStrategy {
  */
 export class SteamScpcStrategy extends EntitlementStrategy {
     override get() {
-        return FRANKENSTEIN_SNIPER_ENTITLEMENTS
+        return SCPC_ENTITLEMENTS
     }
 }
 

@@ -1,13 +1,5 @@
 {
     "Data": {
-        "EnableSaving": false,
-        "EnableExits": {
-            "$eq": [
-                "$06167b0d-24d1-4a8d-8f60-a9e3126c4500",
-                "$253fceaf-6893-44e9-9080-4e6f3cecae1d",
-                "Completed"
-            ]
-        },
         "Objectives": [
             {
                 "Id": "06167b0d-24d1-4a8d-8f60-a9e3126c4500",
@@ -85,11 +77,28 @@
             "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_zinnia.brick"
         ],
         "GameChangers": [],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ],
+        "EnableSaving": false
     },
     "Metadata": {
         "Id": "ede95e7f-36b1-4c1b-a4c5-fba9edee296d",
-        "InGroup": "a5e81878-0eae-4bcf-af9b-9a7e7833f85d",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-16T16:12:30.0274594Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -100,13 +109,13 @@
         "RequiredUnlockable": "ACCESS_HIT_HIPPO",
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
         "Type": "escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_zinnia.jpg",
+        "InGroup": "a5e81878-0eae-4bcf-af9b-9a7e7833f85d",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "253fceaf-6893-44e9-9080-4e6f3cecae1d" },
             { "Id": "06167b0d-24d1-4a8d-8f60-a9e3126c4500" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:05.3055229Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:42.2637586Z",
         "PublicId": "012156634447"
     },
     "UserData": {}

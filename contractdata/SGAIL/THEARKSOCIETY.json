@@ -15,9 +15,7 @@
                 "Image": "images/actors/Magpie_Zoe_Washington.jpg",
                 "BriefingName": "$loc UI_CONTRACT_MAGPIE_ZOE_NAME",
                 "BriefingText": "$loc UI_CONTRACT_MAGPIE_ZOE_OBJ",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_MAGPIE_ZOE_OBJ"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAGPIE_ZOE_OBJ" },
                 "DisplayAsKillObjective": true,
                 "SuccessEvent": {
                     "EventName": "Kill",
@@ -51,11 +49,7 @@
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfFailure": {
-                        "Visible": true
-                    }
-                },
+                "OnActive": { "IfFailure": { "Visible": true } },
                 "Image": "images/actors/Magpie_The_Constant.jpg",
                 "BriefingName": "$loc UI_CONTRACT_MAGPIE_CONSTANT_NAME",
                 "BriefingText": "$loc UI_CONTRACT_MAGPIE_CONSTANT_OBJ",
@@ -65,15 +59,11 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Constant_Down": {
-                                "Transition": "Failure"
-                            }
+                            "Constant_Down": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -103,10 +93,7 @@
                 "IgnoreIfInactive": true,
                 "ExcludeFromScoring": true,
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
                 "Activation": {
                     "$eq": [
@@ -114,11 +101,7 @@
                         "Completed"
                     ]
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": true } },
                 "ObjectiveType": "custom",
                 "Image": "images/actors/Magpie_The_Constant.jpg",
                 "BriefingName": "$loc UI_CONTRACT_MAGPIE_CONSTANT_NAME",
@@ -129,9 +112,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
                         "Start": {
@@ -140,9 +121,7 @@
                             }
                         },
                         "SecureConstant": {
-                            "ConstantSecured": {
-                                "Transition": "Success"
-                            }
+                            "ConstantSecured": { "Transition": "Success" }
                         }
                     }
                 }
@@ -152,11 +131,7 @@
                 "Id": "5ff67d0f-9fcc-4775-ad60-364e69571388",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_MAGPIE_CONSTANT_ESCAPED_OBJ",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_MAGPIE_CONSTANT_ESCAPED_OBJ",
@@ -165,28 +140,18 @@
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {},
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "ConstantOnChopper": {
                                 "Transition": "EscapeCountdownStart"
                             }
                         },
                         "EscapeCountdownStart": {
-                            "BothTwinsDead": {
-                                "Transition": "Success"
-                            },
+                            "BothTwinsDead": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 300
-                                },
+                                "Condition": { "$after": 300 },
                                 "Transition": "Failure"
                             }
                         }
@@ -202,11 +167,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick",
-                    "assembly:/_pro/scenes/missions/theark/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -226,10 +199,7 @@
                     "assembly:/_pro/scenes/missions/theark/difficulty_easy_northsea_magpie.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -277,8 +247,8 @@
             "875f9f6c-fa12-4661-988f-134d58ab3d85"
         ],
         "Drops": ["ACCESS_HIT_S2_CONCLUSION"],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.4938439Z",
+        "Entitlements": ["LOCATION_NORTHSEA"],
+        "LastUpdate": "2025-03-27T14:29:02.4856548Z",
         "PublicId": "021376652047"
     },
     "UserData": {}

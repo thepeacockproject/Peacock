@@ -1,0 +1,55 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "_comment": "this is shown if the user does not have the dynamic resources package",
+            "Url": "https://thepeacockproject.org/wiki/troubleshooting/missing-strings"
+        },
+        "do": {
+            "show-modal": {
+                "config": {
+                    "view": "menu3.modal.ModalDialogGeneric",
+                    "buttons": [
+                        "Open the Peacock wiki",
+                        {
+                            "label": "$loc UI_DIALOG_CANCEL",
+                            "type": "cancel"
+                        }
+                    ],
+                    "data": {
+                        "dialogWidth": 768,
+                        "frameheightmax": 600,
+                        "information": [
+                            {
+                                "description": "Peacock's dynamic resource package has not been loaded. This will affect localisation across all of Peacock's changes.<br><br>Visit the wiki page to see how to fix this."
+                            }
+                        ]
+                    }
+                },
+                "onbutton": [
+                    [
+                        {
+                            "open-url": {
+                                "url": "$.Url"
+                            }
+                        },
+                        {
+                            "set-value": {
+                                "target": "$.@global.OtherModalWasShown",
+                                "value": true
+                            }
+                        }
+                    ],
+                    [
+                        {
+                            "set-value": {
+                                "target": "$.@global.OtherModalWasShown",
+                                "value": true
+                            }
+                        }
+                    ]
+                ]
+            }
+        }
+    }
+}

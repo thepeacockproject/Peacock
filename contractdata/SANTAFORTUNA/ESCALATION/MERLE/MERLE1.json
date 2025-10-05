@@ -1,9 +1,6 @@
 {
     "Data": {
         "EnableSaving": false,
-        "EnableExits": {
-            "$eq": ["$e44846fb-0947-403d-aa65-f5f316ec7d13", "Completed"]
-        },
         "Objectives": [
             {
                 "Id": "e44846fb-0947-403d-aa65-f5f316ec7d13",
@@ -67,15 +64,29 @@
                 }
             }
         ],
-        "Bricks": [
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_titanumarum.brick"
-        ],
+        "Bricks": [],
         "GameChangers": ["97350ccb-40a4-41a6-95b9-702e24fb6e8c"],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "68ac028f-e83f-4496-95a2-eb3c5b8825c9",
-        "InGroup": "be567ad3-23f4-4d0b-9d2e-b261ea845ef0",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-08T15:23:15.8984863Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -86,12 +97,12 @@
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
         "Type": "escalation",
         "Release": "2.1.x escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_titanumarum.jpg",
+        "InGroup": "be567ad3-23f4-4d0b-9d2e-b261ea845ef0",
         "GroupObjectiveDisplayOrder": [
             { "Id": "e44846fb-0947-403d-aa65-f5f316ec7d13" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:04.7610263Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:41.8897318Z",
         "PublicId": "012097071647"
     },
     "UserData": {}

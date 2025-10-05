@@ -11,7 +11,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_1_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ROSE_OBJ_1_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_1_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -66,7 +68,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_2_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ROSE_OBJ_2_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_2_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -122,7 +126,26 @@
         "GameChangerReferences": [],
         "Stashpoints": ["ad047285-a0c9-438d-b1e0-211ecbe47bda"],
         "Entrances": ["594366fe-ccfd-4da5-8374-9501c3616e99"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_mamba.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_mamba.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "48bb5917-53bb-4927-83c6-e2b41a8c769a",
@@ -138,14 +161,24 @@
         "Type": "escalation",
         "InGroup": "8dec1e62-bbf9-438c-8495-24559c884466",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
-            { "IsNew": true, "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
-            { "Id": "c93a2349-e707-411a-ae2f-cc8db492f61f" },
-            { "Id": "f4e3bb5e-2eaf-4b69-a48b-ac762d2d6ff9" }
+            {
+                "IsNew": true,
+                "Id": "0cf5e693-35ec-457e-a004-da4672b90376"
+            },
+            {
+                "IsNew": true,
+                "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a"
+            },
+            {
+                "Id": "c93a2349-e707-411a-ae2f-cc8db492f61f"
+            },
+            {
+                "Id": "f4e3bb5e-2eaf-4b69-a48b-ac762d2d6ff9"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:48.5544055Z",
         "PublicId": "004569828947",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

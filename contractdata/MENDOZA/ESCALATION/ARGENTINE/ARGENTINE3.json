@@ -66,7 +66,9 @@
                 "ObjectiveType": "customkill",
                 "Primary": false,
                 "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5_DESC",
-                "HUDTemplate": { "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5" },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5"
+                },
                 "Definition": {
                     "Context": {
                         "Targets": ["ec3f1168-e010-4696-8e67-6aa9cf2a20af"]
@@ -227,7 +229,24 @@
             }
         ],
         "Bricks": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_GRAPEBUSH3",
@@ -241,12 +260,26 @@
         "Location": "LOCATION_ELEGANT_LLAMA",
         "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4", "IsNew": true },
-            { "Id": "2dd4d703-4c56-417b-b882-ce557513aa79", "IsNew": true },
-            { "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779" },
-            { "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380" },
-            { "Id": "122428ab-7075-4842-b54c-757c221723ef" },
-            { "Id": "8d606509-7d54-4dac-8142-a4349fd6279d" }
+            {
+                "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4",
+                "IsNew": true
+            },
+            {
+                "Id": "2dd4d703-4c56-417b-b882-ce557513aa79",
+                "IsNew": true
+            },
+            {
+                "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779"
+            },
+            {
+                "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380"
+            },
+            {
+                "Id": "122428ab-7075-4842-b54c-757c221723ef"
+            },
+            {
+                "Id": "8d606509-7d54-4dac-8142-a4349fd6279d"
+            }
         ]
     }
 }

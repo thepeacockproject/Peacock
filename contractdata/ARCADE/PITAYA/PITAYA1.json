@@ -1,0 +1,441 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/Bangkok/mission_baiju.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/Bangkok/dev_baiju.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok_ps4_vr1.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick"
+                ]
+            }
+        ],
+        "Entrances": ["9b078f79-05b9-4568-8d0e-700be17e525f"],
+        "EnableExits": {
+            "$eq": [
+                "$a795eb14-21e5-44a4-8482-9543a79b012e",
+                "$b680675c-5e75-4e8e-acac-9daaa0053600",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Ensure your ally wins the tournament -----",
+                "Id": "55117512-ad19-4629-8ac8-d6ccaeee5248",
+                "Image": "images/actors/elusive_Baiju_face.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BAIJU_OBJ_TOURNAMENT_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_OBJ_TOURNAMENT_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BAIJU_OBJ_TOURNAMENT_HUD",
+                    "iconType": 17
+                },
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "Constants": {
+                        "RepositoryId": "45625fe7-947c-48db-b381-6ce28e413881"
+                    },
+                    "States": {
+                        "Start": {
+                            "Baiju_TournamentWinner": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "$.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Baiju_AllyLost": {
+                                "Transition": "Failure"
+                            },
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hidden Objective: Fail if ally is eliminated -----",
+                "Id": "2c43d0d1-bfaa-4d60-9b7f-1210b4507426",
+                "Image": "images/actors/elusive_Baiju_face.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BAIJU_OBJ_ALLY_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_OBJ_ALLY_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BAIJU_OBJ_ALLY_HUD",
+                    "iconType": 17
+                },
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Activation": {
+                    "$eq": [
+                        "$55117512-ad19-4629-8ac8-d6ccaeee5248",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Baiju_AllyDied": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                }
+            },
+            {
+                "_comment": "----- Kill leader -----",
+                "Id": "a795eb14-21e5-44a4-8482-9543a79b012e",
+                "Image": "images/actors/elusive_Baiju_Leader_face.jpg",
+                "BriefingName": "$loc UI_ET_BAIJU_OUTFIT_GANGLEADER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_LEADER_DESC",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$loc UI_ET_BAIJU_OUTFIT_GANGLEADER_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "DisplayAsKillObjective": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["923e2fec-4af8-41ae-a52b-b8cc74084b5e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to Neutralise Threats -----",
+                "Id": "32e008ad-756c-456e-99ba-4942d93c083e",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Baiju_CompetitorIdentified": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Visible Objective - No Scoring: Neutralise Threats -----",
+                "Id": "859e2ee9-ea88-41e7-b0b5-46ca07bafae3",
+                "Image": "images/contracts/elusive/s3_baiju/objective_a.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BAIJU_OBJ_NEUTRALIZETHREATS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_OBJ_NEUTRALIZETHREATS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BAIJU_OBJ_NEUTRALIZETHREATS_NAME",
+                    "iconType": 17
+                },
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "UpdateActivationWhileCompleted": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Activation": {
+                    "$eq": [
+                        "$32e008ad-756c-456e-99ba-4942d93c083e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "4fff144f-b279-431b-abaa-aee85ff7a2d7",
+                            "4ef75b0f-bba5-4c4d-aa20-8fe32a92ace3",
+                            "de98b52c-895a-4058-b6a4-730b4887f34a"
+                        ],
+                        "Count": 0,
+                        "RepositoryId": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Actions": {
+                                    "$set": [
+                                        "RepositoryId",
+                                        "$Value.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Check"
+                            },
+                            "Baiju_ContestantLost": {
+                                "Actions": {
+                                    "$set": [
+                                        "RepositoryId",
+                                        "$Value.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": ["$.#", "$.RepositoryId"]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$.RepositoryId"
+                                        ],
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", 3]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "RepositoryId",
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hidden Objective for Scoring: Neutralise Assassins -----",
+                "Id": "b680675c-5e75-4e8e-acac-9daaa0053600",
+                "IsHidden": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "4fff144f-b279-431b-abaa-aee85ff7a2d7",
+                            "4ef75b0f-bba5-4c4d-aa20-8fe32a92ace3",
+                            "de98b52c-895a-4058-b6a4-730b4887f34a"
+                        ],
+                        "Count": 0,
+                        "RepositoryId": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Actions": {
+                                    "$set": [
+                                        "RepositoryId",
+                                        "$Value.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Check"
+                            },
+                            "Baiju_ContestantLost": {
+                                "Actions": {
+                                    "$set": [
+                                        "RepositoryId",
+                                        "$Value.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": ["$.#", "$.RepositoryId"]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$.RepositoryId"
+                                        ],
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", 3]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "RepositoryId",
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hidden Objective to avoid NTKs -----",
+                "Id": "f7239549-b0c4-4825-9dd7-b89766a65ef8",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "4fff144f-b279-431b-abaa-aee85ff7a2d7",
+                            "4ef75b0f-bba5-4c4d-aa20-8fe32a92ace3",
+                            "de98b52c-895a-4058-b6a4-730b4887f34a"
+                        ],
+                        "Count": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "203bbe53-d771-4c60-aacc-70faaab2e7a9",
+        "CodeName_Hint": "Arcade Pitaya Baiju",
+        "Title": "UI_CONTRACT_PITAYA_LEVEL01_NAME",
+        "Description": "UI_CONTRACT_BAIJU_DESC",
+        "BriefingVideo": "briefing_baiju",
+        "DebriefingVideo": "debriefing_baiju",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Bangkok/scene_baiju.entity",
+        "TileImage": "images/contracts/elusive/s3_baiju/Title.jpg",
+        "InGroup": "3fa83d8d-eb75-4973-926a-6052ee5b2aa4",
+        "Location": "LOCATION_BANGKOK",
+        "IsPublished": true,
+        "LastUpdate": "2025-05-01T12:00:00.441Z",
+        "CreationTimestamp": "2025-09-25T10:59:55.8351963Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Release": "3.240.x Arcade",
+        "Type": "arcade",
+        "Entitlements": ["H3_ET_BAIJU"],
+        "PublicId": "008921887547"
+    },
+    "UserData": {}
+}

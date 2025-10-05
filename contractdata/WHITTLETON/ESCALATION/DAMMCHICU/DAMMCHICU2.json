@@ -89,7 +89,9 @@
                     },
                     "States": {
                         "Start": {
-                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                            "IntroCutEnd": {
+                                "Transition": "InFirstTimer"
+                            }
                         },
                         "InFirstTimer": {
                             "ItemPickedUp": {
@@ -113,7 +115,9 @@
                         },
                         "InSecondTimer": {
                             "$timer": {
-                                "Condition": { "$after": 35 },
+                                "Condition": {
+                                    "$after": 35
+                                },
                                 "Transition": "Failure"
                             },
                             "Kill": {
@@ -179,11 +183,15 @@
                     },
                     "States": {
                         "Start": {
-                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                            "IntroCutEnd": {
+                                "Transition": "InFirstTimer"
+                            }
                         },
                         "InFirstTimer": {
                             "$timer": {
-                                "Condition": { "$after": 35 },
+                                "Condition": {
+                                    "$after": 35
+                                },
                                 "Transition": "Failure"
                             },
                             "ItemPickedUp": {
@@ -211,22 +219,49 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_THORNBUSH2",
         "InGroup": "218302a3-f682-46f9-9ffd-bb3e82487b7c",
         "Id": "b07af7b6-01cb-4cee-83bf-2c73f71bf2a3",
         "Type": "escalation",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "Entitlements": ["LOCATION_NORTHAMERICA"],
         "TileImage": "images/contracts/escalation/contractescalation_thornbush.jpg",
         "Location": "LOCATION_NORTHAMERICA",
         "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e", "IsNew": true },
-            { "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094" },
-            { "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0", "IsNew": true }
+            {
+                "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e",
+                "IsNew": true
+            },
+            {
+                "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094"
+            },
+            {
+                "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0",
+                "IsNew": true
+            }
         ]
     },
-    "Peacock": { "noAgencyPickupsActive": true }
+    "Peacock": {
+        "noAgencyPickupsActive": true
+    }
 }

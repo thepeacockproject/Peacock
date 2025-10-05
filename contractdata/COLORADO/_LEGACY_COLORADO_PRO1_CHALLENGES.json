@@ -1,0 +1,1741 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_COLORADO",
+        "GameVersions": ["h1"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "2bec7ae6-6d0f-4a07-b707-016cea97c7ba",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_PARVATI_FUELTANK_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_parvati_fueltank.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_PARVATI_FUELTANK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "e5356046-859c-4d72-b6d5-01767af84ad4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "5d6cfbad-6a3c-45b2-8ea1-039cc81d1848",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/colorado/bull_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "e7988e07-a5c9-4eb4-8f86-2f48e3c18088",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_BERG_LAWNMOWER_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_berg_lawnmower.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_BERG_LAWNMOWER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1a8a827f-932e-49c0-a1b3-e3201795ae19"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "a82e5beb-ab03-460d-9171-6b0bc3e0754b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "05c6ca04-5182-4265-8523-392f8e7d9366",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_GRAVES_DROWN_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_graves_drown.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_GRAVES_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Graves_At_Pit"
+                                        ]
+                                    },
+                                    "Transition": "Kill_Position"
+                                }
+                            },
+                            "Kill_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Graves_Not_At_Pit"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "a49ba55a-0793-4de7-8558-4d3982cdc518",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_ALL_ACCIDENT_KILL_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_all_accident_kill.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_ALL_ACCIDENT_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 4,
+                            "TargetKilled": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4",
+                                                            "1a8a827f-932e-49c0-a1b3-e3201795ae19",
+                                                            "963c2774-cb9a-4b0c-ab69-210b2405383b",
+                                                            "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$Value.RepositoryId"
+                                                                ]
+                                                            },
+                                                            "in": "$.TargetKilled"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "89762b1d-11b3-42cf-921c-4e27ea934dbc",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_ROSE_DROWN_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_rose_drown.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_ROSE_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "5729e693-14ca-4283-b8c3-059a592d968f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "d98dc826-1d86-4aa6-a42f-51be735c2e5c",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/colorado/bull_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0cd2b917-eb26-4f19-90c2-a5e16eb18cef"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c943798-8ca7-42cc-861a-becdb32017da"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "b97e71a9-0919-466e-8a09-5a1701af9645",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_BEGR_BLOWUP_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_berg_blowup.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_BEGR_BLOWUP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1a8a827f-932e-49c0-a1b3-e3201795ae19"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "7ac0cece-f9cf-4942-baa1-ed30469160a3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "6a36e4a6-1e7e-47d0-a0bb-6b9772947158",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_POISON_ALL_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_poison_all.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_POISON_ALL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 4,
+                            "TargetKilled": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4",
+                                                            "1a8a827f-932e-49c0-a1b3-e3201795ae19",
+                                                            "963c2774-cb9a-4b0c-ab69-210b2405383b",
+                                                            "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillClass",
+                                                        "poison"
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$Value.RepositoryId"
+                                                                ]
+                                                            },
+                                                            "in": "$.TargetKilled"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "12273614-8411-466b-b088-6e39880fc6af",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_PARVATI_CARLIFT_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_parvati_carlift.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_PARVATI_CARLIFT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "ed4ef3fe-4cd2-414d-993a-8c98e47cfc7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "9232950e-30e4-4ca9-87cf-920351d9789a",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/colorado/bull_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "8683b87f-781b-4044-9809-9718b1129461",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_DOUBLE_KILL_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_double_kill.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_DOUBLE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Is_DoubleKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "7e65da7a-9dfc-46e3-80c8-a8a79f95dba7"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "7e65da7a-9dfc-46e3-80c8-a8a79f95dba7"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "7e65da7a-9dfc-46e3-80c8-a8a79f95dba7"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "7e65da7a-9dfc-46e3-80c8-a8a79f95dba7"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "095c9b59-873a-4c5c-acba-a19f5f78b818",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_PARVATI_RAM_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_parvati_ram.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_PARVATI_RAM_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "7e65da7a-9dfc-46e3-80c8-a8a79f95dba7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "b638bd73-a1f1-43df-86cc-ad3b5777bdae",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_ROSE_BLOWUP_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_rose_blowup.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_ROSE_BLOWUP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f22c3477-996d-4cfd-88cd-50301bdcb3fb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "507257e0-53b2-4385-9a88-c3a25637f008",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_SA_SUIT_NAME",
+                    "ImageName": "images/challenges/colorado/bull_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_SA_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0cd2b917-eb26-4f19-90c2-a5e16eb18cef"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "6c943798-8ca7-42cc-861a-becdb32017da"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "4425cdf4-3158-486b-bff2-cd6a3e7d7174",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_GRAVES_CHANDELIER_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_graves_chandelier.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_GRAVES_CHANDELIER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "de28fae2-68c7-4f31-8690-8fe4f90995f9"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "671c4c9d-e586-405d-a211-d51831a87e13",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_ROSE_WATCH_NAME",
+                    "ImageName": "images/challenges/colorado/bull_sign_rose_watch.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_ROSE_WATCH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "66d7a0d3-7ee8-4065-9475-8765fca06faa"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "0700c419-2b8d-415c-99be-ddbb1120c55a",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/colorado/bull_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "SniperKills": [],
+                            "TargetDied": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            true,
+                                            "$.RecordingDestroyed",
+                                            "$.TargetDied"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "SniperKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$contains": [
+                                                "$Value.KillItemCategory",
+                                                "sniperrifle"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.SniperKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4",
+                                                    "1a8a827f-932e-49c0-a1b3-e3201795ae19",
+                                                    "963c2774-cb9a-4b0c-ab69-210b2405383b",
+                                                    "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "3e809a03-2437-4779-aa8a-decbd90f3cc3",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_FIBERWIRE_ALL_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_fiberwire_all.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_FIBERWIRE_ALL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 4,
+                            "TargetKilled": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4",
+                                                            "1a8a827f-932e-49c0-a1b3-e3201795ae19",
+                                                            "963c2774-cb9a-4b0c-ab69-210b2405383b",
+                                                            "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$Value.RepositoryId"
+                                                                ]
+                                                            },
+                                                            "in": "$.TargetKilled"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                },
+                {
+                    "Id": "fc85d6b7-0a97-429c-ad69-e28828c6c70a",
+                    "Name": "UI_CHALLENGES_BULL_PRO1_GRAVES_GAS_CANISTER_NAME",
+                    "ImageName": "images/challenges/colorado/bull_exp_graves_gas_canister.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PRO1_GRAVES_GAS_CANISTER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_BULL_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "1464cb31-e00b-4adc-8430-b8592d29f701"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "fab9eacb-dcc6-41e5-894b-4b14acc34b78"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["69b58abc-6535-4092-9afe-c046b26303e6"]
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -13,7 +13,7 @@ online mode.
 
 Install [Node.js](https://nodejs.org/en/). Use the Latest version, or the
 version
-specifically mentioned here: **Version 20**
+specifically mentioned here: **Version 22.9.0**
 
 Clone the repository where-ever you wish.
 
@@ -37,9 +37,8 @@ The project is bundled with a server running configuration.
 Run that when editing the project with the IDE of choice, and it should open.
 
 We highly suggest you use [WebStorm](https://www.jetbrains.com/webstorm/) for
-development,
-but it is a paid product, so you may want to choose something
-like [Visual Studio Code](https://code.visualstudio.com/).
+development, which is free for non-commercial use.
+If you'd prefer, you can also use [Visual Studio Code](https://code.visualstudio.com/).
 WebStorm will provide a better experience for development, but VSCode will work
 just fine.
 

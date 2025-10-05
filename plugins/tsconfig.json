@@ -1,6 +1,7 @@
 {
     "extends": ["../tsconfig.json"],
     "compilerOptions": {
+        "allowJs": true,
         // Reset rootDir to default to make rootDirs take effect
         "rootDir": null,
         "rootDirs": ["../components", "."],
@@ -8,6 +9,6 @@
             "@peacockproject/core/*": ["./components/*"]
         }
     },
-    "include": ["*.ts"],
+    "include": ["*.ts", "*.js"],
     "exclude": []
 }

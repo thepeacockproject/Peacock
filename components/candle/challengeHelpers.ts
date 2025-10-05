@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -18,50 +18,98 @@
 
 import {
     ChallengeProgressionData,
+    CompiledChallengeIngameData,
     CompiledChallengeRuntimeData,
+    GameVersion,
     InclusionData,
     MissionManifest,
+    MissionType,
     RegistryChallenge,
 } from "../types/types"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
+import assert from "assert"
 
+/**
+ * Change a registry challenge to the runtime format (for GetActiveChallenges).
+ * @param challenge The challenge.
+ * @returns The runtime challenge.
+ * @see {@link compileRuntimeChallenge} for the modern variant with progression data.
+ */
+export function compileRuntimeChallengeOnly(
+    challenge: RegistryChallenge,
+): CompiledChallengeIngameData {
+    return {
+        Id: challenge.Id,
+        GroupId: challenge.inGroup,
+        Name: challenge.Name,
+        Type: challenge.RuntimeType || "contract",
+        Description: challenge.Description,
+        ImageName: challenge.ImageName,
+        InclusionData: challenge.InclusionData || undefined,
+        Definition: challenge.Definition,
+        Tags: challenge.Tags,
+        Drops: challenge.Drops,
+        LastModified: "2021-01-06T23:00:32.0117635", // this is a lie 👍
+        PlayableSince: null,
+        PlayableUntil: null,
+        Xp: challenge.Rewards.MasteryXP || 0,
+        XpModifier: challenge.XpModifier || {},
+    }
+}
+
+/**
+ * Change a registry challenge to the runtime format (for GetActiveChallengesAndProgression).
+ * @param challenge The challenge.
+ * @param progression The progression data.
+ * @returns The runtime challenge (including progression data).
+ * @see {@link compileRuntimeChallengeOnly} for when you only need the challenge data.
+ */
 export function compileRuntimeChallenge(
     challenge: RegistryChallenge,
     progression: ChallengeProgressionData,
 ): CompiledChallengeRuntimeData {
     return {
-        // GetActiveChallengesAndProgression
-        Challenge: {
-            Id: challenge.Id,
-            GroupId: challenge.inGroup,
-            Name: challenge.Name,
-            Type: challenge.RuntimeType || "contract",
-            Description: challenge.Description,
-            ImageName: challenge.ImageName,
-            InclusionData: challenge.InclusionData || undefined,
-            Definition: challenge.Definition,
-            Tags: challenge.Tags,
-            Drops: challenge.Drops,
-            LastModified: "2021-01-06T23:00:32.0117635", // this is a lie 👍
-            PlayableSince: null,
-            PlayableUntil: null,
-            Xp: challenge.Rewards.MasteryXP || 0,
-            XpModifier: challenge.XpModifier || {},
-        },
+        Challenge: compileRuntimeChallengeOnly(challenge),
         Progression: progression,
     }
 }
 
+/**
+ * How to handle filtering of challenges.
+ */
 export enum ChallengeFilterType {
     /** Note that this option will include global elusive and escalations challenges. */
     None = "None",
+    /** A single contract's challenges. */
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
     /** Only used for the location page, and when calculating location completion */
     ParentLocation = "ParentLocation",
+    /** Challenges for a contract type. Only used for ContractTypeChallenges */
+    ContractType = "ContractType",
+}
+
+/**
+ * How to handle filtering of pro1 challenges.
+ * Works in conjunction with {@link ChallengeFilterType}, but only if the
+ * challenge is tagged as pro1 and the challenge filter is met.
+ */
+export enum Pro1FilterType {
+    /**
+     * Only include pro1 challenges.
+     */
+    Only = "Only",
+    /**
+     * Include both pro1 and non-pro1 challenges.
+     */
+    Ignore = "Ignore",
+    /**
+     * Exclude pro1 challenges.
+     */
+    Exclude = "Exclude",
 }
 
 export type ChallengeFilterOptions =
@@ -72,17 +120,27 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
+          gameVersion: GameVersion
           isFeatured?: boolean
           difficulty: number
+          pro1Filter: Pro1FilterType
       }
     | {
           type: ChallengeFilterType.Contracts
           contractIds: string[]
+          gameVersion: GameVersion
           locationId: string
+          pro1Filter: Pro1FilterType
+      }
+    | {
+          type: ChallengeFilterType.ContractType
+          contractType: MissionType
       }
     | {
           type: ChallengeFilterType.ParentLocation
           parent: string
+          gameVersion: GameVersion
+          pro1Filter: Pro1FilterType
       }
 
 /**
@@ -98,14 +156,25 @@ export function inclusionDataCheck(
     if (!incData) return true
     if (!contract) return false
 
-    return Boolean(
-        incData.ContractIds?.includes(contract.Metadata.Id) ||
-            incData.ContractTypes?.includes(contract.Metadata.Type) ||
-            incData.Locations?.includes(contract.Metadata.Location) ||
+    const checks: boolean[] = []
+
+    if (incData.ContractIds)
+        checks.push(incData.ContractIds?.includes(contract.Metadata.Id))
+
+    if (incData.ContractTypes)
+        checks.push(incData.ContractTypes?.includes(contract.Metadata.Type))
+
+    if (incData.Locations)
+        checks.push(incData.Locations?.includes(contract.Metadata.Location))
+
+    if (incData.GameModes)
+        checks.push(
             contract.Metadata?.Gamemodes?.some((r) =>
                 incData.GameModes?.includes(r),
-            ),
-    )
+            ) ?? false,
+        )
+
+    return checks.length === 0 ? false : checks.every(Boolean)
 }
 
 export function isChallengeForDifficulty(
@@ -122,11 +191,14 @@ export function isChallengeForDifficulty(
 /**
  * Judges whether a challenge should be included in the challenges list of a contract.
  * Requires the challenge and the contract share the same parent location.
+ * Will throw if the contract is not found.
  *
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
  * @param difficulty The upper bound on the difficulty of the challenges to return.
+ * @param gameVersion The game version.
  * @param challenge The challenge in question.
+ * @param pro1Filter Settings for handling pro1 challenges.
  * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
  * @returns A boolean value, denoting the result.
  */
@@ -134,7 +206,9 @@ function isChallengeInContract(
     contractId: string,
     locationId: string,
     difficulty: number,
+    gameVersion: GameVersion,
     challenge: RegistryChallenge,
+    pro1Filter: Pro1FilterType,
     forCareer = false,
 ): boolean {
     if (!contractId || !locationId) {
@@ -149,7 +223,20 @@ function isChallengeInContract(
         return false
     }
 
-    const contract = controller.resolveContract(contractId, true)
+    const groupContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+        true,
+    )
+    const individualContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+    )
+
+    assert.ok(
+        individualContract,
+        `Can't find contract ${contractId} for ${gameVersion}, but need to check if challenge ${challenge.Id} belongs to it`,
+    )
 
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -164,21 +251,28 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ) || [],
                   },
-            contract,
+            groupContract,
         )
+    }
+
+    if (
+        challenge.Tags.includes("elusive") &&
+        groupContract?.Metadata.Type !== "elusive"
+    ) {
+        return false
     }
 
     // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contract?.Metadata.Id || "",
+        groupContract?.Metadata.Id || "",
     )
 
     // Is this for the current contract type?
     // As of v6.1.0, this is only used for ET challenges.
-    // We have to resolve the non-group contract, `contract` is the group contract
+    // We have to resolve the non-group contract, `groupContract` is the group contract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
-    ).includes(controller.resolveContract(contractId)!.Metadata.Type)
+    ).includes(individualContract.Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
@@ -192,6 +286,14 @@ function isChallengeInContract(
         // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
         challenge.LocationId === locationId ||
         challenge.LocationId === challenge.ParentLocationId
+
+    const isPro1 = challenge.Tags.includes("pro1")
+
+    if (isPro1 && pro1Filter === Pro1FilterType.Exclude) {
+        return false
+    } else if (!isPro1 && pro1Filter === Pro1FilterType.Only) {
+        return false
+    }
 
     return (
         isForContract ||
@@ -212,7 +314,9 @@ export function filterChallenge(
                 options.contractId,
                 options.locationId,
                 options.difficulty,
+                options.gameVersion,
                 challenge,
+                options.pro1Filter,
             )
         }
         case ChallengeFilterType.Contracts: {
@@ -222,7 +326,9 @@ export function filterChallenge(
                         contractId,
                         options.locationId,
                         gameDifficulty.master, // Get challenges of all difficulties
+                        options.gameVersion,
                         challenge,
+                        options.pro1Filter,
                         true,
                     ),
                 )
@@ -238,6 +344,13 @@ export function filterChallenge(
             }
 
             return false
+        }
+        case ChallengeFilterType.ContractType: {
+            return (
+                challenge.InclusionData?.ContractTypes?.includes(
+                    options.contractType,
+                ) ?? false
+            )
         }
         case ChallengeFilterType.ParentLocation: {
             // Challenges are already organized by parent location
@@ -255,10 +368,22 @@ export function filterChallenge(
             }
 
             if (challenge.Tags.includes("escalation")) {
+                if (options.pro1Filter === Pro1FilterType.Only) {
+                    return false
+                }
+
                 return (
                     !isSniperLocation(options.parent) &&
                     "LOCATION_PARENT_SNUG" !== options.parent
                 )
+            }
+
+            const isPro1 = challenge.Tags.includes("pro1")
+
+            if (isPro1 && options.pro1Filter === Pro1FilterType.Exclude) {
+                return false
+            } else if (!isPro1 && options.pro1Filter === Pro1FilterType.Only) {
+                return false
             }
 
             return true

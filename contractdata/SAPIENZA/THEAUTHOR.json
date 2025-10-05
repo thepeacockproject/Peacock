@@ -5,9 +5,7 @@
             {
                 "Id": "e734a4b4-c1b1-4195-93ba-079835ebca33",
                 "Category": "primary",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_1_1"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_EBOLA_OBJ_1_1" },
                 "BriefingText": "$loc UI_CONTRACT_EBOLA_TARGET_ESCAPED",
                 "Type": "statemachine",
                 "Definition": {
@@ -44,9 +42,7 @@
                             ],
                             "Target_Leaving": [
                                 {
-                                    "Actions": {
-                                        "$dec": "TargetEscaping"
-                                    },
+                                    "Actions": { "$dec": "TargetEscaping" },
                                     "Transition": "TargetEscaping"
                                 }
                             ]
@@ -63,9 +59,7 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "Target_Escape": {
-                                "Transition": "Failure"
-                            }
+                            "Target_Escape": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -79,9 +73,7 @@
                 "LongBriefingText": "$loc 07c64264-9fa9-4c4a-a933-802011bee9e6_brotherakram_description",
                 "Image": "images/actors/WS_Ebola_Brother_Akram.jpg",
                 "TargetConditions": [],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_EBOLA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_EBOLA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -115,9 +107,7 @@
                 "Image": "images/contracts/whitespider/002_ebola/WS_Ebola_Virus_Sample.jpg",
                 "BriefingName": "$loc UI_CONTRACT_EBOLA_OBJ_3_TITLE",
                 "BriefingText": "$loc UI_CONTRACT_EBOLA_OBJ_3_DESC",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_3"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_EBOLA_OBJ_3" },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {
@@ -147,14 +137,15 @@
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ebola.brick",
-                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ebola.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
                     "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ebola.brick"
                 ]
             }
@@ -174,11 +165,12 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/scene_ebola.entity",
         "Location": "LOCATION_COASTALTOWN_EBOLA",
         "TileImage": "images/contracts/whitespider/002_ebola/tile.jpg",
-        "LastUpdate": "2021-03-16T13:08:04.5161821Z",
+        "LastUpdate": "2025-09-25T10:59:54.0741761Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Release": "1.13.x",
         "Type": "campaign",
+        "OnlyNeoVR": true,
         "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
         "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
         "RequiredUnlockable": "ACCESS_HIT_EBOLA",

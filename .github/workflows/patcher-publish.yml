@@ -1,0 +1,49 @@
+name: Patcher - Publish
+
+on:
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  publish:
+    name: Publish Patcher
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          ref: ${{ github.ref_name }}
+          path: repository
+
+      - name: Download patcher-windows
+        run: |
+          cd repository
+          RUN_ID=$(gh run list --workflow="patcher.yml" --branch=master --limit=1 --json databaseId,status,conclusion -q 'map(select(.status == "completed" and .conclusion == "success")) | .[0].databaseId')
+
+          if [ -z "$RUN_ID" ]; then
+            echo "No run ID found"
+            exit 0
+          fi
+
+          gh run download $RUN_ID -n patcher-windows -D ../patcher-windows
+
+          if [ $? -ne 0 ]; then
+            echo "Failed to download patcher-windows"
+            exit 0
+          fi
+
+      - name: Copy patcher-windows to repository
+        run: |
+          cp -f patcher-windows/PeacockPatcher.exe repository/PeacockPatcher.exe
+
+      - name: Commit and push to repository
+        run: |
+          cd repository
+          git config user.name "PeacockBot"
+          git config user.email "admin@thepeacockproject.org"
+          git add PeacockPatcher.exe
+          git commit -m "[skip ci] Update patcher binary"
+          git push

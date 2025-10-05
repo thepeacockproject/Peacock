@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import { existsSync, readFileSync } from "fs"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
 import { MissionManifest, SMFLastDeploy } from "./types/types"
-import { basename, join } from "path"
+import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
@@ -32,29 +32,74 @@ export class SMFSupport {
     public readonly lastDeploy: SMFLastDeploy | null
 
     constructor(private readonly controller: Controller) {
-        const dataPath = SMFSupport.modFrameworkDataPath
+        const dataPaths = SMFSupport.modFrameworkDataPaths
 
-        if (dataPath && existsSync(dataPath)) {
-            this.lastDeploy = parse(readFileSync(dataPath).toString())
-            return
+        if (dataPaths) {
+            for (const dataPath of dataPaths) {
+                if (!existsSync(dataPath)) continue
+                this.lastDeploy = parse(readFileSync(dataPath).toString())
+                return
+            }
         }
 
         this.lastDeploy = null
     }
 
-    static get modFrameworkDataPath() {
-        return (
-            (process.env.LOCALAPPDATA &&
-                join(
-                    process.env.LOCALAPPDATA,
-                    "Simple Mod Framework",
-                    "lastDeploy.json",
-                )) ||
-            false
-        )
+    static get modFrameworkDataPaths(): string[] | false {
+        if (getFlag("frameworkDeploySummaryPath") !== "AUTO")
+            return [getFlag("frameworkDeploySummaryPath") as string]
+
+        switch (process.platform) {
+            case "win32":
+                return (
+                    (process.env.LOCALAPPDATA && [
+                        join(
+                            process.env.LOCALAPPDATA,
+                            "Simple Mod Framework",
+                            "deploySummary.json",
+                        ),
+                        join(
+                            process.env.LOCALAPPDATA,
+                            "Simple Mod Framework",
+                            "lastDeploy.json",
+                        ),
+                    ]) ||
+                    false
+                )
+            case "linux": {
+                if (!process.env.HOME) return false
+                const XDG_DATA_HOME =
+                    process.env.XDG_DATA_HOME ??
+                    join(process.env.HOME, ".local", "share")
+
+                return [
+                    join(
+                        XDG_DATA_HOME,
+                        "app.simple-mod-framework",
+                        "deploySummary.json",
+                    ),
+                    join(
+                        XDG_DATA_HOME,
+                        "app.simple-mod-framework",
+                        "lastDeploy.json",
+                    ),
+                ]
+            }
+
+            default:
+                return false
+        }
     }
 
     private async executePlugin(plugin: string) {
+        // Check if we are running on linux and got a wine path
+        if (
+            process.platform === "linux" &&
+            plugin.startsWith(`${process.env.WINE_DRIVE_PREFIX ?? "Z"}:\\`)
+        ) {
+            plugin = plugin.substring(2).replace(/\\/g, path.sep)
+        }
+
         if (!existsSync(plugin)) return
 
         await this.controller.executePlugin(
@@ -119,9 +164,12 @@ export class SMFSupport {
         const placeBefore = contractData.SMF?.destinations.placeBefore
         const placeAfter = contractData.SMF?.destinations.placeAfter
         // @ts-expect-error I know what I'm doing.
-        const inLocation = (this.controller.missionsInLocations[location] ??
+        const inLocation = (this.controller.missionsInLocation["h3"][
+            location
+        ] ??
             // @ts-expect-error I know what I'm doing.
-            (this.controller.missionsInLocations[location] = [])) as string[]
+            (this.controller.missionsInLocation["h3"][location] =
+                [])) as string[]
 
         if (placeBefore) {
             const index = inLocation.indexOf(placeBefore)
@@ -141,10 +189,8 @@ export class SMFSupport {
         }
     }
 
-    public async initSMFSupport(modFrameworkDataPath: string) {
-        if (!(modFrameworkDataPath && existsSync(modFrameworkDataPath))) {
-            return
-        }
+    public async initSMFSupport() {
+        if (!this.lastDeploy) return
 
         log(
             LogLevel.INFO,

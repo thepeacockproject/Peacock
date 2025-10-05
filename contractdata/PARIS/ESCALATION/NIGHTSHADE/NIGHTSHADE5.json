@@ -42,7 +42,9 @@
                                                     "8b4299ee-b72d-444c-b990-2eb909aff59f"
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -78,8 +80,12 @@
                     },
                     "States": {
                         "Start": {
-                            "LaptopHacked": { "Transition": "Success" },
-                            "Laptop_Destroyed": { "Transition": "Failure" }
+                            "LaptopHacked": {
+                                "Transition": "Success"
+                            },
+                            "Laptop_Destroyed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -117,7 +123,9 @@
                                                     "bc631938-35c0-47ab-9e62-3bae05920ea7"
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -147,7 +155,26 @@
             "2073a821-d75d-4dc6-a83d-8ffd28ea6b70",
             "5ecfd02f-d7cf-4fa5-9871-b7de2305c1a3"
         ],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "4b30ac0d-be8b-43f0-8894-277ad4bb8074",
@@ -163,18 +190,36 @@
         "Type": "escalation",
         "InGroup": "0e5c23b1-4678-458b-ad98-8b55c268e90a",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "184ad876-6c5f-47d2-8a57-e08347aacc83" },
-            { "IsNew": true, "Id": "5ecfd02f-d7cf-4fa5-9871-b7de2305c1a3" },
-            { "Id": "141adac9-7194-4880-8a7d-0dd4c37f1d72" },
-            { "Id": "2073a821-d75d-4dc6-a83d-8ffd28ea6b70" },
-            { "Id": "174898dc-3f20-4dd8-8dd0-7709576360a3" },
-            { "Id": "6e9c16bf-dee1-412c-a02d-5df5655ea2c3" },
-            { "Id": "9de28185-8e9b-4e92-901c-e661055205db" },
-            { "Id": "c5b8dbe0-0ada-4069-87dc-fc6f6edb5db5" }
+            {
+                "IsNew": true,
+                "Id": "184ad876-6c5f-47d2-8a57-e08347aacc83"
+            },
+            {
+                "IsNew": true,
+                "Id": "5ecfd02f-d7cf-4fa5-9871-b7de2305c1a3"
+            },
+            {
+                "Id": "141adac9-7194-4880-8a7d-0dd4c37f1d72"
+            },
+            {
+                "Id": "2073a821-d75d-4dc6-a83d-8ffd28ea6b70"
+            },
+            {
+                "Id": "174898dc-3f20-4dd8-8dd0-7709576360a3"
+            },
+            {
+                "Id": "6e9c16bf-dee1-412c-a02d-5df5655ea2c3"
+            },
+            {
+                "Id": "9de28185-8e9b-4e92-901c-e661055205db"
+            },
+            {
+                "Id": "c5b8dbe0-0ada-4069-87dc-fc6f6edb5db5"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:46.4762702Z",
         "PublicId": "002858143347",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

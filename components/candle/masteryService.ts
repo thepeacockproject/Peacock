@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -24,6 +24,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
+    GenericCompletionData,
     LocationMasteryData,
     MasteryData,
     MasteryDrop,
@@ -67,7 +68,7 @@ export class MasteryService {
     /**
      * @Key1 Game version.
      * @Key2 Unlockable Id.
-     * @Value A `MasteryPackage` object.
+     * @Value A `UnlockableMasteryData` object.
      */
     private unlockableMasteryData: Record<
         GameVersion,
@@ -85,27 +86,38 @@ export class MasteryService {
                 masteryPackage.LocationId,
                 masteryPackage,
             )
+        }
+    }
 
-            /**
-             * Generates the same data in a reverse order. It could be considered redundant but this allows for
-             * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
-             */
-            if (masteryPackage.SubPackages) {
-                for (const subPkg of masteryPackage.SubPackages) {
-                    for (const drop of subPkg.Drops) {
+    /**
+     * Generates mastery data in a reverse order. It uses already registered
+     * mastery packages, so MUST be rerun when changing mastery data.
+     * This could be considered redundant, but this allows for faster access to
+     * location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`.
+     * @param gameVersions Game version(s) to process.
+     */
+    rebuildDropIndexes(...gameVersions: GameVersion[]) {
+        for (const gv of gameVersions) {
+            this.unlockableMasteryData[gv] = new Map()
+
+            for (const pkg of this.masteryPackages[gv].values()) {
+                if (pkg.SubPackages) {
+                    for (const subPkg of pkg.SubPackages) {
+                        for (const drop of subPkg.Drops) {
+                            this.unlockableMasteryData[gv].set(drop.Id, {
+                                Location: pkg.LocationId,
+                                SubPackageId: subPkg.Id,
+                                Level: drop.Level,
+                            })
+                        }
+                    }
+                } else {
+                    for (const drop of pkg.Drops) {
                         this.unlockableMasteryData[gv].set(drop.Id, {
-                            Location: masteryPackage.LocationId,
-                            SubPackageId: subPkg.Id,
+                            Location: pkg.LocationId,
                             Level: drop.Level,
                         })
                     }
-                }
-            } else {
-                for (const drop of masteryPackage.Drops) {
-                    this.unlockableMasteryData[gv].set(drop.Id, {
-                        Location: masteryPackage.LocationId,
-                        Level: drop.Level,
-                    })
                 }
             }
         }
@@ -123,23 +135,6 @@ export class MasteryService {
         return this.unlockableMasteryData[gameVersion].get(unlockable.Id)
     }
 
-    /**
-     * Exact same thing as {@link getMasteryData}.
-     */
-    getMasteryDataForDestination(
-        locationParentId: string,
-        gameVersion: GameVersion,
-        userId: string,
-        difficulty?: string,
-    ): MasteryData[] {
-        return this.getMasteryData(
-            locationParentId,
-            gameVersion,
-            userId,
-            difficulty,
-        )
-    }
-
     getMasteryDataForSubPackage(
         locationParentId: string,
         subPackageId: string,
@@ -148,7 +143,7 @@ export class MasteryService {
     ): MasteryData {
         // Since we're getting a subpackage, we know there will only be one entry in this array.
         // If the array is empty it will return undefined.
-        return this.getMasteryData(
+        return this.getMasteryDataForDestination(
             locationParentId,
             gameVersion,
             userId,
@@ -156,6 +151,13 @@ export class MasteryService {
         )[0]
     }
 
+    /**
+     * Returns mastery data for a location (either a parent or sub-location). For mastery data of a destination, use {@link getMasteryDataForDestination}.
+     * @param locationId The location's ID.
+     * @param gameVersion The game version.
+     * @param userId The user's ID.
+     * @returns The mastery data.
+     */
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,
@@ -167,7 +169,7 @@ export class MasteryService {
 
         assert.ok(location, "cannot get mastery data for unknown location")
 
-        const masteryData = this.getMasteryData(
+        const masteryData = this.getMasteryDataForDestination(
             location.Properties.ParentLocation ?? location.Id,
             gameVersion,
             userId,
@@ -180,27 +182,34 @@ export class MasteryService {
     }
 
     /**
-     * Get generic completion data stored in a user's profile. Called by both `getLocationCompletion` and `getFirearmCompletion`.
+     * Get generic completion data stored in a user's profile.
      * @param userId The id of the user.
      * @param gameVersion The game version.
      * @param locationParentId The location's parent ID, used for progression storage @since v7.0.0
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
      * @param subPackageId The subpackage id you want.
+     * @param xpPerLevel The amount of XP required to level up, passed to `levelToXpRequired` function.
+     * @returns The completion data, minus any location-specific fields.
      */
-    private getCompletionData(
+    private getGenericCompletionData(
         userId: string,
         gameVersion: GameVersion,
         locationParentId: string,
         maxLevel: number,
-        levelToXpRequired: (level: number) => number,
+        levelToXpRequired: (level: number, xpPerLevel?: number) => number,
         subPackageId?: string,
-    ) {
+        xpPerLevel?: number,
+    ): GenericCompletionData {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
+        assert.ok(userProfile, `user profile ${userId} not found`)
+
         const parent =
             userProfile.Extensions.progression.Locations[locationParentId]
+
+        assert.ok(parent, `parent ${locationParentId} not found`)
 
         const completionData: ProgressionData = subPackageId
             ? (parent[subPackageId as keyof typeof parent] as ProgressionData)
@@ -212,9 +221,12 @@ export class MasteryService {
             maxLevel,
         )
 
-        const nextLevelXp: number = levelToXpRequired(nextLevel)
+        const nextLevelXp: number = levelToXpRequired(nextLevel, xpPerLevel)
 
-        const thisLevelXp: number = levelToXpRequired(completionData.Level)
+        const thisLevelXp: number = levelToXpRequired(
+            completionData.Level,
+            xpPerLevel,
+        )
 
         return {
             Level: completionData.Level,
@@ -268,10 +280,14 @@ export class MasteryService {
             ? getConfig<Unlockable[]>("SniperUnlockables", false).find(
                   (unlockable) => unlockable.Id === subPackageId,
               )?.Properties.Name
-            : undefined
+            : null
+
+        if (isSniper) {
+            assert.ok(name, `unlockable ${subPackageId} not found`)
+        }
 
         return {
-            ...this.getCompletionData(
+            ...this.getGenericCompletionData(
                 userId,
                 gameVersion,
                 locationParentId,
@@ -283,6 +299,7 @@ export class MasteryService {
                       ? xpRequiredForEvergreenLevel
                       : xpRequiredForLevel,
                 subPackageId,
+                masteryPkg.XpPerLevel,
             ),
             Id: isSniper ? subPackageId! : masteryPkg.LocationId,
             SubLocationId: isSniper ? "" : subLocationId,
@@ -327,7 +344,7 @@ export class MasteryService {
             })
     }
 
-    private getMasteryData(
+    getMasteryDataForDestination(
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
@@ -360,7 +377,9 @@ export class MasteryService {
 
             // Add the main unlockable to the set to generate the page properly
             if (isSniper) {
-                masteryPkg.SubPackages.forEach((pkg) => dropIdSet.add(pkg.Id))
+                for (const pkg of masteryPkg.SubPackages) {
+                    dropIdSet.add(pkg.Id)
+                }
             }
 
             if (!dropIdSet || dropIdSet.size === 0) {

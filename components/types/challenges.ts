@@ -25,6 +25,14 @@ import {
 } from "./types"
 import { gameDifficulty } from "../utils"
 
+export type ChallengeType =
+    | "Statistic"
+    | "contract"
+    | "global"
+    | "location"
+    | "parentlocation"
+    | string
+
 export interface SavedChallenge {
     Id: string
     Name: string
@@ -42,11 +50,11 @@ export interface SavedChallenge {
     LocationId: string
     ParentLocationId: string
     // H1 challenges do not have Type
-    Type?: "contract" | string
+    Type?: ChallengeType
     RuntimeType: "Hit" | string
     Xp: number
     XpModifier?: unknown
-    DifficultyLevels: (keyof typeof gameDifficulty)[]
+    DifficultyLevels?: (keyof typeof gameDifficulty)[]
     OrderIndex: number
     Definition: MissionManifestObjective["Definition"] & {
         Scope: ContextScopedStorageLocation

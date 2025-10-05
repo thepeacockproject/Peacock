@@ -20,9 +20,7 @@
                 "Definition": {
                     "States": {
                         "Start": {
-                            "HouseEnteredEvent": {
-                                "Transition": "Success"
-                            }
+                            "HouseEnteredEvent": { "Transition": "Success" }
                         }
                     }
                 }
@@ -54,23 +52,14 @@
                 "Definition": {
                     "States": {
                         "Start": {
-                            "IntelGatheredEvent": {
-                                "Transition": "Success"
-                            }
+                            "IntelGatheredEvent": { "Transition": "Success" }
                         }
                     }
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                }
+                "OnActive": { "IfCompleted": { "Visible": true } }
             },
             {
                 "_comment": "----- Kill Alma Reynard -----",
@@ -90,16 +79,9 @@
                     }
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                }
+                "OnActive": { "IfCompleted": { "Visible": true } }
             }
         ],
         "Bricks": ["assembly:/_PRO/scenes/missions/sheep/mission_sheep.brick"],
@@ -107,6 +89,14 @@
             "assembly:/_PRO/scenes/missions/sheep/dev_sheep.brick"
         ],
         "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/sheep/vr_overrides_sheep_2_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/sheep/vr_overrides_sheep_ps4_vr1.brick"
+                ]
+            },
             {
                 "Quality": "base",
                 "Bricks": [
@@ -125,10 +115,7 @@
                     "assembly:/_pro/scenes/missions/sheep/difficulty_easy_newzealand_sheep.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -166,8 +153,8 @@
         "Type": "mission",
         "Release": "2.2.x",
         "Drops": ["ACCESS_HIT_FLAMINGO"],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.654626Z",
+        "Entitlements": ["LOCATION_NEWZEALAND"],
+        "LastUpdate": "2025-03-27T14:29:02.5739922Z",
         "PublicId": "020676446047"
     },
     "UserData": {}

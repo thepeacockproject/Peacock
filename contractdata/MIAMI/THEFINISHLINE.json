@@ -78,9 +78,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "TargetEscapeStarted": {
-                                "Transition": "Success"
-                            }
+                            "TargetEscapeStarted": { "Transition": "Success" }
                         }
                     }
                 }
@@ -96,11 +94,7 @@
                         "Completed"
                     ]
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_FLAMINGO_ROBERT_ESCAPED",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_FLAMINGO_ROBERT_ESCAPING"
@@ -115,9 +109,7 @@
                             }
                         },
                         "TargetIsEscaping": {
-                            "TargetEscaped": {
-                                "Transition": "Failure"
-                            },
+                            "TargetEscaped": { "Transition": "Failure" },
                             "Kill": {
                                 "Condition": {
                                     "$eq": [
@@ -140,11 +132,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
-                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -164,10 +164,7 @@
                     "assembly:/_pro/scenes/missions/miami/difficulty_easy_miami_flamingo.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -207,18 +204,18 @@
         "Order": 50,
         "Release": "2.0.x",
         "Opportunities": [
-            "7f5ba93a-7011-4194-94c1-8413d8adb22e",
-            "b57c90e2-4f18-44e7-a2e9-4d950f519246",
-            "604e9a0c-db5c-4468-a7cd-fd0db2cab902",
-            "21c55940-a7d5-4c6f-9a76-7434e6aa0f82",
             "97568c11-92bc-47d1-af0d-531fc138b1e4",
             "5d9f606b-0390-4942-81f3-3b98e5e85985",
-            "0be63e06-94ad-42b2-841a-a79664c45bc9"
+            "21c55940-a7d5-4c6f-9a76-7434e6aa0f82",
+            "0be63e06-94ad-42b2-841a-a79664c45bc9",
+            "604e9a0c-db5c-4468-a7cd-fd0db2cab902",
+            "b57c90e2-4f18-44e7-a2e9-4d950f519246",
+            "7f5ba93a-7011-4194-94c1-8413d8adb22e"
         ],
         "RequiredUnlockable": "ACCESS_HIT_FLAMINGO",
         "Drops": ["ACCESS_HIT_HIPPO"],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.3770856Z",
+        "Entitlements": ["LOCATION_MIAMI"],
+        "LastUpdate": "2025-03-27T14:29:02.4102675Z",
         "PublicId": "011375586847"
     },
     "UserData": {}

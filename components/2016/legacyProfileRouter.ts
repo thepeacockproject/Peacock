@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -28,7 +28,7 @@ import { Router } from "express"
 import { controller } from "../controller"
 import { json as jsonMiddleware } from "body-parser"
 import { uuidRegex } from "../utils"
-import { compileRuntimeChallenge } from "../candle/challengeHelpers"
+import { compileRuntimeChallengeOnly } from "../candle/challengeHelpers"
 import { GetChallengeProgressionBody } from "../types/gameSchemas"
 
 const legacyProfileRouter = Router()
@@ -49,7 +49,10 @@ legacyProfileRouter.post(
             false,
         )
 
-        const json = controller.resolveContract(req.body.contractId)
+        const json = controller.resolveContract(
+            req.body.contractId,
+            req.gameVersion,
+        )
 
         if (!json) {
             log(
@@ -74,16 +77,8 @@ legacyProfileRouter.post(
                 ),
             )
                 .flat()
-                .map(
-                    (challengeData) =>
-                        compileRuntimeChallenge(
-                            challengeData,
-                            controller.challengeService.getPersistentChallengeProgression(
-                                req.jwt.unique_name,
-                                challengeData.Id,
-                                req.gameVersion,
-                            ),
-                        ).Challenge,
+                .map((challengeData) =>
+                    compileRuntimeChallengeOnly(challengeData),
                 ),
         )
 
@@ -155,7 +150,6 @@ legacyProfileRouter.post(
                 MustBeSaved: progression.MustBeSaved,
             })
         }
-        // TODO: HELP! Please DM rdil if you see this
 
         res.json(challenges)
     },

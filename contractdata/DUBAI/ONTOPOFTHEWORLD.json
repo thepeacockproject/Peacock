@@ -9,11 +9,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
-                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -33,10 +41,7 @@
                     "assembly:/_pro/scenes/missions/golden/mission_gecko/difficulty_easy_gecko.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -74,11 +79,7 @@
                 "Id": "9571d196-8d67-4d94-8dad-6e2d970d7a91",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_GECKO_FAIL_ESCAPE_MARCUS",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_GECKO_OBJ_ESCAPE_MARCUS"
@@ -87,24 +88,14 @@
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "MarcusEscapeStarted": {
-                                "Transition": "Countdown"
-                            }
+                            "MarcusEscapeStarted": { "Transition": "Countdown" }
                         },
                         "Countdown": {
-                            "MarcusEscapeFoiled": {
-                                "Transition": "Success"
-                            },
+                            "MarcusEscapeFoiled": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 20.0
-                                },
+                                "Condition": { "$after": 20 },
                                 "Transition": "Failure"
                             },
                             "Kill": {
@@ -125,11 +116,7 @@
                 "Id": "e9722da6-65e2-49b1-b951-a82efc54ea35",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_CONTRACT_GECKO_FAIL_ESCAPE_INGRAM",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_GECKO_OBJ_ESCAPE_INGRAM"
@@ -138,24 +125,14 @@
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "IngramEscapeStarted": {
-                                "Transition": "Countdown"
-                            }
+                            "IngramEscapeStarted": { "Transition": "Countdown" }
                         },
                         "Countdown": {
-                            "IngramEscapeFoiled": {
-                                "Transition": "Success"
-                            },
+                            "IngramEscapeFoiled": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 20.0
-                                },
+                                "Condition": { "$after": 20 },
                                 "Transition": "Failure"
                             },
                             "Kill": {
@@ -187,12 +164,7 @@
         "BriefingVideo": "briefing_gecko",
         "DebriefingVideo": "debriefing_gecko",
         "Type": "mission",
-        "Release": {
-            "Major": 3,
-            "Minor": 0,
-            "Build": 0,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 0, "Build": 0, "Revision": -1 },
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
@@ -203,7 +175,7 @@
             "c52dc088-cc41-4313-a779-15b4bb3ed74a"
         ],
         "Entitlements": ["LOCATION_GOLDEN"],
-        "LastUpdate": "2022-01-20T18:29:24.4235346Z",
+        "LastUpdate": "2025-03-27T14:29:02.4407762Z",
         "PublicId": "027004097647"
     },
     "UserData": {}

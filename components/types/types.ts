@@ -126,8 +126,9 @@ export interface RequestWithJwt<
     // TODO: Make this `unknown` instead, requires lots of changes elsewhere
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     RequestBody = any,
+    Params = core.ParamsDictionary,
 > extends Request<
-        core.ParamsDictionary,
+        Params,
         // eslint-disable-next-line
         any,
         RequestBody,
@@ -256,7 +257,7 @@ export interface ContractSession {
     compat: boolean
     currentDisguise: string
     difficulty: number
-    objectiveDefinitions: Map<string, unknown>
+    objectives: Map<string, MissionManifestObjective>
     objectiveStates: Map<string, string>
     objectiveContexts: Map<string, unknown>
     /**
@@ -310,6 +311,11 @@ export interface ContractSession {
      * @since v7.0.0
      */
     firstKillTimestamp?: number
+    /**
+     * If true, it is not possible anymore to get an SA rating.
+     * @since v8.0.0
+     */
+    silentAssassinLost?: boolean
 }
 
 /**
@@ -410,6 +416,16 @@ export type MissionStory = {
     Image: string
 }
 
+export type PlayerProfileLocation = {
+    LocationId: string
+    Xp: number
+    ActionXp: number
+    LocationProgression?: {
+        Level: number
+        MaxLevel: number
+    }
+}
+
 export type PlayerProfileView = {
     SubLocationData: {
         ParentLocation: Unlockable
@@ -423,17 +439,10 @@ export type PlayerProfileView = {
     PlayerProfileXp: {
         Total: number
         Level: number
+        Sublocations?: PlayerProfileLocation[]
         Seasons: {
             Number: number
-            Locations: {
-                LocationId: string
-                Xp: number
-                ActionXp: number
-                LocationProgression?: {
-                    Level: number
-                    MaxLevel: number
-                }
-            }[]
+            Locations: PlayerProfileLocation[]
         }[]
     }
 }
@@ -667,6 +676,7 @@ export type Unlockable = {
         Name?: string
         Description?: string
         UnlockOrder?: number
+        UnlockLevel?: string
         Location?: string
         Equip?: string[]
         GameAssets?: string[]
@@ -693,13 +703,8 @@ export type Unlockable = {
         /**
          * Inclusion data for an unlockable. The only known use for this is
          * sniper rifle unlockables for Sniper Assassin mode.
-         *
-         * With the `InclusionData` type added,
-         * I think this line can be `InclusionData: InclusionData`. --Moony
          */
-        InclusionData?: {
-            ContractTypes?: MissionType[] | null
-        } | null
+        InclusionData?: InclusionData
         /**
          * Item perks - only known use is for Sniper Assassin.
          */
@@ -944,8 +949,9 @@ export interface MissionManifestMetadata {
     GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[] | null
     GameVersion?: string | null
     ServerVersion?: string | null
-    AllowNonTargetKills?: boolean | null
+    NonTargetKillsAllowed?: boolean | null
     Difficulty?: "pro1" | string | null
+    OnlyNeoVR?: boolean | null
     CharacterSetup?:
         | {
               Mode: "singleplayer" | "multiplayer" | string
@@ -1020,6 +1026,7 @@ export interface GameChanger {
     Resource?: string[] | null
     Objectives?: MissionManifestObjective[] | null
     LongDescription?: string | null
+    ShowBasedOnObjectives?: boolean | null
     IsPrestigeObjective?: boolean
 }
 
@@ -1258,6 +1265,9 @@ export type CompiledChallengeTreeData = {
     }
     Type?: string
     UserCentricContract?: UserCentricContract
+    TypeHeader?: string
+    TypeIcon?: string
+    TypeTitle?: string
 }
 
 export interface InclusionData {
@@ -1310,10 +1320,24 @@ export interface CompiledChallengeRuntimeData {
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"
 export type ImageLoadingStrategy = "SAVEASREQUESTED" | "ONLINE" | "OFFLINE"
 
-export type Flags = Record<
-    string,
-    { desc: string; default: boolean | string | number }
->
+export type Flag = {
+    category?: string
+    title: string
+    desc: string
+    possibleValues?: string[]
+    default: boolean | string | number
+    showIngame?: boolean
+    requiresGameRestart?: boolean
+    requiresPeacockRestart?: boolean
+}
+
+export type FlagSection = {
+    title: string
+    desc: string
+    flags: Record<string, Flag>
+}
+
+export type Flags = Record<string, FlagSection>
 
 /**
  * A "hit" object.
@@ -1590,3 +1614,12 @@ export type OfficialSublocation = {
     Xp: number
     ActionXp: number
 }
+
+export type MILLocations = {
+    [location in `LOCATION_${string}`]: string[] | string
+}
+
+export type MissionsInLocation = Record<
+    GameVersion,
+    MILLocations & { [key: string]: MILLocations | string[] }
+>

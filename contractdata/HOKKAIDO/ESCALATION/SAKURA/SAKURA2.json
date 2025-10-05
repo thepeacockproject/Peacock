@@ -6,7 +6,9 @@
                 "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5",
                 "Category": "primary",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -42,7 +44,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -97,9 +101,15 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
-                            "Dexter_Disguise_Gone": { "Transition": "Failure" }
+                            "Dexter_Disguise_Gone": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -109,7 +119,24 @@
             "assembly:/_pro/scenes/missions/hokkaido/gamehanger_check_if_dexter_disguise_is_gone.brick"
         ],
         "GameChangers": [],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "7f5d1e2a-9c89-48c2-a370-85d851c3cc21",
@@ -127,12 +154,17 @@
         "Type": "escalation",
         "InGroup": "85a2b618-2e3c-444f-931c-b89d566e45f7",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "8c586beb-84cc-4783-83be-53a28f455d68" },
-            { "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5" }
+            {
+                "IsNew": true,
+                "Id": "8c586beb-84cc-4783-83be-53a28f455d68"
+            },
+            {
+                "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:48.9450285Z",
         "PublicId": "010767383147",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_HOKKAIDO"]
     },
     "UserData": {}
 }
