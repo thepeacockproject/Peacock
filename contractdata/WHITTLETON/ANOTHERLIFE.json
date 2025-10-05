@@ -78,9 +78,7 @@
                                     "$dec": "update_counter"
                                 }
                             },
-                            "AllCluesCollected": {
-                                "Transition": "Success"
-                            }
+                            "AllCluesCollected": { "Transition": "Success" }
                         }
                     }
                 }
@@ -91,15 +89,9 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
@@ -126,15 +118,9 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "ContextListeners": {
@@ -150,28 +136,18 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "BeginTimer": {
-                                "Transition": "TimerRunning"
-                            }
+                            "BeginTimer": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 300
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 300 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             },
-                            "EndTimer": {
-                                "Transition": "Failure"
-                            }
+                            "EndTimer": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -183,11 +159,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
-                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -207,10 +191,7 @@
                     "assembly:/_pro/scenes/missions/skunk/difficulty_easy_vermont_skunk.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -259,8 +240,8 @@
             "03d541fb-1ad3-446f-b762-7d6adab99acd",
             "024bb599-7dd6-42b0-a60c-5077ce66fa1b"
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.6836671Z",
+        "Entitlements": ["LOCATION_NORTHAMERICA"],
+        "LastUpdate": "2025-03-27T14:29:02.5883075Z",
         "PublicId": "022963007447"
     },
     "UserData": {}

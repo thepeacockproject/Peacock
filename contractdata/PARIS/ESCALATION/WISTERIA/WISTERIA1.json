@@ -5,7 +5,9 @@
                 "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_WISTERIA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WISTERIA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_WISTERIA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -59,7 +61,26 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "46a1144c-238d-40c5-8a6e-2dd5283f32e4",
@@ -74,11 +95,13 @@
         "Type": "escalation",
         "InGroup": "54e6c794-2855-4ecf-acc2-d7710d5d96d1",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955" }
+            {
+                "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:52.7419218Z",
         "PublicId": "002637983447",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

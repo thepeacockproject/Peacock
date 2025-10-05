@@ -5,7 +5,9 @@
                 "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_WISTERIA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WISTERIA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_WISTERIA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -66,7 +68,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_WISTERIA_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WISTERIA_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_WISTERIA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -117,7 +121,26 @@
             "3a22b9d5-18d7-4051-adae-87bc6769b36f",
             "576b385f-2213-4f72-a17c-c346338d3d9f"
         ],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "15e2b1e0-2929-4f89-b166-cf44e1736a80",
@@ -132,14 +155,23 @@
         "Type": "escalation",
         "InGroup": "54e6c794-2855-4ecf-acc2-d7710d5d96d1",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "576b385f-2213-4f72-a17c-c346338d3d9f" },
-            { "Id": "b2fcac60-8cb9-433d-9072-341a608fdd72" },
-            { "Id": "3a22b9d5-18d7-4051-adae-87bc6769b36f" },
-            { "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955" }
+            {
+                "IsNew": true,
+                "Id": "576b385f-2213-4f72-a17c-c346338d3d9f"
+            },
+            {
+                "Id": "b2fcac60-8cb9-433d-9072-341a608fdd72"
+            },
+            {
+                "Id": "3a22b9d5-18d7-4051-adae-87bc6769b36f"
+            },
+            {
+                "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:52.9919215Z",
         "PublicId": "002511888747",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     },
     "UserData": {}
 }

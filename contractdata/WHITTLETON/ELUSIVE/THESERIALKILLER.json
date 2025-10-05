@@ -10,13 +10,44 @@
         ],
         "Objectives": [
             {
+                "_comment": "--- Eliminate The Censor ---",
                 "Id": "7eabd1c9-bf88-4d96-86f1-ea089492414c",
-                "Primary": true,
+                "Category": "primary",
                 "IsHidden": true,
-                "SuccessEvent": {
-                    "EventName": "Kill",
-                    "EventValues": {
-                        "RepositoryId": "d21efe38-c577-49bf-95f0-e72891f004bb"
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc Skunk_ElusiveTarget_AlabamaSlammer_M_PRO135671_Name",
+                "BriefingText": "$loc UI_CONTRACT_ALABAMASLAMMER_OBJ_ELIMINATETARGET_NAME",
+                "LongBriefingText": "$loc Skunk_ElusiveTarget_AlabamaSlammer_M_PRO135671_Description",
+                "Image": "Images/Actors/elusive_AlabamaSlammer_face.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ALABAMASLAMMER_OBJ_ELIMINATETARGET_NAME"
+                },
+                "DisplayAsKillObjective": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d21efe38-c577-49bf-95f0-e72891f004bb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
                     }
                 }
             }
@@ -26,11 +57,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
-                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -46,6 +85,7 @@
     "Metadata": {
         "Id": "9f5b8d74-1f70-49ea-94e2-21d2de3e5cf3",
         "CodeName_Hint": "AlabamaSlammer",
+        "Release": "2.0.x Elusive",
         "Type": "elusive",
         "Title": "UI_CONTRACT_ALABAMASLAMMER_TITLE",
         "Description": "UI_CONTRACT_ALABAMASLAMMER_DESC",
@@ -54,9 +94,11 @@
         "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
         "TileImage": "images/contracts/elusive/S2_AlabamaSlammer/Title.jpg",
         "Location": "LOCATION_NORTHAMERICA",
+        "IsPublished": true,
+        "LastUpdate": "2025-03-27T14:29:02.9144303Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "PublicId": "022497523647",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "Entitlements": ["LOCATION_NORTHAMERICA"],
         "Season": 2
     },
     "UserData": {}

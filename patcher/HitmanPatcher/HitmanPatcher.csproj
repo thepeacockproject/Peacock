@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net46</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <PlatformTarget>x64</PlatformTarget>
+        <Prefer32bit>true</Prefer32bit>
+        
+        <RootNamespace>HitmanPatcher</RootNamespace>
+        <AssemblyName>PeacockPatcher</AssemblyName>
+
+        <Title>Peacock Patcher</Title>
+        <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
+        <Company>The Peacock Project</Company>
+        <Product>Peacock Patcher</Product>
+        <Copyright>Copyright © 2020-2025 grappigegovert &amp; The Peacock Project</Copyright>
+        <AssemblyVersion>9.0.1.0</AssemblyVersion>
+        <FileVersion>9.0.1.0</FileVersion>
+
+        <ApplicationIcon>patcher.ico</ApplicationIcon>
+        <UseWindowsForms>true</UseWindowsForms>
+
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.26">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Novikov_error.png" />
+        <None Remove="Novikov_standard.png" />
+        <None Remove="Novikov_success.png" />
+        <None Remove="patcher.ico" />
+        <EmbeddedResource Include="Novikov_error.png" />
+        <EmbeddedResource Include="Novikov_standard.png" />
+        <EmbeddedResource Include="Novikov_success.png" />
+        <EmbeddedResource Include="patcher.ico" />
+        <EmbeddedResource Remove="MainForm.resx" />
+        <EmbeddedResource Remove="OptionsForm.resx" />
+        <EmbeddedResource Remove="TrayOptionsForm.resx" />
+        <Compile Update="MainForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="OptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="TrayOptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+    </ItemGroup>
+</Project>

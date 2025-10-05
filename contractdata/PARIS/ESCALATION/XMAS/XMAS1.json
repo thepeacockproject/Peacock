@@ -61,7 +61,9 @@
                                 "Condition": {
                                     "$eq": ["$.ForceUpdateCounters", 0]
                                 },
-                                "Actions": { "$inc": "ForceUpdateCounters" }
+                                "Actions": {
+                                    "$inc": "ForceUpdateCounters"
+                                }
                             },
                             "Kill": [
                                 {
@@ -198,7 +200,9 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                { "Transition": "Start" }
+                                {
+                                    "Transition": "Start"
+                                }
                             ]
                         }
                     }
@@ -217,7 +221,28 @@
             "52c22399-fe49-48d4-bc5c-bf1726616444",
             "25ff09ba-134e-4292-901b-a43efc73c2ae"
         ],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_SOUTHERN_COMFORT1",
@@ -228,6 +253,6 @@
         "Location": "LOCATION_PARIS_NOEL",
         "InGroup": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
         "TileImage": "images/contracts/escalation/contractescalation_southern_comfort.jpg",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_PARIS"]
     }
 }

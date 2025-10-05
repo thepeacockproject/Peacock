@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -35,17 +35,9 @@ import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 import { configs } from "./configSwizzleManager"
 import * as crypto from "node:crypto"
 import * as fs from "node:fs"
+import { SMFSupport } from "./smfSupport"
 
 const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
-
-const modFrameworkDataPath: string | false =
-    (process.env.LOCALAPPDATA &&
-        join(
-            process.env.LOCALAPPDATA,
-            "Simple Mod Framework",
-            "lastDeploy.json",
-        )) ||
-    false
 
 export async function toolsMenu(options: { skip: boolean }) {
     const init = await prompts({
@@ -139,11 +131,29 @@ async function exportDebugInfo(skipEncrypt: boolean): Promise<void> {
 
     await zip.writeFilePromise(zip.resolve("meta.json" as Filename), debugJson)
 
-    if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
+    const patcherConfigPath = join(
+        process.env.APPDATA ?? "",
+        "PeacockProject",
+        "peacock_patcher2.conf",
+    )
+    const modFrameworkDataPaths = SMFSupport.modFrameworkDataPaths
+
+    if (existsSync(patcherConfigPath)) {
         await zip.writeFilePromise(
-            zip.resolve("lastDeploy.json" as Filename),
-            readFileSync(modFrameworkDataPath).toString(),
+            zip.resolve("peacock_patcher2.conf" as Filename),
+            readFileSync(patcherConfigPath),
         )
+    }
+
+    if (modFrameworkDataPaths) {
+        for (const dataPath of modFrameworkDataPaths) {
+            if (!existsSync(dataPath)) continue
+            await zip.writeFilePromise(
+                zip.resolve("lastDeploy.json" as Filename),
+                readFileSync(dataPath).toString(),
+            )
+            break
+        }
     }
 
     await copyIntoZip(zip, "logs")
@@ -233,7 +243,7 @@ async function downloadContract(): Promise<void> {
     log(LogLevel.INFO, "Contract downloading tool - powered by HITMAPS")
     log(
         LogLevel.INFO,
-        "NOTE: This tool only works for HITMAN 3 contracts that are on Stadia, Steam, Epic, or PlayStation.",
+        "NOTE: This tool only works for HITMAN 3 contracts that are on Steam, Epic, or PlayStation.",
     )
 
     const { contractId } = await prompts({
@@ -242,7 +252,7 @@ async function downloadContract(): Promise<void> {
         message: "Enter the contract ID (with dashes)",
     })
 
-    const result = await Controller._hitmapsFetchContract(contractId)
+    const result = await Controller._hitmapsFetchContract(contractId, "h3")
 
     if (!result) {
         log(

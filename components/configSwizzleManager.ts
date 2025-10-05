@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -109,6 +109,7 @@ import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.j
 import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
+import VersusUnlockables from "../static/VersusUnlockables.json"
 import LegacyStatisticsTemplate from "../static/LegacyStatisticsTemplate.json"
 import DynresModal from "../static/DynresModal.json"
 import type { GameVersion } from "./types/types"
@@ -211,6 +212,7 @@ const configs = {
     HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
     SniperUnlockables,
+    VersusUnlockables,
     LegacyStatisticsTemplate,
     DynresModal,
 }

@@ -80,7 +80,9 @@
                                 "Condition": {
                                     "$eq": ["$.ForceUpdateCounters", 0]
                                 },
-                                "Actions": { "$inc": "ForceUpdateCounters" }
+                                "Actions": {
+                                    "$inc": "ForceUpdateCounters"
+                                }
                             },
                             "ItemPickedUp": {
                                 "Condition": {
@@ -118,10 +120,14 @@
                                             "$.GoldTotal"
                                         ]
                                     },
-                                    "Actions": { "$set": ["GoldRemaining", 0] },
+                                    "Actions": {
+                                        "$set": ["GoldRemaining", 0]
+                                    },
                                     "Transition": "Success"
                                 },
-                                { "Transition": "Start" }
+                                {
+                                    "Transition": "Start"
+                                }
                             ]
                         },
                         "Success": {
@@ -142,6 +148,23 @@
                     }
                 }
             }
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon.brick",
+                    "assembly:/_pro/scenes/missions/greedy/mission_raccoon/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon.brick"
+                ]
+            }
         ]
     },
     "Metadata": {
@@ -154,8 +177,12 @@
         "InGroup": "9a461f89-86c5-44e4-998e-f2f66b496aa7",
         "TileImage": "images/contracts/escalation/contractescalation_hedgebush.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1" },
-            { "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37" }
+            {
+                "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1"
+            },
+            {
+                "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37"
+            }
         ],
         "Entitlements": ["H2_LEGACY_EXPANSION"]
     }

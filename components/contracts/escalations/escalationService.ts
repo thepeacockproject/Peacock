@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -26,20 +26,6 @@ import type {
 } from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
-
-/**
- * Put a group id in here to hide it from the menus on 2016.
- * This should only be used if:
- *   - The content is custom.
- *   - The content is on a 2016 map.
- */
-export const no2016 = [
-    "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
-    "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
-    "115425b1-e797-47bf-b517-410dc7507397",
-    "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-    "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
-]
 
 /**
  * An array of contract types to determine whether the escalation service

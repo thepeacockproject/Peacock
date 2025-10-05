@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -53,12 +53,20 @@ export function getModernStashItemsData(
     gameVersion: GameVersion,
     contractData: MissionManifest | undefined,
 ) {
+    let slotname
+
+    if (!uuidRegex.test(query.slotid as string)) {
+        slotname = loadoutSlots[query.slotid as number]
+    } else {
+        slotname = "container"
+    }
+
     return inventory
         .filter((item) => {
             if (
-                (query.slotname === "gear" &&
+                (slotname === "gear" &&
                     contractData?.Peacock?.noGear === true) ||
-                (query.slotname === "concealedweapon" &&
+                (slotname === "concealedweapon" &&
                     contractData?.Peacock?.noCarriedWeapon === true)
             ) {
                 return false
@@ -73,13 +81,10 @@ export function getModernStashItemsData(
 
             return (
                 item.Unlockable.Properties.LoadoutSlot && // only display items
-                (!query.slotname ||
-                    ((uuidRegex.test(query.slotid as string) || // container
-                        query.slotname === "stashpoint") && // stashpoint
-                        item.Unlockable.Properties.LoadoutSlot !==
-                            "disguise") || // container or stashpoint => display all items
-                    item.Unlockable.Properties.LoadoutSlot ===
-                        query.slotname) && // else: display items for requested slot
+                (((slotname === "container" || // container
+                    slotname === "stashpoint") && // stashpoint
+                    item.Unlockable.Properties.LoadoutSlot !== "disguise") || // container or stashpoint => display all items
+                    item.Unlockable.Properties.LoadoutSlot === slotname) && // else: display items for requested slot
                 (query.allowcontainers === "true" ||
                     !item.Unlockable.Properties.IsContainer) &&
                 (query.allowlargeitems === "true" ||
@@ -145,13 +150,6 @@ export function getModernStashData(
             gameVersion,
         ),
     )
-
-    if (query.slotname?.endsWith(query.slotid!.toString())) {
-        query.slotname = query.slotname.slice(
-            0,
-            -query.slotid!.toString().length,
-        ) // weird
-    }
 
     const stashData: ModernStashData = {
         SlotId: query.slotid!,
@@ -403,7 +401,8 @@ export function getSafehouseCategory(
             item.Unlockable.Type === "loadoutunlock" ||
             item.Unlockable.Type === "difficultyunlock" ||
             item.Unlockable.Type === "agencypickup" ||
-            item.Unlockable.Type === "challengemultiplier"
+            item.Unlockable.Type === "challengemultiplier" ||
+            item.Unlockable.Type === "emote"
         ) {
             continue // these types should not be displayed when not asked for
         } else if (item.Unlockable.Properties.InclusionData) {

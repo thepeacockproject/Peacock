@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -29,15 +29,11 @@ type ApiLeaderboardEntry = {
             displayName: string
         }
     }
-    gameVersion: {
-        id: number
-        name: string
-    }
+    entryId: number
     platformId: string
-    platform: {
-        id: number
-        name: string
-    }
+    // TODO: finish this type
+    // https://darca.localhost/leaderboards/contracts/00000000-0000-0000-0000-000000000200/h3/steam/normal/entries?page=1
+    detailedscore: unknown
 }
 
 type GameFacingLeaderboardData = {
@@ -52,7 +48,8 @@ export async function getLeaderboardEntries(
     contractId: string,
     platform: JwtData["platform"],
     gameVersion: GameVersion,
-    difficultyLevel?: string,
+    difficultyLevel: string | undefined,
+    page: number,
 ): Promise<GameFacingLeaderboardData | undefined> {
     let difficulty = "unset"
 
@@ -79,7 +76,7 @@ export async function getLeaderboardEntries(
     const response: GameFacingLeaderboardData = {
         Entries: [],
         Contract: contract,
-        Page: 0,
+        Page: page,
         HasMore: false,
         LeaderboardType: "singleplayer",
     }
@@ -87,14 +84,12 @@ export async function getLeaderboardEntries(
     const host = getFlag("leaderboardsHost") as string
 
     const entries = (
-        await axios.post<ApiLeaderboardEntry[]>(
-            `${host}/leaderboards/entries/${contractId}`,
+        await axios.get<ApiLeaderboardEntry[]>(
+            `${host}/leaderboards/contracts/${contractId}/${gameVersion}/${platform}/${difficulty}/entries`,
             {
-                gameVersion,
-                difficulty,
-                platform,
-            },
-            {
+                params: {
+                    page: page + 1, // game paginates base-0, server paginates base-1
+                },
                 headers: {
                     "Peacock-Version": PEACOCKVERSTRING,
                 },
@@ -102,10 +97,15 @@ export async function getLeaderboardEntries(
         )
     ).data
 
+    if (entries.length === 100) {
+        // educated guess since the API currently doesn't actually tell us
+        response.HasMore = true
+    }
+
     const ids: readonly string[] = entries.map((te) =>
         fakePlayerRegistry.index(
             te.LeaderboardData.Player.displayName,
-            te.platform.name,
+            platform,
             te.platformId,
         ),
     )
@@ -113,7 +113,6 @@ export async function getLeaderboardEntries(
     entries.forEach((entry, index) => {
         // @ts-expect-error Remapping on different types
         entry.LeaderboardData.Player = ids[index]
-        return entry
     })
 
     response.Entries = entries
