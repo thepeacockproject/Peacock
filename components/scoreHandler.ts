@@ -150,8 +150,6 @@ export function calculateScore(
             bonusId: "AllObjectivesCompletedBonus",
             condition:
                 gameVersion === "h1" ||
-                contractData.Metadata.Id ===
-                    "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
                 isTrueForEveryElement(
                     contractSession.objectives.values(),
                     (obj: MissionManifestObjective) =>
