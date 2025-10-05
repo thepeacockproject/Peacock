@@ -158,8 +158,12 @@
                     },
                     "States": {
                         "Start": {
-                            "LaptopHacked": { "Transition": "Success" },
-                            "Laptop_Destroyed": { "Transition": "Failure" }
+                            "LaptopHacked": {
+                                "Transition": "Success"
+                            },
+                            "Laptop_Destroyed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -174,7 +178,25 @@
         ],
         "Stashpoints": ["ea156a43-2020-4fee-b726-a5d01c2b0cc2"],
         "Entrances": ["da717656-934e-4783-8c36-65bf486cfdfa"],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_overrides_copperhead.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_overrides_copperhead.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "bab3704b-0bbb-4d0d-b5bf-ebf715f419cd",
@@ -189,14 +211,23 @@
         "Type": "escalation",
         "InGroup": "74739eda-6ed5-4318-a501-2fa0bd53ef5a",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "442b594f-4ac0-4505-b064-106ffc7eac85" },
-            { "Id": "17dc0dbf-a111-4582-b49e-1c8861dac2f4" },
-            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
-            { "Id": "07ee7019-d361-4726-b5bf-678bae0aa003" }
+            {
+                "IsNew": true,
+                "Id": "442b594f-4ac0-4505-b064-106ffc7eac85"
+            },
+            {
+                "Id": "17dc0dbf-a111-4582-b49e-1c8861dac2f4"
+            },
+            {
+                "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a"
+            },
+            {
+                "Id": "07ee7019-d361-4726-b5bf-678bae0aa003"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:45.4293983Z",
         "PublicId": "005769309447",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

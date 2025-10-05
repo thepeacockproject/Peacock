@@ -14,7 +14,9 @@
                 "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5",
                 "Category": "primary",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -50,7 +52,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -105,9 +109,15 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
-                            "Dexter_Disguise_Gone": { "Transition": "Failure" }
+                            "Dexter_Disguise_Gone": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -117,7 +127,9 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "Image": "images/contracts/escalation/ContractEscalation_Sakura_Fugu_Objective.jpg",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_3",
                 "BriefingName": "$loc UI_CONTRACT_FUGU_BRIEFING_NAME",
                 "Type": "statemachine",
@@ -157,7 +169,24 @@
             "c1c98a68-9b0b-420b-98ae-ce94b4c3c548",
             "51c8a014-dcc6-4714-a843-0295f9718c7a"
         ],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "d80abc24-f7d5-4e6b-a6c2-fd318135d160",
@@ -175,15 +204,26 @@
         "Type": "escalation",
         "InGroup": "85a2b618-2e3c-444f-931c-b89d566e45f7",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
-            { "Id": "c1c98a68-9b0b-420b-98ae-ce94b4c3c548" },
-            { "Id": "80325660-87e8-4942-b491-255f12f08a94" },
-            { "Id": "8c586beb-84cc-4783-83be-53a28f455d68" },
-            { "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5" }
+            {
+                "IsNew": true,
+                "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a"
+            },
+            {
+                "Id": "c1c98a68-9b0b-420b-98ae-ce94b4c3c548"
+            },
+            {
+                "Id": "80325660-87e8-4942-b491-255f12f08a94"
+            },
+            {
+                "Id": "8c586beb-84cc-4783-83be-53a28f455d68"
+            },
+            {
+                "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:49.1325497Z",
         "PublicId": "010287639947",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_HOKKAIDO"]
     },
     "UserData": {}
 }

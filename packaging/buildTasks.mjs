@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -84,7 +84,7 @@ export async function generateRequireTable() {
     const generatedPeacockRequireTableFile = await prettier.format(
         `/*
 *     The Peacock Project - a HITMAN server replacement.
-*     Copyright (C) 2021-2024 The Peacock Project Team
+*     Copyright (C) 2021-2025 The Peacock Project Team
 *
 *     This program is free software: you can redistribute it and/or modify
 *     it under the terms of the GNU Affero General Public License as published by
@@ -124,6 +124,7 @@ export async function packResources() {
     const start = Date.now()
 
     const contracts = await glob("contractdata/**/*.json")
+    contracts.sort()
     const b = []
     const el = []
 

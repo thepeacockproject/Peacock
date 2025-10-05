@@ -1,6 +1,5 @@
 {
     "Data": {
-        "EnableSaving": false,
         "EnableExits": {
             "$eq": ["$a406080b-a868-4b40-8033-26c99c2e0323", "Completed"]
         },
@@ -129,11 +128,28 @@
             "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_arrayan.brick"
         ],
         "GameChangers": [],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ],
+        "EnableSaving": false
     },
     "Metadata": {
         "Id": "cbdd649b-bada-441c-9b0d-1e2d7849b055",
-        "InGroup": "41ecf8ce-dfd4-4c08-8f44-52dedc3f089a",
         "IsPublished": true,
         "CreationTimestamp": "2018-10-09T08:11:39.0999646Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -144,13 +160,13 @@
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
         "Type": "escalation",
         "Release": "2.1.x Escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_arrayan.jpg",
+        "InGroup": "41ecf8ce-dfd4-4c08-8f44-52dedc3f089a",
         "GroupObjectiveDisplayOrder": [
             { "Id": "6969e4a2-c3fe-4d6b-ac3a-f24c1f85acd1" },
             { "Id": "a406080b-a868-4b40-8033-26c99c2e0323" }
         ],
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:00.4834655Z",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "LastUpdate": "2025-09-25T10:59:37.6306509Z",
         "PublicId": "012512825947"
     },
     "UserData": {}

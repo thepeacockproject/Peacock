@@ -6,7 +6,9 @@
                 "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5",
                 "Category": "primary",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SAKURA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SAKURA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_SAKURA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -35,7 +37,24 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "ae4db4c3-32bb-4717-8df3-83d8f77a6d0f",
@@ -53,11 +72,13 @@
         "Type": "escalation",
         "InGroup": "85a2b618-2e3c-444f-931c-b89d566e45f7",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5" }
+            {
+                "Id": "b6bfc5d9-a14d-45af-8838-771b7f6e84b5"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:48.8825492Z",
         "PublicId": "010486874447",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_HOKKAIDO"]
     },
     "UserData": {}
 }

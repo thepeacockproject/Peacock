@@ -1,9 +1,6 @@
 {
     "Data": {
         "EnableSaving": false,
-        "EnableExits": {
-            "$eq": ["$5b7aa6df-cbc4-4fc0-9427-ad910ac39303", "Completed"]
-        },
         "Objectives": [
             {
                 "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39303",
@@ -102,11 +99,27 @@
             "assembly:/_pro/scenes/missions/mumbai/gamechanger_protea_kashmirians_knowledge.brick"
         ],
         "GameChangers": [],
-        "GameChangerReferences": []
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "987c40f7-bf23-4f8d-84d6-169101edf953",
-        "InGroup": "a10472e4-0eb3-451d-814d-38837dd0f407",
         "IsPublished": true,
         "CreationTimestamp": "2018-11-21T10:34:16.3687604Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
@@ -117,9 +130,9 @@
         "ScenePath": "assembly:/_pro/scenes/missions/mumbai/scene_mongoose.entity",
         "Type": "escalation",
         "Release": "2.3.x escalation",
-        "TileImage": "images/contracts/escalation/contractescalation_mumbai_protea.jpg",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-15T12:40:22.3672697Z",
+        "InGroup": "a10472e4-0eb3-451d-814d-38837dd0f407",
+        "Entitlements": ["LOCATION_MUMBAI"],
+        "LastUpdate": "2025-09-25T10:59:41.2191281Z",
         "PublicId": "013360577747"
     },
     "UserData": {}

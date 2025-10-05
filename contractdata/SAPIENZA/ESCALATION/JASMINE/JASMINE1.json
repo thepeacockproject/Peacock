@@ -16,7 +16,9 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_JASMINE_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JASMINE_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -43,7 +45,9 @@
                                                     true
                                                 ]
                                             },
-                                            { "$eq": ["$Value.Accident", true] }
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
@@ -69,7 +73,24 @@
         ],
         "Bricks": [],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "f00e7bc4-11bf-4413-a8d2-64db6afd7ad4",
@@ -84,11 +105,13 @@
         "Type": "escalation",
         "InGroup": "641656f8-ab16-49c5-a09b-952738154b64",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b" }
+            {
+                "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:41.8825058Z",
         "PublicId": "003629202547",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_COASTALTOWN"]
     },
     "UserData": {}
 }

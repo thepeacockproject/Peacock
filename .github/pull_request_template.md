@@ -16,5 +16,5 @@ If you have not completed one of the steps below, you can create the pull reques
 When you have completed the checklist, press the "Ready for review" button.
 -->
 
--   [ ] I have run Prettier to reformat any changed files
--   [ ] I have verified my changes work
+- [ ] I have run Prettier to reformat any changed files
+- [ ] I have verified my changes work

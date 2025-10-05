@@ -35,24 +35,16 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "StartVettingTimer": {
-                                "Transition": "Failure"
-                            }
+                            "StartVettingTimer": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -66,12 +58,8 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_RAT_OBJ_VETTING"
@@ -86,13 +74,9 @@
                             }
                         },
                         "VettingTimer": {
-                            "VettingSuccessful": {
-                                "Transition": "Success"
-                            },
+                            "VettingSuccessful": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 57.0
-                                },
+                                "Condition": { "$after": 57 },
                                 "Transition": "Failure"
                             }
                         }
@@ -106,20 +90,12 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfFailed": { "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
                 "Definition": {
-                    "Constants": {
-                        "Goal": 2
-                    },
-                    "Context": {
-                        "Count": 0
-                    },
+                    "Constants": { "Goal": 2 },
+                    "Context": { "Count": 0 },
                     "States": {
                         "Start": {
                             "DefaultStartingLocation": {
@@ -130,9 +106,7 @@
                                     "Condition": {
                                         "$eq": ["$Value.IsTarget", true]
                                     },
-                                    "Actions": {
-                                        "$inc": "Count"
-                                    }
+                                    "Actions": { "$inc": "Count" }
                                 },
                                 {
                                     "Condition": {
@@ -157,13 +131,8 @@
                     ]
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
                 "ExcludeFromScoring": true,
                 "ObjectiveType": "setpiece",
@@ -180,11 +149,7 @@
                         "Targets": ["f9c04811-11e8-464d-9222-d79a636cebf3"]
                     },
                     "States": {
-                        "Start": {
-                            "DataGot": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "DataGot": { "Transition": "Success" } }
                     }
                 }
             },
@@ -202,20 +167,12 @@
                     ]
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "OnInactive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "ObjectiveType": "custom",
                 "Image": "Images/Contracts/Rat/rat_objective.jpg",
@@ -225,28 +182,18 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": {
-                        "OneTime": true
-                    },
+                    "Context": { "OneTime": true },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Active": {
                             "DataGot": {
-                                "Actions": {
-                                    "$set": ["OneTime", false]
-                                },
+                                "Actions": { "$set": ["OneTime", false] },
                                 "Transition": "Success"
                             }
                         },
                         "Success": {
                             "DefaultStartingLocation": {
-                                "Condition": {
-                                    "$eq": ["$.OneTime", true]
-                                },
+                                "Condition": { "$eq": ["$.OneTime", true] },
                                 "Transition": "Active"
                             }
                         }
@@ -282,19 +229,10 @@
                         "Completed"
                     ]
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
                 "ExcludeFromScoring": true,
                 "ObjectiveType": "custom",
@@ -331,19 +269,10 @@
                         "Completed"
                     ]
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
                 "ExcludeFromScoring": true,
                 "ObjectiveType": "custom",
@@ -356,12 +285,8 @@
                     "iconType": 17
                 },
                 "Definition": {
-                    "Constants": {
-                        "Goal": 2
-                    },
-                    "Context": {
-                        "Count": 0
-                    },
+                    "Constants": { "Goal": 2 },
+                    "Context": { "Count": 0 },
                     "States": {
                         "Start": {
                             "Kill": [
@@ -369,9 +294,7 @@
                                     "Condition": {
                                         "$eq": ["$Value.IsTarget", true]
                                     },
-                                    "Actions": {
-                                        "$inc": "Count"
-                                    }
+                                    "Actions": { "$inc": "Count" }
                                 },
                                 {
                                     "Condition": {
@@ -397,13 +320,8 @@
                     ]
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    },
-                    "IfInProgress": {
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
                 },
                 "ExcludeFromScoring": true,
                 "ObjectiveType": "setpiece",
@@ -420,11 +338,7 @@
                         "Targets": ["f9c04811-11e8-464d-9222-d79a636cebf3"]
                     },
                     "States": {
-                        "Start": {
-                            "DataGot": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "DataGot": { "Transition": "Success" } }
                     }
                 }
             },
@@ -451,10 +365,7 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
                 "Activation": {
                     "$eq": [
@@ -488,11 +399,19 @@
         "DevOnlyBricks": ["assembly:/_pro/scenes/missions/wet/dev_rat.brick"],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
-                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -512,10 +431,7 @@
                     "assembly:/_pro/scenes/missions/wet/difficulty_easy_rat.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -548,7 +464,7 @@
             "98265e5a-00ad-4189-b49e-b3ebf47798f8"
         ],
         "Entitlements": ["LOCATION_WET"],
-        "LastUpdate": "2021-11-09T14:55:15.3020082Z",
+        "LastUpdate": "2025-03-27T14:29:02.5584388Z",
         "PublicId": "030531277747"
     },
     "UserData": {}

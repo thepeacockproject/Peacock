@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -20,6 +20,7 @@ import { Router } from "express"
 import path from "path"
 import {
     castUserProfile,
+    fastClone,
     getMaxProfileLevel,
     LATEST_PROFILE_VERSION,
     nilUuid,
@@ -426,7 +427,9 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => res.send("0"))
+profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => {
+    res.send("0")
+})
 
 profileRouter.post(
     "/GamePersistentDataService/GetData",
@@ -913,14 +916,6 @@ export async function loadSession(
 
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
-        // Make sure the ChallengeProgression is available, otherwise loading might fail!
-        userData.Extensions.ChallengeProgression[cid] ??= {
-            CurrentState: "Start",
-            State: {},
-            Completed: false,
-            Ticked: false,
-        }
-
         const challenge = controller.challengeService.getChallengeById(
             cid,
             sessionData.gameVersion,
@@ -931,12 +926,19 @@ export async function loadSession(
             `session has context for unregistered challenge ${cid}`,
         )
 
-        if (
-            !userData.Extensions.ChallengeProgression[cid].Completed &&
-            controller.challengeService.needSaveProgression(challenge)
-        ) {
+        if (controller.challengeService.needSaveProgression(challenge)) {
+            // Make sure the ChallengeProgression is available, otherwise loading might fail!
+            userData.Extensions.ChallengeProgression[cid] ??= {
+                CurrentState: "Start",
+                State: fastClone(challenge.Definition?.Context || {}),
+                Completed: false,
+                Ticked: false,
+            }
+
             sessionData.challengeContexts[cid].context =
                 userData.Extensions.ChallengeProgression[cid].State
+            sessionData.challengeContexts[cid].state =
+                userData.Extensions.ChallengeProgression[cid].CurrentState
         }
     }
 

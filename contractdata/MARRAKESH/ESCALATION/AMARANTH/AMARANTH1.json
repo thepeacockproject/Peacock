@@ -17,7 +17,9 @@
                     }
                 ],
                 "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_1",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1"
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
@@ -76,7 +78,26 @@
             "assembly:/_pro/scenes/missions/marrakesh/gamechanger_amaranth_level_overrides.brick"
         ],
         "GameChangers": [],
-        "EnableSaving": false
+        "EnableSaving": false,
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider_mission.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "11e67595-2500-4c55-a1dd-60714763d9cc",
@@ -92,11 +113,13 @@
         "RequiredUnlockable": "ACCESS_HIT_SPIDER",
         "InGroup": "c949817b-5212-42e8-9b06-9a2eb83de167",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3" }
+            {
+                "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3"
+            }
         ],
         "LastUpdate": "2020-11-09T13:35:26.6948827Z",
         "PublicId": "006505768647",
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["LOCATION_MARRAKECH"]
     },
     "UserData": {}
 }

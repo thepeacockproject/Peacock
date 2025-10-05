@@ -1,0 +1,233 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Paris/scenario_frenchmartini.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/paris/dev_frenchmartini.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock_ps4_vr1.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "f42433c0-9574-49fa-bfb4-ddb9e55b1474",
+            "9f409781-0a06-4748-b08d-784e78c6d481"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate target -----",
+                "Id": "24a12651-1247-4db7-b896-280a45c9f731",
+                "Category": "primary",
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "54f583de-f261-4473-956c-dc278e5162e2"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Enable optional target -----",
+                "Id": "6d234a73-2ae4-445d-be8a-e9c92b177e5b",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "EnableOptionalTarget": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate optional target -----",
+                "Id": "8bff61ab-42e0-4c94-b74f-2303548ad028",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "IsHidden": true,
+                "Activation": {
+                    "$eq": [
+                        "$6d234a73-2ae4-445d-be8a-e9c92b177e5b",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "8ea03ee0-7eac-4efa-8206-af4531cc00ee"
+                    }
+                }
+            },
+            {
+                "Id": "db93108b-137f-42f6-af1e-81cf1a1959fe",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": { "47Poisoned": { "Transition": "Failure" } }
+                    }
+                }
+            },
+            {
+                "Id": "2919d130-5d1a-4e89-8e2e-dfac16b4907f",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": ["$db93108b-137f-42f6-af1e-81cf1a1959fe", "Failed"]
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_FRENCHMARTINI_OPPORTUNITY_STEP_ANTIDOTE"
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": { "Timeout": 1 },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": { "Transition": "TimerRunning" }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": { "$after": 70 },
+                                "Actions": { "$dec": "Timeout" },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "01821807-ff15-4ee3-94ec-d6633cb645ca",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeStarted": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2f964b33-50ad-45f3-8ca6-ac2b0d0d7d4d",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_TARGETESCAPING_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_TARGETESCAPING_HUD"
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Activation": {
+                    "$eq": ["$01821807-ff15-4ee3-94ec-d6633cb645ca", "Failed"]
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeCompleted": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "54f583de-f261-4473-956c-dc278e5162e2"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "f12a1e08-9254-42a2-baa7-43a85d5a1cbd",
+        "Title": "UI_CONTRACT_BLACKCURRANT_LEVEL02_NAME",
+        "CodeName_Hint": "Arcade Blackcurrant FrenchMartini",
+        "Description": "UI_CONTRACT_FRENCHMARTINI_DESC",
+        "BriefingVideo": "briefing_frenchmartini",
+        "DebriefingVideo": "debriefing_frenchmartini",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_frenchmartini.entity",
+        "TileImage": "images/contracts/elusive/s3_frenchmartini/Title.jpg",
+        "InGroup": "80582fdb-c77e-4d6a-b33f-1f14f34b72c4",
+        "Location": "LOCATION_PARIS",
+        "IsPublished": true,
+        "LastUpdate": "2025-09-25T10:59:54.9492363Z",
+        "CreationTimestamp": "2025-05-01T10:56:49.9796175Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Release": "3.230.x Arcade",
+        "Type": "arcade",
+        "Entitlements": ["H3_ET_FRENCHMARTINI"],
+        "PublicId": "002378191647"
+    },
+    "UserData": {}
+}

@@ -3510,6 +3510,118 @@
                     }
                 },
                 {
+                    "Id": "119cdd1f-72b0-4037-b36a-b9f6a161482e",
+                    "Name": "UI_CHALLENGES_BULL_PUMPKIN_PRETZEL_NAME",
+                    "ImageName": "images/challenges/colorado/colorado_feat_pumpkin_pretzel.jpg",
+                    "Description": "UI_CHALLENGES_BULL_PUMPKIN_PRETZEL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_PROP_MELEE_PRETZEL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "TargetGoal": 3
+                        },
+                        "Context": {
+                            "Count": 0,
+                            "TargetKnockedDown": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.TargetGoal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "dac13714-a012-47cf-b76a-150cfc4cece5"
+                                        ]
+                                    },
+                                    "Transition": "Chefman"
+                                }
+                            },
+                            "Chefman": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value",
+                                                "dac13714-a012-47cf-b76a-150cfc4cece5"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "ActorKnockedDown": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$Value.RepositoryId"
+                                                                ]
+                                                            },
+                                                            "in": "$.TargetKnockedDown"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Item.RepositoryId",
+                                                        "58dad7ea-f047-469f-92a1-d915a462c14c"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetKnockedDown",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
                     "Id": "1696f67c-20db-4cb7-94a2-abcbdc0216b9",
                     "Name": "UI_CHALLENGES_COLORADO_EXP_SHOOT_BOTTLES_NAME",
                     "ImageName": "images/challenges/colorado/colorado_exp_shoot_bottles.jpg",

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -98,10 +98,11 @@ export async function officialSearchContract(
         controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
     }
 
-    preserveContracts(
+    void preserveContracts(
         resp.data.data.Data.Contracts.map(
             (c) => c.UserCentricContract.Contract.Metadata.PublicId,
         ).filter(Boolean) as string[],
+        gameVersion,
     )
 
     return resp.data.data

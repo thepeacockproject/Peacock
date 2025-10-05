@@ -736,6 +736,131 @@
                     }
                 },
                 {
+                    "Id": "6c6a614e-51f9-4f2b-9f20-d2410eb59348",
+                    "Name": "UI_CHALLENGES_SKUNK_DOUBLEEXPLOSION_NAME",
+                    "ImageName": "images/challenges/Northamerica/SKUNK_doubleexplosion.jpg",
+                    "Description": "UI_CHALLENGES_SKUNK_DOUBLEEXPLOSION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_EXPLOSIVE_FIREWORKS_FLASH"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillClass",
+                                                        "explosion"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "OneTargetEliminated"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "OneTargetEliminated": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillClass",
+                                                        "explosion"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 1
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["82f55837-e26c-41bf-bc6e-fa97b7981fbc"]
+                    }
+                },
+                {
                     "Id": "7cd380fd-dff8-4119-959b-a4d967d0ab42",
                     "Name": "UI_CHALLENGES_SKUNK_JANUS_EAT_NAME",
                     "ImageName": "images/challenges/NORTHAMERICA/SKUNK_Janus_Eat.jpg",
@@ -4529,6 +4654,62 @@
                         }
                     },
                     "Tags": ["story", "feats", "medium"]
+                },
+                {
+                    "Id": "e79e6eea-0af5-4065-a0f1-427ac9f613d0",
+                    "Name": "UI_CHALLENGES_SKUNK_QUACK_CHALLENGE_NAME",
+                    "ImageName": "images/challenges/northamerica/northamerica_quack.jpg",
+                    "Description": "UI_CHALLENGES_SKUNK_QUACK_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_EASTER_DUCK_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Skunk_Duck_MuffinsThrown": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
                 },
                 {
                     "Id": "ecbd8cc1-3b1d-4473-ae1d-b963c999ab63",

@@ -94,11 +94,7 @@
                 "Type": "statemachine",
                 "Category": "condition",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfInProgress": { "Visible": false } },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
@@ -117,11 +113,7 @@
                 "Type": "statemachine",
                 "Category": "condition",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfInProgress": { "Visible": false } },
                 "Activation": {
                     "$eq": [
                         "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
@@ -137,11 +129,7 @@
                     "Scope": "session",
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "47_Has_Mask": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "47_Has_Mask": { "Transition": "Success" } }
                     }
                 }
             },
@@ -150,11 +138,7 @@
                 "Id": "7d386f54-3059-4771-9fe4-2a6b51faa9eb",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
                 "Activation": {
                     "$eq": [
                         "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
@@ -179,11 +163,7 @@
                     "Context": {},
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "47_Has_Mask": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "47_Has_Mask": { "Transition": "Success" } }
                     }
                 }
             },
@@ -192,11 +172,7 @@
                 "Id": "004847f4-0fd2-4b0f-a655-a33506b38482",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "InProgress"
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "InProgress" } },
                 "Activation": {
                     "$eq": [
                         "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
@@ -221,9 +197,7 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "BunkerUnlocked": {
-                                "Transition": "Success"
-                            }
+                            "BunkerUnlocked": { "Transition": "Success" }
                         }
                     }
                 }
@@ -233,11 +207,7 @@
                 "Id": "6d530d1f-a16b-48e9-9553-4681c9eb01a3",
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "InProgress"
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "InProgress" } },
                 "Activation": {
                     "$eq": [
                         "$004847f4-0fd2-4b0f-a655-a33506b38482",
@@ -259,9 +229,7 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "MilitiaAgendaRevealed": {
-                                "Transition": "Success"
-                            }
+                            "MilitiaAgendaRevealed": { "Transition": "Success" }
                         }
                     }
                 }
@@ -274,10 +242,7 @@
                     "assembly:/_pro/scenes/missions/colorado_2/difficulty_easy_colorado_bull.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -288,11 +253,19 @@
         "Bricks": [],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
-                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -330,8 +303,8 @@
             "28c82b4b-c7b3-44f0-8639-48fb31fb1e06",
             "5649e47c-2c71-4226-a6c3-2f9767e6191f"
         ],
-        "Entitlements": ["H1_LEGACY_STANDARD"],
-        "LastUpdate": "2022-01-20T18:29:24.3303843Z",
+        "Entitlements": ["LOCATION_COLORADO"],
+        "LastUpdate": "2025-03-27T14:29:02.36399Z",
         "PublicId": "009684938047"
     },
     "UserData": {}
