@@ -16,5 +16,5 @@ It's just a few reminders to make sure everything is perfect. You can place an "
 When you have completed the checklist, press the "Ready for review" button.
 -->
 
--   [ ] I have run Prettier to reformat any changed files
--   [ ] I have verified my changes work
+- [ ] I have run Prettier to reformat any changed files
+- [ ] I have verified my changes work
