@@ -9,7 +9,7 @@ infrastructure of the project.
 - `esbuild-plugin-license.mjs` - esbuild plugin that automatically updates the
   THIRDPARTYNOTICES.txt file.
 - `extractChallengeData.mjs` - a little CLI tool for downloading challenges from
- the IOI servers.
+  the IOI servers.
 - `HOW_TO_USE.html` - legacy help file.
 - `json5ToJson.mjs` - Converts a JSON5 file to a JSON file with the same name (
   but the JSON extension).
