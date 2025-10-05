@@ -19,9 +19,9 @@
             {
                 "Type": "statemachine",
                 "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
-                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ1_CONDITION_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ1_EXP_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ1_CONDITION_NAME"
+                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ1_EXP_NAME"
                 },
                 "Category": "primary",
                 "TargetConditions": [
@@ -77,9 +77,9 @@
             {
                 "Type": "statemachine",
                 "Id": "733ebb42-f27a-4c2e-3e93-49a3966e3611",
-                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ2_CONDITION_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ2_EXP_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ2_CONDITION_NAME"
+                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ2_EXP_NAME"
                 },
                 "Category": "primary",
                 "TargetConditions": [
@@ -136,9 +136,9 @@
             {
                 "Type": "statemachine",
                 "Id": "a516ae6b-ccb5-53f9-9220-4916a7522e4f",
-                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ3_CONDITION_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_OBJ3_EXP_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ3_CONDITION_NAME"
+                    "display": "$loc UI_PEACOCK_ARTEMIS_OBJ3_EXP_NAME"
                 },
                 "Category": "primary",
                 "TargetConditions": [
@@ -233,46 +233,43 @@
             "0cf5e693-35ec-457e-a004-da4672b90376",
             "297f1367-a233-8304-7ef8-50ed1298619f"
         ],
-        "Bricks": []
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Title": "UI_PEACOCK_ARTEMIS3",
         "Description": "",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "Entitlements": ["LOCATION_MUMBAI"],
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
         "Location": "LOCATION_MUMBAI",
-        "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
-        "GameVersion": "8.15.0.0",
-        "ServerVersion": "8.15.0.0",
         "Type": "escalation",
         "Id": "6260472f-19d1-4293-904c-5c26b1f8ea4e",
-        "PublicId": "166149848423",
-        "TileImage": "images/contracts/escalation/contractescalation_artemis.jpg",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Artemis.jpg",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "297f1367-a233-8304-7ef8-50ed1298619f",
-                "IsNew": true
-            },
-            {
-                "Id": "0cf5e693-35ec-457e-a004-da4672b90376",
-                "IsNew": true
-            },
-            {
-                "Id": "733ebb42-f27a-4c2e-3e93-49a3966e3611"
-            },
-            {
-                "Id": "a516ae6b-ccb5-53f9-9220-4916a7522e4f"
-            },
-            {
-                "Id": "484d5cf9-0f31-50e0-0192-d057633e9305"
-            },
-            {
-                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a"
-            },
-            {
-                "Id": "00deb548-dae5-312b-a86e-400965b98e57"
-            }
+            { "Id": "297f1367-a233-8304-7ef8-50ed1298619f", "IsNew": true },
+            { "Id": "0cf5e693-35ec-457e-a004-da4672b90376", "IsNew": true },
+            { "Id": "733ebb42-f27a-4c2e-3e93-49a3966e3611" },
+            { "Id": "a516ae6b-ccb5-53f9-9220-4916a7522e4f" },
+            { "Id": "484d5cf9-0f31-50e0-0192-d057633e9305" },
+            { "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a" },
+            { "Id": "00deb548-dae5-312b-a86e-400965b98e57" }
         ],
         "InGroup": "b4c961a0-42da-b4cc-b92a-763977de914c",
         "CreationTimestamp": "2024-04-08T12:29:31.554Z"
