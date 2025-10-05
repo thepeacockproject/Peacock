@@ -4494,6 +4494,49 @@
                     }
                 },
                 {
+                    "Id": "254b496e-5807-4958-9d93-36d0e6e630b1",
+                    "Name": "UI_PEACOCK_THENEA",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Thenea.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "ca51d9d9-1d1d-0f2b-aae7-20fb441caee1"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["8d716df5-8a25-f72a-bae4-7b4071809070"]
+                    }
+                },
+                {
                     "Id": "8b7ebf7c-0b5c-4868-ac13-ccb8d708a9c7",
                     "Name": "UI_CONTRACT_SAKURA_GROUP_TITLE",
                     "ImageName": "images/contracts/escalation/ContractEscalation_Hokkaido_Sakura.jpg",

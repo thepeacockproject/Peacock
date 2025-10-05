@@ -1,0 +1,113 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "be0d278a-8adc-4644-a505-036e3b326e19",
+                "Type": "statemachine",
+                "Category": "primary",
+                "ObjectiveType": "kill",
+                "BriefingText": "$loc UI_PEACOCK_THENEA_OBJ1",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THENEA_OBJ1"
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["2e1a30c5-b1e0-4984-b3f4-67f01f9ebfef"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "2e1a30c5-b1e0-4984-b3f4-67f01f9ebfef"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2b0a80de-e16b-48e9-8598-43ff90e7b271",
+                "Type": "statemachine",
+                "Category": "primary",
+                "ObjectiveType": "kill",
+                "BriefingText": "$loc UI_PEACOCK_THENEA_OBJ2",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THENEA_OBJ2"
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["fded38ae-3194-40dc-aaa6-ddd3fa4f4510"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "fded38ae-3194-40dc-aaa6-ddd3fa4f4510"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_THENEA1",
+        "Description": "",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/scene_mamushi.entity",
+        "Location": "LOCATION_HOKKAIDO_MAMUSHI",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "escalation",
+        "Id": "4cee5e2a-af82-e0a0-a570-4b2d437277ea",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Thenea.jpg",
+        "CreationTimestamp": "2024-08-05T14:30:25.142Z",
+        "Entitlements": ["LOCATION_HOKKAIDO"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "2b0a80de-e16b-48e9-8598-43ff90e7b271" },
+            { "Id": "be0d278a-8adc-4644-a505-036e3b326e19" }
+        ],
+        "InGroup": "8d716df5-8a25-f72a-bae4-7b4071809070",
+        "Season": 0,
+        "OriginalSeason": 1
+    }
+}

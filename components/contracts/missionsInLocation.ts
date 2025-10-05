@@ -264,6 +264,7 @@ export const missionsInLocation = {
             ],
             LOCATION_COLORADO_RABIES: [],
             LOCATION_HOKKAIDO: [
+                "8d716df5-8a25-f72a-bae4-7b4071809070",
                 "115425b1-e797-47bf-b517-410dc7507397",
                 "e96fb040-a13f-466c-9d96-c8f3b2b8a09a",
                 "a1e5f4f4-ea9c-4a42-b826-50a212026d50",
@@ -466,7 +467,7 @@ export const missionsInLocation = {
                 "85a2b618-2e3c-444f-931c-b89d566e45f7",
                 "88451dd9-4b57-441e-9eab-e20b9879bafa",
             ],
-            LOCATION_HOKKAIDO_MAMUSHI: [],
+            LOCATION_HOKKAIDO_MAMUSHI: ["8d716df5-8a25-f72a-bae4-7b4071809070"],
             LOCATION_HOKKAIDO_FLU: [],
             LOCATION_NEWZEALAND: [
                 "e1e86206-d3f0-a819-e477-3d80e55e8a40",
