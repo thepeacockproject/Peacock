@@ -294,6 +294,7 @@ export const missionsInLocation = {
                 "d336d894-024a-4cd4-9867-dee7de70ee79",
             ],
             LOCATION_MUMBAI: [
+                "b4c961a0-42da-b4cc-b92a-763977de914c",
                 "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
                 "9badee3e-0014-46b1-9ef6-edf8858ba038",
                 "b6a6330a-301a-4e8e-a26f-0f3e0ea809b5",
@@ -491,6 +492,7 @@ export const missionsInLocation = {
                 "d336d894-024a-4cd4-9867-dee7de70ee79",
             ],
             LOCATION_MUMBAI: [
+                "b4c961a0-42da-b4cc-b92a-763977de914c",
                 "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
                 "9badee3e-0014-46b1-9ef6-edf8858ba038",
                 "b6a6330a-301a-4e8e-a26f-0f3e0ea809b5",
