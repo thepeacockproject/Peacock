@@ -172,7 +172,7 @@ export class ProgressionService {
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : (location ?? contract.Metadata.Location)
+            : location ?? contract.Metadata.Location
 
         if (!parentLocationId) {
             return
