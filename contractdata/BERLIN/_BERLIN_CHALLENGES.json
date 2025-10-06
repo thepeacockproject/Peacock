@@ -2739,6 +2739,49 @@
                     "InclusionData": {
                         "ContractIds": ["ccdc7043-62af-44e8-a5fc-38b008c2044e"]
                     }
+                },
+                {
+                    "Id": "ba071190-4aee-4f7c-8da9-4e14cce0f779",
+                    "Name": "UI_PEACOCK_CASPER",
+                    "ImageName": "images/contracts/escalation/contractescalation_casper.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_EDGY_FOX",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "b06f9ee6-216e-4a8b-987c-77c6e54e0445"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["5bc6a2a3-d80a-4cb3-9ebc-a93d9238950d"]
+                    }
                 }
             ]
         },
