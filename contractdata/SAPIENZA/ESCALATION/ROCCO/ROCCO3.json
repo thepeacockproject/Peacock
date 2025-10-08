@@ -1,11 +1,12 @@
 {
     "Data": {
         "EnableSaving": false,
+        "Entrances": ["4970aae5-e4c1-4d5c-a66a-0fc06616211b"],
         "Objectives": [
             {
                 "Id": "1319032f-5b50-4488-a790-b3b25c4a50f1",
-                "Image": "images/contracts/escalation/contractescalation_rocco.jpg",
-                "BriefingName": "$loc UI_PEACOCK_ROCCO_OBJ1_TITLE",
+                "Image": "images/contracts/escalation/ContractEscalation_Rocco.jpg",
+                "BriefingName": "$loc UI_PEACOCK_ROCCO_OBJ1_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROCCO_OBJ1_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
@@ -64,7 +65,7 @@
             },
             {
                 "Id": "423f12e8-5489-40b2-8759-037a458c851d",
-                "BriefingName": "$loc UI_PEACOCK_ROCCO_OBJ2_TITLE",
+                "BriefingName": "$loc UI_PEACOCK_ROCCO_OBJ2_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ROCCO_OBJ2_DESC",
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ROCCO_OBJ2_DESC"
@@ -128,9 +129,7 @@
             "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
             "421c9667-5055-4439-92a3-fa75c49c3050"
         ],
-        "Entrances": ["4970aae5-e4c1-4d5c-a66a-0fc06616211b"],
-        "GameDifficulties": [],
-        "SimulationQualities": [],
+        "GameChangerReferences": [],
         "MandatoryLoadout": [
             {
                 "Id": "Disguise",
@@ -149,7 +148,7 @@
             {
                 "Id": "Silverballer",
                 "Properties": {
-                    "LoadoutSlot": "gear",
+                    "LoadoutSlot": "weapon",
                     "RepositoryId": "e70adb5b-0646-4f88-bd4a-85bea7a2a654"
                 }
             }
@@ -178,25 +177,16 @@
         "InGroup": "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
         "Title": "UI_PEACOCK_ROCCO3",
         "Description": "",
-        "TileImage": "images/contracts/escalation/contractescalation_rocco.jpg",
-        "CodeName_Hint": "Rocco",
-        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
         "Location": "LOCATION_COASTALTOWN",
+        "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Rocco.jpg",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "423f12e8-5489-40b2-8759-037a458c851d"
-            },
-            {
-                "Id": "1319032f-5b50-4488-a790-b3b25c4a50f1"
-            },
-            {
-                "IsNew": true,
-                "Id": "421c9667-5055-4439-92a3-fa75c49c3050"
-            },
-            {
-                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
-            }
+            { "Id": "421c9667-5055-4439-92a3-fa75c49c3050", "IsNew": true },
+            { "Id": "423f12e8-5489-40b2-8759-037a458c851d" },
+            { "Id": "1319032f-5b50-4488-a790-b3b25c4a50f1" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
         ],
         "Entitlements": ["LOCATION_COASTALTOWN"]
     },
