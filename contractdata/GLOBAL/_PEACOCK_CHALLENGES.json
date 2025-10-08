@@ -1,0 +1,312 @@
+{
+    "meta": {
+        "Location": "GLOBAL_PEACOCK_CHALLENGES",
+        "GameVersions": ["h3"]
+    },
+    "groups": [
+        {
+            "Name": "UI_PEACOCK_BRANDING_SHORT",
+            "Image": "images/challenges/categories/peacock/tile.jpg",
+            "Icon": "fixed",
+            "CategoryId": "peacock",
+            "Description": "",
+            "OrderIndex": 6.9999,
+            "Challenges": [
+                {
+                    "Id": "a68761f5-b3ca-4d7a-ba2a-401ebeaae651",
+                    "Name": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/peacock_escalation_i.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_COPPER_COIN_H2_REWARD"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_PEACOCK_BRANDING_SHORT",
+                    "Icon": "fixed",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "RequiredChallenges": [
+                                "bc525ef0-9a11-4b8d-ad0c-5f458517795a",
+                                "bc3b5d91-55f5-49d0-8e71-ddbbbda337e4",
+                                "9d0b6ae7-381d-4494-a1c3-81e722704c83",
+                                "d9d8953b-1493-400a-b90c-5288fc7d51a1",
+                                "8407a0ce-82eb-4124-b4eb-50d889df6a2c",
+                                "b046f27d-752c-8299-bbe9-1cbc85b7812a",
+                                "15dc9912-c734-4993-a40c-97e7cfd558bb",
+                                "fdc3e2fd-3609-4a27-92b6-89c2034ae499",
+                                "5859d182-9798-4d50-86e1-5864f37ed809",
+                                "40350248-2cd9-4203-aa0b-156e711bb1b3",
+                                "428b0b9f-2d96-42aa-b0a4-9b7dae2ab94c",
+                                "cd8e2b9b-dcbf-40a7-8ef8-b91438bd1b76",
+                                "2934a0ea-8e0a-4aee-bc38-f3a015274746",
+                                "54ddadb4-edc7-47eb-a442-9c9536626168",
+                                "70f28168-f912-4076-9457-7cf55ca4ecce",
+                                "22461270-6adf-4ce3-9e1f-c288e0671d36",
+                                "6c29c2b8-3c1e-456c-98f3-132ec0e136c3"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "escalation", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["escalation", "featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "4e2e9a39-4933-4e09-acb2-98dfeaedfdac",
+                    "Name": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/peacock_escalation_ii.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_SILVER_COIN_H2_REWARD"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_PEACOCK_BRANDING_SHORT",
+                    "Icon": "fixed",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10,
+                            "RequiredChallenges": [
+                                "bc525ef0-9a11-4b8d-ad0c-5f458517795a",
+                                "bc3b5d91-55f5-49d0-8e71-ddbbbda337e4",
+                                "9d0b6ae7-381d-4494-a1c3-81e722704c83",
+                                "d9d8953b-1493-400a-b90c-5288fc7d51a1",
+                                "8407a0ce-82eb-4124-b4eb-50d889df6a2c",
+                                "b046f27d-752c-8299-bbe9-1cbc85b7812a",
+                                "15dc9912-c734-4993-a40c-97e7cfd558bb",
+                                "fdc3e2fd-3609-4a27-92b6-89c2034ae499",
+                                "5859d182-9798-4d50-86e1-5864f37ed809",
+                                "40350248-2cd9-4203-aa0b-156e711bb1b3",
+                                "428b0b9f-2d96-42aa-b0a4-9b7dae2ab94c",
+                                "cd8e2b9b-dcbf-40a7-8ef8-b91438bd1b76",
+                                "2934a0ea-8e0a-4aee-bc38-f3a015274746",
+                                "54ddadb4-edc7-47eb-a442-9c9536626168",
+                                "70f28168-f912-4076-9457-7cf55ca4ecce",
+                                "22461270-6adf-4ce3-9e1f-c288e0671d36",
+                                "6c29c2b8-3c1e-456c-98f3-132ec0e136c3"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "escalation", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["escalation", "featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "9c20c02c-b4c1-46dd-8959-504fe5db3d0a",
+                    "Name": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_3_NAME",
+                    "ImageName": "images/challenges/profile_challenges/peacock_escalation_iii.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ESCALATION_TIER_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_GOLD_COIN_H2_REWARD"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_PEACOCK_BRANDING_SHORT",
+                    "Icon": "fixed",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15,
+                            "RequiredChallenges": [
+                                "bc525ef0-9a11-4b8d-ad0c-5f458517795a",
+                                "bc3b5d91-55f5-49d0-8e71-ddbbbda337e4",
+                                "9d0b6ae7-381d-4494-a1c3-81e722704c83",
+                                "d9d8953b-1493-400a-b90c-5288fc7d51a1",
+                                "8407a0ce-82eb-4124-b4eb-50d889df6a2c",
+                                "b046f27d-752c-8299-bbe9-1cbc85b7812a",
+                                "15dc9912-c734-4993-a40c-97e7cfd558bb",
+                                "fdc3e2fd-3609-4a27-92b6-89c2034ae499",
+                                "5859d182-9798-4d50-86e1-5864f37ed809",
+                                "40350248-2cd9-4203-aa0b-156e711bb1b3",
+                                "428b0b9f-2d96-42aa-b0a4-9b7dae2ab94c",
+                                "cd8e2b9b-dcbf-40a7-8ef8-b91438bd1b76",
+                                "2934a0ea-8e0a-4aee-bc38-f3a015274746",
+                                "54ddadb4-edc7-47eb-a442-9c9536626168",
+                                "70f28168-f912-4076-9457-7cf55ca4ecce",
+                                "22461270-6adf-4ce3-9e1f-c288e0671d36",
+                                "6c29c2b8-3c1e-456c-98f3-132ec0e136c3"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "escalation", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["escalation", "featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}
