@@ -2,8 +2,8 @@
     "$datacontext": {
         "in": "$.",
         "datavalues": {
-            "Title": "$.title",
-            "Description": "$.description",
+            "Title": "$loc $formatstring UI_PEACOCK_OPTION_CATEGORY_{$.title}_TITLE",
+            "Description": "$loc $formatstring UI_PEACOCK_OPTION_CATEGORY_{$.title}_DESC",
             "Flags": "$.value"
         },
         "do": {
