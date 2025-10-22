@@ -270,5 +270,105 @@
         ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
+    },
+    "cf2f8e72-467d-4344-98f8-f1a863bb6cfe": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_edgy_casper_trespasser.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "8b8f4a89-342b-4cef-a3c2-a05e22d7b83b",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_DESC",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledTargets": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "Trespassing": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTrespassing", true]
+                                },
+                                "Transition": "Trespassenger"
+                            },
+                            "Kill": { "Transition": "Failure" }
+                        },
+                        "Trespassenger": {
+                            "Trespassing": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTrespassing", false]
+                                },
+                                "Transition": "Start"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": { "$inc": "KilledTargets" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.KilledTargets", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "cedbcd52-90c7-435f-a10e-b8da610e6110": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/Gamechanger_Global_Wild_Card_Objectives.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "db6f1a40-3e7b-4a87-9c86-da6e80222273",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/gamechangers/Gamechanger_Global_Wild_Card_Objectives.jpg",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     }
 }

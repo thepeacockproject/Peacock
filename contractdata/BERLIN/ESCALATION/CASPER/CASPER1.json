@@ -1,0 +1,182 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_PRO/Scenes/missions/edgy/mission_fox/fox_contractcreation.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [],
+        "Entrances": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "a18b6e68-7824-4f01-a734-eea0da185137",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 22d45cc4-af92-414c-accd-c665972b4695).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 22d45cc4-af92-414c-accd-c665972b4695).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["22d45cc4-af92-414c-accd-c665972b4695"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "22d45cc4-af92-414c-accd-c665972b4695"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "3c5d897e-0a77-41f1-aa24-23635f4b1b97",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 28cb7e91-bf9c-46ee-a371-1bd1448f1994).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 28cb7e91-bf9c-46ee-a371-1bd1448f1994).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["28cb7e91-bf9c-46ee-a371-1bd1448f1994"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "d24f6b72-fafe-4257-a9fd-67a939c32cef",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 3f31e583-9a00-45e4-aea0-74ab9996d418).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 3f31e583-9a00-45e4-aea0-74ab9996d418).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["3f31e583-9a00-45e4-aea0-74ab9996d418"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3f31e583-9a00-45e4-aea0-74ab9996d418"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b8cf1457-281a-43e6-818a-b26a8bf7a2bb",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_PEACOCK_CASPER1",
+        "Description": "",
+        "CodeName_Hint": "Casper - Level 1",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_contractcreation.entity",
+        "Type": "escalation",
+        "InGroup": "5bc6a2a3-d80a-4cb3-9ebc-a93d9238950d",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "a18b6e68-7824-4f01-a734-eea0da185137"
+            },
+            {
+                "Id": "3c5d897e-0a77-41f1-aa24-23635f4b1b97"
+            },
+            {
+                "Id": "d24f6b72-fafe-4257-a9fd-67a939c32cef"
+            }
+        ],
+        "Entitlements": ["LOCATION_EDGY"],
+        "LastUpdate": "2023-03-30T11:20:27.0914255Z",
+        "TileImage": "images/contracts/escalation/contractescalation_edgy_casper.jpg",
+        "Season": 0,
+        "OriginalSeason": 3
+    },
+    "UserData": {}
+}

@@ -609,6 +609,7 @@ export const missionsInLocation = {
                 "85a67f31-75ce-40f5-a281-7765791f58ca",
             ],
             LOCATION_EDGY_FOX: [
+                "5bc6a2a3-d80a-4cb3-9ebc-a93d9238950d",
                 "d21e2e91-602c-49d2-9d42-e8bcfb810e9a",
                 "be787ec9-e7b9-4984-bb39-fda4c71705ec",
                 "e4b29c19-13b4-471b-b188-cd9c0a788cd0",
