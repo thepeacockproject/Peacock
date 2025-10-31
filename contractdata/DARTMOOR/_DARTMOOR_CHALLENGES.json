@@ -1168,6 +1168,116 @@
                     "Tags": ["story", "medium", "assassination"]
                 },
                 {
+                    "Id": "c9dcc5f9-7b1f-44a0-8748-ee8952d594b3",
+                    "Name": "UI_CHALLENGES_ANCESTRAL_FULL_BODIED_NAME",
+                    "ImageName": "images/challenges/Ancestral/Ancestral_Full_Bodied.jpg",
+                    "Description": "UI_CHALLENGES_ANCESTRAL_FULL_BODIED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_BURGUNDY_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_ANCESTRAL_BULLDOG",
+                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0,
+                            "SixFeetUnder": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "PushedIntoGrave": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "SixFeetUnder",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                "DumpedIntoGrave": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "SixFeetUnder",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": "$.SixFeetUnder"
+                                                    }
+                                                },
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.SetPieceId",
+                                                                "ed4fc354-04b1-4a02-bf57-4e71316d2e93"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
                     "Id": "d0af296c-6b89-41bf-9334-a781f77aee4d",
                     "Name": "UI_CHALLENGES_ANCESTRAL_47_ASSASINATION_POISON_NAME",
                     "ImageName": "images/challenges/profile_challenges/generic_location_47_poison.jpg",
