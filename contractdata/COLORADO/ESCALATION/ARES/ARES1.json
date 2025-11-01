@@ -1,0 +1,99 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50",
+                "BriefingText": "$loc UI_PEACOCK_ARES_OBJ1",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARES_OBJ1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["7d80843a-66d4-4d46-a914-08f96773e2fd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7d80843a-66d4-4d46-a914-08f96773e2fd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "ee25fc91-e42e-4044-99b4-b3c4206d250d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7d80843a-66d4-4d46-a914-08f96773e2fd"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "ee25fc91-e42e-4044-99b4-b3c4206d250d",
+                        "HardCondition": true,
+                        "KillMethod": ""
+                    }
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_ARES1",
+        "Description": "",
+        "Entitlements": ["LOCATION_COLORADO"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
+        "Location": "LOCATION_COLORADO",
+        "Type": "escalation",
+        "Id": "b1fe399f-8617-f4da-b425-e1c397d12c48",
+        "TileImage": "images/contracts/escsalation/ContractEscalation_Ares.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50" }
+        ],
+        "InGroup": "a35a7469-e74c-d1b1-a377-6b0016add67d",
+        "CreationTimestamp": "2024-04-06T13:38:42.057Z"
+    },
+    "UserData": {}
+}
