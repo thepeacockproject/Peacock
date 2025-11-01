@@ -117,11 +117,11 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
-                "Image": "images/contracts/escalation/contractescalation_hedgebush_obj_gold.jpg",
-                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
-                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_GOLD_DESC",
+                "Image": "images/contracts/escalation/ContractEscalation_Hedgebush_Obj_Gold.jpg",
+                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_NAME",
+                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
+                    "display": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_NAME",
                     "iconType": 16
                 },
                 "IsHidden": false,
@@ -138,7 +138,7 @@
                     "ContextListeners": {
                         "GoldRemaining": {
                             "type": "objective-counter",
-                            "header": "UI_PEACOCK_HEDGEBUSH_GOLDREMAINING",
+                            "header": "UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_REMAINING",
                             "deactivate": 0
                         },
                         "ForceUpdateCounters": {
@@ -226,11 +226,11 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
-                "Image": "images/contracts/escalation/contractescalation_hedgebush_obj_burger.jpg",
-                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_BURGERS",
-                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_BURGERS_DESC",
+                "Image": "images/contracts/escalation/ContractEscalation_Hedgebush_Obj_Burger.jpg",
+                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_BURGERS_NAME",
+                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_BURGERS_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_HEDGEBUSH_BURGERS",
+                    "display": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_BURGERS_NAME",
                     "iconType": 16
                 },
                 "IsHidden": false,
@@ -247,7 +247,7 @@
                     "ContextListeners": {
                         "BurgersRemaining": {
                             "type": "objective-counter",
-                            "header": "UI_PEACOCK_HEDGEBUSH_BURGERSREMAINING",
+                            "header": "UI_PEACOCK_HEDGEBUSH_OBJ_BURGERS_REMAINING",
                             "deactivate": 0
                         },
                         "ForceUpdateCounters": {
@@ -322,32 +322,20 @@
     },
     "Metadata": {
         "Id": "d93d8114-3284-4306-80c5-117fa03de533",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Hedgebush.jpg",
         "Title": "UI_PEACOCK_HEDGEBUSH2",
-        "Description": "",
-        "Type": "escalation",
+        "Description": "UI_PEACOCK_ESCALATION_NEWYORK_DESC",
         "Location": "LOCATION_GREEDY_RACCOON",
+        "RequiredUnlockable": "ACCESS_HIT_S2_CONCLUSION",
         "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
-        "InGroup": "9a461f89-86c5-44e4-998e-f2f66b496aa7",
-        "TileImage": "images/contracts/escalation/contractescalation_hedgebush.jpg",
+        "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            {
-                "IsNew": true,
-                "Id": "c0ce83d5-bdc1-4f2e-bac4-397bfc7504e5"
-            },
-            {
-                "IsNew": true,
-                "Id": "8b432578-16eb-4d1d-804d-275d6e2d84eb"
-            },
-            {
-                "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1"
-            },
-            {
-                "IsNew": true,
-                "Id": "ec6d7d32-b436-4f8b-8bd2-f5115354a1c7"
-            },
-            {
-                "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37"
-            }
+            { "Id": "c0ce83d5-bdc1-4f2e-bac4-397bfc7504e5", "IsNew": true },
+            { "Id": "8b432578-16eb-4d1d-804d-275d6e2d84eb", "IsNew": true },
+            { "Id": "ec6d7d32-b436-4f8b-8bd2-f5115354a1c7", "IsNew": true },
+            { "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1" },
+            { "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37" }
         ],
         "Entitlements": ["H2_LEGACY_EXPANSION"]
     }
