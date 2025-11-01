@@ -207,6 +207,122 @@
             }
         ]
     },
+    "484d5cf9-0f31-50e0-0192-d057633e9305": {
+        "Name": "UI_GAMECHANGERS_GLOBAL_NO_AGILITY_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_AGILITY_DESC",
+        "TileImage": "images/contractconditions/condition_contrac_no_agility.jpg",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "ObjectivesCategory": "primary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "9651d858-4081-f6f3-c642-690632173f46",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_AGILITY_DESC",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "ObjectiveCompleted": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Id",
+                                        "$c849a74b-0980-484b-b8e0-fb259b0678cc"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- check 3 kills and agility ---",
+                "Id": "c849a74b-0980-484b-b8e0-fb259b0678cc",
+                "Category": "condition",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "TargetsKilled": 0 },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": { "$inc": "TargetKilled" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsKill", 3]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "40e96ed0-7668-4d65-b88a-f44bfff5f537"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Agility_Start": { "Transition": "Success" }
+                        },
+                        "Failure": {
+                            "ContractEnd": { "Transition": "Success" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "297f1367-a233-8304-7ef8-50ed1298619f": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/challenges/Mumbai/Hideout_Exit.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "3c59ca7b-04ed-3d78-3fb6-54810d1651c4",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Exits": ["1aa8a4a5-1c8f-4145-a87b-16b13817f6e5"],
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     "98223196-71ea-60c3-962c-b856ee8cc2e7": {
         "Name": "UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_NAME",
         "Description": "UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_DESC",
