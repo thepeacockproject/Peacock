@@ -596,7 +596,10 @@ export class Controller {
             )
         }
 
-        return this.contracts.get(this._pubIdToContractId.get(pubId)!)
+        return this.resolveContract(
+            this._pubIdToContractId.get(pubId)!,
+            gameVersion,
+        )
     }
 
     /**
@@ -972,6 +975,8 @@ export class Controller {
             log(LogLevel.ERROR, `No contract data for ${pubId}.`)
             return undefined
         }
+
+        contractData = this.fixContract(contractData, gameVersion)
 
         contractData.Metadata.CreatorUserId =
             "fadb923c-e6bb-4283-a537-eb4d1150262e"
