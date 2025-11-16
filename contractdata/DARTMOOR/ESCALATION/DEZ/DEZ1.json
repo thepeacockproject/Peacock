@@ -8,10 +8,10 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Category": "primary",
-                "Image": "images/contracts/escalation/contractescalation_rosebush_employee1.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Rosebush_Employee1.jpg",
                 "IsHidden": false,
-                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS",
-                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_DESC",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": {
                     "IfCompleted": {
@@ -19,15 +19,13 @@
                     }
                 },
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_HUD"
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_HUD"
                 },
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
+                            "-": { "Transition": "Success" }
                         }
                     }
                 }
@@ -38,10 +36,10 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Category": "primary",
-                "Image": "images/contracts/escalation/contractescalation_rosebush_employee2.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Rosebush_Employee2.jpg",
                 "IsHidden": false,
                 "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
-                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE1",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_DISGUISE_STAFFROAR_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": {
                     "IfCompleted": {
@@ -54,11 +52,7 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "Disguise": {
                                 "Transition": "PleaseDoFail"
@@ -222,12 +216,21 @@
     },
     "Metadata": {
         "Id": "4804d74a-96d9-40af-8a37-a1f377781fc1",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Rosebush.jpg",
         "Title": "UI_PEACOCK_ROSEBUSH1",
-        "Type": "escalation",
+        "Description": "UI_PEACOCK_ESCALATION_DARTMOOR_DESC",
         "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
         "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
+        "Type": "escalation",
         "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
-        "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "1b6a050f-162e-4038-898f-859c5c956a7b" },
+            { "Id": "bca06014-1580-4837-916a-95bc9f64d76a" },
+            { "Id": "6cb73180-4426-4281-a7bb-840f4917640a" },
+            { "Id": "0cf80053-183c-4a6f-8024-bd3e982129f6" }
+        ],
         "Entitlements": ["LOCATION_ANCESTRAL"]
     }
 }

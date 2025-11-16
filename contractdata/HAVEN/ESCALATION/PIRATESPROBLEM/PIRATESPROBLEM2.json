@@ -45,12 +45,12 @@
                 "_comment": "Map",
                 "Type": "statemachine",
                 "Id": "4f9a1d25-7854-4918-b581-602adb8acdc1",
-                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES",
-                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES_DESC",
-                "Image": "images/objectives/contracts/pirates_problem_list.jpg",
+                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_DESC",
+                "Image": "images/contracts/escalation/ContractEscalation_Pirates_Problem_List.jpg",
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES"
+                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_NAME"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -96,35 +96,24 @@
         ]
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_PIRATESPROBLEM2",
-        "Description": "",
-        "Entitlements": ["H2_LEGACY_EXPANSION"],
-        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
-        "Location": "LOCATION_OPULENT_STINGRAY",
+        "Id": "3f5c032b-1429-455e-acfd-5ceab5a4e26d",
         "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Pirates_Problem.jpg",
+        "Title": "UI_PEACOCK_PIRATESPROBLEM2",
+        "Description": "",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "RequiredUnlockable": "ACCESS_HIT_STINGRAY",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
         "Type": "escalation",
-        "Id": "3f5c032b-1429-455e-acfd-5ceab5a4e26d",
         "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
-        "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "7de479e9-d468-461d-bd60-2ef454f98285",
-                "IsNew": true
-            },
-            {
-                "Id": "5f890d35-c14d-4f51-a433-546d94494f53",
-                "IsNew": true
-            },
-            {
-                "Id": "adaaf9fb-a43b-4d22-9d5a-598ef1d0273d",
-                "IsNew": true
-            },
-            {
-                "Id": "4f9a1d25-7854-4918-b581-602adb8acdc1",
-                "IsNew": true
-            }
-        ]
+            { "Id": "7de479e9-d468-461d-bd60-2ef454f98285", "IsNew": true },
+            { "Id": "5f890d35-c14d-4f51-a433-546d94494f53", "IsNew": true },
+            { "Id": "adaaf9fb-a43b-4d22-9d5a-598ef1d0273d", "IsNew": true },
+            { "Id": "4f9a1d25-7854-4918-b581-602adb8acdc1", "IsNew": true }
+        ],
+        "Entitlements": ["LOCATION_OPULENT_STINGRAY"]
     },
     "UserData": {}
 }

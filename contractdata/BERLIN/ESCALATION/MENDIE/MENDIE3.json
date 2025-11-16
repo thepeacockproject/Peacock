@@ -11,10 +11,10 @@
                 "Image": "images/unlockables/item_perspective_719ba201-3688-4984-afb0-81dc2cc95ec1_0.jpg",
                 "IsHidden": false,
                 "BriefingName": "$loc FIREARMS_HERO_SNIPER_BARTOLI_WOODSMAN_S3_NAME",
-                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_SNIPER_DESC",
+                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_OBJ_SNIPER_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SHANGRILA_SNIPER",
+                    "display": "$loc UI_PEACOCK_SHANGRILA_OBJ_SNIPER_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -53,12 +53,12 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Category": "primary",
-                "Image": "images/contracts/escalation/contractescalation_shangrila_destorythebikes.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Shangrila_DestoryTheBikes.jpg",
                 "IsHidden": false,
-                "BriefingName": "$loc UI_PEACOCK_SHANGRILA_BIKES",
-                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_BIKES_DESC",
+                "BriefingName": "$loc UI_PEACOCK_SHANGRILA_OBJ_BIKES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_OBJ_BIKES_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SHANGRILA_BIKES",
+                    "display": "$loc UI_PEACOCK_SHANGRILA_OBJ_BIKES_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -170,9 +170,9 @@
                     }
                 },
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SHANGRILA_OBJ1_CONDITION"
+                    "display": "$loc UI_PEACOCK_SHANGRILA_OBJ1_EXTRA"
                 },
-                "Id": "6d9db050-8076-4be7-8ea6-2b6e1c545bb6",
+                "Id": "e7e38a74-76BD-4cbc-8ffa-def00909ffab",
                 "Type": "statemachine",
                 "Image": "images/actors/fox_lowenthal.png",
                 "ObjectiveType": "kill",
@@ -315,32 +315,24 @@
     },
     "Metadata": {
         "Id": "ffb1da03-fcbf-4d7f-8371-de685498516e",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Shangrila.jpg",
         "Title": "UI_PEACOCK_SHANGRILA3",
         "Description": "",
-        "Type": "escalation",
+        "CodeName_Hint": "[PEACOCK] Shangrila - Level 3",
         "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
         "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
+        "Type": "escalation",
         "InGroup": "ccdc7043-62af-44e8-a5fc-38b008c2044e",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "6d9db050-8076-4be7-8ea6-2b6e1c545bb6",
-                "IsNew": true
-            },
-            {
-                "Id": "2ee43279-492b-4e2d-a8f4-95dfb0394e63",
-                "IsNew": true
-            },
-            {
-                "Id": "821e8a67-a0ce-4c7c-960e-d1a8bafde229"
-            },
-            {
-                "Id": "9be548d8-098a-473f-a9ac-09baef21df78"
-            },
-            {
-                "Id": "f478ee46-c044-4be8-ad2d-8f95dfafef36"
-            }
+            { "Id": "e7e38a74-76BD-4cbc-8ffa-def00909ffab", "IsNew": true },
+            { "Id": "2ee43279-492b-4e2d-a8f4-95dfb0394e63", "IsNew": true },
+            { "Id": "821e8a67-a0ce-4c7c-960e-d1a8bafde229" },
+            { "Id": "9be548d8-098a-473f-a9ac-09baef21df78" },
+            { "Id": "f478ee46-c044-4be8-ad2d-8f95dfafef36" }
         ],
-        "TileImage": "images/contracts/escalation/contractescalation_shangrila.jpg",
         "Entitlements": ["LOCATION_EDGY"]
     }
 }
