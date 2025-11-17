@@ -239,9 +239,14 @@ function isChallengeInContract(
     )
 
     if (challenge.Type === "global") {
+        if (challenge.Tags.some((t) => /-pack$/.test(t))) {
+            return true
+        }
+
         return inclusionDataCheck(
             // Global challenges should not be shown for "tutorial" missions unless for the career page,
             // despite the InclusionData somehow saying otherwise.
+
             forCareer
                 ? challenge.InclusionData
                 : {
