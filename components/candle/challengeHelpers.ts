@@ -239,24 +239,23 @@ function isChallengeInContract(
     )
 
     if (challenge.Type === "global") {
-        if (challenge.Tags.some((t) => /-pack$/.test(t))) {
-            return true
-        }
+        return (
+            challenge.Tags.some((t) => /-pack$/.test(t)) ||
+            inclusionDataCheck(
+                // Global challenges should not be shown for "tutorial" missions unless for the career page,
+                // despite the InclusionData somehow saying otherwise.
 
-        return inclusionDataCheck(
-            // Global challenges should not be shown for "tutorial" missions unless for the career page,
-            // despite the InclusionData somehow saying otherwise.
-
-            forCareer
-                ? challenge.InclusionData
-                : {
-                      ...challenge.InclusionData,
-                      ContractTypes:
-                          challenge.InclusionData?.ContractTypes?.filter(
-                              (type) => type !== "tutorial",
-                          ) || [],
-                  },
-            groupContract,
+                forCareer
+                    ? challenge.InclusionData
+                    : {
+                          ...challenge.InclusionData,
+                          ContractTypes:
+                              challenge.InclusionData?.ContractTypes?.filter(
+                                  (type) => type !== "tutorial",
+                              ) || [],
+                      },
+                groupContract,
+            )
         )
     }
 
