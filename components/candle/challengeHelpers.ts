@@ -244,7 +244,6 @@ function isChallengeInContract(
             inclusionDataCheck(
                 // Global challenges should not be shown for "tutorial" missions unless for the career page,
                 // despite the InclusionData somehow saying otherwise.
-
                 forCareer
                     ? challenge.InclusionData
                     : {
