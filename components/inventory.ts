@@ -53,6 +53,13 @@ import { UnlockableMasteryData } from "./types/mastery"
 import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
 import { log, LogLevel } from "./loggingInterop"
 
+export const ISOLATED_UNLOCKABLES_EXEMPT = [
+    "TOKEN_OUTFIT_HERO_BLACKSPECIAL_SUIT", // Black Streak Suit
+    "TOKEN_OUTFIT_HERO_MINININJA_SUIT", // Futo Suit
+    "TOKEN_OUTFIT_HERO_FREEDOMFIGHTERS_SUIT", // Freedom Phantom Suit
+    "TOKEN_OUTFIT_HERO_LYNCH_SUIT", // Lynch Suit
+]
+
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
     ...DELUXE_UNLOCKABLES,
@@ -198,7 +205,10 @@ function filterUnlockedContent(
 
             if (isEvergreen || isDeluxe) {
                 acc[0].push(unlockable)
-            } else if (getFlag("enableIsolatedUnlockables")) {
+            } else if (
+                ISOLATED_UNLOCKABLES_EXEMPT.includes(unlockable.Id) ||
+                getFlag("enableIsolatedUnlockables")
+            ) {
                 /**
                  *  List of untracked items when they are enabled (to award to user until they are tracked to corresponding challenges)
                  */
