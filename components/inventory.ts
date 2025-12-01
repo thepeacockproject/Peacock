@@ -22,6 +22,7 @@ import {
     brokenItems,
     CONCRETEART_UNLOCKABLES,
     BAIJU_UNLOCKABLES,
+    BELLINI_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
     FRENCHMARTINI_UNLOCKABLES,
@@ -83,6 +84,7 @@ const DELUXE_DATA = [
     ...LAMBIC_UNLOCKABLES,
     ...FRENCHMARTINI_UNLOCKABLES,
     ...BAIJU_UNLOCKABLES,
+    ...BELLINI_UNLOCKABLES,
 ]
 
 /**
@@ -456,6 +458,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("04cb1b3e5b424308be25236f6bc1b2fb") ||
                 e.includes("3957470")
+            )
+        }
+
+        if (BELLINI_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("0047ddcd5e6846e881f1037c1416e3d9") ||
+                e.includes("4097630")
             )
         }
 

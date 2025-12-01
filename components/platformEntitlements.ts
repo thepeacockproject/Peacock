@@ -93,6 +93,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "256eeeb3d8044aa1840e1606d268e0b2",
     // BAIJU:
     "04cb1b3e5b424308be25236f6bc1b2fb",
+    // BELLINI:
+    "0047ddcd5e6846e881f1037c1416e3d9",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
