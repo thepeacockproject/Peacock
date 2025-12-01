@@ -7687,14 +7687,13 @@
                             "Goal": 3
                         },
                         "Context": {
-                            "Completed": [],
-                            "Count": 0
+                            "Completed": []
                         },
                         "ContextListeners": {
-                            "Count": {
-                                "count": "$.Count",
-                                "total": "$.Goal",
-                                "type": "challengecounter"
+                            "Completed": {
+                                "type": "challengecounter",
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal"
                             }
                         },
                         "Scope": "session",
@@ -7702,13 +7701,6 @@
                             "Start": {
                                 "Kill": [
                                     {
-                                        "Actions": {
-                                            "$inc": "Count",
-                                            "$pushunique": [
-                                                "Completed",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        },
                                         "Condition": {
                                             "$and": [
                                                 {
@@ -7737,11 +7729,20 @@
                                                     ]
                                                 }
                                             ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$Value.RepositoryId"
+                                            ]
                                         }
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": ["$.Count", "$.Goal"]
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
                                         },
                                         "Transition": "Success"
                                     }
