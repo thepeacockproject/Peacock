@@ -547,7 +547,7 @@ export function getUnlockablesById(
  * @param profileId The profileId of the player
  * @param gameVersion The game version
  * @param inv The inventory to update
- * @param sublocation The sublocation to check for a default .
+ * @param sublocation The sublocation to check for a default suit.
  * @param suitOverride A default suit override for this contract.
  * @returns The updated inventory
  */
