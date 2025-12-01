@@ -179,7 +179,10 @@ export class Loadouts {
         suitOverride?: string,
     ): LocationLoadout {
         const defaultLoadout = {
-            2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
+            2:
+                gameVersion === "h1"
+                    ? "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01"
+                    : "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
             3: getDefaultSuitFor(sublocation, suitOverride),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
