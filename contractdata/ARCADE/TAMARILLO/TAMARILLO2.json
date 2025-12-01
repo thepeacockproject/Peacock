@@ -1,0 +1,82 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/hokkaido/mission_bellini.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/hokkaido/dev_bellini.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
+        "Entrances": ["6ad6d556-60dd-4d0b-8d8c-9c64f6265910"],
+        "GameChangers": [
+            "1099c1f6-11d0-4a0d-99b8-b9cb1e411b5f",
+            "e0aaed74-30d2-441c-895e-09f855379b9d"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Primary Target -----",
+                "Id": "73958c6b-13a0-45a3-91ac-939c3b682bab",
+                "Primary": true,
+                "ResetEvent": null,
+                "FailedEvent": null,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "851043ee-a2a3-48f2-a5e2-b7e13a28131c"
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b932b988-721f-4249-a9d3-4dc4d4c4ce75",
+        "Title": "UI_CONTRACT_TAMARILLO_LEVEL02_NAME",
+        "Description": "UI_CONTRACT_BELLINI_DESC",
+        "CodeName_Hint": "Arcade Tamarillo [Bellini] - Level 2",
+        "BriefingVideo": "briefing_bellini",
+        "DebriefingVideo": "debriefing_bellini",
+        "ScenePath": "assembly:/_pro/scenes/missions/hokkaido/scene_bellini.entity",
+        "TileImage": "Images/Contracts/Elusive/S3_Bellini/Title.jpg",
+        "InGroup": "6678cf8a-f614-4536-9584-e649351f40c2",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "1099c1f6-11d0-4a0d-99b8-b9cb1e411b5f",
+                "IsNew": true
+            },
+            {
+                "Id": "e0aaed74-30d2-441c-895e-09f855379b9d",
+                "IsNew": true
+            }
+        ],
+        "Location": "LOCATION_HOKKAIDO",
+        "LocationSuitOverride": "TOKEN_OUTFIT_REWARD_HERO_BELLINI_GOWN",
+        "IsPublished": true,
+        "LastUpdate": "2025-05-01T12:00:00.441Z",
+        "CreationTimestamp": "2025-12-01T09:47:06.0925132Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "OnlyNeoVR": true,
+        "Release": "3.250.x Arcade",
+        "Type": "arcade",
+        "Entitlements": [],
+        "PublicId": "010619622147"
+    },
+    "UserData": {}
+}

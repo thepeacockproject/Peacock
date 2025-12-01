@@ -589,6 +589,7 @@ export const missionsInLocation = {
                 "ff5b4e53-49ea-4d85-b94e-d3c8b3fc7ab3",
                 "b4d555eb-e2c9-40c2-b155-328a7019fd28",
             ],
+            LOCATION_HOKKAIDO: ["6678cf8a-f614-4536-9584-e649351f40c2"],
             LOCATION_NEWZEALAND: ["39cc0603-4348-4dbf-9bd3-733cadf2913c"],
             LOCATION_MIAMI: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
             LOCATION_COLOMBIA: ["90121ee0-0431-4a97-9bc8-8a7e2ca30d65"],

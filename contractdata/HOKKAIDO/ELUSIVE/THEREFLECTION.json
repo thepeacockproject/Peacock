@@ -1,0 +1,67 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/hokkaido/mission_bellini.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/hokkaido/dev_bellini.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
+        "Entrances": ["6ad6d556-60dd-4d0b-8d8c-9c64f6265910"],
+        "GameChangers": [],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Primary Target -----",
+                "Id": "73958c6b-13a0-45a3-91ac-939c3b682bab",
+                "Primary": true,
+                "ResetEvent": null,
+                "FailedEvent": null,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "851043ee-a2a3-48f2-a5e2-b7e13a28131c"
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "fdb75833-2588-453a-9178-b917b5de952c",
+        "CodeName_Hint": "Bellini",
+        "Release": "3.250.x Elusive",
+        "Type": "elusive",
+        "Location": "LOCATION_HOKKAIDO",
+        "LocationSuitOverride": "TOKEN_OUTFIT_REWARD_HERO_BELLINI_GOWN",
+        "Title": "UI_CONTRACT_BELLINI_TITLE",
+        "Description": "UI_CONTRACT_BELLINI_DESC",
+        "TileImage": "Images/Contracts/Elusive/S3_Bellini/Title.jpg",
+        "BriefingVideo": "briefing_bellini",
+        "DebriefingVideo": "debriefing_bellini",
+        "ScenePath": "assembly:/_pro/scenes/missions/hokkaido/scene_bellini.entity",
+        "CreationTimestamp": "2025-12-01T09:46:29.864854Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "OnlyNeoVR": true,
+        "IsPublished": true,
+        "Entitlements": ["LOCATION_HOKKAIDO"],
+        "PublicId": "010649702347",
+        "Season": 3
+    },
+    "UserData": {}
+}

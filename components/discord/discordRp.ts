@@ -222,6 +222,8 @@ export function scenePathToRpAsset(
             ]
         case "assembly:/_pro/scenes/missions/hokkaido/_scene_flu.entity":
             return ["hokkaidopz", "Patient Zero", "Hokkaido"]
+        case "assembly:/_pro/scenes/missions/hokkaido/scene_bellini.entity":
+            return ["elusivebellini", "The Reflection", "Hokkaido"]
 
         // dartmoor
         case "assembly:/_pro/scenes/missions/ancestral/scene_bulldog.entity":
