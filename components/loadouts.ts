@@ -176,7 +176,7 @@ export class Loadouts {
         userId: string,
         gameVersion: GameVersion,
         sublocation: Unlockable,
-        suitOverride?: string,
+        suitOverride: string | undefined,
     ): LocationLoadout {
         const defaultLoadout = {
             2:
