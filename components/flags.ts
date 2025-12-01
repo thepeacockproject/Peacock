@@ -59,7 +59,7 @@ export const defaultFlags: Flags = {
                 category: "Gameplay",
                 title: "enableIsolatedUnlockables",
                 desc: "Decides if items are unlocked when there are no associated unlocking approaches. Requires enableMasteryProgression to be true.",
-                default: false,
+                default: true,
             },
             elusivesAreShown: {
                 category: "Gameplay",
