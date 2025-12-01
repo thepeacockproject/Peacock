@@ -5164,14 +5164,14 @@
         ],
         "Objectives": [
             {
+                "_comment": "----- [OPTIONAL] Clean Hands - Baiju Variant // Requires all kills to have a context of NOT_HERO -----",
                 "Id": "82603825-3f08-4708-80aa-ca9c78e3509b",
                 "BriefingText": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
                     "iconType": 9
                 },
-                "ExcludeFromScoring": true,
-                "Category": "primary",
+                "Category": "secondary",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -5185,46 +5185,8 @@
                                 },
                                 "Transition": "Failure"
                             },
-                            "Baiju_ResetCleanHands": {
+                            "exit_gate": {
                                 "Transition": "Success"
-                            }
-                        }
-                    }
-                },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                }
-            },
-            {
-                "_comment": "----- Hack to get the objective to show after neutralize assassins -----",
-                "Id": "01e957ba-3441-43d2-acc3-3b9d099853ee",
-                "BriefingText": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
-                    "iconType": 9
-                },
-                "Activation": {
-                    "$eq": [
-                        "$82603825-3f08-4708-80aa-ca9c78e3509b",
-                        "Completed"
-                    ]
-                },
-                "ExcludeFromScoring": true,
-                "Category": "primary",
-                "Type": "statemachine",
-                "Definition": {
-                    "Scope": "session",
-                    "States": {
-                        "Start": {
-                            "Kill": {
-                                "Condition": {
-                                    "$not": {
-                                        "$eq": ["$Value.KillContext", 1]
-                                    }
-                                },
-                                "Transition": "Failure"
                             }
                         }
                     }
@@ -9119,6 +9081,164 @@
                                         "$eq": ["$.Balance", 0]
                                     },
                                     "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "1099c1f6-11d0-4a0d-99b8-b9cb1e411b5f": {
+        "Name": "UI_GAMECHANGERS_GLOBAL_HIDDEN_TARGETS_NAME",
+        "Description": "UI_GAMECHANGERS_GLOBAL_HIDDEN_TARGETS_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/Contracts/Gamechangers/Gamechanger_Global_HiddenTargets.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "_comment": "----- Silent objective to mark GameChanger as primary -----",
+                "Id": "20293ef0-2836-4b38-8774-e6e1452e8c7e",
+                "Type": "statemachine",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "e0aaed74-30d2-441c-895e-09f855379b9d": {
+        "Name": "UI_GAMECHANGERS_TAMARILLO_TRAVERSEALLMIRRORS_NAME",
+        "Description": "UI_GAMECHANGERS_TAMARILLO_TRAVERSEALLMIRRORS_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/Contracts/Elusive/S3_Bellini/Intel_Photo_B.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "_comment": "----- Traverse all Mirror Portals except those within the Mirror Maze -----",
+                "Id": "4d29f1ea-be34-4613-9db5-2a66b9b550ee",
+                "Category": "secondary",
+                "CounterVisibleInTile": false,
+                "HUDTemplate": {
+                    "display": "$loc UI_GAMECHANGERS_TAMARILLO_TRAVERSEALLMIRRORS_OBJ"
+                },
+                "AllowEtRestartOnSuccess": true,
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Constants": {
+                        "ValidMirrors": [
+                            "MomsToilets",
+                            "LobbyToilets",
+                            "UnderHelipad",
+                            "TherapyToilets",
+                            "Morgue",
+                            "BroadcastingRoom",
+                            "MaintenanceRoom",
+                            "Staircase"
+                        ]
+                    },
+                    "ContextListeners": {
+                        "MirrorsRemaining": {
+                            "type": "objective-counter",
+                            "header": "UI_GAMECHANGERS_TAMARILLO_TRAVERSEALLMIRRORS_COUNTER",
+                            "deactivate": 0
+                        },
+                        "ForceUpdateCounters": {
+                            "type": "force-update",
+                            "target": "MirrorsRemaining"
+                        }
+                    },
+                    "Scope": "session",
+                    "Context": {
+                        "MirrorsRemaining": 8,
+                        "MirrorsUsed": [],
+                        "ForceUpdateCounters": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Condition": {
+                                    "$eq": ["$.ForceUpdateCounters", 0]
+                                },
+                                "Actions": {
+                                    "$inc": "ForceUpdateCounters"
+                                }
+                            },
+                            "MirrorTraversed": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": ["$.#", "$Value"]
+                                                    },
+                                                    "in": "$.ValidMirrors"
+                                                }
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value"
+                                                            ]
+                                                        },
+                                                        "in": "$.MirrorsUsed"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$dec": "MirrorsRemaining",
+                                        "$pushunique": ["MirrorsUsed", "$Value"]
+                                    }
+                                },
+                                {
+                                    "Transition": "Check"
+                                }
+                            ]
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.MirrorsRemaining", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Start"
                                 }
                             ]
                         }
