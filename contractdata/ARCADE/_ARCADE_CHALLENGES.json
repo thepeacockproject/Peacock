@@ -13,6 +13,49 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
+                    "Id": "1b8bc722-399e-4fe6-98bc-f2410c22cbcd",
+                    "Name": "UI_TAMARILLO_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_TAMARILLO_Group.jpg",
+                    "Description": "UI_TAMARILLO_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "b932b988-721f-4249-a9d3-4dc4d4c4ce75"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["6678cf8a-f614-4536-9584-e649351f40c2"]
+                    }
+                },
+                {
                     "Id": "5ce6ca62-a639-4941-ac9e-672975c6ac64",
                     "Name": "UI_PITAYA_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Pitaya_Group.jpg",
