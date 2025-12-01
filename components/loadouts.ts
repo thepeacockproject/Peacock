@@ -215,7 +215,10 @@ export class Loadouts {
         for (let i = 0; i < LOADOUT_SLOTS.length; i++) {
             const idx = i as keyof typeof loadout
             const item = (() => {
-                if (loadout[idx] && getUnlockableById(loadout[idx], gameVersion)) {
+                if (
+                    loadout[idx] &&
+                    getUnlockableById(loadout[idx], gameVersion)
+                ) {
                     return loadout[idx]
                 }
 
