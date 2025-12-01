@@ -214,13 +214,17 @@ export class Loadouts {
         // Typecast nightmare
         for (let i = 0; i < LOADOUT_SLOTS.length; i++) {
             const idx = i as keyof typeof loadout
-            const item =
-                // eslint-disable-next-line no-nested-ternary
-                loadout[idx] && getUnlockableById(loadout[idx], gameVersion)
-                    ? loadout[idx]
-                    : REQUIRED_LOADOUT_SLOTS.includes(i)
-                      ? defaultLoadout[i as keyof typeof defaultLoadout]
-                      : undefined
+            const item = (() => {
+                if (loadout[idx] && getUnlockableById(loadout[idx], gameVersion)) {
+                    return loadout[idx]
+                }
+
+                if (REQUIRED_LOADOUT_SLOTS.includes(i)) {
+                    return defaultLoadout[i as keyof typeof defaultLoadout]
+                }
+
+                return undefined
+            })()
             if (item) output.loadout[idx] = item
         }
 
