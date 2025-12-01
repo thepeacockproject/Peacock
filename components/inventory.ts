@@ -556,7 +556,7 @@ function updateWithDefaultSuit(
     gameVersion: GameVersion,
     inv: InventoryItem[],
     sublocation?: Unlockable,
-    suitOverride?: string,
+    suitOverride?: string | undefined,
 ): InventoryItem[] {
     if (!sublocation) {
         return inv
@@ -564,7 +564,7 @@ function updateWithDefaultSuit(
 
     // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
     const locationSuit = getUnlockableById(
-        getDefaultSuitFor(sublocation, suitOverride),
+        getDefaultSuitFor(sublocation, gameVersion, suitOverride),
         gameVersion,
     )
 
@@ -601,7 +601,7 @@ export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
     sublocation: Unlockable | undefined = undefined,
-    suitOverride?: string,
+    suitOverride?: string | undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
         return updateWithDefaultSuit(

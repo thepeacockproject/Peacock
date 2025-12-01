@@ -176,14 +176,14 @@ export class Loadouts {
         userId: string,
         gameVersion: GameVersion,
         sublocation: Unlockable,
-        suitOverride: string | undefined,
+        suitOverride?: string | undefined,
     ): LocationLoadout {
         const defaultLoadout = {
             2:
                 gameVersion === "h1"
                     ? "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01"
                     : "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
-            3: getDefaultSuitFor(sublocation, suitOverride),
+            3: getDefaultSuitFor(sublocation, gameVersion, suitOverride),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
         }
@@ -198,8 +198,7 @@ export class Loadouts {
 
         if (getFlag("loadoutSaving") === "LEGACY") {
             loadout =
-                // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- it makes the code 10x less readable
-                (userProfile.Extensions.defaultloadout || {})[
+                userProfile.Extensions.defaultloadout?.[
                     sublocation?.Id || ""
                 ] ?? defaultLoadout
         } else {
@@ -217,7 +216,7 @@ export class Loadouts {
             const idx = i as keyof typeof loadout
             const item =
                 // eslint-disable-next-line no-nested-ternary
-                loadout?.[idx] && getUnlockableById(loadout[idx], gameVersion)
+                loadout[idx] && getUnlockableById(loadout[idx], gameVersion)
                     ? loadout[idx]
                     : REQUIRED_LOADOUT_SLOTS.includes(i)
                       ? defaultLoadout[i as keyof typeof defaultLoadout]
