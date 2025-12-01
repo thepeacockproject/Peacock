@@ -30,13 +30,11 @@ import {
     StashpointQueryH2016,
     StashpointSlotName,
 } from "../types/gameSchemas"
-import { getDefaultSuitFor, uuidRegex } from "../utils"
+import { uuidRegex } from "../utils"
 import { controller } from "../controller"
 import { generateUserCentric, getSubLocationByName } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getUserData } from "../databaseHandler"
-import { getFlag } from "../flags"
-import { loadouts } from "../loadouts"
+import { LOADOUT_SLOTS, loadouts } from "../loadouts"
 import assert from "assert"
 
 /**
@@ -56,7 +54,7 @@ export function getModernStashItemsData(
     let slotname
 
     if (!uuidRegex.test(query.slotid as string)) {
-        slotname = loadoutSlots[query.slotid as number]
+        slotname = LOADOUT_SLOTS[query.slotid as number]
     } else {
         slotname = "container"
     }
@@ -149,6 +147,7 @@ export function getModernStashData(
             contractData?.Metadata.Location || "",
             gameVersion,
         ),
+        contractData?.Metadata.LocationSuitOverride,
     )
 
     const stashData: ModernStashData = {
@@ -236,16 +235,6 @@ export function getLegacyStashItems(
         }))
 }
 
-const loadoutSlots: StashpointSlotName[] = [
-    "carriedweapon",
-    "carrieditem",
-    "concealedweapon",
-    "disguise",
-    "gear",
-    "gear",
-    "stashpoint",
-]
-
 /**
  * Algorithm to get the stashpoint data for H2016.
  *
@@ -271,15 +260,13 @@ export function getLegacyStashData(
         return undefined
     }
 
-    if (!loadoutSlots.includes(query.slotname.slice(0, -1))) {
+    if (!LOADOUT_SLOTS.includes(query.slotname.slice(0, -1))) {
         log(
             LogLevel.ERROR,
             `Unknown slotname in legacy stashpoint: ${query.slotname}`,
         )
         return undefined
     }
-
-    const userProfile = getUserData(userId, gameVersion)
 
     const sublocation = getSubLocationByName(
         contractData.Metadata.Location,
@@ -288,7 +275,12 @@ export function getLegacyStashData(
 
     assert.ok(sublocation, "Sublocation not found")
 
-    const inventory = createInventory(userId, gameVersion, sublocation)
+    const inventory = createInventory(
+        userId,
+        gameVersion,
+        sublocation,
+        contractData.Metadata.LocationSuitOverride,
+    )
 
     const userCentricContract = generateUserCentric(
         contractData,
@@ -296,58 +288,32 @@ export function getLegacyStashData(
         gameVersion,
     )
 
-    const defaultLoadout = {
-        2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
-        3: getDefaultSuitFor(sublocation),
-        4: "TOKEN_FIBERWIRE",
-        5: "PROP_TOOL_COIN",
-    }
-
-    const getLoadoutItem = (id: number) => {
-        if (getFlag("loadoutSaving") === "LEGACY") {
-            const dl = userProfile.Extensions.defaultloadout
-
-            if (!dl) {
-                return defaultLoadout[id as keyof typeof defaultLoadout]
-            }
-
-            // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- it makes the code 10x less readable
-            const forLocation = (userProfile.Extensions.defaultloadout || {})[
-                sublocation?.Properties?.ParentLocation || ""
-            ]
-
-            return (forLocation || defaultLoadout)[
-                id as keyof typeof defaultLoadout
-            ]
-        } else {
-            let dl = loadouts.getLoadoutFor("h1")
-
-            if (!dl) {
-                dl = loadouts.createDefault("h1")
-            }
-
-            const forLocation =
-                dl.data[sublocation?.Properties?.ParentLocation || ""]
-
-            return (forLocation || defaultLoadout)[id]
-        }
-    }
+    const loadoutData = loadouts.getLocationLoadout(
+        userId,
+        gameVersion,
+        sublocation,
+        contractData.Metadata.LocationSuitOverride,
+    )
 
     return {
         ContractId: query.contractid,
         // the game actually only needs the loadoutdata from the requested slotid, but this is what IOI servers do
-        LoadoutData: [...loadoutSlots.entries()].map(([slotid, slotname]) => ({
+        LoadoutData: [...LOADOUT_SLOTS.entries()].map(([slotid, slotname]) => ({
             SlotName: slotname,
             SlotId: slotid.toString(),
             Items: getLegacyStashItems(inventory, slotname, query, slotid),
             Page: 0,
-            Recommended: getLoadoutItem(slotid)
+            Recommended: loadoutData.loadout[
+                slotid as keyof typeof loadoutData.loadout
+            ]
                 ? {
                       item: getUnlockableById(
-                          getLoadoutItem(slotid)!,
+                          loadoutData.loadout[
+                              slotid as keyof typeof loadoutData.loadout
+                          ]!,
                           gameVersion,
                       ),
-                      type: loadoutSlots[slotid],
+                      type: slotname,
                       owned: true,
                   }
                 : null,

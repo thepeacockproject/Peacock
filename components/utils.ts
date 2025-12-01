@@ -576,14 +576,19 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * Priority is given to the sub-location, then the parent location, then 47's signature suit.
  *
  * @param subLocation The sub-location.
+ * @param suitOverride A default suit override for this contract.
  * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(subLocation: Unlockable): string {
+export function getDefaultSuitFor(
+    subLocation: Unlockable,
+    suitOverride?: string,
+): string {
     type Cast = keyof typeof defaultSuits
     return (
-        defaultSuits[subLocation.Id as Cast] ||
-        defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
-        "TOKEN_OUTFIT_HITMANSUIT"
+        suitOverride ??
+        (defaultSuits[subLocation.Id as Cast] ||
+            defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
+            "TOKEN_OUTFIT_HITMANSUIT")
     )
 }
 
