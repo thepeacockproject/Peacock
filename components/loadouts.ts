@@ -198,9 +198,8 @@ export class Loadouts {
 
         if (getFlag("loadoutSaving") === "LEGACY") {
             loadout =
-                userProfile.Extensions.defaultloadout?.[
-                    sublocation?.Id || ""
-                ] ?? defaultLoadout
+                userProfile.Extensions.defaultloadout?.[sublocation?.Id] ??
+                defaultLoadout
         } else {
             let dl = loadouts.getLoadoutFor(gameVersion)
 
@@ -208,7 +207,7 @@ export class Loadouts {
                 dl = loadouts.createDefault(gameVersion)
             }
 
-            loadout = dl.data[sublocation?.Id || ""] ?? {}
+            loadout = dl.data[sublocation?.Id] ?? {}
         }
 
         // Typecast nightmare
