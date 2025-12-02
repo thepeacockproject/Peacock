@@ -1,15 +1,16 @@
 {
     "Data": {
+        "EnableSaving": false,
         "Objectives": [
             {
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
-                "Image": "images/contracts/escalation/contractescalation_southern_comfort_becomesanta.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Southern_Comfort_BecomeSanta.jpg",
                 "Id": "c4b808ea-607c-484a-a6a1-9ba8bfb038ec",
-                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_TITLE",
-                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_DESC",
+                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_SANTA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_SANTA_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_TITLE",
+                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_SANTA_NAME",
                     "iconType": 17
                 },
                 "Category": "primary",
@@ -86,12 +87,13 @@
             {
                 "Type": "statemachine",
                 "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f",
-                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE",
-                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT",
+                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_DESC",
                 "ObjectiveType": "custom",
-                "Image": "images/contracts/escalation/contractescalation_southern_comfort_5targets.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Southern_Comfort_5Targets.jpg",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE"
+                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_NAME",
+                    "iconType": 16
                 },
                 "Category": "primary",
                 "Definition": {
@@ -295,6 +297,7 @@
             "assembly:/_PRO/Scenes/Missions/Paris/Location_parisnoel.brick"
         ],
         "GameChangers": [],
+        "GameChangerReferences": [],
         "Stashpoints": [
             "37495d13-a49d-404b-a4ba-6f8c39f20feb",
             "6120437a-d943-431f-90c1-a7ccca663a07",
@@ -303,7 +306,6 @@
             "52c22399-fe49-48d4-bc5c-bf1726616444",
             "25ff09ba-134e-4292-901b-a43efc73c2ae"
         ],
-        "EnableSaving": false,
         "VR": [
             {
                 "Quality": "base",
@@ -327,23 +329,20 @@
         ]
     },
     "Metadata": {
+        "Id": "6fa8267b-730f-48c7-ae62-f7155eb62340",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Southern_Comfort.jpg",
         "Title": "UI_PEACOCK_SOUTHERN_COMFORT2",
         "Description": "",
-        "Type": "escalation",
-        "Id": "6fa8267b-730f-48c7-ae62-f7155eb62340",
-        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
-        "GroupObjectiveDisplayOrder": [
-            {
-                "IsNew": true,
-                "Id": "c4b808ea-607c-484a-a6a1-9ba8bfb038ec"
-            },
-            {
-                "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f"
-            }
-        ],
         "Location": "LOCATION_PARIS_NOEL",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
         "InGroup": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
-        "TileImage": "images/contracts/escalation/contractescalation_southern_comfort.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "c4b808ea-607c-484a-a6a1-9ba8bfb038ec", "IsNew": true },
+            { "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f" }
+        ],
         "Entitlements": ["LOCATION_PARIS"]
     }
 }

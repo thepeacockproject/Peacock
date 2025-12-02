@@ -1,15 +1,17 @@
 {
     "Data": {
+        "EnableSaving": false,
         "Objectives": [
             {
                 "Type": "statemachine",
                 "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f",
-                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE",
-                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT",
+                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_DESC",
                 "ObjectiveType": "custom",
-                "Image": "images/contracts/escalation/contractescalation_southern_comfort_5targets.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Southern_Comfort_5Targets.jpg",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE"
+                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ_XMASGIFT_NAME",
+                    "iconType": 16
                 },
                 "Category": "primary",
                 "Definition": {
@@ -213,6 +215,7 @@
             "assembly:/_PRO/Scenes/Missions/Paris/Location_parisnoel.brick"
         ],
         "GameChangers": [],
+        "GameChangerReferences": [],
         "Stashpoints": [
             "37495d13-a49d-404b-a4ba-6f8c39f20feb",
             "6120437a-d943-431f-90c1-a7ccca663a07",
@@ -221,7 +224,6 @@
             "52c22399-fe49-48d4-bc5c-bf1726616444",
             "25ff09ba-134e-4292-901b-a43efc73c2ae"
         ],
-        "EnableSaving": false,
         "VR": [
             {
                 "Quality": "base",
@@ -245,14 +247,19 @@
         ]
     },
     "Metadata": {
+        "Id": "d415f893-563a-443a-860e-33cf90c4547b",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Southern_Comfort.jpg",
         "Title": "UI_PEACOCK_SOUTHERN_COMFORT1",
         "Description": "",
-        "Type": "escalation",
-        "Id": "d415f893-563a-443a-860e-33cf90c4547b",
-        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
         "Location": "LOCATION_PARIS_NOEL",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
         "InGroup": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
-        "TileImage": "images/contracts/escalation/contractescalation_southern_comfort.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f" }
+        ],
         "Entitlements": ["LOCATION_PARIS"]
     }
 }

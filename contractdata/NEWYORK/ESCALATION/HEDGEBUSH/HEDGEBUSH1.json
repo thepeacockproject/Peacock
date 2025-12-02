@@ -45,11 +45,11 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
-                "Image": "images/contracts/escalation/contractescalation_hedgebush_obj_gold.jpg",
-                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
-                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_GOLD_DESC",
+                "Image": "images/contracts/escalation/ContractEscalation_Hedgebush_Obj_Gold.jpg",
+                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_NAME",
+                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
+                    "display": "$loc UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_NAME",
                     "iconType": 16
                 },
                 "IsHidden": false,
@@ -66,7 +66,7 @@
                     "ContextListeners": {
                         "GoldRemaining": {
                             "type": "objective-counter",
-                            "header": "UI_PEACOCK_HEDGEBUSH_GOLDREMAINING",
+                            "header": "UI_PEACOCK_HEDGEBUSH_OBJ_GOLDS_REMAINING",
                             "deactivate": 0
                         },
                         "ForceUpdateCounters": {
@@ -169,20 +169,17 @@
     },
     "Metadata": {
         "Id": "5e380d27-930d-4bc7-9ad9-411486a7147c",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Hedgebush.jpg",
         "Title": "UI_PEACOCK_HEDGEBUSH1",
-        "Description": "",
-        "Type": "escalation",
+        "Description": "UI_PEACOCK_ESCALATION_NEWYORK_DESC",
         "Location": "LOCATION_GREEDY_RACCOON",
+        "RequiredUnlockable": "ACCESS_HIT_S2_CONCLUSION",
         "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
-        "InGroup": "9a461f89-86c5-44e4-998e-f2f66b496aa7",
-        "TileImage": "images/contracts/escalation/contractescalation_hedgebush.jpg",
+        "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1"
-            },
-            {
-                "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37"
-            }
+            { "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1" },
+            { "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37" }
         ],
         "Entitlements": ["H2_LEGACY_EXPANSION"]
     }

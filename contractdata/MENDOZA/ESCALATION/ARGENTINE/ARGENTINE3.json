@@ -1,5 +1,6 @@
 {
     "Data": {
+        "EnableSaving": false,
         "Objectives": [
             {
                 "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4",
@@ -67,7 +68,7 @@
                 "Primary": false,
                 "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5"
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ5_NAME"
                 },
                 "Definition": {
                     "Context": {
@@ -94,12 +95,12 @@
                 "Id": "8d606509-7d54-4dac-8142-a4349fd6279d",
                 "Type": "statemachine",
                 "BriefingName": "$loc LLAMA_QUESTITEMS_YATESFILES_NAME",
-                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_FILES_DESC",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ_FILES_DESC",
                 "Image": "images/unlockables/item_perspective_773e7624-307e-418e-b6cf-f9bc6dc6b295_0.jpg",
                 "Primary": true,
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_GRAPEBUSH_FILES",
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ_FILES_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -229,7 +230,6 @@
             }
         ],
         "Bricks": [],
-        "EnableSaving": false,
         "VR": [
             {
                 "Quality": "base",
@@ -249,37 +249,24 @@
         ]
     },
     "Metadata": {
+        "Id": "a7ddf3f3-7fd9-4749-b63b-f2579bbd0f6c",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Grapebush.jpg",
         "Title": "UI_PEACOCK_GRAPEBUSH3",
         "Description": "",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
         "Type": "escalation",
         "InGroup": "edbacf4b-e402-4548-b723-cd4351571537",
-        "Id": "a7ddf3f3-7fd9-4749-b63b-f2579bbd0f6c",
-        "PublicID": 123435345600,
-        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
-        "Entitlements": ["LOCATION_ELEGANT"],
-        "Location": "LOCATION_ELEGANT_LLAMA",
-        "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4",
-                "IsNew": true
-            },
-            {
-                "Id": "2dd4d703-4c56-417b-b882-ce557513aa79",
-                "IsNew": true
-            },
-            {
-                "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779"
-            },
-            {
-                "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380"
-            },
-            {
-                "Id": "122428ab-7075-4842-b54c-757c221723ef"
-            },
-            {
-                "Id": "8d606509-7d54-4dac-8142-a4349fd6279d"
-            }
-        ]
+            { "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4", "IsNew": true },
+            { "Id": "2dd4d703-4c56-417b-b882-ce557513aa79", "IsNew": true },
+            { "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779" },
+            { "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380" },
+            { "Id": "122428ab-7075-4842-b54c-757c221723ef" },
+            { "Id": "8d606509-7d54-4dac-8142-a4349fd6279d" }
+        ],
+        "Entitlements": ["LOCATION_ELEGANT"]
     }
 }
