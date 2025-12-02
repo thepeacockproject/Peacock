@@ -547,7 +547,8 @@ export function getUnlockablesById(
  * @param profileId The profileId of the player
  * @param gameVersion The game version
  * @param inv The inventory to update
- * @param sublocation The sublocation to check for a default suit
+ * @param sublocation The sublocation to check for a default suit.
+ * @param suitOverride A default suit override for this contract.
  * @returns The updated inventory
  */
 function updateWithDefaultSuit(
@@ -555,6 +556,7 @@ function updateWithDefaultSuit(
     gameVersion: GameVersion,
     inv: InventoryItem[],
     sublocation?: Unlockable,
+    suitOverride?: string | undefined,
 ): InventoryItem[] {
     if (!sublocation) {
         return inv
@@ -562,7 +564,7 @@ function updateWithDefaultSuit(
 
     // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
     const locationSuit = getUnlockableById(
-        getDefaultSuitFor(sublocation),
+        getDefaultSuitFor(sublocation, gameVersion, suitOverride),
         gameVersion,
     )
 
@@ -592,12 +594,14 @@ function updateWithDefaultSuit(
  * @param profileId  The profile ID of the player
  * @param gameVersion  The game version
  * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
+ * @param suitOverride A default suit override for this contract. Defaulted to undefined.
  * @returns The player's inventory
  */
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
     sublocation: Unlockable | undefined = undefined,
+    suitOverride?: string | undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
         return updateWithDefaultSuit(
@@ -605,6 +609,7 @@ export function createInventory(
             gameVersion,
             inventoryUserCache.get(profileId)!,
             sublocation,
+            suitOverride,
         )
     }
 

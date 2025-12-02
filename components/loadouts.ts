@@ -16,20 +16,40 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {
+import {
+    GameLoadout,
     GameVersion,
     Loadout,
     LoadoutFile,
     LoadoutsGameVersion,
+    LocationLoadout,
+    Unlockable,
 } from "./types/types"
 import { Request, Router } from "express"
 import { json as jsonMiddleware } from "body-parser"
 import { writeFile } from "fs/promises"
 import { nanoid } from "nanoid"
-import { versions } from "./utils"
-import { asyncGuard } from "./databaseHandler"
+import { getDefaultSuitFor, versions } from "./utils"
+import { asyncGuard, getUserData } from "./databaseHandler"
+import { getFlag } from "./flags"
+import { StashpointSlotName } from "./types/gameSchemas"
+import { getUnlockableById } from "./inventory"
+
+export const REQUIRED_LOADOUT_SLOTS = [
+    3, // disguise
+]
 
 const LOADOUT_PROFILES_FILE = "userdata/users/lop.json"
+
+export const LOADOUT_SLOTS: StashpointSlotName[] = [
+    "carriedweapon",
+    "carrieditem",
+    "concealedweapon",
+    "disguise",
+    "gear",
+    "gear",
+    "stashpoint",
+]
 
 const defaultValue: LoadoutFile = {
     h1: {
@@ -150,6 +170,78 @@ export class Loadouts {
 
         const theLoadouts = this.loadouts[gameVersion] as LoadoutsGameVersion
         return theLoadouts.loadouts.find((s) => s.id === theLoadouts.selected)
+    }
+
+    getLocationLoadout(
+        userId: string,
+        gameVersion: GameVersion,
+        sublocation: Unlockable,
+        suitOverride?: string | undefined,
+    ): LocationLoadout {
+        const defaultLoadout = {
+            2:
+                gameVersion === "h1"
+                    ? "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01"
+                    : "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+            3: getDefaultSuitFor(sublocation, gameVersion, suitOverride),
+            4: "TOKEN_FIBERWIRE",
+            5: "PROP_TOOL_COIN",
+        }
+
+        const output: LocationLoadout = {
+            loadout: {},
+        }
+
+        const userProfile = getUserData(userId, gameVersion)
+
+        let loadout: GameLoadout
+
+        if (getFlag("loadoutSaving") === "LEGACY") {
+            loadout =
+                userProfile.Extensions.defaultloadout?.[sublocation?.Id] ??
+                defaultLoadout
+        } else {
+            let dl = loadouts.getLoadoutFor(gameVersion)
+
+            if (!dl) {
+                dl = loadouts.createDefault(gameVersion)
+            }
+
+            loadout = dl.data[sublocation?.Id] ?? {}
+        }
+
+        // Typecast nightmare
+        for (let i = 0; i < LOADOUT_SLOTS.length; i++) {
+            const idx = i as keyof typeof loadout
+            const item = (() => {
+                if (
+                    loadout[idx] &&
+                    getUnlockableById(loadout[idx], gameVersion)
+                ) {
+                    return loadout[idx]
+                }
+
+                if (REQUIRED_LOADOUT_SLOTS.includes(i)) {
+                    return defaultLoadout[i as keyof typeof defaultLoadout]
+                }
+
+                return undefined
+            })()
+            if (item) output.loadout[idx] = item
+        }
+
+        if (["h2", "h3"].includes(gameVersion)) {
+            // Try to get briefcase item, operates off the assumption that it's the only non-integer entry.
+            for (const [key, value] of Object.entries(loadout)) {
+                if (Number.isInteger(Number(key))) continue
+                output.briefcase = {
+                    id: key,
+                    unlockableId: value,
+                }
+            }
+        }
+
+        return output
     }
 
     /**

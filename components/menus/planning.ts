@@ -42,12 +42,7 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import {
-    getDefaultSuitFor,
-    getMaxProfileLevel,
-    nilUuid,
-    unlockOrderComparer,
-} from "../utils"
+import { getMaxProfileLevel, nilUuid, unlockOrderComparer } from "../utils"
 
 import { createInventory, getUnlockableById } from "../inventory"
 import { createSniperLoadouts, SniperCharacter, SniperLoadout } from "./sniper"
@@ -261,7 +256,12 @@ export async function getPlanningData(
 
     const entrancesInScene = entranceData[scenePath]
 
-    const typedInv = createInventory(userId, gameVersion, sublocation)
+    const typedInv = createInventory(
+        userId,
+        gameVersion,
+        sublocation,
+        contractData.Metadata.LocationSuitOverride,
+    )
 
     const unlockedEntrances = typedInv
         .filter((item) => item.Unlockable.Type === "access")
@@ -282,48 +282,15 @@ export async function getPlanningData(
 
     // Default loadout
 
-    let currentLoadout = loadouts.getLoadoutFor(gameVersion)
-
-    if (!currentLoadout) {
-        currentLoadout = loadouts.createDefault(gameVersion)
-    }
-
-    let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
-    let suit = getDefaultSuitFor(sublocation)
-    let tool1 = "TOKEN_FIBERWIRE"
-    let tool2 = "PROP_TOOL_COIN"
-    let briefcaseContainedItemId: string | undefined = undefined
-    let briefcaseId: string | undefined = undefined
-
-    const dlForLocation =
-        getFlag("loadoutSaving") === "LEGACY"
-            ? // older default loadout setting (per-person)
-              userData.Extensions.defaultloadout?.[
-                  contractData.Metadata.Location
-              ]
-            : // new loadout profiles system
-              currentLoadout.data[contractData.Metadata.Location]
-
-    if (dlForLocation) {
-        pistol = dlForLocation["2"]!
-        suit = dlForLocation["3"]!
-        tool1 = dlForLocation["4"]!
-        tool2 = dlForLocation["5"]!
-
-        for (const key of Object.keys(dlForLocation)) {
-            if (["2", "3", "4", "5"].includes(key)) {
-                // we're looking for keys that aren't taken up by other things
-                continue
-            }
-
-            briefcaseId = key
-            // @ts-expect-error This will work.
-            briefcaseContainedItemId = dlForLocation[key]
-        }
-    }
+    const loadoutData = loadouts.getLocationLoadout(
+        userId,
+        gameVersion,
+        sublocation,
+        contractData.Metadata.LocationSuitOverride,
+    )
 
     const briefcaseContainedItem = typedInv.find(
-        (item) => item.Unlockable.Id === briefcaseContainedItemId,
+        (item) => item.Unlockable.Id === loadoutData.briefcase?.unlockableId,
     )
 
     const userCentric = generateUserCentric(contractData, userId, gameVersion)
@@ -363,7 +330,8 @@ export async function getPlanningData(
                     contractData.Peacock?.noCarriedWeapon === true
                         ? null
                         : typedInv.find(
-                              (item) => item.Unlockable.Id === pistol,
+                              (item) =>
+                                  item.Unlockable.Id === loadoutData.loadout[2],
                           ),
                 type: "concealedweapon",
             },
@@ -372,7 +340,9 @@ export async function getPlanningData(
             SlotName: "disguise",
             SlotId: "3",
             Recommended: {
-                item: typedInv.find((item) => item.Unlockable.Id === suit),
+                item: typedInv.find(
+                    (item) => item.Unlockable.Id === loadoutData.loadout[3],
+                ),
                 type: "disguise",
             },
         },
@@ -383,7 +353,10 @@ export async function getPlanningData(
                 item:
                     contractData.Peacock?.noGear === true
                         ? null
-                        : typedInv.find((item) => item.Unlockable.Id === tool1),
+                        : typedInv.find(
+                              (item) =>
+                                  item.Unlockable.Id === loadoutData.loadout[4],
+                          ),
                 type: "gear",
             },
         },
@@ -394,7 +367,10 @@ export async function getPlanningData(
                 item:
                     contractData.Peacock?.noGear === true
                         ? null
-                        : typedInv.find((item) => item.Unlockable.Id === tool2),
+                        : typedInv.find(
+                              (item) =>
+                                  item.Unlockable.Id === loadoutData.loadout[5],
+                          ),
                 type: "gear",
             },
         },
@@ -403,10 +379,10 @@ export async function getPlanningData(
             SlotId: "6",
             Recommended: null,
         },
-        briefcaseId &&
+        loadoutData.briefcase &&
             briefcaseContainedItem && {
-                SlotName: briefcaseContainedItemId,
-                SlotId: briefcaseId,
+                SlotName: loadoutData.briefcase.unlockableId,
+                SlotId: loadoutData.briefcase.id,
                 Recommended: {
                     item: {
                         ...briefcaseContainedItem,

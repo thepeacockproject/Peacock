@@ -36,6 +36,7 @@ import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { compare } from "semver"
 import assert from "assert"
+import { getUnlockableById } from "./inventory"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -576,15 +577,21 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * Priority is given to the sub-location, then the parent location, then 47's signature suit.
  *
  * @param subLocation The sub-location.
+ * @param gameVersion The game version.
+ * @param suitOverride A default suit override for this contract.
  * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(subLocation: Unlockable): string {
+export function getDefaultSuitFor(
+    subLocation: Unlockable,
+    gameVersion: GameVersion,
+    suitOverride?: string | undefined,
+): string {
     type Cast = keyof typeof defaultSuits
-    return (
-        defaultSuits[subLocation.Id as Cast] ||
-        defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
-        "TOKEN_OUTFIT_HITMANSUIT"
-    )
+    return suitOverride && getUnlockableById(suitOverride, gameVersion)
+        ? suitOverride
+        : defaultSuits[subLocation.Id as Cast] ||
+              defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
+              "TOKEN_OUTFIT_HITMANSUIT"
 }
 
 export const nilUuid = "00000000-0000-0000-0000-000000000000"

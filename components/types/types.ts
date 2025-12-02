@@ -539,11 +539,8 @@ export type UserProfile = {
             }
         }
         defaultloadout?: {
-            [location: string]: {
-                "2"?: string
-                "3"?: string
-                "4"?: string
-                "5"?: string
+            [location: string]: GameLoadout & {
+                [briefcaseId: string]: string
             }
         }
         entP: string[]
@@ -952,6 +949,7 @@ export interface MissionManifestMetadata {
     NonTargetKillsAllowed?: boolean | null
     Difficulty?: "pro1" | string | null
     OnlyNeoVR?: boolean | null
+    LocationSuitOverride?: string
     CharacterSetup?:
         | {
               Mode: "singleplayer" | "multiplayer" | string
@@ -1449,11 +1447,31 @@ export type Loadout = {
     id: string
     name: string
     data: {
-        [locationName: string]: {
-            readonly 2?: string
-            readonly 3?: string
-            readonly 4?: string
-        } & { [briefcaseId: string]: string }
+        [locationName: string]: GameLoadout & {
+            [briefcaseId: string]: string
+        }
+    }
+}
+
+/**
+ * A "final" loadout (that is, close to one the game uses).
+ * Keep the indices in line with StashpointSlotName
+ */
+export type GameLoadout = {
+    0?: string
+    1?: string
+    2?: string
+    3?: string
+    4?: string
+    5?: string
+    6?: string
+}
+
+export type LocationLoadout = {
+    loadout: GameLoadout
+    briefcase?: {
+        id: string
+        unlockableId: string
     }
 }
 
