@@ -58,9 +58,7 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "Constants": {
                         "RepositoryId": "45625fe7-947c-48db-b381-6ce28e413881"
@@ -76,12 +74,8 @@
                                 },
                                 "Transition": "Success"
                             },
-                            "Baiju_AllyLost": {
-                                "Transition": "Failure"
-                            },
-                            "exit_gate": {
-                                "Transition": "Success"
-                            }
+                            "Baiju_AllyLost": { "Transition": "Failure" },
+                            "exit_gate": { "Transition": "Success" }
                         }
                     }
                 }
@@ -110,22 +104,14 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Baiju_AllyDied": {
-                                "Transition": "Failure"
-                            }
+                            "Baiju_AllyDied": { "Transition": "Failure" }
                         }
                     }
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 }
             },
             {
@@ -137,7 +123,7 @@
                 "HUDTemplate": {
                     "display": {
                         "$loc": {
-                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
                             "data": "$loc UI_ET_BAIJU_OUTFIT_GANGLEADER_NAME"
                         }
                     }
@@ -211,11 +197,7 @@
                         "Completed"
                     ]
                 },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
                 "Definition": {
                     "Scope": "session",
                     "Context": {
@@ -268,9 +250,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -345,9 +325,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -405,9 +383,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 }
                             ]
@@ -419,7 +395,7 @@
     },
     "Metadata": {
         "Id": "a8365dec-bb2c-44ad-9ce6-7cc3198d351a",
-        "CodeName_Hint": "Arcade Pitaya Baiju",
+        "CodeName_Hint": "Arcade Pitaya [Baiju] - Level 2",
         "Title": "UI_CONTRACT_PITAYA_LEVEL02_NAME",
         "Description": "UI_CONTRACT_BAIJU_DESC",
         "BriefingVideo": "briefing_baiju",
@@ -427,10 +403,13 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Bangkok/scene_baiju.entity",
         "TileImage": "images/contracts/elusive/s3_baiju/Title.jpg",
         "InGroup": "3fa83d8d-eb75-4973-926a-6052ee5b2aa4",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "7de74fc2-5b8c-4b5f-a151-4f14db638908", "IsNew": true }
+        ],
         "Location": "LOCATION_BANGKOK",
         "IsPublished": true,
-        "LastUpdate": "2025-05-01T12:00:00.441Z",
-        "CreationTimestamp": "2025-09-25T10:59:55.8524137Z",
+        "LastUpdate": "2025-12-01T09:47:05.4670726Z",
+        "CreationTimestamp": "2025-05-01T10:56:49.9796175Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Release": "3.240.x Arcade",
         "Type": "arcade",

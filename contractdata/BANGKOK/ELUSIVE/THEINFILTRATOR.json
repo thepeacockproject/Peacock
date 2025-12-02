@@ -58,9 +58,7 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "Constants": {
                         "RepositoryId": "45625fe7-947c-48db-b381-6ce28e413881"
@@ -76,12 +74,8 @@
                                 },
                                 "Transition": "Success"
                             },
-                            "Baiju_AllyLost": {
-                                "Transition": "Failure"
-                            },
-                            "exit_gate": {
-                                "Transition": "Success"
-                            }
+                            "Baiju_AllyLost": { "Transition": "Failure" },
+                            "exit_gate": { "Transition": "Success" }
                         }
                     }
                 }
@@ -110,22 +104,14 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Baiju_AllyDied": {
-                                "Transition": "Failure"
-                            }
+                            "Baiju_AllyDied": { "Transition": "Failure" }
                         }
                     }
                 },
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 }
             },
             {
@@ -211,11 +197,7 @@
                         "Completed"
                     ]
                 },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
                 "Definition": {
                     "Scope": "session",
                     "Context": {
@@ -268,9 +250,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -345,9 +325,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -405,9 +383,7 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Count", 3]
-                                    },
+                                    "Condition": { "$eq": ["$.Count", 3] },
                                     "Transition": "Success"
                                 }
                             ]
@@ -429,10 +405,11 @@
         "BriefingVideo": "briefing_baiju",
         "DebriefingVideo": "debriefing_baiju",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Bangkok/scene_baiju.entity",
-        "CreationTimestamp": "2025-09-25T10:59:34.6829035Z",
+        "CreationTimestamp": "2019-09-06T08:30:40.6504427Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "IsPublished": true,
         "Entitlements": ["LOCATION_BANGKOK"],
+        "LastUpdate": "2025-12-01T09:46:29.7890613Z",
         "PublicId": "008685669347",
         "Season": 3
     },
