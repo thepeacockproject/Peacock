@@ -72,54 +72,50 @@ export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 export const LATEST_PROFILE_VERSION = 2
 
 export async function checkForUpdates(): Promise<void> {
-    if (getFlag("updateChecking") === false) {
-        return
-    }
+    if (getFlag("updateChecking") === true) {
+        try {
+            const url = `https://api.github.com/repos/thepeacockproject/Peacock/releases/latest`
+            const headers = {
+                "User-Agent": `Peacock/${PEACOCKVERSTRING} (Node.js/${process.version})`, // GitHub API requires User-Agent
+            }
 
-    let versionTag: string | undefined
+            const response = await axios.get(url, { headers })
 
-    try {
-        const url = `https://api.github.com/repos/thepeacockproject/Peacock/releases/latest`
-        const headers = {
-            "User-Agent": `Peacock/${PEACOCKVERSTRING} (Node.js/${process.version})`, // GitHub API requires User-Agent
-        }
-
-        const response = await axios.get(url, { headers })
-
-        if (response.status !== 200) {
-            throw new Error(
-                `API request failed, status code: ${response.status}, "updates"`,
-            )
-        }
-
-        versionTag = response.data.tag_name
-
-        if (!versionTag) {
-            return
-        }
-
-        const compareVer = compare(PEACOCKVERSTRING, versionTag)
-
-        switch (compareVer) {
-            case 1:
-                log(
-                    LogLevel.INFO,
-                    `You're ahead of the latest release! The latest version of Peacock (${versionTag}) is older than this build.`,
-                    "updates",
+            if (response.status !== 200) {
+                throw new Error(
+                    `API request failed, status code: ${response.status}, "updates"`,
                 )
-                break
-            case 0:
-                log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
-                break
-            default:
-                log(
-                    LogLevel.WARN,
-                    `Peacock is out-of-date! Check the Discord for the latest release.`,
-                    "updates",
-                )
+            }
+
+            const versionTag: string | undefined = response.data.tag_name
+
+            if (!versionTag) {
+                return
+            }
+
+            const compareVer = compare(PEACOCKVERSTRING, versionTag)
+
+            switch (compareVer) {
+                case 1:
+                    log(
+                        LogLevel.INFO,
+                        `You're ahead of the latest release! The latest version of Peacock (${versionTag}) is older than this build.`,
+                        "updates",
+                    )
+                    break
+                case 0:
+                    log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
+                    break
+                default:
+                    log(
+                        LogLevel.WARN,
+                        `Peacock is out-of-date! Check the Discord for the latest release.`,
+                        "updates",
+                    )
+            }
+        } catch {
+            log(LogLevel.WARN, "Failed to check for updates!", "updates")
         }
-    } catch {
-        log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }
 
