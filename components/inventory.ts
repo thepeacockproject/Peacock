@@ -625,7 +625,11 @@ export function createInventory(
         ),
         ...getConfig<Unlockable[]>("SniperUnlockables", true),
         ...getConfig<Unlockable[]>("VersusUnlockables", true),
-    ].filter((u) => u.Type !== "location") // locations not in inventory
+    ].filter(
+        (u) =>
+            u.Properties && // remove broken unlockables with no properties
+            u.Type !== "location", // locations do not go in inventory
+    )
 
     let unlockables: Unlockable[] = allunlockables
 
