@@ -29,7 +29,7 @@ import type {
     Unlockable,
     UserProfile,
 } from "./types/types"
-import { AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
@@ -76,31 +76,47 @@ export async function checkForUpdates(): Promise<void> {
         return
     }
 
+    let versionTag: string | undefined
+
     try {
-        type VersionCheckResponse = { id: string; channel: string }
+        const url = `https://api.github.com/repos/thepeacockproject/Peacock/releases/latest`
+        const headers = {
+            "User-Agent": `Peacock/${PEACOCKVERSTRING} (Node.js/${process.version})`, // GitHub API requires User-Agent
+        }
 
-        const res = await fetch(
-            "https://backend.rdil.rocks/peacock/latest-version/data",
-        )
-        const data = (await res.json()) as VersionCheckResponse
+        const response = await axios.get(url, { headers })
 
-        const current = compare(PEACOCKVERSTRING, data.id)
-        const isNewer = current === 1
-
-        if (isNewer) {
-            log(
-                LogLevel.INFO,
-                `You're ahead of the latest release! The latest version of Peacock (${data.id}) is older than this build.`,
-                "updates",
+        if (response.status !== 200) {
+            throw new Error(
+                `API request failed, status code: ${response.status}, "updates"`,
             )
-        } else if (current === 0) {
-            log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
-        } else {
-            log(
-                LogLevel.WARN,
-                `Peacock is out-of-date! Check the Discord for the latest release.`,
-                "updates",
-            )
+        }
+
+        versionTag = response.data.tag_name
+
+        if (!versionTag) {
+            return
+        }
+
+        const compareVer = compare(PEACOCKVERSTRING, versionTag)
+
+        switch (compareVer) {
+            case 1:
+                log(
+                    LogLevel.INFO,
+                    `You're ahead of the latest release! The latest version of Peacock (${versionTag}) is older than this build.`,
+                    "updates",
+                )
+                break
+            case 0:
+                log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
+                break
+            default:
+                log(
+                    LogLevel.WARN,
+                    `Peacock is out-of-date! Check the Discord for the latest release.`,
+                    "updates",
+                )
         }
     } catch {
         log(LogLevel.WARN, "Failed to check for updates!", "updates")
