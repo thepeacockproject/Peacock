@@ -32,8 +32,10 @@ import type {
     GenSingleMissionFunc,
     GenSingleVideoFunc,
     Hit,
+    MILLocations,
     MissionManifest,
     PeacockLocationsData,
+    PeacokcContentMode,
     PlayNextGetCampaignsHookReturn,
     RegistryChallenge,
     RequestWithJwt,
@@ -303,6 +305,51 @@ function registerInternals(contracts: MissionManifest[]): void {
 
             return c
         })
+    }
+
+    if (<PeacokcContentMode>getFlag("peacockContent") === "DISABLED") {
+        const toDelete = new Set<string>()
+
+        type MILLocationsRec = MILLocations & {
+            [key: string]: MILLocations | string[]
+        }
+
+        function deleteContracts(contracts: MILLocationsRec) {
+            for (const [key, list] of Object.entries(contracts)) {
+                if (typeof list === "string") {
+                    if (toDelete.has(list)) delete contracts[key]
+                } else if (Array.isArray(list)) {
+                    contracts[key] = list.filter((id) => !toDelete.has(id))
+                } else {
+                    deleteContracts(<MILLocationsRec>list)
+                }
+            }
+        }
+
+        contracts = contracts.filter((contract) => {
+            if (contract.Peacock?.type === "peacock") {
+                // We need to delete the contracts from hardcoded missionsInLocation
+                // in order to avoid issues with missing contracts in registry.
+                toDelete.add(contract.Metadata.Id)
+
+                if (contract.Metadata.Type === "arcade") {
+                    orderedETAs.splice(
+                        orderedETAs.indexOf(contract.Metadata.Id),
+                        1,
+                    )
+                }
+
+                return false
+            }
+
+            return true
+        })
+
+        if (toDelete.size) {
+            deleteContracts(missionsInLocation.h1)
+            deleteContracts(missionsInLocation.h2)
+            deleteContracts(missionsInLocation.h3)
+        }
     }
 
     for (const contract of contracts) {
