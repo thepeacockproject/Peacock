@@ -23,5 +23,5 @@ The guidelines:
 - For `(Long)BriefingText`, try to use proper grammar (i.e. ending with a full stop).
 - **Always** add peacock tagging. This will ensure that escalations respect the `peacockContent` setting.
     - New challenges associated with the escalation **should** have a `peacock` tag.
-    - **All** contract files associated with the escalation **should** have a `Peacock.type` field set to `"peacock"`.
-        I.e. `"Peacock": { "type": "peacock" }`
+    - **All** contract files associated with the escalation **should** have a `Peacock.type` field set to `"peacock"`.  
+      I.e. `"Peacock": { "type": "peacock" }`

@@ -406,7 +406,8 @@ export class MenuSystemDatabase {
                                                             $datacontext: {
                                                                 in: "$.",
                                                                 datavalues: {
-                                                                    AutoStart: false,
+                                                                    AutoStart:
+                                                                        false,
                                                                 },
                                                                 do: {
                                                                     $include: {
