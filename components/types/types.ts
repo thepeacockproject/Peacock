@@ -1322,7 +1322,7 @@ export interface CompiledChallengeRuntimeData {
 
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"
 export type ImageLoadingStrategy = "SAVEASREQUESTED" | "ONLINE" | "OFFLINE"
-export type PeacokcContentMode = "ENABLED" | "NOXP" | "DISABLED"
+export type PeacockContentMode = "ENABLED" | "NOXP" | "DISABLED"
 
 export type Flag = {
     category?: string

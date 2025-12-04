@@ -35,7 +35,7 @@ import type {
     MILLocations,
     MissionManifest,
     PeacockLocationsData,
-    PeacokcContentMode,
+    PeacockContentMode,
     PlayNextGetCampaignsHookReturn,
     RegistryChallenge,
     RequestWithJwt,
@@ -307,7 +307,7 @@ function registerInternals(contracts: MissionManifest[]): void {
         })
     }
 
-    if (<PeacokcContentMode>getFlag("peacockContent") === "DISABLED") {
+    if (<PeacockContentMode>getFlag("peacockContent") === "DISABLED") {
         const toDelete = new Set<string>()
 
         type MILLocationsRec = MILLocations & {

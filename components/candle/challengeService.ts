@@ -27,7 +27,7 @@ import type {
     GameVersion,
     MissionManifest,
     PeacockLocationsData,
-    PeacokcContentMode,
+    PeacockContentMode,
     RegistryChallenge,
     Unlockable,
     UserProfile,
@@ -321,7 +321,7 @@ export abstract class ChallengeRegistry {
 
         const set = locationMap.get(groupId)!
 
-        const peacockContent = <PeacokcContentMode>getFlag("peacockContent")
+        const peacockContent = <PeacockContentMode>getFlag("peacockContent")
 
         for (const challenge of challenges) {
             challenge.inGroup = groupId
