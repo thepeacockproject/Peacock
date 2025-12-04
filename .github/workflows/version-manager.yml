@@ -1,0 +1,75 @@
+name: Latest Version
+
+on:
+    release:
+        types: [created, deleted]
+    workflow_dispatch:
+
+jobs:
+    update_versions:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Checkout Peacock
+              uses: actions/checkout@v5
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.PEACOCKBOT_TOKEN }}
+
+            - name: Get latest release tags
+              id: get_tags
+              run: |
+                  API_URL="https://api.github.com/repos/thepeacockproject/peacock/releases"
+
+                  LATEST_STABLE=$(curl -s \
+                    -H "Authorization: token ${{ secrets.PEACOCKBOT_TOKEN }}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    "$API_URL?per_page=10" | \
+                    jq -r '.[] | select(.prerelease == false) | .tag_name' | \
+                    head -1)
+
+                  LATEST_PRERELEASE=$(curl -s \
+                    -H "Authorization: token ${{ secrets.PEACOCKBOT_TOKEN }}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    "$API_URL?per_page=10" | \
+                    jq -r '.[] | select(.prerelease == true) | .tag_name' | \
+                    head -1)
+
+                  # If no versions found, set default values
+                  LATEST_STABLE="${LATEST_STABLE:-none}"
+                  LATEST_PRERELEASE="${LATEST_PRERELEASE:-none}"
+
+                  echo "Latest stable version: $LATEST_STABLE"
+                  echo "Latest prerelease version: $LATEST_PRERELEASE"
+
+                  # Save to step outputs
+                  echo "latest_stable=$LATEST_STABLE" >> $GITHUB_OUTPUT
+                  echo "latest_prerelease=$LATEST_PRERELEASE" >> $GITHUB_OUTPUT
+
+            - name: Update version.json
+              run: |
+                  cat > ./version.json << EOF
+                  {
+                    "latestStable": "${{ steps.get_tags.outputs.latest_stable }}",
+                    "latestPrerelease": "${{ steps.get_tags.outputs.latest_prerelease }}",
+                    "updateTime": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+                  }
+                  EOF
+
+            - name: Commit and push
+              run: |
+                  git config user.name "PeacockBot"
+                  git config user.email "admin@thepeacockproject.org"
+                  git add ./version.json
+
+                  if ! git diff --cached --quiet; then
+                      git commit -m "chore: update latest versions
+                      
+                      stable: ${{ steps.get_tags.outputs.latest_stable }}
+                      prerelease: ${{ steps.get_tags.outputs.latest_prerelease }}"
+                      
+                      git push
+                  else
+                      echo "No changes in version.json file, no commit needed"
+                  fi

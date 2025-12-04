@@ -29,14 +29,15 @@ import type {
     Unlockable,
     UserProfile,
 } from "./types/types"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
-import { compare } from "semver"
+import semver from "semver"
 import assert from "assert"
 import { getUnlockableById } from "./inventory"
+import versionFile from "version.json"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -71,51 +72,179 @@ export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
  */
 export const LATEST_PROFILE_VERSION = 2
 
-export async function checkForUpdates(): Promise<void> {
+interface VersionInfo {
+    latestStable: string
+    latestPrerelease: string
+    updateTime: string
+}
+
+function isVersionInfo(obj: unknown): obj is VersionInfo {
+    if (obj === null || typeof obj !== "object") {
+        return false
+    }
+
+    const potentialVersion = obj as Record<keyof VersionInfo, unknown>
+
+    const checks = {
+        hasLatestStable: typeof potentialVersion.latestStable === "string",
+        hasLatestPrerelease:
+            typeof potentialVersion.latestPrerelease === "string",
+        hasUpdateTime: typeof potentialVersion.updateTime === "string",
+    }
+
+    return (
+        checks.hasLatestStable &&
+        checks.hasLatestPrerelease &&
+        checks.hasUpdateTime
+    )
+}
+
+interface VersionCheckResult {
+    status: "up-to-date" | "update-available" | "ahead-of-latest"
+    message: string
+    suggestedVersion?: string
+    updateType?: "stable" | "prerelease"
+}
+
+export function checkForUpdates() {
     if (getFlag("updateChecking") === true) {
         try {
-            const url = `https://api.github.com/repos/thepeacockproject/Peacock/releases/latest`
-            const headers = {
-                "User-Agent": `Peacock/${PEACOCKVERSTRING} (Node.js/${process.version})`, // GitHub API requires User-Agent
+            if (!versionFile || !isVersionInfo(versionFile)) {
+                throw new Error(`Fetch latest version file error!`)
             }
 
-            const response = await axios.get(url, { headers })
+            const cleanLocalVersion =
+                semver.clean(PEACOCKVERSTRING) || PEACOCKVERSTRING
+            const cleanLatestStable =
+                semver.clean(versionFile.latestStable) ||
+                versionFile.latestStable
+            const cleanLatestPrerelease =
+                versionFile.latestPrerelease !== "none"
+                    ? semver.clean(versionFile.latestPrerelease) ||
+                      versionFile.latestPrerelease
+                    : null
 
-            if (response.status !== 200) {
-                throw new Error(
-                    `API request failed, status code: ${response.status}, "updates"`,
+            const isUserPrerelease =
+                semver.prerelease(cleanLocalVersion) !== null
+            let result: VersionCheckResult
+
+            if (!isUserPrerelease) {
+                result = handleStableLocalVersion(
+                    cleanLocalVersion,
+                    cleanLatestStable,
+                    cleanLatestPrerelease,
+                )
+            } else {
+                result = handlePrereleaseLocalVersion(
+                    cleanLocalVersion,
+                    cleanLatestStable,
+                    cleanLatestPrerelease,
                 )
             }
 
-            const versionTag: string | undefined = response.data.tag_name
-
-            if (!versionTag) {
-                return
-            }
-
-            const compareVer = compare(PEACOCKVERSTRING, versionTag)
-
-            switch (compareVer) {
-                case 1:
-                    log(
-                        LogLevel.INFO,
-                        `You're ahead of the latest release! The latest version of Peacock (${versionTag}) is older than this build.`,
-                        "updates",
-                    )
+            switch (result.status) {
+                case "update-available":
+                    log(LogLevel.WARN, result.message, "updates")
                     break
-                case 0:
-                    log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
+                case "ahead-of-latest":
+                    log(LogLevel.INFO, result.message, "updates")
                     break
-                default:
-                    log(
-                        LogLevel.WARN,
-                        `Peacock is out-of-date! Check the Discord for the latest release.`,
-                        "updates",
-                    )
+                case "up-to-date":
+                    log(LogLevel.DEBUG, result.message, "updates")
+                    break
             }
         } catch {
             log(LogLevel.WARN, "Failed to check for updates!", "updates")
         }
+    }
+}
+
+/**
+ * For `checkForUpdates`, handle the case when the user is using a stable version.
+ */
+function handleStableLocalVersion(
+    localVersion: string,
+    latestStable: string,
+    latestPrerelease: string | null,
+): VersionCheckResult {
+    // Compare local version with the latest stable version
+    const stableComparison = semver.compare(localVersion, latestStable)
+
+    if (stableComparison > 0) {
+        // Local version is newer than the latest stable version
+        return {
+            status: "ahead-of-latest",
+            message: `Your current version (${localVersion}) is ahead of the latest stable version (${latestStable}).`,
+        }
+    } else if (stableComparison < 0) {
+        // Updated stable version available
+        return {
+            status: "update-available",
+            message: `Updated stable version ${latestStable} is available. Your current version is ${localVersion}. It is recommended to update.`,
+            suggestedVersion: latestStable,
+            updateType: "stable",
+        }
+    } else {
+        // Latest stable version is up-to-date, check for newer prerelease
+        if (latestPrerelease && semver.gt(latestPrerelease, localVersion)) {
+            return {
+                status: "update-available",
+                message: `You are on the latest stable version, but a newer prerelease ${latestPrerelease} is available.`,
+                suggestedVersion: latestPrerelease,
+                updateType: "prerelease",
+            }
+        }
+
+        return {
+            status: "up-to-date",
+            message: `You are on the latest version (${localVersion}).`,
+        }
+    }
+}
+
+/**
+ * For `checkForUpdates`, handle the case when the user is using a prerelease version.
+ */
+function handlePrereleaseLocalVersion(
+    localVersion: string,
+    latestStable: string,
+    latestPrerelease: string | null,
+): VersionCheckResult {
+    // Priority check: whether there is an updated stable version (prerelease < stable)
+    if (semver.lt(localVersion, latestStable)) {
+        return {
+            status: "update-available",
+            updateType: "stable",
+            suggestedVersion: latestStable,
+            message: `Current prerelease version (${localVersion}) is behind the stable version (${latestStable}). It is recommended to upgrade for a stable experience.`,
+        }
+    }
+
+    // Check: if there is an updated prerelease version
+    if (latestPrerelease && semver.lt(localVersion, latestPrerelease)) {
+        return {
+            status: "update-available",
+            updateType: "prerelease",
+            suggestedVersion: latestPrerelease,
+            message: `A new prerelease version ${latestPrerelease} is available. Your current version is ${localVersion}.`,
+        }
+    }
+
+    // Check: if the version is ahead of the latest known version
+    // Calculate the latest known version (prerelease takes precedence over stable, if no prerelease info then use stable)
+    const latestKnown = latestPrerelease || latestStable
+
+    if (semver.gt(localVersion, latestKnown)) {
+        return {
+            status: "ahead-of-latest",
+            message: `Your current prerelease version (${localVersion}) is ahead of all known versions.`,
+        }
+    }
+
+    // Default: up-to-date (at this point localVersion === latestPrerelease)
+    return {
+        status: "up-to-date",
+        message: `You are on the latest prerelease version (${localVersion}).`,
     }
 }
 
