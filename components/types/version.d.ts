@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-declare module "./version.json" {
+declare module "version.json" {
     const value: {
         latestStable: string
         latestPrerelease: string

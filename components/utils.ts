@@ -37,7 +37,6 @@ import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import semver from "semver"
 import assert from "assert"
 import { getUnlockableById } from "./inventory"
-import versionFile from "version.json"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -106,13 +105,29 @@ interface VersionCheckResult {
     updateType?: "stable" | "prerelease"
 }
 
-export function checkForUpdates() {
+export async function checkForUpdates() {
     if (getFlag("updateChecking") === true) {
+        let versionFile: VersionInfo | null = null
+
         try {
+            const imported = await import("version.json")
+            versionFile = imported.default
+
             if (!versionFile || !isVersionInfo(versionFile)) {
-                throw new Error(`Fetch latest version file error!`)
+                throw new Error(`Fetched version.json has an invalid format!`)
+            }
+        } catch (e) {
+            let errorMessage = `Failed to load version.json for update checking.`
+
+            if (e instanceof Error) {
+                errorMessage += ` Error: ${e.message}`
             }
 
+            log(LogLevel.WARN, errorMessage, "updates")
+            return
+        }
+
+        try {
             const cleanLocalVersion =
                 semver.clean(PEACOCKVERSTRING) || PEACOCKVERSTRING
             const cleanLatestStable =

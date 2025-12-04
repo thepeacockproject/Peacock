@@ -39,4 +39,9 @@ export default defineConfig((params) => ({
         port: 3000,
         strictPort: true,
     },
+    build: {
+        rollupOptions: {
+            external: ["version.json"],
+        },
+    },
 }))
