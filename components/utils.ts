@@ -32,6 +32,7 @@ import type {
 import { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
+import { readFile } from "fs/promises"
 import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import semver from "semver"
@@ -107,13 +108,11 @@ interface VersionCheckResult {
 
 export async function checkForUpdates() {
     if (getFlag("updateChecking") === true) {
-        let versionFile: VersionInfo | null = null
+        const rawText = await readFile("version.json", "utf-8")
+        const parsedData = JSON.parse(rawText)
 
         try {
-            const imported = await import("version.json")
-            versionFile = imported.default
-
-            if (!versionFile || !isVersionInfo(versionFile)) {
+            if (!isVersionInfo(parsedData)) {
                 throw new Error(`Fetched version.json has an invalid format!`)
             }
         } catch (e) {
@@ -131,12 +130,11 @@ export async function checkForUpdates() {
             const cleanLocalVersion =
                 semver.clean(PEACOCKVERSTRING) || PEACOCKVERSTRING
             const cleanLatestStable =
-                semver.clean(versionFile.latestStable) ||
-                versionFile.latestStable
+                semver.clean(parsedData.latestStable) || parsedData.latestStable
             const cleanLatestPrerelease =
-                versionFile.latestPrerelease !== "none"
-                    ? semver.clean(versionFile.latestPrerelease) ||
-                      versionFile.latestPrerelease
+                parsedData.latestPrerelease !== "none"
+                    ? semver.clean(parsedData.latestPrerelease) ||
+                      parsedData.latestPrerelease
                     : null
 
             const isUserPrerelease =
