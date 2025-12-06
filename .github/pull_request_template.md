@@ -11,10 +11,7 @@
 ## Checklist
 
 <!--
-Just a few reminders to make sure everything is perfect. You can place an "X" in the boxes to tick them off.
-If you have not completed one of the steps below, you can create the pull request as a draft, and then check off the items as you go.
+Once you create the PR, the checklist will be added below this comment automatically (based on what files you've changed).
+It's just a few reminders to make sure everything is perfect. You can place an "X" in the boxes to tick them off.
 When you have completed the checklist, press the "Ready for review" button.
 -->
-
-- [ ] I have run Prettier to reformat any changed files
-- [ ] I have verified my changes work
