@@ -35,6 +35,24 @@ export const fetcher: SWRConfiguration = {
         axios[method](url).then((res) => res.data),
 }
 
+export const debounce = <T extends unknown[]>(
+    callback: (...args: T) => void,
+    delay = 0,
+): ((...args: T) => void) => {
+    let timeoutTimer: number | null = null
+
+    return (...args: T) => {
+        if (timeoutTimer !== null) {
+            window.clearTimeout(timeoutTimer)
+        }
+
+        timeoutTimer = window.setTimeout(() => {
+            callback(...args)
+            timeoutTimer = null
+        }, delay)
+    }
+}
+
 /**
  * Shared type with @peacockproject/core.
  */

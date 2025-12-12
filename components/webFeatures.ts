@@ -175,29 +175,43 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
 webFeaturesRouter.get(
     "/modify",
     commonValidationMiddleware,
-    async (req: CommonRequest<{ level: string; id: string }>, res) => {
-        if (!req.query.level) {
-            formErrorMessage(
-                res,
-                "The request must contain the level to set the escalation to.",
-            )
+    async (req: CommonRequest<{ escalations: string }>, res) => {
+        let parsedEscalations: Record<string, string>
+
+        try {
+            parsedEscalations = JSON.parse(req.query.escalations) as Record<
+                string,
+                string
+            >
+        } catch {
+            formErrorMessage(res, "Invalid escalations JSON.")
             return
         }
 
-        if (
-            isNaN(parseInt(req.query.level)) ||
-            parseInt(req.query.level) <= 0
-        ) {
-            formErrorMessage(res, "The level must be a positive integer.")
-            return
-        }
+        for (const [escalationId, escalationLevel] of Object.entries(
+            parsedEscalations,
+        )) {
+            const escalationLevelInt = parseInt(escalationLevel, 10)
 
-        if (!req.query.id || !uuidRegex.test(req.query.id)) {
-            formErrorMessage(
-                res,
-                "The request must contain the uuid of an escalation.",
-            )
-            return
+            if (!escalationLevel || escalationLevelInt <= 0) {
+                formErrorMessage(res, "The level must be a positive integer.")
+                return
+            }
+
+            const mapping = controller.escalationMappings.get(escalationId)
+
+            if (!mapping) {
+                formErrorMessage(res, "Unknown escalation.")
+                return
+            }
+
+            if (Object.keys(mapping).length < escalationLevelInt) {
+                formErrorMessage(
+                    res,
+                    "Cannot exceed the maximum level for edited escalation!",
+                )
+                return
+            }
         }
 
         try {
@@ -207,38 +221,29 @@ webFeaturesRouter.get(
             return
         }
 
-        const mapping = controller.escalationMappings.get(req.query.id)
-
-        if (!mapping) {
-            formErrorMessage(res, "Unknown escalation.")
-            return
-        }
-
-        if (Object.keys(mapping).length < parseInt(req.query.level, 10)) {
-            formErrorMessage(
-                res,
-                "Cannot exceed the maximum level for this escalation!",
-            )
-            return
-        }
-
-        log(
-            LogLevel.INFO,
-            `Setting the level of escalation ${req.query.id} to ${req.query.level}`,
-        )
         const read = getUserData(req.query.user, req.query.gv)
 
-        read.Extensions.PeacockEscalations[req.query.id] = parseInt(
-            req.query.level,
-        )
+        for (const [escalationId, escalationLevel] of Object.entries(
+            parsedEscalations,
+        )) {
+            log(
+                LogLevel.INFO,
+                `Setting the level of escalation ${escalationId} to ${escalationLevel}`,
+            )
 
-        if (
-            read.Extensions.PeacockCompletedEscalations.includes(req.query.id)
-        ) {
-            read.Extensions.PeacockCompletedEscalations =
-                read.Extensions.PeacockCompletedEscalations.filter(
-                    (val) => val !== req.query.id,
+            read.Extensions.PeacockEscalations[escalationId] =
+                parseInt(escalationLevel)
+
+            if (
+                read.Extensions.PeacockCompletedEscalations.includes(
+                    escalationId,
                 )
+            ) {
+                read.Extensions.PeacockCompletedEscalations =
+                    read.Extensions.PeacockCompletedEscalations.filter(
+                        (val) => val !== escalationId,
+                    )
+            }
         }
 
         writeUserData(req.query.user, req.query.gv)

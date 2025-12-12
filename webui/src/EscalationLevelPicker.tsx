@@ -19,7 +19,7 @@
 import * as React from "react"
 import { CodenameMeta } from "./pages/EscalationLevelPage"
 import { produce } from "immer"
-import { axiosClient } from "./utils"
+import { axiosClient, debounce } from "./utils"
 
 export interface EscalationLevelPickerProps {
     codenames: CodenameMeta
@@ -71,8 +71,15 @@ export function EscalationLevelPicker({
     user,
     gv,
 }: EscalationLevelPickerProps) {
-    const [progress, setProgressWeb] =
+    const [saveMessage, setSaveMessage] = React.useState<string | null>(null)
+    const [savedProgress, setSavedProgress] =
         React.useState<Record<string, number>>(emptyValue)
+    const [modifiedProgress, setModifiedProgress] = React.useState<
+        Record<string, number>
+    >({})
+    const combinedProgress = React.useMemo(() => {
+        return { ...savedProgress, ...modifiedProgress }
+    }, [modifiedProgress, savedProgress])
 
     React.useEffect(() => {
         axiosClient
@@ -82,51 +89,83 @@ export function EscalationLevelPicker({
                     gv: `h${gv}`,
                 },
             })
-            .then((res) => setProgressWeb(res.data))
+            .then((res) => setSavedProgress(res.data))
             .catch(console.error)
     }, [gv, user])
 
-    if (
-        Object.keys(progress).length === 0 &&
-        (progress as Empty).__isEmpty !== 1
-    ) {
+    // keep refs to the latest data so the debounced saver always uses up-to-date values
+    const modifiedProgressRef = React.useRef(modifiedProgress)
+    React.useEffect(() => {
+        modifiedProgressRef.current = modifiedProgress
+    }, [modifiedProgress])
+
+    const userRef = React.useRef(user)
+    const gvRef = React.useRef(gv)
+    React.useEffect(() => {
+        userRef.current = user
+        gvRef.current = gv
+    }, [user, gv])
+
+    // Since the server saves sent changes are automatically saved every 3 seconds
+    // as opposed to whenever the UI passes updated data, there can be a desync
+    // between the UI and the server. To fix this, instead of calling the server
+    // after every change, use debounce to send a collection of data at most every 3 seconds.
+    const saveDebouncedRef = React.useRef<() => void>(() => {})
+    React.useEffect(() => {
+        saveDebouncedRef.current = debounce(() => {
+            axiosClient
+                .get(`/_wf/modify`, {
+                    params: {
+                        user: userRef.current,
+                        gv: `h${gvRef.current}`,
+                        escalations: JSON.stringify(
+                            modifiedProgressRef.current,
+                        ),
+                    },
+                })
+                .then((value) => {
+                    let message: string
+
+                    if (value.data.success) {
+                        message = "Changes made."
+                        setSavedProgress((prev) => ({
+                            ...prev,
+                            ...modifiedProgressRef.current,
+                        }))
+                        setSaveMessage("Changes saved!")
+                    } else {
+                        message = "Error: " + value.data.error
+                        alert(message)
+                        setModifiedProgress({})
+                        setSaveMessage("Saving changes failed.")
+                    }
+
+                    return console.debug(message)
+                })
+                .catch(console.error)
+        }, 3000)
+    }, [])
+
+    if ((savedProgress as Empty).__isEmpty === 1) {
         return <p>Loading user details...</p>
     }
 
-    function onChange(id: string, op: string): void {
-        let fork = progress
+    function onChange(id: string, value: number): void {
+        setSaveMessage("Saving...")
+
+        let fork = modifiedProgress
 
         fork = produce(fork, (draft) => {
             if (!fork[id]) {
                 draft[id] = 1
             }
 
-            draft[id] = op === "+" ? draft[id] + 1 : draft[id] - 1
+            draft[id] = value
         })
 
-        axiosClient
-            .get(`/_wf/modify`, {
-                params: {
-                    id,
-                    user,
-                    gv: `h${gv}`,
-                    level: fork[id],
-                },
-            })
-            .then((value) => {
-                let message: string
+        setModifiedProgress(fork)
 
-                if (value.data.success) {
-                    message = "Changes made. "
-                    setProgressWeb(fork)
-                } else {
-                    message = "Error: " + value.data.error
-                    alert(message)
-                }
-
-                return console.debug(message)
-            })
-            .catch(console.error)
+        saveDebouncedRef.current()
     }
 
     const final: Record<string, React.ReactElement[][]> = {}
@@ -160,8 +199,16 @@ export function EscalationLevelPicker({
                                 <li className="tabs__item elp-tab">
                                     <button
                                         className="button button--sm button--danger"
+                                        disabled={
+                                            !combinedProgress[codename.id!] ||
+                                            combinedProgress[codename.id!] === 1
+                                        }
                                         onClick={() =>
-                                            onChange(codename.id!, "-")
+                                            onChange(
+                                                codename.id!,
+                                                combinedProgress[codename.id!] -
+                                                    1,
+                                            )
                                         }
                                     >
                                         -
@@ -169,15 +216,23 @@ export function EscalationLevelPicker({
                                 </li>
                                 <li className="tabs__item elp-tab">
                                     <p className="elp-tab">
-                                        Current level:{" "}
-                                        {progress[codename.id!] ?? 1}
+                                        {`Current level:  ${combinedProgress[codename.id!] ?? 1}/${codename.levels}`}
                                     </p>
                                 </li>
                                 <li className="tabs__item elp-tab">
                                     <button
                                         className="button button--sm button--success"
+                                        disabled={
+                                            combinedProgress[codename.id!] >=
+                                            (codename.levels ?? 5)
+                                        }
                                         onClick={() =>
-                                            onChange(codename.id!, "+")
+                                            onChange(
+                                                codename.id!,
+                                                (combinedProgress[
+                                                    codename.id!
+                                                ] ?? 1) + 1,
+                                            )
                                         }
                                     >
                                         +
@@ -202,6 +257,24 @@ export function EscalationLevelPicker({
 
     return (
         <section className="app-grid">
+            {saveMessage !== null && (
+                <div
+                    className="save-indicator alert alert--primary"
+                    role="alert"
+                >
+                    <button
+                        aria-label="Close"
+                        className="clean-btn close"
+                        type="button"
+                        onClick={() => setSaveMessage(null)}
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <span>{saveMessage}</span>
+                </div>
+            )}
+
             {Object.keys(final).map((val) => {
                 return (
                     <div
