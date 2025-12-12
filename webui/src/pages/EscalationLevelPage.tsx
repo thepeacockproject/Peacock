@@ -34,6 +34,7 @@ export type CodenameMeta = {
         readonly id?: string
         readonly isPeacock?: boolean
         readonly hidden?: boolean
+        readonly levels?: number
     }[]
 }
 
