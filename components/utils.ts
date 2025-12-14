@@ -526,7 +526,7 @@ export const defaultSuits = {
     LOCATION_PARENT_BANGKOK: "TOKEN_OUTFIT_BANGKOK_HERO_BANGKOKSUIT",
     LOCATION_PARENT_COLORADO: "TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT",
     LOCATION_PARENT_HOKKAIDO: "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
-    LOCATION_PARENT_NEWZEALAND: "TOKEN_OUTFIT_WET_SUIT",
+    LOCATION_PARENT_NEWZEALAND: "TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT",
     LOCATION_PARENT_MIAMI: "TOKEN_OUTFIT_MIAMI_HERO_MIAMISUIT",
     LOCATION_PARENT_COLOMBIA: "TOKEN_OUTFIT_COLOMBIA_HERO_COLOMBIASUIT",
     LOCATION_PARENT_MUMBAI: "TOKEN_OUTFIT_MUMBAI_HERO_MUMBAISUIT",
@@ -551,24 +551,22 @@ export const defaultSuits = {
  *
  * NOTE: Currently this is hardcoded. To allow for flexibility and extensibility, this should be generated in real-time
  * using the Drops of challenges and masteries. However, that would require looping through all challenges and masteries
- * for all default suits, which is slow. This is a trade-off.
+ * for all default suits, which is slow. This is a trade-off (but also allows plugins to alter it if they really want to).
  *
  * @param gameVersion The game version.
  * @returns The default suits that are attainable via challenges or mastery.
  */
 export function attainableDefaults(gameVersion: GameVersion): string[] {
-    if (gameVersion === "h1") {
-        return []
-    } else if (gameVersion === "h2") {
-        return ["TOKEN_OUTFIT_WET_SUIT"]
-    } else {
-        return [
-            "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
-            "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
-            "TOKEN_OUTFIT_WET_SUIT",
-            "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
-            "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
-        ]
+    switch (gameVersion) {
+        case "h3":
+            return [
+                "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+                "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
+                "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
+                "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+            ]
+        default:
+            return []
     }
 }
 
