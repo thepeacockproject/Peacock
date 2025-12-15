@@ -210,7 +210,7 @@ export class Loadouts {
             loadout = dl.data[sublocation?.Id] ?? {}
         }
 
-        // SILLY HACK FOR OLD SAVES: For LOCATION_NEWZEALAND, if the saved suit is TOKEN_OUTFIT_WET_SUIT, replace
+        // SILLY HACK FOR OLD (< 8.6.0) SAVES: For LOCATION_NEWZEALAND, if the saved suit is TOKEN_OUTFIT_WET_SUIT, replace
         // it with TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT since we now respect the location's default suit.
         if (
             sublocation.Id === "LOCATION_NEWZEALAND" &&
