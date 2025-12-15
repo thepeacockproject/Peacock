@@ -337,6 +337,7 @@ export const brokenItems = [
     "099afc37-609b-48c9-9278-d3389b45829b",
     // Remove TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT, which is the New Zealand default suit.
     // Duplicate of TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
+    // It will still be added to the user's inventory as New Zealand's default suit (filtered out here for when getDefaultSuits is enabled).
     "3a4bcbbf-d451-4853-8a85-649120e384df",
     // Remove TOKEN_OUTFIT_COLORADO_HERO_RABIESSUIT
     // Duplicate of TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT.

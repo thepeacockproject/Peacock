@@ -380,11 +380,14 @@ menuDataRouter.get(
             }
 
             res.json({
-                template: getVersionedConfig(
-                    "StashpointTemplate",
-                    req.gameVersion === "h1" ? "h1" : "h3",
-                    false,
-                ),
+                template:
+                    req.gameVersion === "h3"
+                        ? null
+                        : getVersionedConfig(
+                              "StashpointTemplate",
+                              req.gameVersion,
+                              false,
+                          ),
                 data: getModernStashData(
                     req.query,
                     req.jwt.unique_name,
