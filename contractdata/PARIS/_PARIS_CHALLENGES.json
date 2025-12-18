@@ -3653,6 +3653,92 @@
                     }
                 },
                 {
+                    "Id": "2aee2049-ec26-4162-8021-4f7d8755b008",
+                    "Name": "UI_CHALLENGES_NOEL_KEEPINGTHEMAGIC_NAME",
+                    "ImageName": "images/challenges/paris/noel_keepingthemagic.jpg",
+                    "Description": "UI_CHALLENGES_NOEL_KEEPINGTHEMAGIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_GNOME"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 7
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Noel_TargetedItemWrapped": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", 6]
+                                        },
+                                        "Transition": "SuitUp"
+                                    }
+                                ]
+                            },
+                            "SuitUp": {
+                                "Disguise": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value",
+                                                "b920bfa7-8906-423b-a9f7-1219e7d5cad1"
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        }
+                                    }
+                                ],
+                                "Noel_GnomePresentTaken": {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["medium", "feats", "live"],
+                    "InclusionData": {
+                        "ContractIds": ["4e45e91a-94ca-4d89-89fc-1b250e608e73"]
+                    }
+                },
+                {
                     "Id": "55d55085-b101-4d85-90ee-b7f04a9fe14d",
                     "Name": "UI_CHALLENGES_NOEL_PACIFY_BRICK_NAME",
                     "ImageName": "images/challenges/paris/noel_pacify_brick.jpg",
