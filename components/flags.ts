@@ -80,6 +80,15 @@ export const defaultFlags: Flags = {
                 possibleValues: ["vanilla", "sane"],
                 default: "vanilla",
             },
+            peacockContent: {
+                category: "Gameplay",
+                title: "peacockContent",
+                desc: "Enables peacock-exclusive content. Some otherwise unobtainable content is tied to peacock escalations and challengegs. NOXP will keep the content but will not award XP bonus upon completion. ENABLED/DISABLED will enable and disable the content respectively.",
+                possibleValues: ["ENABLED", "NOXP", "DISABLED"],
+                default: "ENABLED",
+                requiresGameRestart: true,
+                requiresPeacockRestart: true,
+            },
             legacyElusivesEnableSaving: {
                 category: "Services",
                 title: "legacyElusivesEnableSaving",
