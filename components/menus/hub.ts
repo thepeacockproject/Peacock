@@ -193,15 +193,16 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
     }
 
     for (const child in locations.children) {
+        const location = locations.children[child]
+
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            child.includes("SNUG_")
+            location.Properties.IsHidden
         ) {
             continue
         }
 
         const parent = locations.children[child].Properties.ParentLocation
-        const location = locations.children[child]
         const challenges = controller.challengeService.getChallengesForLocation(
             child,
             gameVersion,
