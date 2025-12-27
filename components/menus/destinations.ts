@@ -290,7 +290,7 @@ export function createLocationsData(
         const sublocation = locData.children[sublocationId]
 
         if (
-            sublocationId === "LOCATION_TRAPPED_WOLVERINE" ||
+            !sublocation.Properties.CreateContractId ||
             sublocation.Properties.IsHidden
         ) {
             continue
