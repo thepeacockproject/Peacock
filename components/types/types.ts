@@ -636,6 +636,7 @@ export type Unlockable = {
         DlcImage?: string
         DlcName?: string
         IsLocked?: boolean
+        IsHidden?: boolean
         Order?: number
         ProgressionKey?: string
         Season?: number

@@ -287,14 +287,14 @@ export function createLocationsData(
     }
 
     for (const sublocationId of allSublocationIds) {
+        const sublocation = locData.children[sublocationId]
+
         if (
-            sublocationId === "LOCATION_TRAPPED_WOLVERINE" ||
-            sublocationId.includes("SNUG")
+            !sublocation.Properties.CreateContractId ||
+            sublocation.Properties.IsHidden
         ) {
             continue
         }
-
-        const sublocation = locData.children[sublocationId]
 
         if (!sublocation.Properties.ParentLocation) {
             assert.fail("sublocation has no parent, that's illegal")
