@@ -201,13 +201,14 @@ export class Loadouts {
                 userProfile.Extensions.defaultloadout?.[sublocation?.Id] ??
                 defaultLoadout
         } else {
-            let dl = loadouts.getLoadoutFor(gameVersion)
+            let gameVersionedLoadout = loadouts.getLoadoutFor(gameVersion)
 
-            if (!dl) {
-                dl = loadouts.createDefault(gameVersion)
+            if (!gameVersionedLoadout) {
+                gameVersionedLoadout = loadouts.createDefault(gameVersion)
             }
 
-            loadout = dl.data[sublocation?.Id] ?? {}
+            loadout =
+                gameVersionedLoadout.data[sublocation?.Id] ?? defaultLoadout
         }
 
         // SILLY HACK FOR OLD (< 8.6.0) SAVES: For LOCATION_NEWZEALAND, if the saved suit is TOKEN_OUTFIT_WET_SUIT, replace
