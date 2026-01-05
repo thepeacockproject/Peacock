@@ -33,7 +33,7 @@ jobs:
           dotnet publish HitmanPatcher/HitmanPatcher.csproj -c Release -p DebugType=none -o Publish/Windows
 
       - name: Upload patcher-windows
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: patcher-windows
           path: patcher/Publish/Windows/ILRepack
