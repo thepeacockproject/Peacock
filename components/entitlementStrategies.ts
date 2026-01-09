@@ -145,15 +145,27 @@ export class SteamH1Strategy extends EntitlementStrategy {
     override get() {
         return [
             STEAM_NAMESPACE_2016,
-            "439870",
-            "439890",
-            "440930",
-            "440940",
-            "440960",
-            "440961",
-            "440962",
-            "505180",
-            "588780",
+            "439870", // Paris
+            "439890", // Sapienza
+            "440930", // Marrakesh
+            "440940", // Bonus Episode
+            "440960", // Bangkok
+            "440961", // Colorado
+            "440962", // Hokkaido
+            "440970", // Requiem Legacy Suit
+            "440971", // Silenced ICA-19 Chrome Pistol
+            "440972", // White Rubber Duck Explosive
+            "505180", // FULL EXPERIENCE
+            "505200", // FULL EXPERIENCE Upgrade
+            "505201", // Intro Pack
+            "588660", // Blood Money Requiem Pack
+            "588780", // Digital Bonus Content
+            "664270", // Japanese V/O Pack
+            "725350", // GOTY Clown Suit
+            "725351", // GOTY Raven Suit
+            "725352", // GOTY Cowboy Suit
+            "725353", // Bonus Campaign Patient Zero
+            "737780", // GOTY Suit Pack
         ]
     }
 }
