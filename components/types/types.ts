@@ -1068,6 +1068,11 @@ export interface MissionManifest {
     Metadata: MissionManifestMetadata
     readonly UserData?: Record<string, never> | never[]
     Peacock?: {
+        /**
+         * Indicates the contract type for filtering purposes.
+         * SHOULD be set to `peacock` for Peacock-exclusive content (processed by `peacockContent` flag).
+         */
+        type?: "peacock"
         noAgencyPickupsActive?: boolean
         noGear?: boolean
         noCarriedWeapon?: boolean
@@ -1318,6 +1323,7 @@ export interface CompiledChallengeRuntimeData {
 
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"
 export type ImageLoadingStrategy = "SAVEASREQUESTED" | "ONLINE" | "OFFLINE"
+export type PeacockContentMode = "ENABLED" | "NOXP" | "DISABLED"
 
 export type Flag = {
     category?: string

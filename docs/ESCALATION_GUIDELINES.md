@@ -21,3 +21,7 @@ The guidelines:
 - If no conditions are included for a target, use the game to localise it (`UI_CONTRACT_GENERAL_OBJ_KILL`).
     - If conditions are included, include them in the HUD string and **LOCALISE IT**!
 - For `(Long)BriefingText`, try to use proper grammar (i.e. ending with a full stop).
+- **Always** add peacock tagging. This will ensure that escalations respect the `peacockContent` setting.
+    - New challenges associated with the escalation **should** have a `peacock` tag.
+    - **All** contract files associated with the escalation **should** have a `Peacock.type` field set to `"peacock"`.  
+      I.e. `"Peacock": { "type": "peacock" }`
