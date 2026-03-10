@@ -706,13 +706,10 @@ webFeaturesRouter.post(
             } else {
                 log(
                     LogLevel.DEBUG,
-                    `Failed to sync official data: ${JSON.stringify(error)}.`,
+                    `Failed to sync official data: ${error}.`,
                     "progressionTransfer",
                 )
-                formErrorMessage(
-                    res,
-                    `Failed to sync official data: got ${JSON.stringify(error)}.`,
-                )
+                formErrorMessage(res, `Failed to sync official data: ${error}.`)
                 return
             }
         }
