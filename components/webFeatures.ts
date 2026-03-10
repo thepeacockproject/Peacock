@@ -439,26 +439,29 @@ webFeaturesRouter.post(
                     "progressionTransfer",
                 )
 
-                const sublocations = exts.data.Extensions.progression
-                    .PlayerProfileXP
-                    .Sublocations as unknown as OfficialSublocation[]
+                if (exts.data.Extensions.progression.PlayerProfileXP) {
+                    const sublocations = exts.data.Extensions.progression
+                        .PlayerProfileXP
+                        .Sublocations as unknown as OfficialSublocation[]
 
-                userdata.Extensions.progression.PlayerProfileXP = {
-                    ...userdata.Extensions.progression.PlayerProfileXP,
-                    Total: exts.data.Extensions.progression.PlayerProfileXP
-                        .Total,
-                    ProfileLevel: levelForXp(
-                        exts.data.Extensions.progression.PlayerProfileXP.Total,
-                    ),
-                    Sublocations: Object.fromEntries(
-                        sublocations.map((value) => [
-                            value.Location,
-                            {
-                                Xp: value.Xp,
-                                ActionXp: value.ActionXp,
-                            },
-                        ]),
-                    ),
+                    userdata.Extensions.progression.PlayerProfileXP = {
+                        ...userdata.Extensions.progression.PlayerProfileXP,
+                        Total: exts.data.Extensions.progression.PlayerProfileXP
+                            .Total,
+                        ProfileLevel: levelForXp(
+                            exts.data.Extensions.progression.PlayerProfileXP
+                                .Total,
+                        ),
+                        Sublocations: Object.fromEntries(
+                            sublocations.map((value) => [
+                                value.Location,
+                                {
+                                    Xp: value.Xp,
+                                    ActionXp: value.ActionXp,
+                                },
+                            ]),
+                        ),
+                    }
                 }
 
                 log(
