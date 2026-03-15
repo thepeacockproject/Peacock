@@ -544,7 +544,7 @@ export async function startServer(options: {
                         "contracts",
                     )
                 })
-            })
+            }, true)
         }
 
         // once contracts directory is present, we are clear to boot

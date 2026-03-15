@@ -23,13 +23,15 @@ import { FileChangeInfo, watch } from "fs/promises"
  *
  * @param target The file or folder name to watch.
  * @param callback What to do when the hot updater is triggered.
+ * @param recursive Whether to watch for changes to subdirectories if the target is a folder.
  */
 export async function setupHotListener(
     target: string,
     callback: (event: FileChangeInfo<string>) => void,
+    recursive: boolean = false,
 ): Promise<void> {
     try {
-        const watcher = watch(target, {})
+        const watcher = watch(target, { recursive })
 
         for await (const event of watcher) {
             callback(event)
