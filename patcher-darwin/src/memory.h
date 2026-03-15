@@ -35,4 +35,4 @@ namespace peacock {
                             vm_prot_t new_prot,
                             vm_prot_t *old_prot);
     };
-} // namespace peacock
+}

@@ -21,4 +21,4 @@ namespace peacock {
 
         std::set<pid_t> patched_pids_;
     };
-} // namespace peacock
+}

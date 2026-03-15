@@ -8,12 +8,8 @@
 #include <sys/sysctl.h>
 
 namespace peacock {
-    // Process names to search for.
-    // The iOS-on-Mac version uses "Executable" as CFBundleExecutable.
-    // TODO: confirm actual process name when game is fully downloaded.
     static const char *kProcessNames[] = {
-        "HITMAN", "HITMAN2", "HITMAN3",
-        "Executable", // iOS-on-Mac CFBundleExecutable
+        "Hitman WOA", // macOS CFBundleExecutable
         nullptr,
     };
 
@@ -169,4 +165,4 @@ namespace peacock {
         mach_port_deallocate(mach_task_self(), task);
         return true;
     }
-} // namespace peacock
+}

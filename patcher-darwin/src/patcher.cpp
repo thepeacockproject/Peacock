@@ -86,14 +86,11 @@ namespace peacock {
 
             const mach_vm_address_t addr = base_address + patch->offset;
 
-            // Make memory writable
+            // Make memory writable.
+            // VM_PROT_COPY triggers COW, bypassing code-signing protection
+            // on __TEXT pages.
             vm_prot_t old_prot;
-            vm_prot_t new_prot = patch->default_protection;
-            if (new_prot & VM_PROT_EXECUTE) {
-                new_prot = VM_PROT_ALL; // RWX
-            } else {
-                new_prot = VM_PROT_READ | VM_PROT_WRITE;
-            }
+            vm_prot_t new_prot = VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY;
 
             if (!Memory::protect(task, addr, data_to_write.size(), new_prot,
                                  &old_prot)) {
@@ -183,4 +180,4 @@ namespace peacock {
         Memory::close_task(task);
         return ok;
     }
-} // namespace peacock
+}

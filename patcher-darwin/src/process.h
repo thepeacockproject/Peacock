@@ -27,4 +27,4 @@ namespace peacock {
                                         uint64_t &base_address,
                                         uint64_t &image_size);
     };
-} // namespace peacock
+}

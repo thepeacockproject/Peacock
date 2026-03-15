@@ -1,4 +1,5 @@
 #include "patches.h"
+#include "patch_definitions/definitions.h"
 
 namespace peacock {
     PatchRegistry &PatchRegistry::instance() {
@@ -7,7 +8,7 @@ namespace peacock {
     }
 
     PatchRegistry::PatchRegistry() {
-        // TODO: register known macOS ARM64 versions here once patterns are captured from the binary.
+        patch_definitions::add_v3_260_1(*this);
     }
 
     void PatchRegistry::add_version(uint32_t identifier, HitmanVersion version) {
@@ -21,4 +22,4 @@ namespace peacock {
             return &it->second;
         return nullptr;
     }
-} // namespace peacock
+}

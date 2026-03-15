@@ -51,13 +51,4 @@ namespace peacock {
         std::unordered_map<uint32_t, HitmanVersion> versions_;
     };
 
-    // TODO: populate when ARM64 patterns are captured from the macOS binary.
-    // These will mirror the C# PatchDefinitions/*.cs files but with ARM64
-    // instruction patterns.
-    //
-    // ARM64 differences from x86_64:
-    //   - NOP: D5 03 20 1F (4 bytes, little-endian: 1F 20 03 D5)
-    //   - Conditional branch (B.cond) -> unconditional (B) or NOP
-    //   - ADRP+ADD pairs for PC-relative addressing
-    //   - Fixed 4-byte instruction width
-} // namespace peacock
+}

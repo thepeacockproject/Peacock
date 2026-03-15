@@ -58,4 +58,4 @@ namespace peacock {
 
         return crc32(buf, sizeof(buf));
     }
-} // namespace peacock
+}

@@ -90,4 +90,4 @@ namespace peacock {
         }
         return true;
     }
-} // namespace peacock
+}

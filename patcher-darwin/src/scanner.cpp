@@ -96,4 +96,4 @@ namespace peacock {
         fprintf(stderr, "AOB scanning not yet implemented for ARM64.\n");
         return std::nullopt;
     }
-} // namespace peacock
+}
