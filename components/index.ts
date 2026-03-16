@@ -240,6 +240,9 @@ app.get(
             case "macos-prod":
                 config.Versions[0].Name = "macos-prod"
                 break
+            case "macossteam-prod":
+                config.Versions[0].Name = "macossteam-prod"
+                break
         }
 
         config.Versions[0].ISSUER_ID = req.query.issuer || "*"
