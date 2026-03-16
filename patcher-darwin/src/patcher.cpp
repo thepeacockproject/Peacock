@@ -5,18 +5,7 @@
 #include "scanner.h"
 #include "version.h"
 
-#include <cstdio>
-
 namespace peacock {
-    static std::string to_hex(const uint64_t v, const int width = 0) {
-        char buf[32];
-        if (width)
-            snprintf(buf, sizeof(buf), "%0*llX", width, v);
-        else
-            snprintf(buf, sizeof(buf), "%llX", v);
-        return buf;
-    }
-
     /// Identify the game version, falling back to AOB scanning if needed.
     static const HitmanVersion *identify_version(const mach_port_t task,
                                                  const uint64_t base_address,

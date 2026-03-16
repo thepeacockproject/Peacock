@@ -60,6 +60,8 @@ namespace peacock {
     }
 
     /// Walk Mach-O load commands to compute total mapped image size.
+    /// Excludes __PAGEZERO (unmapped guard page). Segment vmaddrs are
+    /// pre-slide, but the *span* (max - min) is slide-invariant.
     static bool compute_image_size(const mach_port_t task,
                                    const uint64_t base_address,
                                    uint64_t &image_size) {
@@ -71,6 +73,7 @@ namespace peacock {
         if (kr != KERN_SUCCESS || header.magic != MH_MAGIC_64)
             return false;
 
+        uint64_t min_addr = UINT64_MAX;
         uint64_t max_addr = 0;
         uint64_t cmd_offset = base_address + sizeof(header);
 
@@ -89,6 +92,15 @@ namespace peacock {
                 mach_vm_read_overwrite(
                     task, cmd_offset, sizeof(seg),
                     reinterpret_cast<mach_vm_address_t>(&seg), &out_size);
+
+                // skip __PAGEZERO — it's a non-readable guard region
+                if (strcmp(seg.segname, SEG_PAGEZERO) == 0) {
+                    cmd_offset += lc.cmdsize;
+                    continue;
+                }
+
+                if (seg.vmaddr < min_addr)
+                    min_addr = seg.vmaddr;
                 const uint64_t seg_end = seg.vmaddr + seg.vmsize;
                 if (seg_end > max_addr)
                     max_addr = seg_end;
@@ -96,10 +108,11 @@ namespace peacock {
             cmd_offset += lc.cmdsize;
         }
 
-        // image_size = distance from base to end of last segment
-        // Segment vmaddrs are pre-slide; slide = base_address - __TEXT.vmaddr
-        image_size = max_addr > 0 ? max_addr : 0;
-        return max_addr > 0;
+        if (max_addr <= min_addr)
+            return false;
+
+        image_size = max_addr - min_addr;
+        return true;
     }
 
     std::vector<ProcessInfo> Process::find_hitman_processes() {
