@@ -131,7 +131,8 @@ app.use(function badPathRewritingMiddleware(req, _, next) {
     if (qIdx === -1) {
         req.url = req.url.replaceAll("//", "/")
     } else {
-        req.url = req.url.slice(0, qIdx).replaceAll("//", "/") + req.url.slice(qIdx)
+        req.url =
+            req.url.slice(0, qIdx).replaceAll("//", "/") + req.url.slice(qIdx)
     }
 
     next()
@@ -225,7 +226,8 @@ app.get(
                     "steam-prod_8"
                 break
             case "https://appleid.apple.com":
-                config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience = "apple-prod_8"
+                config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                    "apple-prod_8"
                 break
         }
 
@@ -546,20 +548,24 @@ export async function startServer(options: {
         await setupFileStructure()
 
         if (options.hmr) {
-            void setupHotListener("contracts", () => {
-                log(
-                    LogLevel.INFO,
-                    "Detected a change in contracts! Re-indexing...",
-                )
-                // eslint-disable-next-line promise/catch-or-return
-                controller.index().then(() => {
-                    return log(
+            void setupHotListener(
+                "contracts",
+                () => {
+                    log(
                         LogLevel.INFO,
-                        "Completed re-indexing.",
-                        "contracts",
+                        "Detected a change in contracts! Re-indexing...",
                     )
-                })
-            }, true)
+                    // eslint-disable-next-line promise/catch-or-return
+                    controller.index().then(() => {
+                        return log(
+                            LogLevel.INFO,
+                            "Completed re-indexing.",
+                            "contracts",
+                        )
+                    })
+                },
+                true,
+            )
         }
 
         // once contracts directory is present, we are clear to boot

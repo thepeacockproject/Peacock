@@ -49,7 +49,11 @@ export const JWT_SECRET = PEACOCK_DEV
     : randomBytes(32).toString("hex")
 
 export type OAuthTokenBody = {
-    grant_type: "external_steam" | "external_epic" | "external_apple" | "refresh_token"
+    grant_type:
+        | "external_steam"
+        | "external_epic"
+        | "external_apple"
+        | "refresh_token"
     steam_userid?: string
     epic_userid?: string
     apple_userid?: string
@@ -162,7 +166,8 @@ export async function handleOAuthToken(
                         .then(() => undefined)
                         .catch(() => {
                             log(LogLevel.WARN, "Failed authentication refresh.")
-                            userAuths.get(req.jwt.unique_name)!.initialized = false
+                            userAuths.get(req.jwt.unique_name)!.initialized =
+                                false
                         })
                 }
             }
