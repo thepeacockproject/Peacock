@@ -1,9 +1,20 @@
 #pragma once
 
-#include "settings.h"
 #include <set>
+#include <string>
+#include <sys/types.h>
 
 namespace peacock {
+    struct PatchOptions {
+        bool disable_cert_pinning = true;
+        bool always_send_auth_header = true;
+        bool set_custom_config_domain = true;
+        std::string custom_config_domain = "127.0.0.1";
+        bool use_http = true;
+        bool enable_dynamic_resources = true;
+        bool disable_force_offline_on_failed_dynres = true;
+    };
+
     class Patcher {
     public:
         /// Scan for HITMAN processes and patch any that haven't been patched yet.

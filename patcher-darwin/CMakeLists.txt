@@ -15,7 +15,6 @@ add_executable(PeacockPatcher
         src/patches.cpp
         src/patch_definitions/v3_260_1.cpp
         src/version.cpp
-        src/settings.cpp
 )
 
 target_include_directories(PeacockPatcher PRIVATE src)

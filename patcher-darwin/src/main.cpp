@@ -1,6 +1,5 @@
 #include "log.h"
 #include "patcher.h"
-#include "settings.h"
 
 #include <chrono>
 #include <cstdio>
@@ -49,8 +48,8 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: --domain requires a value\n");
                 return 1;
             }
-        } else if (strcmp(argv[i], "--use-http") == 0) {
-            use_http = true;
+        } else if (strcmp(argv[i], "--dont-use-http") == 0) {
+            use_http = false;
         } else if (strcmp(argv[i], "--optional-dynamic-resources") == 0) {
             optional_dynres = true;
         } else if (strcmp(argv[i], "--help") == 0) {
