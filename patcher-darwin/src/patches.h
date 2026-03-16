@@ -7,6 +7,12 @@
 #include <mach/vm_prot.h>
 
 namespace peacock {
+    constexpr std::vector<uint8_t> str_bytes(const char *s) {
+        std::vector<uint8_t> v;
+        while (*s) v.push_back(static_cast<uint8_t>(*s++));
+        return v;
+    }
+
     struct Patch {
         uint64_t offset;
         std::vector<uint8_t> original;

@@ -49,9 +49,13 @@ export const JWT_SECRET = PEACOCK_DEV
     : randomBytes(32).toString("hex")
 
 export type OAuthTokenBody = {
-    grant_type: "external_steam" | "external_epic" | "refresh_token"
+    grant_type: "external_steam" | "external_epic" | "external_apple" | "refresh_token"
     steam_userid?: string
     epic_userid?: string
+    apple_userid?: string
+    apple_refreshtoken?: string
+    device_os?: string
+    device_id?: string
     access_token: string
     pId?: string
     locale: string
@@ -85,78 +89,92 @@ export async function handleOAuthToken(
         notBefore: -60000,
         expiresIn: 6000,
         issuer: "auth.hitman.io",
-        audience: isScpc ? "scpc-prod" : "pc_prod_8",
+        audience: (() => {
+            if (isScpc) return "scpc-prod"
+            if (req.body.grant_type === "external_apple") return "macos-prod"
+            return "pc_prod_8"
+        })(),
         noTimestamp: true,
     }
 
-    let external_platform: "steam" | "epic",
+    let external_platform: "steam" | "epic" | "apple",
         external_userid: string,
-        external_users_folder: "steamids" | "epicids",
+        external_users_folder: "steamids" | "epicids" | "appleids",
         external_appid: string
 
-    if (req.body.grant_type === "external_steam") {
-        if (!/^\d{1,20}$/.test(req.body.steam_userid || "")) {
-            return error400 // invalid steam user id
-        }
-
-        external_platform = "steam"
-        external_userid = req.body.steam_userid || ""
-        external_users_folder = "steamids"
-        external_appid = req.body.steam_appid
-    } else if (req.body.grant_type === "external_epic") {
-        if (!/^[\da-f]{32}$/.test(req.body.epic_userid || "")) {
-            return error400 // invalid epic user id
-        }
-
-        const epic_token = decode(
-            req.body.access_token.replace(/^eg1~/, ""),
-        ) as {
-            appid: string
-            app: string
-        }
-
-        if (!epic_token || !(epic_token.appid || epic_token.app)) {
-            return error400 // invalid epic access token
-        }
-
-        external_appid = epic_token.appid || epic_token.app
-        external_platform = "epic"
-        external_userid = req.body.epic_userid || ""
-        external_users_folder = "epicids"
-    } else if (req.body.grant_type === "refresh_token") {
-        // send back the token from the request (re-signed so the timestamps update)
-        extractToken(req) // init req.jwt
-        // remove signOptions from existing jwt
-        // @ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.nbf // notBefore
-        // @ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.exp // expiresIn
-        // @ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.iss // issuer
-        // @ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.aud // audience
-
-        if (!isScpc) {
-            if (userAuths.has(req.jwt.unique_name)) {
-                userAuths
-                    .get(req.jwt.unique_name)!
-                    ._doRefresh()
-                    .then(() => undefined)
-                    .catch(() => {
-                        log(LogLevel.WARN, "Failed authentication refresh.")
-                        userAuths.get(req.jwt.unique_name)!.initialized = false
-                    })
+    switch (req.body.grant_type) {
+        case "external_steam":
+            if (!/^\d{1,20}$/.test(req.body.steam_userid || "")) {
+                return error400 // invalid steam user id
             }
-        }
 
-        return {
-            access_token: sign(req.jwt, JWT_SECRET, signOptions),
-            token_type: "bearer",
-            expires_in: 5000,
-            refresh_token: randomUUID(),
+            external_platform = "steam"
+            external_userid = req.body.steam_userid || ""
+            external_users_folder = "steamids"
+            external_appid = req.body.steam_appid
+            break
+        case "external_epic": {
+            if (!/^[\da-f]{32}$/.test(req.body.epic_userid || "")) {
+                return error400 // invalid epic user id
+            }
+
+            const epic_token = decode(
+                req.body.access_token.replace(/^eg1~/, ""),
+            ) as {
+                appid: string
+                app: string
+            }
+
+            if (!epic_token || !(epic_token.appid || epic_token.app)) {
+                return error400 // invalid epic access token
+            }
+
+            external_appid = epic_token.appid || epic_token.app
+            external_platform = "epic"
+            external_userid = req.body.epic_userid || ""
+            external_users_folder = "epicids"
+            break
         }
-    } else {
-        return error406 // unsupported auth method
+        case "external_apple":
+            external_platform = "apple"
+            external_userid = req.body.apple_userid || ""
+            external_users_folder = "appleids"
+            external_appid = "apple"
+            break
+        case "refresh_token":
+            // send back the token from the request (re-signed so the timestamps update)
+            extractToken(req) // init req.jwt
+            // remove signOptions from existing jwt
+            // @ts-expect-error Non-optional, we're reassigning.
+            delete req.jwt.nbf // notBefore
+            // @ts-expect-error Non-optional, we're reassigning.
+            delete req.jwt.exp // expiresIn
+            // @ts-expect-error Non-optional, we're reassigning.
+            delete req.jwt.iss // issuer
+            // @ts-expect-error Non-optional, we're reassigning.
+            delete req.jwt.aud // audience
+
+            if (!isScpc) {
+                if (userAuths.has(req.jwt.unique_name)) {
+                    userAuths
+                        .get(req.jwt.unique_name)!
+                        ._doRefresh()
+                        .then(() => undefined)
+                        .catch(() => {
+                            log(LogLevel.WARN, "Failed authentication refresh.")
+                            userAuths.get(req.jwt.unique_name)!.initialized = false
+                        })
+                }
+            }
+
+            return {
+                access_token: sign(req.jwt, JWT_SECRET, signOptions),
+                token_type: "bearer",
+                expires_in: 5000,
+                refresh_token: randomUUID(),
+            }
+        default:
+            return error406 // unsupported auth method
     }
 
     if (req.body.pId && !uuidRegex.test(req.body.pId)) {
@@ -165,7 +183,8 @@ export async function handleOAuthToken(
 
     const isHitman3 =
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
-        external_appid === STEAM_NAMESPACE_2021
+        external_appid === STEAM_NAMESPACE_2021 ||
+        external_platform === "apple"
 
     let gameVersion: GameVersion = "h1"
 
@@ -253,6 +272,8 @@ export async function handleOAuthToken(
             userData.SteamId = req.body.steam_userid!
         } else if (external_platform === "epic") {
             userData.EpicId = req.body.epic_userid!
+        } else if (external_platform === "apple") {
+            userData.AppleId = req.body.apple_userid!
         }
 
         if (Object.hasOwn(userData.Extensions, "inventory")) {
@@ -292,6 +313,9 @@ export async function handleOAuthToken(
                     gameVersion,
                     STEAM_NAMESPACE_2021,
                 ).get(req.body.pId!)
+            } else if (external_platform === "apple") {
+                // TODO
+                return []
             } else {
                 log(LogLevel.ERROR, "Unsupported platform.")
                 return []

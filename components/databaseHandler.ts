@@ -415,6 +415,7 @@ export async function setupFileStructure(joinFunc = join) {
         "contracts",
         joinFunc("userdata", "epicids"),
         joinFunc("userdata", "steamids"),
+        joinFunc("userdata", "appleids"),
         joinFunc("userdata", "users"),
         joinFunc("userdata", "h1", "steamids"),
         joinFunc("userdata", "h1", "epicids"),

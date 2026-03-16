@@ -90,7 +90,7 @@ namespace peacock {
             // VM_PROT_COPY triggers COW, bypassing code-signing protection
             // on __TEXT pages.
             vm_prot_t old_prot;
-            vm_prot_t new_prot = VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY;
+            constexpr vm_prot_t new_prot = VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY;
 
             if (!Memory::protect(task, addr, data_to_write.size(), new_prot,
                                  &old_prot)) {
@@ -115,7 +115,7 @@ namespace peacock {
         const auto processes = Process::find_hitman_processes();
 
         for (auto &proc: processes) {
-            if (patched_pids_.count(proc.pid))
+            if (patched_pids_.contains(proc.pid))
                 continue;
 
             patched_pids_.insert(proc.pid);
@@ -123,7 +123,7 @@ namespace peacock {
             const pid_t parent = Process::get_parent_pid(proc.pid);
 
             // Skip error reporter child processes (same as C# logic)
-            if (patched_pids_.count(parent)) {
+            if (patched_pids_.contains(parent)) {
                 log("Skipping PID " + std::to_string(proc.pid) +
                     " (child of patched process)");
                 continue;

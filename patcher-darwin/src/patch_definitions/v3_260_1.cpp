@@ -39,14 +39,13 @@ namespace peacock::patch_definitions {
                   "configdomain"),
         },
 
-        // Patch "https://{0}" → "http://{0}\0" in __cstring.
-        // Patch "https://{0}" → "http://{0}" by overwriting just the "https" portion.
-        // Only 5 bytes: 's' removed, rest shifted. Don't touch bytes after the \0
-        // or we'll corrupt the adjacent "8.23.0" string.
+        // Patch "https://{0}" → "http://{0}a"
+        // No clue why this works, but it does. For winhttp, we do `httpa://{0}` instead,
+        // but that doesn't seem to work.
         .protocol = {
             Patch(0x1B6867F,
-                  {0x68, 0x74, 0x74, 0x70, 0x73, 0x3A, 0x2F, 0x2F, 0x7B, 0x30, 0x7D},
-                  {0x68, 0x74, 0x74, 0x70, 0x3A, 0x2F, 0x2F, 0x7B, 0x30, 0x7D, 0x00},
+                  str_bytes("https://{0}"),
+                  str_bytes("http://{0}a"),
                   VM_PROT_READ),
         },
 

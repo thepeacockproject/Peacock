@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.20)
 project(PeacockPatcher LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "arm64")
-set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0")
 
 add_executable(PeacockPatcher
         src/main.cpp
