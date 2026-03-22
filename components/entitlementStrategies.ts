@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import {
@@ -28,6 +28,14 @@ import {
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
 import { getRemoteService } from "./utils"
+import { getFlag } from "./flags"
+import { parseAppTicket } from "steam-appticket"
+import { createHash } from "crypto"
+
+// An in-memory cache of Steam ownership tickets to entitlements (they're valid for up to 21 days)
+// For most users, this won't provide any benefit since they'll be restarting Peacock often,
+// but this is more here for those running it 24/7 on a server somewhere.
+const STEAM_TICKET_CACHE: Map<string, string[]> = new Map()
 
 /**
  * The base class for an entitlement strategy.
@@ -38,6 +46,12 @@ abstract class EntitlementStrategy {
     abstract get(
         accessToken: string,
         userId: string,
+    ): string[] | Promise<string[]>
+
+    abstract get(
+        clientToken: string,
+        identity: string,
+        steamId: string,
     ): string[] | Promise<string[]>
 }
 
@@ -53,6 +67,224 @@ export class EpicH3Strategy extends EntitlementStrategy {
             userId,
             accessToken,
         )
+    }
+}
+
+/**
+ * Provider for any Steam-based game using the ISteamUserAuth API.
+ *
+ * @internal
+ */
+type SteamAuthMethod = "OFFICIAL" | "BACKEND" | "STEAM" | "STEAM_STRICT"
+type SteamAuthResult =
+    | {
+          success: true
+          steamId: string
+          entitlements: string[]
+      }
+    | {
+          success: false
+          code: number
+          error: string
+      }
+type SteamAuthResponse = {
+    response: {
+        error?: {
+            errorcode: number
+            errordesc: string
+        }
+        params?: {
+            result: string
+            steamid: string
+            ownersteamid: string
+            vacbanned: boolean
+            publisherbanned: boolean
+        }
+    }
+}
+
+export class SteamStrategy extends EntitlementStrategy {
+    private readonly _apiKey: string = getFlag("steamApiKey") as SteamAuthMethod
+    public readonly isValid: boolean = false
+
+    constructor(private readonly _appId: string) {
+        super()
+        this._appId = _appId
+
+        const method = getFlag("steamAuthenticationMethod") as SteamAuthMethod
+
+        switch (method) {
+            case "BACKEND": {
+                const host = getFlag("leaderboardsHost") as string
+
+                if (!host) {
+                    log(
+                        LogLevel.WARN,
+                        "steamAuthenticationMethod is set to 'BACKEND' but 'leaderboardsHost' is null or empty - using official!",
+                        "SteamStrategy",
+                    )
+                    break
+                }
+
+                this.isValid = true
+                break
+            }
+            case "STEAM":
+            case "STEAM_STRICT": {
+                if (!this._apiKey) {
+                    log(
+                        LogLevel.WARN,
+                        `steamAuthenticationMethod is set to '${method}' but 'steamApiKey' is null or empty${method !== "STEAM_STRICT" ? " - using official" : ""}!`,
+                        "SteamStrategy",
+                    )
+                    break
+                }
+
+                this.isValid = true
+                break
+            }
+            case "OFFICIAL":
+                break
+        }
+    }
+
+    private async _getFromBackend(
+        _clientToken: string,
+    ): Promise<SteamAuthResult> {
+        return {
+            success: false,
+            code: 500,
+            error: "Backend validation not implemented",
+        }
+    }
+
+    private async _getFromSteam(
+        clientToken: string,
+        identity: string,
+    ): Promise<SteamAuthResult> {
+        const ticket = parseAppTicket(Buffer.from(clientToken, "hex"))
+
+        if (!ticket?.isValid) {
+            return {
+                success: false,
+                code: 400,
+                error: "Invalid app ticket.",
+            }
+        }
+
+        try {
+            const resp = await axios(
+                "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1",
+                {
+                    params: {
+                        key: this._apiKey,
+                        appid: this._appId,
+                        ticket: clientToken,
+                        identity,
+                    },
+                },
+            )
+
+            if (resp.status !== 200) {
+                return {
+                    success: false,
+                    code: resp.status,
+                    error: `${resp.statusText}`,
+                }
+            }
+
+            const data = resp.data as SteamAuthResponse
+
+            if (data.response.error) {
+                return {
+                    success: false,
+                    code: data.response.error.errorcode,
+                    error: `${data.response.error.errordesc}`,
+                }
+            }
+
+            if (data.response.params!.result !== "OK") {
+                return {
+                    success: false,
+                    code: 200,
+                    error: `${data.response.params!.result}`,
+                }
+            }
+
+            return {
+                success: true,
+                steamId: data.response.params!.steamid,
+                entitlements: [
+                    ticket.appID.toString(),
+                    ...ticket.dlc.map((dlc) => dlc.appID.toString()),
+                ],
+            }
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    success: false,
+                    code: error.response?.status ?? 400,
+                    error: `${error.response?.statusText}`,
+                }
+            } else {
+                return {
+                    success: false,
+                    code: 400,
+                    error: `${error}`,
+                }
+            }
+        }
+    }
+
+    // @ts-expect-error There are two functions we can overload
+    override async get(
+        clientToken: string,
+        identity: string,
+        steamId: string,
+    ): Promise<string[]> {
+        if (!this.isValid) return []
+
+        const hash = createHash("sha256")
+            .update(
+                clientToken.startsWith("14000000") &&
+                    clientToken.length > 52 * 2
+                    ? clientToken.substring(52 * 2) // Skip 52 bytes to get the ownership ticket (this part can be valid for up to 21 days)
+                    : clientToken,
+            )
+            .digest("hex")
+
+        if (STEAM_TICKET_CACHE.has(hash)) {
+            return STEAM_TICKET_CACHE.get(hash)!
+        }
+
+        const authMethod = getFlag(
+            "steamAuthenticationMethod",
+        ) as SteamAuthMethod
+        const res = await (authMethod === "BACKEND"
+            ? this._getFromBackend(clientToken)
+            : this._getFromSteam(clientToken, identity))
+
+        if (!res.success) {
+            log(
+                LogLevel.WARN,
+                `Failed to get entitlements from ${authMethod.split("_")[0]}. Code: ${res.code}, Error: ${res.error} `,
+                "SteamStrategy",
+            )
+            return []
+        }
+
+        if (res.steamId !== steamId) {
+            log(
+                LogLevel.WARN,
+                `Encountered mismatched SteamID when validating authentication token! Expected: ${steamId}, Got: ${res.steamId}`,
+                "SteamStrategy",
+            )
+            return []
+        }
+
+        STEAM_TICKET_CACHE.set(hash, res.entitlements)
+
+        return res.entitlements
     }
 }
 
