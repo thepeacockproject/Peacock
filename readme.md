@@ -1,38 +1,31 @@
-# 🦚 Peacock Dockerized
+This is a solid technical base for a README.md. To make it "pop," we should use a cleaner hierarchy, clearer visual cues (like badges), and better-formatted code blocks to help users navigate the setup quickly.
 
-[![Docker Image Size](https://img.shields.io/docker/image-size/lana20/peacock/latest?style=flat-square)](https://hub.docker.com/r/lana20/peacock)
-[![License: AGPL 3.0](https://img.shields.io/badge/License-AGPL%203.0-blue.svg?style=flat-square)](https://opensource.org/licenses/AGPL-3.0)
+Here is a prettified, professional version of your README:
 
-This repository provides a fully containerized, automated build of **[The Peacock Project](https://thepeacockproject.org/)**—the premier server replacement for the *HITMAN™ World of Assassination* trilogy. 
+🦚 Peacock Dockerized
+A fully containerized, automated build of The Peacock Project—the premier server replacement for the HITMAN™ World of Assassination trilogy.
 
-This fork is optimized for headless Linux servers, VPS environments, and home labs. It automatically builds and publishes fresh Docker images nightly, ensuring you always have the latest upstream server features without needing to compile code manually.
+This fork is optimized for headless Linux servers, VPS environments, and home labs. It automatically builds and publishes fresh Docker images nightly, ensuring you always have the latest upstream features without manual compilation.
 
----
+✨ Features
+Zero-Dependency Host: No need for Node.js or Yarn. Everything runs strictly inside the container.
 
-## ✨ Features
-* **Zero-Dependency Host:** No need to install Node.js or Yarn on your host. Everything runs inside the container.
-* **Persistent Storage:** Your custom contracts, saves, and user data are safely stored in Docker volumes.
-* **Auto-Updating:** Built-in GitHub Actions pull the latest code and push fresh images to Docker Hub (`lana20/peacock:latest`).
-* **Reverse Proxy Ready:** Easily sit this container behind Nginx Proxy Manager, Traefik, or Cloudflare to route traffic through a clean domain name.
+Persistent Storage: Your custom contracts, saves, and user data are safely stored in Docker volumes.
 
----
+Auto-Updating: Integrated GitHub Actions pull the latest code and push fresh images to lana20/peacock:latest.
 
-## 🚀 Deployment Instructions
+Reverse Proxy Ready: Seamlessly compatible with Nginx Proxy Manager, Traefik, or Cloudflare Tunnel.
 
-### Option A: Standard Docker Compose (CLI)
+🚀 Deployment Instructions
+Option A: Standard Docker Compose (CLI)
+Create a directory and the compose file:
 
-1. **Create a directory and the compose file:**
-   ```bash
-   mkdir peacock-server && cd peacock-server
-   nano docker-compose.yml
-
-
-
+Bash
+mkdir peacock-server && cd peacock-server
+nano docker-compose.yml
 Paste this configuration:
 
 YAML
-version: '3.8'
-
 services:
   peacock:
     image: lana20/peacock:latest
@@ -51,27 +44,28 @@ Start the server:
 
 Bash
 docker compose up -d
-Option B: Portainer Deployment (Easiest)
+Option B: Portainer (GUI)
 Open your Portainer Dashboard.
 
-Go to Stacks > Add stack.
+Navigate to Stacks > Add stack.
 
 Name it peacock.
 
-Paste the YAML code from Step 2 above into the web editor.
+Paste the YAML code from Option A into the web editor.
 
 Click Deploy the stack.
 
-🌐 Using a Custom Domain
+🌐 Network Configuration
+Using a Custom Domain
 To use a domain like peacock.yourdomain.com:
 
-DNS: Point an A Record to your VPS IP.
+DNS: Point an A Record to your VPS/Server IP.
 
 Reverse Proxy: Route incoming traffic for your domain to the container’s internal IP on port 8080.
 
-SSL: Ensure you have a certificate (Let's Encrypt) active for a secure connection.
+SSL: Ensure you have a certificate (e.g., Let's Encrypt) active for a secure connection.
 
-🎮 Connecting with Peacock Patcher
+🎮 How to Connect
 Download the latest Peacock Patcher from the official releases.
 
 Run PeacockPatcher.exe.
@@ -87,4 +81,6 @@ Original Project: The Peacock Project Team.
 
 License: AGPL-3.0 License.
 
-Disclaimer: This project is a community-driven server emulator and is not affiliated with IO Interactive.
+Disclaimer: This is a community-driven server emulator and is not affiliated with IO Interactive.
+
+Would you like me to generate a custom logo or a header image for this repository to make it stand out even more?
