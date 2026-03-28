@@ -34,7 +34,7 @@ services:
     image: lana20/peacock:latest
     container_name: peacock-server
     restart: unless-stopped
-    ports: [] ### Please Note the port the server is listeing to is on port 80. 
+    ports: [] # Server listens on port 80 internally
     environment:
       - NODE_ENV=production
     volumes:
@@ -43,11 +43,11 @@ services:
       - /opt/peacock-data/plugins:/app/plugins
       - /opt/peacock-data/options.ini:/app/options.ini
     networks:
-      - Internal_Shared_Network ### Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
+      - Internal_Shared_Network # Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
       - peacock_network
 
 networks:
-  Internal_Shared_Network: ### Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
+  Internal_Shared_Network: # Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
     external: true
   peacock_network:
     driver: bridge
