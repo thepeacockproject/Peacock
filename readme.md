@@ -27,23 +27,30 @@ This fork is optimized for headless Linux servers, VPS environments, and home la
    ```
 
 2. **Paste this configuration:**
+services:
+  peacock:
+    image: lana20/peacock:latest
+    container_name: peacock-server
+    restart: unless-stopped
+    ports: [] ### Please Note the port the server is listeing to is on port 80. 
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - /opt/peacock-data/userdata:/app/userdata
+      - /opt/peacock-data/Contracts:/app/Contracts
+      - /opt/peacock-data/plugins:/app/plugins
+      - /opt/peacock-data/options.ini:/app/options.ini
+    networks:
+      - Internal_Shared_Network
+      - peacock_network
 
-   ```yaml
-   services:
-     peacock:
-       image: lana20/peacock:latest
-       container_name: peacock-server
-       restart: unless-stopped
-       ports:
-         - "8080:8080"
-       environment:
-         - NODE_ENV=production
-       volumes:
-         - peacock-data:/app/userdata
+networks:
+  Internal_Shared_Network:
+    external: true
+  peacock_network:
+    driver: bridge
+    enable_ipv6: true
 
-   volumes:
-     peacock-data:
-   ```
 
 3. **Start the server:**
 
@@ -67,8 +74,8 @@ This fork is optimized for headless Linux servers, VPS environments, and home la
 
 To use a domain like `peacock.yourdomain.com`:
 
-- **DNS:** Point an `A` record to your VPS/server IP.
-- **Reverse Proxy:** Route incoming traffic for your domain to the container's internal IP on port `8080`.
+- **DNS:** Point an `A` record to your VPS/server IP or a CNAME reccord poting to the domain that has the ip pointing to it. IE hitman-peacock.yourdomain.com pointing to gameservers.yourdomain.com 
+- **Reverse Proxy:** Route incoming traffic for your domain to the container's internal IP on port `80`.
 - **SSL:** Ensure you have a certificate (e.g., Let's Encrypt) active for a secure connection.
 
 ---
