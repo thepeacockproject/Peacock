@@ -1,9 +1,9 @@
 name: Build and Push Peacock (Multi-Cloud)
 
 on:
-  workflow_dispatch: # This adds the manual "Start" button
+  workflow_dispatch: # Manual trigger
   schedule:
-    - cron: '0 0 * * *' # Automatically checks for updates every night at midnight
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
 
 jobs:
   build-and-push:
@@ -31,6 +31,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate tags are lowercase
+        run: |
+          echo "Validating Docker tags..."
+          echo "Docker Hub tag: ${{ secrets.DOCKERHUB_USERNAME }}/peacock:latest"
+          echo "GHCR tag: ghcr.io/${{ github.repository_owner }}/peacock:latest"
+          
+          # Check if Docker Hub username contains uppercase letters
+          if [[ "${{ secrets.DOCKERHUB_USERNAME }}" =~ [A-Z] ]]; then
+            echo "⚠️ WARNING: Docker Hub username contains uppercase letters!"
+            echo "This may cause build failures. Please use lowercase in your secret."
+          else
+            echo "✅ Docker Hub username is lowercase: ${{ secrets.DOCKERHUB_USERNAME }}"
+          fi
+          
+          # Check if GHCR tag is lowercase (github.repository_owner is auto-lowercase)
+          echo "✅ GHCR tag is automatically lowercase: ghcr.io/${{ github.repository_owner }}/peacock:latest"
 
       - name: Build and Push
         uses: docker/build-push-action@v5
