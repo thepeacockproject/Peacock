@@ -42,23 +42,27 @@ jobs:
       - name: Validate tags are lowercase
         run: |
           echo "Validating Docker tags..."
-          echo "Docker Hub tag: ${{ secrets.DOCKERHUB_USERNAME }}/peacock:latest"
-          echo "GHCR tag: ghcr.io/${{ steps.lowercase.outputs.owner_lowercase }}/peacock:latest"
+          DOCKER_TAG="${{ secrets.DOCKERHUB_USERNAME }}/peacock:latest"
+          GHCR_TAG="ghcr.io/${{ steps.lowercase.outputs.owner_lowercase }}/peacock:latest"
+          
+          echo "Docker Hub tag: ${DOCKER_TAG}"
+          echo "GHCR tag: ${GHCR_TAG}"
           
           # Check if Docker Hub username contains uppercase letters
           if [[ "${{ secrets.DOCKERHUB_USERNAME }}" =~ [A-Z] ]]; then
-            echo "⚠️ WARNING: Docker Hub username contains uppercase letters!"
-            echo "This may cause build failures. Please use lowercase in your secret."
+            echo "❌ ERROR: Docker Hub username contains uppercase letters!"
+            echo "Please update your DOCKERHUB_USERNAME secret to be lowercase."
+            exit 1
           else
             echo "✅ Docker Hub username is lowercase: ${{ secrets.DOCKERHUB_USERNAME }}"
           fi
           
           # Check if GHCR tag is lowercase
-          if [[ "${{ steps.lowercase.outputs.owner_lowercase }}" =~ [A-Z] ]]; then
-            echo "❌ ERROR: GHCR tag still contains uppercase!"
+          if [[ "${GHCR_TAG}" =~ [A-Z] ]]; then
+            echo "❌ ERROR: GHCR tag contains uppercase: ${GHCR_TAG}"
             exit 1
           else
-            echo "✅ GHCR tag is lowercase: ghcr.io/${{ steps.lowercase.outputs.owner_lowercase }}/peacock:latest"
+            echo "✅ GHCR tag is lowercase: ${GHCR_TAG}"
           fi
 
       - name: Build and Push
