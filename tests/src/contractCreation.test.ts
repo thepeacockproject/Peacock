@@ -20,8 +20,7 @@ import { describe, expect, test } from "vitest"
 import * as cc from "../../components/statemachines/contractCreation"
 import { ContractCreationNpcTargetPayload } from "../../components/statemachines/contractCreation"
 import { nilUuid } from "../../components/utils"
-// @ts-expect-error No JSON imports allowed - TS language server will choke on trying to resolve JSON
-// imports from the config manager, some of which are megabytes large, a nightmare for performance.
+// @ts-expect-error No JSON imports allowed
 import killCases from "../testData/contractCreationCases.json"
 
 /** dummy data for basic operations that require no special cases, or as a base to build data with */

@@ -259,6 +259,6 @@ export type Evergreen_Payout_DataC2SEvent = ClientToServerEvent<{
     Total_Payout: number
 }>
 
-export type OpponentsC2sEvent = ClientToServerEvent<{
+export type OpponentsC2SEvent = ClientToServerEvent<{
     ConnectedSessions: string[]
 }>

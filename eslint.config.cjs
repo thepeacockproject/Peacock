@@ -30,6 +30,7 @@ module.exports = [
             "**/*.plugin.js",
             "**/*Plugin.js",
             "tests/testData/scripts",
+            "tests/vitest.config.ts",
             "eslint.config.cjs",
             "resources",
         ],

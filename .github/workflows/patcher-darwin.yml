@@ -1,0 +1,30 @@
+name: Patcher (macOS)
+
+on:
+  push:
+    branches: [ "v*", "master" ]
+    paths: [ "patcher-darwin/**/*" ]
+  pull_request:
+    branches: [ "v*", "master" ]
+    paths: [ "patcher-darwin/**/*" ]
+
+jobs:
+  build:
+    name: Build macOS Patcher
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Configure CMake
+        run: cmake -S patcher-darwin -B patcher-darwin/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Build
+        run: cmake --build patcher-darwin/build --config Release
+
+      - name: Upload patcher-darwin
+        uses: actions/upload-artifact@v7
+        with:
+          name: patcher-darwin
+          path: patcher-darwin/build/PeacockPatcher
