@@ -27,6 +27,8 @@ This fork is optimized for headless Linux servers, VPS environments, and home la
    ```
 
 2. **Paste this configuration:**
+
+```ymal
 services:
   peacock:
     image: lana20/peacock:latest
@@ -50,13 +52,13 @@ networks:
   peacock_network:
     driver: bridge
     enable_ipv6: true
-
+```
 
 3. **Start the server:**
 
    ```bash
    docker compose up -d
-   ```
+```
 
 ### Option B: Portainer (GUI)
 
