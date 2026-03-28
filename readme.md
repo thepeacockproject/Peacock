@@ -1,80 +1,90 @@
-🦚 Peacock Dockerized
-A fully containerized, automated build of The Peacock Project—the premier server replacement for the HITMAN™ World of Assassination trilogy.
+# 🦚 Peacock Dockerized
+
+**A fully containerized, automated build of The Peacock Project** — the premier server replacement for the HITMAN™ World of Assassination trilogy.
 
 This fork is optimized for headless Linux servers, VPS environments, and home labs. It automatically builds and publishes fresh Docker images nightly, ensuring you always have the latest upstream features without manual compilation.
 
-✨ Features
-Zero-Dependency Host: No need for Node.js or Yarn. Everything runs strictly inside the container.
+---
 
-Persistent Storage: Your custom contracts, saves, and user data are safely stored in Docker volumes.
+## ✨ Features
 
-Auto-Updating: Integrated GitHub Actions pull the latest code and push fresh images to lana20/peacock:latest.
+- **Zero-Dependency Host** – No need for Node.js or Yarn. Everything runs strictly inside the container.
+- **Persistent Storage** – Your custom contracts, saves, and user data are safely stored in Docker volumes.
+- **Auto-Updating** – Integrated GitHub Actions pull the latest code and push fresh images to [`lana20/peacock:latest`](https://hub.docker.com/r/lana20/peacock).
+- **Reverse Proxy Ready** – Seamlessly compatible with Nginx Proxy Manager, Traefik, or Cloudflare Tunnel.
 
-Reverse Proxy Ready: Seamlessly compatible with Nginx Proxy Manager, Traefik, or Cloudflare Tunnel.
+---
 
-🚀 Deployment Instructions
-Option A: Standard Docker Compose (CLI)
-Create a directory and the compose file:
+## 🚀 Deployment Instructions
 
-Bash
-mkdir peacock-server && cd peacock-server
-nano docker-compose.yml
-Paste this configuration:
+### Option A: Standard Docker Compose (CLI)
 
-YAML
-services:
-  peacock:
-    image: lana20/peacock:latest
-    container_name: peacock-server
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - peacock-data:/app/userdata
+1. **Create a directory and the compose file:**
 
-volumes:
-  peacock-data:
-Start the server:
+   ```bash
+   mkdir peacock-server && cd peacock-server
+   nano docker-compose.yml
+   ```
 
-Bash
-docker compose up -d
-Option B: Portainer (GUI)
-Open your Portainer Dashboard.
+2. **Paste this configuration:**
 
-Navigate to Stacks > Add stack.
+   ```yaml
+   services:
+     peacock:
+       image: lana20/peacock:latest
+       container_name: peacock-server
+       restart: unless-stopped
+       ports:
+         - "8080:8080"
+       environment:
+         - NODE_ENV=production
+       volumes:
+         - peacock-data:/app/userdata
 
-Name it peacock.
+   volumes:
+     peacock-data:
+   ```
 
-Paste the YAML code from Option A into the web editor.
+3. **Start the server:**
 
-Click Deploy the stack.
+   ```bash
+   docker compose up -d
+   ```
 
-🌐 Network Configuration
-Using a Custom Domain
-To use a domain like peacock.yourdomain.com:
+### Option B: Portainer (GUI)
 
-DNS: Point an A Record to your VPS/Server IP.
+1. Open your Portainer Dashboard.
+2. Navigate to **Stacks** > **Add stack**.
+3. Name it `peacock`.
+4. Paste the YAML configuration from Option A into the web editor.
+5. Click **Deploy the stack**.
 
-Reverse Proxy: Route incoming traffic for your domain to the container’s internal IP on port 8080.
+---
 
-SSL: Ensure you have a certificate (e.g., Let's Encrypt) active for a secure connection.
+## 🌐 Network Configuration
 
-🎮 How to Connect
-Download the latest Peacock Patcher from the official releases.
+### Using a Custom Domain
 
-Run PeacockPatcher.exe.
+To use a domain like `peacock.yourdomain.com`:
 
-In the Custom Server box, enter your domain or IP:
+- **DNS:** Point an `A` record to your VPS/server IP.
+- **Reverse Proxy:** Route incoming traffic for your domain to the container's internal IP on port `8080`.
+- **SSL:** Ensure you have a certificate (e.g., Let's Encrypt) active for a secure connection.
 
-Example: https://peacock.yourdomain.com or http://your-vps-ip:8080
+---
 
-Click Patch and Launch.
+## 🎮 How to Connect
 
-📝 Credits & Legal
-Original Project: The Peacock Project Team.
+1. Download the latest [Peacock Patcher](https://github.com/thepeacockproject/PeacockPatcher/releases) from the official releases.
+2. Run `PeacockPatcher.exe`.
+3. In the **Custom Server** box, enter your domain or IP:
+   - Example: `https://peacock.yourdomain.com` or `http://your-vps-ip:8080`
+4. Click **Patch and Launch**.
 
-License: AGPL-3.0 License.
+---
 
-Disclaimer: This is a community-driven server emulator and is not affiliated with IO Interactive.
+## 📝 Credits & Legal
+
+- **Original Project:** [The Peacock Project Team](https://github.com/thepeacockproject/Peacock)
+- **License:** AGPL-3.0 License
+- **Disclaimer:** This is a community-driven server emulator and is not affiliated with IO Interactive.
