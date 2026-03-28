@@ -43,11 +43,11 @@ services:
       - /opt/peacock-data/plugins:/app/plugins
       - /opt/peacock-data/options.ini:/app/options.ini
     networks:
-      - Internal_Shared_Network
+      - Internal_Shared_Network ### Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
       - peacock_network
 
 networks:
-  Internal_Shared_Network:
+  Internal_Shared_Network: ### Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
     external: true
   peacock_network:
     driver: bridge
