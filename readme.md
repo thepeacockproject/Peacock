@@ -28,7 +28,7 @@ This fork is optimized for headless Linux servers, VPS environments, and home la
 
 2. **Paste this configuration:**
 
-```ymal
+```yaml
 services:
   peacock:
     image: lana20/peacock:latest
@@ -43,11 +43,11 @@ services:
       - /opt/peacock-data/plugins:/app/plugins
       - /opt/peacock-data/options.ini:/app/options.ini
     networks:
-      - Internal_Shared_Network # Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
+      - Internal_Shared_Network # Please note rename this network to what ever network NPM or cloudflare or your chosen proxy manger uses. or remove it if you dont use one.
       - peacock_network
 
 networks:
-  Internal_Shared_Network: # Please note rename this network to what evernetwork NPM or cloudflare or your chosesen proxy manger uses. or remove it if you dont use one.
+  Internal_Shared_Network: # Please note rename this network to what ever network NPM or cloudflare or your chosen proxy manger uses. or remove it if you dont use one.
     external: true
   peacock_network:
     driver: bridge
@@ -58,7 +58,7 @@ networks:
 
    ```bash
    docker compose up -d
-```
+   ```
 
 ### Option B: Portainer (GUI)
 
@@ -76,7 +76,7 @@ networks:
 
 To use a domain like `peacock.yourdomain.com`:
 
-- **DNS:** Point an `A` record to your VPS/server IP or a CNAME reccord poting to the domain that has the ip pointing to it. IE hitman-peacock.yourdomain.com pointing to gameservers.yourdomain.com 
+- **DNS:** Point an `A` record to your VPS/server IP or a CNAME record pointing to the domain that has the ip pointing to it. IE hitman-peacock.yourdomain.com pointing to gameservers.yourdomain.com 
 - **Reverse Proxy:** Route incoming traffic for your domain to the container's internal IP on port `80`.
 - **SSL:** Ensure you have a certificate (e.g., Let's Encrypt) active for a secure connection.
 
@@ -87,7 +87,7 @@ To use a domain like `peacock.yourdomain.com`:
 1. Download the latest [Peacock Patcher](https://github.com/thepeacockproject/PeacockPatcher/releases) from the official releases.
 2. Run `PeacockPatcher.exe`.
 3. In the **Custom Server** box, enter your domain or IP:
-   - Example: `https://peacock.yourdomain.com` or `http://your-vps-ip:8080`
+   - Example: `https://peacock.yourdomain.com` or `http://your-vps-ip:80`
 4. Click **Patch and Launch**.
 
 ---
