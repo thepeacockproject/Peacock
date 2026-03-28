@@ -1,7 +1,3 @@
-This is a solid technical base for a README.md. To make it "pop," we should use a cleaner hierarchy, clearer visual cues (like badges), and better-formatted code blocks to help users navigate the setup quickly.
-
-Here is a prettified, professional version of your README:
-
 🦚 Peacock Dockerized
 A fully containerized, automated build of The Peacock Project—the premier server replacement for the HITMAN™ World of Assassination trilogy.
 
@@ -82,5 +78,3 @@ Original Project: The Peacock Project Team.
 License: AGPL-3.0 License.
 
 Disclaimer: This is a community-driven server emulator and is not affiliated with IO Interactive.
-
-Would you like me to generate a custom logo or a header image for this repository to make it stand out even more?
