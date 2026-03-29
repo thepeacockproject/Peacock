@@ -27,9 +27,8 @@ import {
     STEAM_NAMESPACE_2016,
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
-import { getRemoteService } from "./utils"
+import { getRemoteService, parseAppTicket } from "./utils"
 import { getFlag } from "./flags"
-import { parseAppTicket } from "steam-appticket"
 import { createHash } from "crypto"
 
 // An in-memory cache of Steam ownership tickets to entitlements (they're valid for up to 21 days)
@@ -164,7 +163,7 @@ export class SteamStrategy extends EntitlementStrategy {
     ): Promise<SteamAuthResult> {
         const ticket = parseAppTicket(Buffer.from(clientToken, "hex"))
 
-        if (!ticket?.isValid) {
+        if (!ticket?.valid) {
             return {
                 success: false,
                 code: 400,
@@ -215,8 +214,8 @@ export class SteamStrategy extends EntitlementStrategy {
                 success: true,
                 steamId: data.response.params!.steamid,
                 entitlements: [
-                    ticket.appID.toString(),
-                    ...ticket.dlc.map((dlc) => dlc.appID.toString()),
+                    ticket.appId.toString(),
+                    ...ticket.dlc.map((dlc) => dlc.toString()),
                 ],
             }
         } catch (error) {
