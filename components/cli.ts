@@ -20,7 +20,7 @@
 import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
-import { getFlag, loadFlags } from "./flags"
+import { getFlag, loadFlags, saveFlags } from "./flags"
 
 loadFlags()
 
@@ -62,7 +62,10 @@ program.action(
 program
     .command("noop")
     .description("generate file structure and exit")
-    .action(() => process.exit())
+    .action(() => {
+        saveFlags()
+        process.exit()
+    })
 
 program
     .command("tools")
