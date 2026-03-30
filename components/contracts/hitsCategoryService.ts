@@ -471,7 +471,7 @@ export class HitsCategoryService {
             case "completed":
                 return Boolean(
                     played[contractId]?.Completed &&
-                        !played[contractId]?.IsEscalation,
+                    !played[contractId]?.IsEscalation,
                 )
             case "failed":
                 return (

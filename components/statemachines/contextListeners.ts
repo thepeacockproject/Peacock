@@ -71,8 +71,7 @@ export type Toggle = IContextListener<"toggle">
 /**
  * Used to count things during a challenge.
  */
-export interface ObjectiveCounter
-    extends IContextListener<"objective-counter"> {
+export interface ObjectiveCounter extends IContextListener<"objective-counter"> {
     /**
      * Locale string for the HUD display.
      */

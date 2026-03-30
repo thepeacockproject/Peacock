@@ -38,9 +38,9 @@ export function TransferPage() {
 
     const isReadyToSelectUser = Boolean(
         gameVersion !== 0 &&
-            user === undefined &&
-            userData &&
-            (userData as { error: string } & BasicUser[])?.error !== "bad gv",
+        user === undefined &&
+        userData &&
+        (userData as { error: string } & BasicUser[])?.error !== "bad gv",
     )
 
     function getStatus(): string {

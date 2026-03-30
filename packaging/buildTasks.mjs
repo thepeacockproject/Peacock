@@ -23,7 +23,7 @@ import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
 import { createHash } from "crypto"
 import { Packr } from "msgpackr"
 import glob from "fast-glob"
-import prettier from "prettier"
+import { format } from "oxfmt"
 
 const packer = new Packr({
     bundleStrings: true,
@@ -73,15 +73,18 @@ export async function generateRequireTable() {
         requiresTable.push(`"@peacockproject/core/${importPath}": ${variable}`)
     }
 
-    const prettierConfig = {
-        parser: "babel",
+    const formatConfig = {
         semi: false,
         tabWidth: 4,
         trailingComma: "all",
+        printWidth: 80,
     }
 
+    const fileName = "components/generatedPeacockRequireTable.ts"
+
     // language=TypeScript
-    const generatedPeacockRequireTableFile = await prettier.format(
+    const result = await format(
+        fileName,
         `/*
 *     The Peacock Project - a HITMAN server replacement.
 *     Copyright (C) 2021-2026 The Peacock Project Team
@@ -105,13 +108,10 @@ export async function generateRequireTable() {
         export default {
             ${requiresTable.join(",\n")}
         }`,
-        prettierConfig,
+        formatConfig,
     )
 
-    await writeFile(
-        "components/generatedPeacockRequireTable.ts",
-        generatedPeacockRequireTableFile,
-    )
+    await writeFile(fileName, result.code)
 }
 
 export async function packResources() {

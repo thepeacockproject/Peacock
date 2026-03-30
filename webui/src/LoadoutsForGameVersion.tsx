@@ -51,9 +51,7 @@ export function LoadoutsForGameVersion({
         return <p>Loading...</p>
     }
 
-    // note: putting these 2 consts together make intellij and prettier conflict each other
     const theGameVer = data[`h${gameVersion}`] as LoadoutsGameVersion
-
     const loadoutsForVersion: Loadout[] = theGameVer.loadouts
 
     return (

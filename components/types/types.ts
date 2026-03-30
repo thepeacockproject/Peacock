@@ -128,12 +128,12 @@ export interface RequestWithJwt<
     RequestBody = any,
     Params = core.ParamsDictionary,
 > extends Request<
-        Params,
-        // eslint-disable-next-line
-        any,
-        RequestBody,
-        core.Query & Query
-    > {
+    Params,
+    // eslint-disable-next-line
+    any,
+    RequestBody,
+    core.Query & Query
+> {
     /**
      * The user's JSON Web Token (JWT) data.
      */

@@ -60,8 +60,8 @@ export function EscalationLevelPage() {
 
     const isReadyToSelectUser = Boolean(
         user === undefined &&
-            userData &&
-            (userData as { error: string } & BasicUser[])?.error !== "bad gv",
+        userData &&
+        (userData as { error: string } & BasicUser[])?.error !== "bad gv",
     )
 
     function getStatus(): string {
