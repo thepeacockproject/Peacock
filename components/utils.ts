@@ -37,7 +37,7 @@ import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { compare } from "semver"
 import assert from "assert"
 import { getUnlockableById } from "./inventory"
-import { createVerify } from "crypto"
+import { createHash, createVerify } from "crypto"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -874,10 +874,11 @@ const STEAM_PUBLIC_KEY: string =
 // A subset of the full app ticket data
 export interface AppTicket {
     steamId: string
-    appId: number
+    appId: string
     expiry: Date
-    dlc: number[]
+    dlc: string[]
     valid: boolean
+    hash: string
 }
 
 export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
@@ -885,10 +886,11 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
         // Adapted from the structs found at https://github.com/SteamRE/SteamKit/blob/master/Resources/Structs/steam3_appticket.hsl
         const appTicket: AppTicket = {
             steamId: "",
-            appId: 0,
+            appId: "",
             expiry: new Date(),
             dlc: [],
             valid: false,
+            hash: ""
         }
 
         let offset = 0
@@ -906,8 +908,9 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
             offset + ticket.readUInt32LE(offset),
         )
         appTicket.steamId = ticket.readBigUInt64LE((offset += 8)).toString()
-        appTicket.appId = ticket.readUInt32LE((offset += 8))
+        appTicket.appId = ticket.readUInt32LE((offset += 8)).toString()
         appTicket.expiry = new Date(ticket.readUInt32LE((offset += 20)) * 1000)
+        appTicket.hash = createHash("sha256").update(ownershipTicket).digest("hex")
 
         // Skip past licenses
         const licensesLength = ticket.readUInt16LE((offset += 4))
@@ -917,7 +920,7 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
         offset += 2
 
         for (let i = 0; i < dlcLength; ++i) {
-            appTicket.dlc.push(ticket.readUInt32LE(offset))
+            appTicket.dlc.push(ticket.readUInt32LE(offset).toString())
 
             // DLC Licenses array, usually empty
             const licensesLength = ticket.readUInt16LE((offset += 4))
