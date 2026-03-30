@@ -27,14 +27,13 @@ import {
     STEAM_NAMESPACE_2016,
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
-import { getRemoteService, parseAppTicket } from "./utils"
+import { AppTicket, getRemoteService, parseAppTicket } from "./utils"
 import { getFlag } from "./flags"
-import { createHash } from "crypto"
 
-// An in-memory cache of Steam ownership tickets to entitlements (they're valid for up to 21 days)
+// An in-memory cache of valid Steam ownership ticket hashes (they're valid for up to 21 days)
 // For most users, this won't provide any benefit since they'll be restarting Peacock often,
 // but this is more here for those running it 24/7 on a server somewhere.
-const STEAM_TICKET_CACHE: Map<string, string[]> = new Map()
+const STEAM_TICKET_CACHE: Set<string> = new Set()
 
 /**
  * The base class for an entitlement strategy.
@@ -106,9 +105,8 @@ export class SteamStrategy extends EntitlementStrategy {
     private readonly _apiKey: string = getFlag("steamApiKey") as SteamAuthMethod
     public readonly isValid: boolean = false
 
-    constructor(private readonly _appId: string) {
+    constructor() {
         super()
-        this._appId = _appId
 
         const method = getFlag("steamAuthenticationMethod") as SteamAuthMethod
 
@@ -159,10 +157,10 @@ export class SteamStrategy extends EntitlementStrategy {
 
     private async _getFromSteam(
         clientToken: string,
+        ticket: AppTicket,
         identity: string,
     ): Promise<SteamAuthResult> {
-        const ticket = parseAppTicket(Buffer.from(clientToken, "hex"))
-
+        // We already check this before calling, but it's just for sanity.
         if (!ticket?.valid) {
             return {
                 success: false,
@@ -177,7 +175,7 @@ export class SteamStrategy extends EntitlementStrategy {
                 {
                     params: {
                         key: this._apiKey,
-                        appid: this._appId,
+                        appid: ticket.appId,
                         ticket: clientToken,
                         identity,
                     },
@@ -210,13 +208,11 @@ export class SteamStrategy extends EntitlementStrategy {
                 }
             }
 
+            ticket.dlc.unshift(ticket.appId)
             return {
                 success: true,
                 steamId: data.response.params!.steamid,
-                entitlements: [
-                    ticket.appId.toString(),
-                    ...ticket.dlc.map((dlc) => dlc.toString()),
-                ],
+                entitlements: ticket.dlc,
             }
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -243,17 +239,17 @@ export class SteamStrategy extends EntitlementStrategy {
     ): Promise<string[]> {
         if (!this.isValid) return []
 
-        const hash = createHash("sha256")
-            .update(
-                clientToken.startsWith("14000000") &&
-                    clientToken.length > 52 * 2
-                    ? clientToken.substring(52 * 2) // Skip 52 bytes to get the ownership ticket (this part can be valid for up to 21 days)
-                    : clientToken,
-            )
-            .digest("hex")
+        const ticket = parseAppTicket(Buffer.from(clientToken, "hex"))
 
-        if (STEAM_TICKET_CACHE.has(hash)) {
-            return STEAM_TICKET_CACHE.get(hash)!
+        if (!ticket?.valid)
+        {
+            log(LogLevel.WARN, "Invalid ticket.", "SteamStrategy")
+            return []
+        }
+
+        if (STEAM_TICKET_CACHE.has(ticket.hash)) {
+            ticket.dlc.unshift(ticket.appId)
+            return ticket.dlc
         }
 
         const authMethod = getFlag(
@@ -261,7 +257,7 @@ export class SteamStrategy extends EntitlementStrategy {
         ) as SteamAuthMethod
         const res = await (authMethod === "BACKEND"
             ? this._getFromBackend(clientToken)
-            : this._getFromSteam(clientToken, identity))
+            : this._getFromSteam(clientToken, ticket, identity))
 
         if (!res.success) {
             log(
@@ -281,7 +277,7 @@ export class SteamStrategy extends EntitlementStrategy {
             return []
         }
 
-        STEAM_TICKET_CACHE.set(hash, res.entitlements)
+        STEAM_TICKET_CACHE.add(ticket.hash)
 
         return res.entitlements
     }
@@ -294,13 +290,14 @@ export class SteamStrategy extends EntitlementStrategy {
  */
 export class IOIStrategy extends EntitlementStrategy {
     private readonly _remoteService: string
+    private readonly _issuerId: string
 
     constructor(
         gameVersion: GameVersion,
-        private readonly issuerId: string,
+        issuerId: string,
     ) {
         super()
-        this.issuerId = issuerId
+        this._issuerId = issuerId
         this._remoteService = getRemoteService(gameVersion)!
     }
 
@@ -319,7 +316,7 @@ export class IOIStrategy extends EntitlementStrategy {
                 `https://${this._remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetPlatformEntitlements`,
                 false,
                 {
-                    issuerId: this.issuerId,
+                    issuerId: this._issuerId,
                 },
             )
         } catch (error) {

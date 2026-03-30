@@ -298,7 +298,7 @@ export async function handleOAuthToken(
                     req.body.epic_userid!,
                 )
             } else if (external_platform === "steam") {
-                let ents = await new SteamStrategy(external_appid).get(
+                let ents = await new SteamStrategy().get(
                     req.body.steam_clienttoken!,
                     req.body.steam_identity!,
                     req.body.steam_userid!,
