@@ -909,9 +909,12 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
         )
 
         const ticketVersion = ticket.readUInt32LE((offset += 4))
-        if (ticketVersion !== 4)
-        {
-            log(LogLevel.ERROR, `Encountered unknown ownership ticket version! Expected: 4, Got: ${ticketVersion}`, "parseAppTicket")
+        if (ticketVersion !== 4) {
+            log(
+                LogLevel.ERROR,
+                `Encountered unknown ownership ticket version! Expected: 4, Got: ${ticketVersion}`,
+                "parseAppTicket",
+            )
             return
         }
 
