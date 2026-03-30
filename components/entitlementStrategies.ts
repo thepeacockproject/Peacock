@@ -27,7 +27,12 @@ import {
     STEAM_NAMESPACE_2016,
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
-import { AppTicket, getRemoteService, parseAppTicket } from "./utils"
+import {
+    AppTicket,
+    getRemoteService,
+    parseAppTicket,
+    PEACOCKVERSTRING,
+} from "./utils"
 import { getFlag } from "./flags"
 
 // An in-memory cache of valid Steam ownership ticket hashes (they're valid for up to 21 days)
@@ -100,6 +105,16 @@ type SteamAuthResponse = {
         }
     }
 }
+type SteamAuthBackendResponse =
+    | {
+          success: true
+          steam_id: string
+          entitlements: string[]
+      }
+    | {
+          success: false
+          error: string
+      }
 
 export class SteamStrategy extends EntitlementStrategy {
     private readonly _apiKey: string = getFlag("steamApiKey") as SteamAuthMethod
@@ -146,12 +161,61 @@ export class SteamStrategy extends EntitlementStrategy {
     }
 
     private async _getFromBackend(
-        _clientToken: string,
+        clientToken: string,
+        identity: string,
     ): Promise<SteamAuthResult> {
-        return {
-            success: false,
-            code: 500,
-            error: "Backend validation not implemented",
+        try {
+            const host = getFlag("leaderboardsHost") as string
+            const resp = await axios.post(
+                `${host}/peacock/steam/validate_ticket`,
+                {
+                    ticket: clientToken,
+                    identity,
+                },
+                {
+                    headers: {
+                        "Peacock-Version": PEACOCKVERSTRING,
+                    },
+                },
+            )
+
+            if (resp.status !== 200 && resp.status !== 400) {
+                return {
+                    success: false,
+                    code: resp.status,
+                    error: `${resp.statusText}`,
+                }
+            }
+
+            const data = resp.data as SteamAuthBackendResponse
+
+            if (!data.success) {
+                return {
+                    success: false,
+                    code: resp.status,
+                    error: data.error,
+                }
+            }
+
+            return {
+                success: true,
+                steamId: data.steam_id,
+                entitlements: data.entitlements,
+            }
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    success: false,
+                    code: error.response?.status ?? 400,
+                    error: `${error.response?.statusText}`,
+                }
+            } else {
+                return {
+                    success: false,
+                    code: 400,
+                    error: `${error}`,
+                }
+            }
         }
     }
 
@@ -241,8 +305,7 @@ export class SteamStrategy extends EntitlementStrategy {
 
         const ticket = parseAppTicket(Buffer.from(clientToken, "hex"))
 
-        if (!ticket?.valid)
-        {
+        if (!ticket?.valid) {
             log(LogLevel.WARN, "Invalid ticket.", "SteamStrategy")
             return []
         }
@@ -256,7 +319,7 @@ export class SteamStrategy extends EntitlementStrategy {
             "steamAuthenticationMethod",
         ) as SteamAuthMethod
         const res = await (authMethod === "BACKEND"
-            ? this._getFromBackend(clientToken)
+            ? this._getFromBackend(clientToken, identity)
             : this._getFromSteam(clientToken, ticket, identity))
 
         if (!res.success) {
@@ -292,10 +355,7 @@ export class IOIStrategy extends EntitlementStrategy {
     private readonly _remoteService: string
     private readonly _issuerId: string
 
-    constructor(
-        gameVersion: GameVersion,
-        issuerId: string,
-    ) {
+    constructor(gameVersion: GameVersion, issuerId: string) {
         super()
         this._issuerId = issuerId
         this._remoteService = getRemoteService(gameVersion)!

@@ -890,7 +890,7 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
             expiry: new Date(),
             dlc: [],
             valid: false,
-            hash: ""
+            hash: "",
         }
 
         let offset = 0
@@ -910,7 +910,9 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
         appTicket.steamId = ticket.readBigUInt64LE((offset += 8)).toString()
         appTicket.appId = ticket.readUInt32LE((offset += 8)).toString()
         appTicket.expiry = new Date(ticket.readUInt32LE((offset += 20)) * 1000)
-        appTicket.hash = createHash("sha256").update(ownershipTicket).digest("hex")
+        appTicket.hash = createHash("sha256")
+            .update(ownershipTicket)
+            .digest("hex")
 
         // Skip past licenses
         const licensesLength = ticket.readUInt16LE((offset += 4))
