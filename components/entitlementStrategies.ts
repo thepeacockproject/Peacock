@@ -176,6 +176,7 @@ export class SteamStrategy extends EntitlementStrategy {
                     headers: {
                         "Peacock-Version": PEACOCKVERSTRING,
                     },
+                    validateStatus: status => status === 400 || (status >= 200 && status < 300)
                 },
             )
 
