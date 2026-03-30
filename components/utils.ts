@@ -907,7 +907,15 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
             offset,
             offset + ticket.readUInt32LE(offset),
         )
-        appTicket.steamId = ticket.readBigUInt64LE((offset += 8)).toString()
+
+        const ticketVersion = ticket.readUInt32LE((offset += 4))
+        if (ticketVersion !== 4)
+        {
+            log(LogLevel.ERROR, `Encountered unknown ownership ticket version! Expected: 4, Got: ${ticketVersion}`, "parseAppTicket")
+            return
+        }
+
+        appTicket.steamId = ticket.readBigUInt64LE((offset += 4)).toString()
         appTicket.appId = ticket.readUInt32LE((offset += 8)).toString()
         appTicket.expiry = new Date(ticket.readUInt32LE((offset += 20)) * 1000)
         appTicket.hash = createHash("sha256")
