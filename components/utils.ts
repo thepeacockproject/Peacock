@@ -909,6 +909,7 @@ export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
         )
 
         const ticketVersion = ticket.readUInt32LE((offset += 4))
+
         if (ticketVersion !== 4) {
             log(
                 LogLevel.ERROR,
