@@ -37,6 +37,7 @@ import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { compare } from "semver"
 import assert from "assert"
 import { getUnlockableById } from "./inventory"
+import { createHash, createVerify } from "crypto"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -859,4 +860,107 @@ export function parsePageNumber(page: unknown): number {
 
     page = Math.max(page as number, 0)
     return page as number
+}
+
+// Steam Utility Functions
+const STEAM_PUBLIC_KEY: string =
+    "-----BEGIN PUBLIC KEY-----\n" +
+    "MIGdMA0GCSqGSIb3DQEBAQUAA4GLADCBhwKBgQDf7BrWLBBmLBc1OhSwfFkRf53T\n" +
+    "2Ct64+AVzRkeRuh7h3SiGEYxqQMUeYKO6UWiSRKpI2hzic9pobFhRr3Bvr/WARvY\n" +
+    "gdTckPv+T1JzZsuVcNfFjrocejN1oWI0Rrtgt4Bo+hOneoo3S57G9F1fOpn5nsQ6\n" +
+    "6WOiu4gZKODnFMBCiQIBEQ==\n" +
+    "-----END PUBLIC KEY-----"
+
+// A subset of the full app ticket data
+export interface AppTicket {
+    steamId: string
+    appId: string
+    expiry: Date
+    dlc: string[]
+    valid: boolean
+    hash: string
+}
+
+export function parseAppTicket(ticket: Buffer): AppTicket | undefined {
+    try {
+        // Adapted from the structs found at https://github.com/SteamRE/SteamKit/blob/master/Resources/Structs/steam3_appticket.hsl
+        const appTicket: AppTicket = {
+            steamId: "",
+            appId: "",
+            expiry: new Date(),
+            dlc: [],
+            valid: false,
+            hash: "",
+        }
+
+        let offset = 0
+
+        if (ticket.readUInt32LE() === 20) {
+            // This ticket includes a GCTOKEN, skip this (extra + 4 to skip the length from OWNERSHIPSECTIONWITHSIGNATURE)
+            offset += 52 + 4
+        }
+
+        // Invalid app ticket
+        if (ticket.length <= offset) return
+
+        const ownershipTicket = ticket.subarray(
+            offset,
+            offset + ticket.readUInt32LE(offset),
+        )
+
+        const ticketVersion = ticket.readUInt32LE((offset += 4))
+
+        if (ticketVersion !== 4) {
+            log(
+                LogLevel.ERROR,
+                `Encountered unknown ownership ticket version! Expected: 4, Got: ${ticketVersion}`,
+                "parseAppTicket",
+            )
+            return
+        }
+
+        appTicket.steamId = ticket.readBigUInt64LE((offset += 4)).toString()
+        appTicket.appId = ticket.readUInt32LE((offset += 8)).toString()
+        appTicket.expiry = new Date(ticket.readUInt32LE((offset += 20)) * 1000)
+        appTicket.hash = createHash("sha256")
+            .update(ownershipTicket)
+            .digest("hex")
+
+        // Skip past licenses
+        const licensesLength = ticket.readUInt16LE((offset += 4))
+        offset += 2 + licensesLength * 4
+
+        const dlcLength = ticket.readUInt16LE(offset)
+        offset += 2
+
+        for (let i = 0; i < dlcLength; ++i) {
+            appTicket.dlc.push(ticket.readUInt32LE(offset).toString())
+
+            // DLC Licenses array, usually empty
+            const licensesLength = ticket.readUInt16LE((offset += 4))
+            offset += 2 + licensesLength * 4
+        }
+
+        // Skip past reserved
+        offset += 2
+
+        // We require a valid signature
+        let validSignature = false
+
+        if (offset + 128 === ticket.length) {
+            const signature = ticket.subarray(offset, offset + 128)
+
+            const verify = createVerify("RSA-SHA1")
+            verify.update(ownershipTicket)
+            verify.end()
+
+            validSignature = verify.verify(STEAM_PUBLIC_KEY, signature)
+        }
+
+        appTicket.valid = new Date() < appTicket.expiry && validSignature
+
+        return appTicket
+    } catch {
+        return
+    }
 }

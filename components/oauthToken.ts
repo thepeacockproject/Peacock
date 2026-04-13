@@ -39,10 +39,12 @@ import {
     EpicH1Strategy,
     EpicH3Strategy,
     IOIStrategy,
+    SteamStrategy,
     SteamH1Strategy,
     SteamH2Strategy,
     SteamScpcStrategy,
 } from "./entitlementStrategies"
+import { getFlag } from "./flags"
 
 export const JWT_SECRET = PEACOCK_DEV
     ? "secret"
@@ -51,6 +53,8 @@ export const JWT_SECRET = PEACOCK_DEV
 export type OAuthTokenBody = {
     grant_type: "external_steam" | "external_epic" | "refresh_token"
     steam_userid?: string
+    steam_clienttoken?: string
+    steam_identity?: string
     epic_userid?: string
     access_token: string
     pId?: string
@@ -222,17 +226,19 @@ export async function handleOAuthToken(
     /*
        Store user auth for all games except scpc
     */
-    if (!isScpc) {
-        const authContainer = new OfficialServerAuth(
-            gameVersion,
-            req.body.access_token,
-        )
+    const authUser = async () => {
+        if (!isScpc) {
+            const authContainer = new OfficialServerAuth(
+                gameVersion,
+                req.body.access_token,
+            )
 
-        log(LogLevel.DEBUG, `Setting up container with ID ${req.body.pId}.`)
+            log(LogLevel.DEBUG, `Setting up container with ID ${req.body.pId}.`)
 
-        userAuths.set(req.body.pId, authContainer)
+            userAuths.set(req.body.pId!, authContainer)
 
-        await authContainer._initiallyAuthenticate(req)
+            await authContainer._initiallyAuthenticate(req)
+        }
     }
 
     let userData = getUserData(req.body.pId, gameVersion)
@@ -266,6 +272,10 @@ export async function handleOAuthToken(
             return new SteamScpcStrategy().get()
         }
 
+        // Authenticate user with official if we're not on H3 Steam (otherwise the token will be invalidated)
+        if (gameVersion !== "h3" || external_platform !== "steam")
+            await authUser()
+
         if (gameVersion === "h1") {
             if (external_platform === "steam") {
                 return new SteamH1Strategy().get()
@@ -288,10 +298,35 @@ export async function handleOAuthToken(
                     req.body.epic_userid!,
                 )
             } else if (external_platform === "steam") {
-                return await new IOIStrategy(
-                    gameVersion,
-                    STEAM_NAMESPACE_2021,
-                ).get(req.body.pId!)
+                let ents = await new SteamStrategy().get(
+                    req.body.steam_clienttoken!,
+                    req.body.steam_identity!,
+                    req.body.steam_userid!,
+                )
+                await authUser()
+
+                if (ents.length === 0) {
+                    if (
+                        getFlag("steamAuthenticationMethod") === "STEAM_STRICT"
+                    ) {
+                        log(
+                            LogLevel.WARN,
+                            "No entitlements returned by SteamStrategy with strict mode enabled!",
+                        )
+                        return []
+                    }
+
+                    log(
+                        LogLevel.WARN,
+                        "No entitlements returned by SteamStrategy - defaulting to official!",
+                    )
+                    ents = await new IOIStrategy(
+                        gameVersion,
+                        external_appid,
+                    ).get(req.body.pId!)
+                }
+
+                return ents
             } else {
                 log(LogLevel.ERROR, "Unsupported platform.")
                 return []
