@@ -31,7 +31,7 @@ fi
 # generate options.ini
 node chunk0.js noop
 
-mkdir "$OUT_DIR"
+mkdir -p "$OUT_DIR"
 cp packaging/HOW_TO_USE.html "$OUT_DIR"
 cp PeacockPatcher.exe "$OUT_DIR"
 cp chunk*.js "$OUT_DIR"
@@ -43,15 +43,15 @@ fi
 cp LICENSE "$OUT_DIR"
 cp THIRDPARTYNOTICES.txt "$OUT_DIR"
 cp .nvmrc "$OUT_DIR"
-mkdir "$OUT_DIR"/resources
+mkdir -p "$OUT_DIR"/resources
 cp resources/dynamic_resources_h3.rpkg "$OUT_DIR"/resources/dynamic_resources_h3.rpkg
 cp resources/dynamic_resources_h2.rpkg "$OUT_DIR"/resources/dynamic_resources_h2.rpkg
 cp resources/dynamic_resources_h1.rpkg "$OUT_DIR"/resources/dynamic_resources_h1.rpkg
 cp -r resources/challenges "$OUT_DIR"/resources/challenges
 cp -r resources/mastery "$OUT_DIR"/resources/mastery
 cp resources/contracts.prp "$OUT_DIR"/resources/contracts.prp
-mkdir "$OUT_DIR"/webui
-mkdir "$OUT_DIR"/webui/dist
+mkdir -p "$OUT_DIR"/webui
+mkdir -p "$OUT_DIR"/webui/dist
 cp webui/dist/*.html "$OUT_DIR"/webui/dist
 cp -r webui/dist/assets "$OUT_DIR"/webui/dist/assets
 cp webui/dist/THIRDPARTYNOTICES.txt "$OUT_DIR"/webui/dist/THIRDPARTYNOTICES.txt
