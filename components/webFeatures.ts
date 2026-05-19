@@ -352,7 +352,7 @@ webFeaturesRouter.post(
         const remoteService = getRemoteService(req.query.gv)
         const auth = userAuths.get(req.query.user)
 
-        if (!auth) {
+        if (!auth?.initialized) {
             formErrorMessage(
                 res,
                 "Failed to get official authentication data. Please connect to Peacock first.",
@@ -376,7 +376,7 @@ webFeaturesRouter.post(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ChallengesService/GetProgression`,
                 false,
                 {
-                    profileid: req.query.user,
+                    profileid: auth.profileId,
                     challengeids: controller.challengeService
                         .getChallengeIds(req.query.gv)
                         .filter((id) => uuidRegex.test(id)), // filter out potential bogus challenge ids added by plugins
@@ -419,7 +419,7 @@ webFeaturesRouter.post(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
                 false,
                 {
-                    id: req.query.user,
+                    id: auth.profileId,
                     extensions: [
                         "achievements",
                         "friends",

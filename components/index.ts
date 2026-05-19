@@ -32,6 +32,7 @@ import { getConfig } from "./configSwizzleManager"
 import {
     error400,
     error406,
+    error410,
     handleOAuthToken,
     OAuthTokenBody,
 } from "./oauthToken"
@@ -299,6 +300,8 @@ app.post(
                     return res.status(400).send()
                 } else if (token === error406) {
                     return res.status(406).send()
+                } else if (token === error410) {
+                    return res.status(410).send()
                 } else {
                     return res.json(token)
                 }
