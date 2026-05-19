@@ -352,7 +352,7 @@ webFeaturesRouter.post(
         const remoteService = getRemoteService(req.query.gv)
         const auth = userAuths.get(req.query.user)
 
-        if (!auth) {
+        if (!auth?.initialized) {
             formErrorMessage(
                 res,
                 "Failed to get official authentication data. Please connect to Peacock first.",
