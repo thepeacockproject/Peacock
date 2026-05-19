@@ -18,9 +18,10 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios"
 import type { Request } from "express"
+import { decode } from "jsonwebtoken"
 import { log, LogLevel } from "./loggingInterop"
 import { handleAxiosError } from "./utils"
-import type { GameVersion } from "./types/types"
+import type { GameVersion, JwtData } from "./types/types"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -71,6 +72,7 @@ export class OfficialServerAuth {
      * If this authentication container is ready for use.
      */
     initialized?: boolean
+    profileId?: string
     protected _usableToken?: string
     protected _refreshToken?: string
     protected _gameAuthToken?: string
@@ -101,8 +103,11 @@ export class OfficialServerAuth {
     async _initiallyAuthenticate(req: Request): Promise<void> {
         try {
             const r = await this._firstTimeObtainData(req)
+            const decodedToken = decode(r.access_token) as unknown as JwtData
+
             this._usableToken = r.access_token
             this._refreshToken = r.refresh_token
+            this.profileId = decodedToken.unique_name
             this.initialized = true
         } catch (e) {
             handleAxiosError(e as AxiosError)
@@ -183,15 +188,36 @@ export class OfficialServerAuth {
      * @returns The token data fetched from the official servers.
      */
     private async _firstTimeObtainData(req: Request): Promise<AuthResponse> {
-        return (
-            await axios.post(
-                "https://auth.hitman.io/oauth/token",
-                createUrlencodedBody(req.body),
-                {
-                    headers: this._headers,
-                },
-            )
-        ).data
+        const requestBody = Object.assign({}, req.body)
+
+        try {
+            return (
+                await axios.post(
+                    "https://auth.hitman.io/oauth/token",
+                    createUrlencodedBody(requestBody),
+                    {
+                        headers: this._headers,
+                    },
+                )
+            ).data
+        } catch (e) {
+            if (e instanceof AxiosError && e.status === 410) {
+                // IOI expected a different profile id for this platform id
+                delete requestBody.pId // Let IOI's server figure out the correct profile id
+
+                return (
+                    await axios.post(
+                        "https://auth.hitman.io/oauth/token",
+                        createUrlencodedBody(requestBody),
+                        {
+                            headers: this._headers,
+                        },
+                    )
+                ).data
+            } else {
+                throw e
+            }
+        }
     }
 }
 
