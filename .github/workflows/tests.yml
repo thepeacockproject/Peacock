@@ -43,7 +43,6 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
-    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
