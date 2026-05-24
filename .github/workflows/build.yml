@@ -1,0 +1,71 @@
+name: Build
+
+on:
+  push:
+    branches: [ "v*", "master" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "v*", "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Peacock
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build Modules
+        run: yarn build
+
+      - name: Optimize
+        run: yarn optimize
+
+      - name: Download Node.js (Windows)
+        run: |
+          curl https://nodejs.org/dist/$(cat .nvmrc)/node-$(cat .nvmrc)-win-x64.zip -o node.zip
+          unzip node.zip
+          mkdir nodedist
+          cp node-$(cat .nvmrc)-win-x64/node.exe nodedist/node.exe
+          cp node-$(cat .nvmrc)-win-x64/LICENSE nodedist/LICENSE
+
+      - name: Assemble Full (Windows)
+        run: ./packaging/ciAssemble.sh
+
+      - name: Assemble Linux
+        run: ./packaging/ciAssemble.sh linux
+
+      - name: Upload Peacock Release
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: Peacock-Release
+          path: Peacock-v*.zip
+
+      - name: Upload SourceMap
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: SourceMap
+          path: chunk0.js.map
