@@ -54,7 +54,7 @@ namespace HitmanPatcher
 
 		public static void PatchAllProcesses(ILoggingProvider logger, Options patchOptions)
 		{
-			IEnumerable<Process> hitmans = GetProcessesByName("HITMAN", "HITMAN2", "HITMAN3");
+			IEnumerable<Process> hitmans = GetProcessesByName("HITMAN", "HITMAN2", "HITMAN3", "007FirstLight");
 			foreach (Process process in hitmans)
 			{
 				if (!patchedprocesses.Contains(process.Id))
