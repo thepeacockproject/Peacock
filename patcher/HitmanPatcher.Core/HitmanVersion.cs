@@ -87,6 +87,7 @@ namespace HitmanPatcher
             v3_100.AddVersions();
             v3_110.AddVersions();
             v3_120.AddVersions();
+            v007FirstLight.AddVersions();
             vScpc.AddVersions();
         }
     }
