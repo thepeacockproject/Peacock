@@ -1,9 +1,8 @@
-namespace HitmanPatcher
-{
-    public static class Compositions
-    {
-        public static bool HasAdmin { get; set; }
+namespace HitmanPatcher;
 
-        public static ILoggingProvider Logger { get; set; }
-    }
+public static class Compositions
+{
+    public static bool HasAdmin { get; set; }
+
+    public static ILoggingProvider Logger { get; set; }
 }
