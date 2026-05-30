@@ -4,8 +4,8 @@ namespace HitmanPatcher.PatchDefinitions
     {
         public static void AddVersions()
         {
-            HitmanVersion.AddVersion("007FirstLight", 0x6A135D07, firstLightLaunchBuild);
-            HitmanVersion.AddVersion("007FirstLight", 0x6A16C68D, firstLightPatch1);
+            HitmanVersion.AddVersion("knt_1.0.0", 0x6A135D07, firstLightLaunchBuild);
+            HitmanVersion.AddVersion("knt_1.0.1", 0x6A16C68D, firstLightPatch1);
         }
 
         private static readonly HitmanVersion firstLightLaunchBuild = new()
