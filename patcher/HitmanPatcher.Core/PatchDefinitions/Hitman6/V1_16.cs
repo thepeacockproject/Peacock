@@ -5,10 +5,8 @@ internal static class V1_16
     internal static void AddVersions()
     {
         HitmanVersion.AddVersion("1.16.0.0_epic_dx11", 0x5F8D62C5, v1_16_0_epic_dx11);
-#if PLATFORM_GOG
         HitmanVersion.AddVersion("1.16.0.0_gog_dx11", 0x613A0240, v1_16_0_gog_dx11);
         HitmanVersion.AddVersion("1.16.0.0_gog_dx12", 0x613A0736, v1_16_0_gog_dx12);
-#endif
     }
 
     private static readonly HitmanVersion v1_16_0_epic_dx11 = new()
@@ -36,7 +34,6 @@ internal static class V1_16
         ]
     };
 
-#if PLATFORM_GOG
     private static readonly HitmanVersion v1_16_0_gog_dx11 = new()
     {
         certpin =
@@ -86,5 +83,4 @@ internal static class V1_16
             new Patch(0x2743208, "01", "00", MemProtection.PAGE_READWRITE)
         ]
     };
-#endif
 }
