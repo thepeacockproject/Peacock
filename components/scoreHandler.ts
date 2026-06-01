@@ -637,6 +637,7 @@ export async function getMissionEndData(
     // Resolve contract data
     const contractData = controller.resolveContract(
         sessionDetails.contractId,
+        jwt.unique_name,
         gameVersion,
         false,
     )
@@ -663,7 +664,7 @@ export async function getMissionEndData(
         }
 
         const levelCount = getLevelCount(
-            controller.resolveContract(eGroupId, gameVersion),
+            controller.resolveContract(eGroupId, jwt.unique_name, gameVersion),
         )
 
         escalationCompletion: if (
@@ -754,6 +755,7 @@ export async function getMissionEndData(
     // Resolve all challenges for the location
     const locationChallenges =
         controller.challengeService.getGroupedChallengeLists(
+            jwt.unique_name,
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
@@ -1283,12 +1285,12 @@ export async function getMissionEndData(
     // Finalize the response
     if (getFlag("autoSplitterForceSilentAssassin")) {
         if (result.ScoreOverview.SilentAssassin) {
-            await liveSplitManager.completeMission(timeTotal)
+            await liveSplitManager.completeMission(jwt.unique_name, timeTotal)
         } else {
-            await liveSplitManager.failMission(timeTotal)
+            await liveSplitManager.failMission(jwt.unique_name, timeTotal)
         }
     } else {
-        await liveSplitManager.completeMission(timeTotal)
+        await liveSplitManager.completeMission(jwt.unique_name, timeTotal)
     }
 
     if (

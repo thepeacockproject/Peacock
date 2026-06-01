@@ -90,6 +90,7 @@ legacyContractRouter.post(
 
         const contractData = controller.resolveContract(
             req.body.id,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -194,6 +195,7 @@ legacyContractRouter.post(
 
         const c = controller.resolveContract(
             req.body.contractId,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 

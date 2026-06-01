@@ -708,12 +708,14 @@ export class ChallengeService extends ChallengeRegistry {
      * Filter all challenges in a parent location using a given filter, sort them into groups,
      * and write them into the `challenges` array provided.
      *
+     * @param userId The user's ID.
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
      * @param challenges The array to write results to.
      * @param gameVersion The game's version.
      */
     getGroupedChallengesByLoc(
+        userId: string | null,
         filter: ChallengeFilterOptions,
         location: string,
         challenges: [string, RegistryChallenge[]][],
@@ -750,7 +752,7 @@ export class ChallengeService extends ChallengeRegistry {
                             return challenge
                         }
 
-                        const res = filterChallenge(filter, challenge)
+                        const res = filterChallenge(userId, filter, challenge)
 
                         return res ? challenge : undefined
                     })
@@ -780,7 +782,7 @@ export class ChallengeService extends ChallengeRegistry {
             // Skip global challenges
             if (challenge.inGroup === "global") continue
 
-            if (filterChallenge(filter, challenge)) {
+            if (filterChallenge(userId, filter, challenge)) {
                 challenges[challenge.inGroup!] ??= []
                 challenges[challenge.inGroup!].push(challenge)
             }
@@ -798,12 +800,14 @@ export class ChallengeService extends ChallengeRegistry {
      * Filter all challenges in a parent location using a given filter, sort them into groups,
      * and return them as a `GroupIndexedChallengeLists`.
      *
+     * @param userId The user's ID.
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
      * @param gameVersion The active game version.
      * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
      */
     getGroupedChallengeLists(
+        userId: string | null,
         filter: ChallengeFilterOptions,
         location: string,
         gameVersion: GameVersion,
@@ -818,6 +822,7 @@ export class ChallengeService extends ChallengeRegistry {
             ])
         } else {
             this.getGroupedChallengesByLoc(
+                userId,
                 filter,
                 location,
                 challenges,
@@ -829,6 +834,7 @@ export class ChallengeService extends ChallengeRegistry {
                 filter.isFeatured
             ) {
                 this.getGroupedChallengesByLoc(
+                    userId,
                     filter,
                     "GLOBAL_FEATURED_CHALLENGES",
                     challenges,
@@ -837,6 +843,7 @@ export class ChallengeService extends ChallengeRegistry {
             }
 
             this.getGroupedChallengesByLoc(
+                userId,
                 filter,
                 "GLOBAL_ARCADE_CHALLENGES",
                 challenges,
@@ -846,6 +853,7 @@ export class ChallengeService extends ChallengeRegistry {
             // H2 & H1 have the escalation challenges in "feats"
             if (gameVersion === "h3") {
                 this.getGroupedChallengesByLoc(
+                    userId,
                     filter,
                     "GLOBAL_ESCALATION_CHALLENGES",
                     challenges,
@@ -865,6 +873,7 @@ export class ChallengeService extends ChallengeRegistry {
                         ?.get(globalGroup.groupId) === undefined
                 ) {
                     this.getGroupedChallengesByLoc(
+                        userId,
                         filter,
                         globalGroup.location,
                         challenges,
@@ -891,6 +900,7 @@ export class ChallengeService extends ChallengeRegistry {
         const userData = getUserData(userId, gameVersion)
         const contractGroup = this.controller.resolveContract(
             contractId,
+            userId,
             gameVersion,
             true,
         )
@@ -914,12 +924,14 @@ export class ChallengeService extends ChallengeRegistry {
 
             contract = this.controller.resolveContract(
                 currentLevel,
+                userId,
                 gameVersion,
                 false,
             )
         } else {
             contract = this.controller.resolveContract(
                 contractId,
+                userId,
                 gameVersion,
                 false,
             )
@@ -937,6 +949,7 @@ export class ChallengeService extends ChallengeRegistry {
         assert.ok(levelParentLocation)
 
         return this.getGroupedChallengeLists(
+            userId,
             {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
@@ -961,6 +974,7 @@ export class ChallengeService extends ChallengeRegistry {
 
     getChallengesForLocation(
         child: string,
+        userId: string | null,
         gameVersion: GameVersion,
     ): GroupIndexedChallengeLists {
         const locations = getVersionedConfig<PeacockLocationsData>(
@@ -995,6 +1009,7 @@ export class ChallengeService extends ChallengeRegistry {
         assert.ok(parent, "expected parent location")
 
         return this.getGroupedChallengeLists(
+            userId,
             {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
@@ -1014,6 +1029,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         const contractJson = this.controller.resolveContract(
             contractId,
+            session.userId,
             gameVersion,
             true,
         )
@@ -1227,6 +1243,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         const contractData = this.controller.resolveContract(
             contractId,
+            userId,
             gameVersion,
             true,
         )
@@ -1256,12 +1273,14 @@ export class ChallengeService extends ChallengeRegistry {
 
             levelData = this.controller.resolveContract(
                 order,
+                userId,
                 gameVersion,
                 false,
             )
         } else {
             levelData = this.controller.resolveContract(
                 contractId,
+                userId,
                 gameVersion,
                 false,
             )
@@ -1401,6 +1420,7 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const forLocation = this.getGroupedChallengeLists(
+            userId,
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
@@ -1429,7 +1449,7 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
     ): CompiledChallengeTreeCategory[] {
         const challenges = location
-            ? this.getChallengesForLocation(location.Id, gameVersion)
+            ? this.getChallengesForLocation(location.Id, userId, gameVersion)
             : this.getChallengesForGroup(categoryId!, gameVersion)
 
         return this.reBatchIntoSwitchedData(
@@ -1634,6 +1654,7 @@ export class ChallengeService extends ChallengeRegistry {
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
                 challenge.InclusionData?.ContractIds?.[0] || "",
+                userId,
                 gameVersion,
             )
 

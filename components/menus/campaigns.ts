@@ -49,6 +49,7 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
 
         const actualContractData = controller.resolveContract(
             contractId,
+            userId,
             gameVersion,
             true,
         )

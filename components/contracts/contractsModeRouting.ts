@@ -42,6 +42,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
 
     const contractCreationTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.jwt.unique_name,
         req.gameVersion,
     )
 
@@ -53,7 +54,11 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion, true),
+            LocationsData: createLocationsData(
+                req.jwt.unique_name,
+                req.gameVersion,
+                true,
+            ),
             FilterData: getVersionedConfig(
                 "FilterData",
                 req.gameVersion,

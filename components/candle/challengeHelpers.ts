@@ -194,6 +194,7 @@ export function isChallengeForDifficulty(
  * Will throw if the contract is not found.
  *
  * @param contractId The id of the contract.
+ * @param userId The user's ID.
  * @param locationId The sublocation ID of the challenge.
  * @param difficulty The upper bound on the difficulty of the challenges to return.
  * @param gameVersion The game version.
@@ -204,6 +205,7 @@ export function isChallengeForDifficulty(
  */
 function isChallengeInContract(
     contractId: string,
+    userId: string | null,
     locationId: string,
     difficulty: number,
     gameVersion: GameVersion,
@@ -225,11 +227,13 @@ function isChallengeInContract(
 
     const groupContract = controller.resolveContract(
         contractId,
+        userId,
         gameVersion,
         true,
     )
     const individualContract = controller.resolveContract(
         contractId,
+        userId,
         gameVersion,
     )
 
@@ -306,6 +310,7 @@ function isChallengeInContract(
 }
 
 export function filterChallenge(
+    userId: string | null,
     options: ChallengeFilterOptions,
     challenge: RegistryChallenge,
 ): boolean {
@@ -315,6 +320,7 @@ export function filterChallenge(
         case ChallengeFilterType.Contract: {
             return isChallengeInContract(
                 options.contractId,
+                userId,
                 options.locationId,
                 options.difficulty,
                 options.gameVersion,
@@ -327,6 +333,7 @@ export function filterChallenge(
                 options.contractIds.some((contractId) =>
                     isChallengeInContract(
                         contractId,
+                        userId,
                         options.locationId,
                         gameDifficulty.master, // Get challenges of all difficulties
                         options.gameVersion,

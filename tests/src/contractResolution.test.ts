@@ -31,13 +31,14 @@ describe("internal contracts", () => {
         expect(
             controller.resolveContract(
                 "00000000-0000-0000-0000-000000000200",
+                null,
                 "h3",
             )!.Metadata.Title,
         ).toBe("UI_CONTRACT_PEACOCK_TITLE")
     })
 
     it("does not resolve a fake contract", () => {
-        expect(controller.resolveContract("fake!", "h3")).toBeUndefined()
+        expect(controller.resolveContract("fake!", null, "h3")).toBeUndefined()
     })
 })
 
@@ -48,6 +49,7 @@ describe("getContractManifest hook", () => {
         const landslide = structuredClone(
             controller.resolveContract(
                 "00000000-0000-0000-0001-000000000005",
+                null,
                 "h3",
             ),
         )
@@ -57,6 +59,7 @@ describe("getContractManifest hook", () => {
         expect(
             controller.resolveContract(
                 "00000000-0000-0000-0001-000000000005",
+                null,
                 "h3",
             )?.Metadata.Title,
         ).toBe("UI_CONTRACT_MAMBA_TITLE")
@@ -70,6 +73,7 @@ describe("getContractManifest hook", () => {
         expect(
             controller.resolveContract(
                 "00000000-0000-0000-0001-000000000005",
+                null,
                 "h3",
             )?.Metadata.Title,
         ).toBe("Landslide")
@@ -95,7 +99,7 @@ describe("contracts folder", () => {
             await controller.index()
 
             expect(
-                controller.resolveContract(contract.Metadata.Id, "h3"),
+                controller.resolveContract(contract.Metadata.Id, null, "h3"),
             ).toBeDefined()
         },
     )
