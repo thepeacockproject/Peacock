@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
-using HitmanPatcher.PatchDefinitions.FirstLight;
 using HitmanPatcher.PatchDefinitions.Hitman6;
 using HitmanPatcher.PatchDefinitions.Hitman7;
 using HitmanPatcher.PatchDefinitions.Hitman8;
@@ -89,7 +88,6 @@ public class HitmanVersion
         V3_100.AddVersions();
         V3_110.AddVersions();
         V3_120.AddVersions();
-        V1_0.AddVersions();
         Scpc.AddVersions();
     }
 }

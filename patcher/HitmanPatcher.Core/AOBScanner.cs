@@ -21,7 +21,8 @@ internal static class AOBScanner
         FindPatchesTask getCertpinPatches = Task.Factory.ContinueWhenAll([
                 FindCertpinNearjump(exeData),
                 FindCertpinNearjumpNew(exeData),
-                FindCertpin_shortjump(exeData)
+                FindCertpin_shortjump(exeData),
+                FindCertpinFirstLight(exeData)
             ],
             RejectNullReturns);
 
@@ -30,7 +31,8 @@ internal static class AOBScanner
                 FindAuthhead3_210(exeData),
                 FindAuthhead3_30(exeData),
                 FindAuthhead2_72(exeData),
-                FindAuthhead1_15(exeData)
+                FindAuthhead1_15(exeData),
+                FindAuthheadFirstLight(exeData)
             ],
             RejectNullReturns
         );
@@ -44,7 +46,8 @@ internal static class AOBScanner
 
         FindPatchesTask getProtocolPatches = Task.Factory.ContinueWhenAll(
             [
-                FindProtocolCombined(exeData)
+                FindProtocolCombined(exeData),
+                FindProtocolFirstLight(exeData)
             ],
             RejectNullReturns
         );
@@ -65,16 +68,27 @@ internal static class AOBScanner
                 RejectNullReturns
             );
 
-        FindPatchesTask[] allTasks =
+        bool isFirstLight =
+            process.ProcessName.IndexOf("007FirstLight",
+                StringComparison.OrdinalIgnoreCase) >= 0;
+
+        List<FindPatchesTask> requiredTasks =
         [
             getCertpinPatches, getAuthheadPatches, getConfigdomainPatches,
-            getProtocolPatches, getDynresForceofflinePatches
+            getProtocolPatches
         ];
-        // ReSharper disable once CoVariantArrayConversion
-        Task.WaitAll([..allTasks, getDynresEnablePatches]);
+        if (!isFirstLight)
+        {
+            requiredTasks.Add(getDynresForceofflinePatches);
+        }
 
-        // error out if any task does not have exactly 1 result
-        if (allTasks.Any(task => task.Result.Count() != 1))
+        // ReSharper disable once CoVariantArrayConversion
+        Task.WaitAll(getCertpinPatches, getAuthheadPatches,
+            getConfigdomainPatches, getProtocolPatches,
+            getDynresForceofflinePatches, getDynresEnablePatches);
+
+        // error out if any required task does not have exactly 1 result
+        if (requiredTasks.Any(task => task.Result.Count() != 1))
         {
             result = null;
             return false;
@@ -94,7 +108,7 @@ internal static class AOBScanner
         LogFoundPatch("Protocol", getProtocolPatches.Result.First()[0],
             imageBase);
         LogFoundPatch("DynamicResources->ForceOffline",
-            getDynresForceofflinePatches.Result.First()[0], imageBase);
+            getDynresForceofflinePatches.Result.FirstOrDefault()?[0], imageBase);
         LogFoundPatch("DynamicResources->Enable",
             getDynresEnablePatches.Result.FirstOrDefault()?[0], imageBase);
 #endif
@@ -106,7 +120,7 @@ internal static class AOBScanner
             configdomain = getConfigdomainPatches.Result.First(),
             protocol = getProtocolPatches.Result.First(),
             dynres_noforceoffline =
-                getDynresForceofflinePatches.Result.First(),
+                getDynresForceofflinePatches.Result.FirstOrDefault() ?? [],
             dynres_enable =
                 getDynresEnablePatches.Result.FirstOrDefault() ?? []
         };
@@ -210,6 +224,26 @@ internal static class AOBScanner
                     MemProtection.PAGE_EXECUTE_READ)
             };
         });
+    }
+
+    private static Task<Patch[]> FindCertpinFirstLight(byte[] data)
+    {
+        // jnz <secure failure> ; mov dword [rdi+0x30], 0x2f ; mov dword [rdi+0x18], 4
+        // First Light stores 4 here where Hitman stores 3.
+        return Task.Factory
+            .StartNew(() =>
+                FindPattern(data, 0x3,
+                    "0f85 ? ? ? ? c747302f000000c7471804000000"))
+            .ContinueWith(task =>
+            {
+                if (task.Result.Length != 1)
+                    return null; // pattern should occur only once
+                return new[]
+                {
+                    new Patch(task.Result[0], "0F85", "90E9",
+                        MemProtection.PAGE_EXECUTE_READ)
+                };
+            });
     }
 
     #endregion
@@ -346,6 +380,37 @@ internal static class AOBScanner
         });
     }
 
+    private static Task<Patch[]> FindAuthheadFirstLight(byte[] data)
+    {
+        // The auth header is only attached when the request scheme is secure
+        // (https/wss) AND the host matches an allow-listed domain suffix.
+        // The scheme check ("wss") mismatch jump and the domain check jump
+        // both branch away from the code that adds the "bearer " header;
+        // nop both so the header is always attached.
+        //   movzx eax, [rdx+rcx] ; inc rcx ; cmp al, [r8+rcx-1]
+        //   jne <skip>                                  <- patch 1 (scheme)
+        //   cmp rcx, 4 ; jne <loop>
+        //   lea rcx, [r15+0x20] ; call <domain check> ; test al, al
+        //   je <skip>                                   <- patch 2 (domain)
+        return Task.Factory
+            .StartNew(() =>
+                FindPattern(data, 0x0,
+                    "0fb6040a48ffc1413a4408ff0f85 ? ? ? ? 4883f90475e8498d4f20e8 ? ? ? ? 84c00f84 ? ? ? ?"))
+            .ContinueWith(task =>
+            {
+                if (task.Result.Length != 1)
+                    return null; // pattern should occur only once
+                int start = task.Result[0];
+                return new[]
+                {
+                    new Patch(start + 12, "0F85BF000000", "909090909090",
+                        MemProtection.PAGE_EXECUTE_READ),
+                    new Patch(start + 35, "0F84A8000000", "909090909090",
+                        MemProtection.PAGE_EXECUTE_READ)
+                };
+            });
+    }
+
     #endregion
 
     #region configdomain
@@ -380,7 +445,14 @@ internal static class AOBScanner
                     task.Result.Select(addr =>
                             addr + 54 +
                             BitConverter.ToInt32(data, addr + 50))
-                        .ToArray()) // 1.15: big boy as well
+                        .ToArray()), // 1.15: big boy as well
+            Task.Factory.StartNew(() => FindPattern(data, 0x0,
+                    "4883ec288b15 ? ? ? ? 81f2 ? ? ? ? 488d0d ? ? ? ? e8 ? ? ? ? 488d05 ? ? ? ? c605 ? ? ? ? 014c8d05 ? ? ? ? 488905 ? ? ? ? ba00010000488d0d ? ? ? ?"))
+                .ContinueWith(task =>
+                    task.Result.Select(addr =>
+                            addr + 68 +
+                            BitConverter.ToInt32(data, addr + 64))
+                        .ToArray()) // First Light: copies into the writable config-domain buffer (lea rcx, [dest])
         ], tasks =>
         {
             IEnumerable<int> offsets =
@@ -527,6 +599,34 @@ internal static class AOBScanner
 
             return tasks[0].Result.Concat(lengthPatches.First()).ToArray();
         });
+    }
+
+    private static Task<Patch[]> FindProtocolFirstLight(byte[] data)
+    {
+        // First Light stores "https://{0}" as a plain null-terminated char*
+        // (lea rdx, [str]) and the formatter uses strlen, so unlike Hitman
+        // there is no separate length constant to patch - only the string.
+        //   mov [rbp-0x59], rcx ; mov [rbp-0x51], rax
+        //   lea rdx, ["https://{0}"] ; lea rax, [..]
+        //   mov [rbp-0x31], rdx ; mov [rbp-0x29], rax
+        return Task.Factory
+            .StartNew(() =>
+                FindPattern(data, 0x9,
+                    "48894da7488945af488d15 ? ? ? ? 488d05 ? ? ? ? 488955cf488945d7"))
+            .ContinueWith(task =>
+            {
+                if (task.Result.Length != 1)
+                    return null; // pattern should occur only once
+                // resolve the rip-relative target of "lea rdx, [https string]"
+                int stringOffset = task.Result[0] + 15 +
+                                   BitConverter.ToInt32(data,
+                                       task.Result[0] + 11);
+                return new[]
+                {
+                    new Patch(stringOffset, Patch.Https, Patch.Http,
+                        MemProtection.PAGE_READONLY)
+                };
+            });
     }
 
     #endregion
