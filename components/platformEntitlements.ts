@@ -97,6 +97,10 @@ export const H3_EPIC_ENTITLEMENTS = [
     "0047ddcd5e6846e881f1037c1416e3d9",
     // FILUR:
     "b135c766d25948c39d7dd316dbc4db53",
+    // SPORT:
+    "16bcef4f91674b00ba3d7f2d4f629cec",
+    // POMADA:
+    "d51a3a65928841d5b4cabad20a865006",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
