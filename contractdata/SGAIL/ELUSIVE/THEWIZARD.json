@@ -1,0 +1,254 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Pomada -----",
+                "Id": "c12bb13e-f20d-406f-be39-bcab179ea3d5",
+                "Primary": true,
+                "IsHidden": true,
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "fbe2c0d4-91df-4499-8799-9a9a66073247"
+                    }
+                }
+            },
+            {
+                "_comment": "----- [HIDDEN] Pomada Escaped -----",
+                "Id": "d023181f-5da5-40cf-b6f0-c9f4b18948e3",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/challenges/elusive_target/et_pomada_started.jpg",
+                "BriefingName": "$loc UI_CONTRACT_POMADA_OBJECTIVE_ESCAPE_FAIL",
+                "BriefingText": "$loc UI_CONTRACT_POMADA_OBJECTIVE_ESCAPE_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Pen_Escaped": {
+                                "Transition": "Failure"
+                            },
+                            "Pen_Done": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do Not Eliminate Tim Quinn [Optional] -----",
+                "Id": "06476220-12c2-4908-8a23-fc3f5c2e1525",
+                "Category": "secondary",
+                "ForceShowOnLoadingScreen": true,
+                "IsHidden": false,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/elusive/s3_pomada/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_DESC",
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4addab15-2ea0-4868-aaed-f544fe05e62b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "afefaecb-ff10-4f03-830e-456396fab60b",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeStarted": {
+                                "Transition": "Failure"
+                            }
+                        },
+                        "Failure": {
+                            "EndTimer": {
+                                "Transition": "Start"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$afefaecb-ff10-4f03-830e-456396fab60b", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc EGAME_TEXT_SL_TARGET_ESCAPING"
+                },
+                "Id": "066b4083-5905-43d3-a9f3-c64e75f8db9b",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "iconType": 17,
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 70
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Start"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "50201e8d-0552-46f9-8129-2172fefb5054",
+        "CodeName_Hint": "Pomada",
+        "Release": "3.270.x Elusive",
+        "Type": "elusive",
+        "Title": "UI_CONTRACT_POMADA_TITLE",
+        "Description": "UI_CONTRACT_POMADA_DESC",
+        "BriefingVideo": "briefing_pomada",
+        "DebriefingVideo": "debriefing_pomada",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_pomada.entity",
+        "TileImage": "images/contracts/elusive/S3_Pomada/Title.jpg",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "Season": 3,
+        "LastUpdate": "2015-03-10T12:00:00.441Z",
+        "CreationTimestamp": "2026-06-05T23:42:46.7077755Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Entitlements": ["LOCATION_NORTHSEA"],
+        "PublicId": "021536655847"
+    },
+    "UserData": {}
+}
