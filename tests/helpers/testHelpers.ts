@@ -145,7 +145,8 @@ export async function createControllerInstance() {
     instance._resolveRoot = realRootForTestPurposes
 
     await instance.boot(false)
-    defaultFlags["peacock"].flags["steamAuthenticationMethod"].default = "OFFICIAL" // FIXME: external_steam test in oauthToken.test.ts only supports official as an authentication method
+    defaultFlags["peacock"].flags["steamAuthenticationMethod"].default =
+        "OFFICIAL" // FIXME: external_steam test in oauthToken.test.ts only supports official as an authentication method
     _dangerouslyOverwriteController(instance)
     return instance
 }
