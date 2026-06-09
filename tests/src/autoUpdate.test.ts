@@ -16,8 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { describe, expect, it } from "vitest"
-import { ASSET_NAME_PATTERN, getPlatformAssetName } from "../../components/autoUpdate"
+import { afterAll, describe, expect, it } from "vitest"
+import {
+    ASSET_NAME_PATTERN,
+    getPlatformAssetName,
+} from "../../components/autoUpdate"
 
 describe("getPlatformAssetName", () => {
     const originalPlatform = process.platform
