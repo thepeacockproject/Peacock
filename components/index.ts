@@ -19,7 +19,6 @@
 import express, { NextFunction, Request, Response, Router } from "express"
 import http from "http"
 import {
-    checkForUpdates,
     extractServerVersion,
     extractToken,
     handleAxiosError,
@@ -28,6 +27,7 @@ import {
     PEACOCKVERSTRING,
     ServerVer,
 } from "./utils"
+import { performAutoUpdate } from "./autoUpdate"
 import { getConfig } from "./configSwizzleManager"
 import {
     error400,
@@ -520,7 +520,7 @@ export async function startServer(options: {
     hmr: boolean
     pluginDevHost: boolean
 }): Promise<void> {
-    void checkForUpdates()
+    void performAutoUpdate()
 
     if (!IS_LAUNCHER) {
         console.log(

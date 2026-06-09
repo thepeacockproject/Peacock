@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import * as autoUpdate from "./autoUpdate"
 import * as commandService from "./commandService"
 import * as configSwizzleManager from "./configSwizzleManager"
 import * as controller from "./controller"
@@ -39,6 +40,7 @@ import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
 import * as smfSupport from "./smfSupport"
+import * as socketActivation from "./socketActivation"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
@@ -82,6 +84,7 @@ import * as contractCreation from "./statemachines/contractCreation"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
+    "@peacockproject/core/autoUpdate": autoUpdate,
     "@peacockproject/core/commandService": commandService,
     "@peacockproject/core/configSwizzleManager": configSwizzleManager,
     "@peacockproject/core/controller": controller,
@@ -105,6 +108,7 @@ export default {
     "@peacockproject/core/profileHandler": profileHandler,
     "@peacockproject/core/scoreHandler": scoreHandler,
     "@peacockproject/core/smfSupport": smfSupport,
+    "@peacockproject/core/socketActivation": socketActivation,
     "@peacockproject/core/utils": utils,
     "@peacockproject/core/webFeatures": webFeatures,
     "@peacockproject/core/2016/legacyContractHandler": legacyContractHandler,
