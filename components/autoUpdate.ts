@@ -35,7 +35,8 @@ import * as readline from "readline"
 
 const PEACOCK_REPO = "thepeacockproject/Peacock"
 const STAGING_DIR = ".peacock_update_staging"
-const ASSET_NAME_PATTERN = /^Peacock-v\d+\.\d+\.\d+(-(linux|macos))?\.zip$/
+export const ASSET_NAME_PATTERN =
+    /^Peacock-v\d+\.\d+\.\d+(-(linux|macos))?\.zip$/
 
 interface GitHubAsset {
     name: string
@@ -48,7 +49,7 @@ interface GitHubRelease {
     assets: GitHubAsset[]
 }
 
-function getPlatformAssetName(version: string): string | null {
+export function getPlatformAssetName(version: string): string | null {
     const platform = process.platform
     if (platform === "win32") return `Peacock-v${version}.zip`
     if (platform === "linux") return `Peacock-v${version}-linux.zip`
