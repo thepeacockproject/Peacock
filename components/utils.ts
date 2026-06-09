@@ -36,7 +36,6 @@ import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { compare } from "semver"
 import assert from "assert"
-import { getUnlockableById } from "./inventory"
 import { createHash, createVerify } from "crypto"
 
 /**
