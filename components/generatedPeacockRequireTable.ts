@@ -39,6 +39,7 @@ import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
 import * as smfSupport from "./smfSupport"
+import * as socketActivation from "./socketActivation"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
@@ -105,6 +106,7 @@ export default {
     "@peacockproject/core/profileHandler": profileHandler,
     "@peacockproject/core/scoreHandler": scoreHandler,
     "@peacockproject/core/smfSupport": smfSupport,
+    "@peacockproject/core/socketActivation": socketActivation,
     "@peacockproject/core/utils": utils,
     "@peacockproject/core/webFeatures": webFeatures,
     "@peacockproject/core/2016/legacyContractHandler": legacyContractHandler,
