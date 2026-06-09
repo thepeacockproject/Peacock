@@ -19,7 +19,15 @@
 import { log, LogLevel } from "./loggingInterop"
 import { PEACOCKVERSTRING, compare } from "./utils"
 import { getFlag } from "./flags"
-import { createWriteStream, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "fs"
+import {
+    createWriteStream,
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    rmSync,
+    statSync,
+    writeFileSync,
+} from "fs"
 import { join } from "path"
 import { execSync } from "child_process"
 import picocolors from "picocolors"
@@ -103,7 +111,7 @@ function writeApplyScripts(sourcePath: string, targetPath: string): void {
             "Get-ChildItem -Path $source | ForEach-Object {",
             "    if ($preserve -notcontains $_.Name) {",
             "        $dest = Join-Path $target $_.Name",
-            '        Copy-Item -Path $_.FullName -Destination $dest -Recurse -Force',
+            "        Copy-Item -Path $_.FullName -Destination $dest -Recurse -Force",
             "    }",
             "}",
             "",
@@ -155,7 +163,9 @@ function writeApplyScripts(sourcePath: string, targetPath: string): void {
         ].join("\n")
 
         writeFileSync(join(targetPath, "apply-update.sh"), sh)
-        execSync(`chmod +x "${join(targetPath, "apply-update.sh")}"`, { stdio: "ignore" })
+        execSync(`chmod +x "${join(targetPath, "apply-update.sh")}"`, {
+            stdio: "ignore",
+        })
     }
 }
 
@@ -179,7 +189,9 @@ export async function performAutoUpdate(): Promise<void> {
         )
 
         if (!res.ok) {
-            throw new Error(`GitHub API responded with ${res.status} ${res.statusText}`)
+            throw new Error(
+                `GitHub API responded with ${res.status} ${res.statusText}`,
+            )
         }
 
         const release = (await res.json()) as GitHubRelease
@@ -190,7 +202,11 @@ export async function performAutoUpdate(): Promise<void> {
         const comparison = compare(PEACOCKVERSTRING, latestVersion)
 
         if (comparison === 0) {
-            log(LogLevel.DEBUG, `Peacock v${PEACOCKVERSTRING} is up to date.`, "auto-update")
+            log(
+                LogLevel.DEBUG,
+                `Peacock v${PEACOCKVERSTRING} is up to date.`,
+                "auto-update",
+            )
             return
         }
 
@@ -212,14 +228,22 @@ export async function performAutoUpdate(): Promise<void> {
         const assetName = getPlatformAssetName(latestVersion)
 
         if (!assetName) {
-            log(LogLevel.ERROR, `Unsupported platform: ${process.platform}.`, "auto-update")
+            log(
+                LogLevel.ERROR,
+                `Unsupported platform: ${process.platform}.`,
+                "auto-update",
+            )
             return
         }
 
         const asset = release.assets.find((a) => a.name === assetName)
 
         if (!asset) {
-            log(LogLevel.ERROR, `Asset "${assetName}" not found for v${latestVersion}.`, "auto-update")
+            log(
+                LogLevel.ERROR,
+                `Asset "${assetName}" not found for v${latestVersion}.`,
+                "auto-update",
+            )
 
             for (const a of release.assets) {
                 log(LogLevel.INFO, `  ${a.name}`, "auto-update")
@@ -285,7 +309,9 @@ export async function performAutoUpdate(): Promise<void> {
             if (done) break
             downloaded += value.length
             const pct = Math.round((downloaded / total) * 100)
-            process.stdout.write(`\rDownloading... ${pct}% (${(downloaded / 1024 / 1024).toFixed(1)} MB)`)
+            process.stdout.write(
+                `\rDownloading... ${pct}% (${(downloaded / 1024 / 1024).toFixed(1)} MB)`,
+            )
             writer.write(value)
         }
 
@@ -316,7 +342,10 @@ export async function performAutoUpdate(): Promise<void> {
         const sourcePath = getExtractedSource(stagingPath)
         writeApplyScripts(sourcePath, process.cwd())
 
-        const scriptName = process.platform === "win32" ? "apply-update.bat" : "apply-update.sh"
+        const scriptName =
+            process.platform === "win32"
+                ? "apply-update.bat"
+                : "apply-update.sh"
         log(
             LogLevel.WARN,
             `Update v${latestVersion} staged! Close this window and run "${scriptName}" to apply.`,
