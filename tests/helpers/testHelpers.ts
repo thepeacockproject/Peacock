@@ -26,7 +26,10 @@ import { mockDatabaseFs, MockedFsReturn } from "../mocks/databaseHandlerMock"
 import type { DataStorageFs } from "../../components/databaseHandler"
 import process from "node:process"
 import { resolve } from "node:path"
-import { Controller } from "../../components/controller"
+import {
+    Controller,
+    _dangerouslyOverwriteController,
+} from "../../components/controller"
 import { loadConfig } from "../mocks/configSwizzleManager"
 
 export function asMock<T>(value: T): Mock {
@@ -137,9 +140,10 @@ export async function createControllerInstance() {
 
     const originalCwd = process.cwd()
     const realRootForTestPurposes = resolve(originalCwd, "../")
-    const controller = new Controller()
-    controller._resolveRoot = realRootForTestPurposes
+    const instance = new Controller()
+    instance._resolveRoot = realRootForTestPurposes
 
-    await controller.boot(false)
-    return controller
+    await instance.boot(false)
+    _dangerouslyOverwriteController(instance)
+    return instance
 }

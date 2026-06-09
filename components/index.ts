@@ -79,9 +79,17 @@ import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
 import { initializePeacockMenu } from "./menus/settings"
 import { ConfigRouteParams } from "./types/gameSchemas"
+import { getSocketActivationFileDescriptors } from "./socketActivation"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
+
+const listenFds = getSocketActivationFileDescriptors()
+let listenFd: number | null = null
+
+if (listenFds !== null && listenFds.length > 0) {
+    listenFd = listenFds[0]
+}
 
 function uncaught(error: Error): void {
     if (
@@ -125,7 +133,16 @@ const app = express()
 const baseDir = __dirname
 
 app.use(function badPathRewritingMiddleware(req, _, next) {
-    req.url = req.url.replaceAll("//", "/")
+    // rewrite every `//` to `/` that occurs before the query string
+    const qIdx = req.url.indexOf("?")
+
+    if (qIdx === -1) {
+        req.url = req.url.replaceAll("//", "/")
+    } else {
+        req.url =
+            req.url.slice(0, qIdx).replaceAll("//", "/") + req.url.slice(qIdx)
+    }
+
     next()
 })
 app.use(loggingMiddleware)
@@ -211,31 +228,39 @@ app.get(
                 "pc-prod_6"
         }
 
-        if (req.query.issuer === STEAM_NAMESPACE_2021) {
-            config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
-                "steam-prod_8"
+        switch (req.query.issuer) {
+            case STEAM_NAMESPACE_2021:
+                config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                    "steam-prod_8"
+                break
+            case "https://appleid.apple.com":
+                config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                    "apple-prod_8"
+                break
         }
 
-        if (req.params.audience === "scpc-prod") {
+        switch (req.params.audience) {
             // sniper challenge is a different game/audience
-            config.Versions[0].Name = "scpc-prod"
-            config.Versions[0].GAME_VER = "7.3.0"
-            config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
-                "scpc-prod"
+            case "scpc-prod":
+                config.Versions[0].Name = "scpc-prod"
+                config.Versions[0].GAME_VER = "7.3.0"
+                config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                    "scpc-prod"
+                break
+            case "macos-prod":
+                config.Versions[0].Name = "macos-prod"
+                break
+            case "macossteam-prod":
+                config.Versions[0].Name = "macossteam-prod"
+                break
         }
 
         config.Versions[0].ISSUER_ID = req.query.issuer || "*"
-
         config.Versions[0].SERVER_VER.Metrics.MetricsServerHost = `${proto}://${serverhost}`
-
         config.Versions[0].SERVER_VER.Authentication.AuthenticationHost = `${proto}://${serverhost}`
-
         config.Versions[0].SERVER_VER.Configuration.Url = `${proto}://${serverhost}/files/onlineconfig.json`
-
         config.Versions[0].SERVER_VER.Configuration.AgreementUrl = `${proto}://${serverhost}/files/privacypolicy/hm3/privacypolicy.json`
-
         config.Versions[0].SERVER_VER.Resources.ResourcesServicePath = `${proto}://${serverhost}/files`
-
         config.Versions[0].SERVER_VER.GlobalAuthentication.AuthenticationHost = `${proto}://${serverhost}`
 
         res.json(config)
@@ -337,7 +362,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-23"
+                    req.serverVersion = "8-24"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -472,7 +497,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-23"].includes(
+                ["6-74", "7-3", "7-17", "8-24"].includes(
                     <string>req.serverVersion,
                 )
             ) {
@@ -560,9 +585,19 @@ export async function startServer(options: {
 
         const httpServer = http.createServer(app)
 
-        log(LogLevel.INFO, `Listening on ${host}:${port}...`)
-        // @ts-expect-error Non-matching method sig
-        httpServer.listen(port, host)
+        if (listenFd !== null) {
+            log(LogLevel.INFO, `Listening on systemd://${listenFd}...`)
+            httpServer.listen({
+                fd: listenFd,
+            })
+        } else {
+            log(LogLevel.INFO, `Listening on ${host}:${port}...`)
+            httpServer.listen({
+                host,
+                port,
+            })
+        }
+
         log(LogLevel.INFO, "Server started.")
 
         if (getFlag("discordRp") === true) {

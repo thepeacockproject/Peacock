@@ -27,7 +27,6 @@ import { generateUserCentric } from "../contracts/dataGen"
 import { getUserData, writeUserData } from "../databaseHandler"
 import { getVersionedConfig } from "../configSwizzleManager"
 import type { Response } from "express"
-import { getUnlockableById } from "../inventory"
 
 export function withLookupDialog(
     req: RequestWithJwt<{ contractId: string }>,
@@ -64,7 +63,7 @@ export function withLookupDialog(
         }
     }
 
-    const sublocation = getUnlockableById(
+    const sublocation = controller.inventoryService.getUnlockableById(
         contract.Metadata.Location,
         req.gameVersion,
     )

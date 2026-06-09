@@ -1,3 +1,4 @@
+// ReSharper disable CppUseStructuredBinding
 #include "log.h"
 #include "patcher.h"
 
@@ -9,6 +10,38 @@
 #include <thread>
 #include <unistd.h>
 
+struct CliOption {
+    const char *flag;
+    const char *description;
+};
+
+constexpr CliOption kCliOptions[] = {
+    {"--headless", "Patch once and exit"},
+    {"--domain <url>", "Server domain (default: 127.0.0.1)"},
+    {"--dont-use-http", "Use HTTPS instead of HTTP"},
+    {"--non-optional-dynamic-resources",
+     "Don't try to make dynamic resources optional"},
+    {"--disable-dynamic-resources",
+     "Don't try to make dynamic resources mandatory"},
+    {"--help", "Show this help message"},
+};
+
+constexpr size_t cstr_length(const char *s) {
+    size_t n = 0;
+    while (s[n] != '\0') ++n;
+    return n;
+}
+
+/** Find the longest flag's length, so we know how many spaces each entry needs to be padded by. */
+constexpr size_t kFlagWidth = [] {
+    size_t max = 0;
+    for (auto& option : kCliOptions) {
+        const size_t len = cstr_length(option.flag);
+        if (len > max) max = len;
+    }
+    return max;
+}();
+
 static void print_usage() {
     printf("Peacock Patcher for macOS\n");
     printf("Patches HITMAN World of Assassination to use a custom server.\n");
@@ -16,14 +49,10 @@ static void print_usage() {
     printf("Usage: PeacockPatcher [options]\n");
     printf("\n");
     printf("Options:\n");
-    printf("  --headless                     Patch once and exit\n");
-    printf("  --domain <url>                 Server domain (default: "
-        "127.0.0.1)\n");
-    printf("  --dont-use-http                Use HTTPS instead of HTTP\n");
-    printf(
-        "  --non-optional-dynamic-resources   Don't try to make dynamic"
-        "resources optional\n");
-    printf("  --help                         Show this help message\n");
+
+    for (const auto& option : kCliOptions) {
+        printf("  %-*s  %s\n", static_cast<int>(kFlagWidth), option.flag, option.description);
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -39,6 +68,7 @@ int main(int argc, char *argv[]) {
     bool headless = false;
     std::string domain = "127.0.0.1";
     bool use_http = true;
+    bool enable_dynres = true;
     bool optional_dynres = true;
 
     for (int i = 1; i < argc; i++) {
@@ -55,6 +85,8 @@ int main(int argc, char *argv[]) {
             use_http = false;
         } else if (strcmp(argv[i], "--non-optional-dynamic-resources") == 0) {
             optional_dynres = false;
+        } else if (strcmp(argv[i], "--disable-dynamic-resources") == 0) {
+            enable_dynres = false;
         } else if (strcmp(argv[i], "--help") == 0) {
             print_usage();
             return 0;
@@ -71,7 +103,7 @@ int main(int argc, char *argv[]) {
     options.disable_cert_pinning = true;
     options.always_send_auth_header = true;
     options.set_custom_config_domain = true;
-    options.enable_dynamic_resources = true;
+    options.enable_dynamic_resources = enable_dynres;
     options.disable_force_offline_on_failed_dynres = optional_dynres;
 
     peacock::Patcher patcher;

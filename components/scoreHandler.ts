@@ -74,12 +74,7 @@ import {
     MissionEndResult,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import {
-    createInventory,
-    getUnlockablesById,
-    grantDrops,
-    InventoryItem,
-} from "./inventory"
+import type { InventoryItem } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
 import assert from "assert"
 
@@ -1054,7 +1049,10 @@ export async function getMissionEndData(
     }
 
     if (contractData.Metadata.Type === "sniper") {
-        const userInventory = createInventory(jwt.unique_name, gameVersion)
+        const userInventory = controller.inventoryService.createInventory(
+            jwt.unique_name,
+            gameVersion,
+        )
 
         const [sniperScore, headlines] = calculateSniperScore(
             sessionDetails,
@@ -1165,7 +1163,10 @@ export async function getMissionEndData(
     // If this isn't a dry run (and mastery progression is enabled), grant drops
     // if the user's inventory doesn't already have it.
     if (!isDryRun && getFlag("enableMasteryProgression")) {
-        const userInventory = createInventory(jwt.unique_name, gameVersion)
+        const userInventory = controller.inventoryService.createInventory(
+            jwt.unique_name,
+            gameVersion,
+        )
 
         const toGrant = masteryDrops
             .filter(
@@ -1176,7 +1177,7 @@ export async function getMissionEndData(
             )
             .map((e) => e.Unlockable)
 
-        grantDrops(jwt.unique_name, toGrant)
+        controller.inventoryService.grantDrops(jwt.unique_name, toGrant)
     }
 
     // Challenge Drops
@@ -1184,10 +1185,11 @@ export async function getMissionEndData(
         calculateXpResult.completedChallenges.reduce(
             (acc: MissionEndDrop[], challenge) => {
                 if (challenge?.Drops?.length) {
-                    const drops = getUnlockablesById(
-                        challenge.Drops,
-                        gameVersion,
-                    )
+                    const drops =
+                        controller.inventoryService.getUnlockablesById(
+                            challenge.Drops,
+                            gameVersion,
+                        )
                     delete challenge.Drops
 
                     for (const drop of drops) {

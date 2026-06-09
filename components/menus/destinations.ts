@@ -39,7 +39,6 @@ import {
 import { getUserData } from "../databaseHandler"
 import { ChallengeFilterType, Pro1FilterType } from "../candle/challengeHelpers"
 import { GetDestinationQuery } from "../types/gameSchemas"
-import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
 import assert from "assert"
 import { translateEntitlements } from "../ownership"
@@ -399,7 +398,10 @@ export function getDestination(
     }
 
     if (gameVersion === "h1" && LOCATION !== "LOCATION_PARENT_ICA_FACILITY") {
-        const inventory = createInventory(userId, gameVersion)
+        const inventory = controller.inventoryService.createInventory(
+            userId,
+            gameVersion,
+        )
 
         response.DifficultyData = {
             AvailableDifficultyModes: [

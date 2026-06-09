@@ -66,7 +66,6 @@ import {
     directRoute,
     withLookupDialog,
 } from "./menus/favoriteContracts"
-import { createInventory, getUnlockableById } from "./inventory"
 import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
 import {
@@ -147,7 +146,7 @@ menuDataRouter.get(
                 : locationData.parents[location.Properties.ParentLocation!]
 
             if (parent?.Properties.DifficultyUnlock?.pro1) {
-                const inventory = createInventory(
+                const inventory = controller.inventoryService.createInventory(
                     req.jwt.unique_name,
                     req.gameVersion,
                 )
@@ -570,7 +569,10 @@ function generateSelectPage(
         false,
     )
 
-    const inventory = createInventory(userId, gameVersion)
+    const inventory = controller.inventoryService.createInventory(
+        userId,
+        gameVersion,
+    )
 
     const allunlockables = getVersionedConfig<Unlockable[]>(
         "allunlockables",
@@ -863,7 +865,10 @@ async function lookupContractPublicId(
         }
     }
 
-    const location = getUnlockableById(contract.Metadata.Location, gameVersion)
+    const location = controller.inventoryService.getUnlockableById(
+        contract.Metadata.Location,
+        gameVersion,
+    )
 
     return {
         Contract: contract,

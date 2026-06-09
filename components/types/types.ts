@@ -482,7 +482,10 @@ export type UserProfile = {
         steam?: string
         gog?: string
         xbox?: string
+        /** @deprecated */
         stadia?: string
+        apple?: string
+        nintendo?: string
     }
     Extensions: {
         /**
@@ -574,6 +577,7 @@ export type UserProfile = {
     DevId: string | null
     SteamId: string | null
     EpicId: string | null
+    AppleId?: string | null
     NintendoId: string | null
     XboxLiveId: string | null
     PSNAccountId: string | null

@@ -16,17 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { readFile, writeFile } from "fs/promises"
-import { join } from "path"
+// Partially based on https://github.com/derhuerst/node-systemd/blob/master/lib/systemd.js
 
-const monorepoJsonPath = join("..", "..", "package.json")
-const typedefsJsonPath = "package.json"
+const SD_LISTEN_FDS_START = 3
 
-const monorepoJson = JSON.parse((await readFile(monorepoJsonPath)).toString())
-const typesJson = JSON.parse((await readFile(typedefsJsonPath)).toString())
+export function getSocketActivationFileDescriptors(): number[] | null {
+    if (process.env.LISTEN_PID === undefined) {
+        return null
+    }
 
-typesJson.version = monorepoJson.version
+    const pid = parseInt(process.env.LISTEN_PID)
 
-await writeFile(typedefsJsonPath, JSON.stringify(typesJson, undefined, 4))
+    if (pid !== process.pid) {
+        return null
+    }
 
-console.log(`Versioned types package to v${monorepoJson.version}.`)
+    if (process.env.LISTEN_FDS === undefined) {
+        return null
+    }
+
+    const fdCount = parseInt(process.env.LISTEN_FDS)
+    return new Array(fdCount).fill(null).map((_, i) => SD_LISTEN_FDS_START + i)
+}

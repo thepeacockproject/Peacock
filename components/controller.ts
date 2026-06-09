@@ -47,6 +47,7 @@ import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
     addDashesToPublicId,
+    deprecated,
     fastClone,
     getRemoteService,
     hitmapsUrl,
@@ -69,12 +70,14 @@ import { ChallengeFilterType, Pro1FilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
+import { InventoryService } from "./inventory"
 import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
 import { glob } from "fast-glob"
 import { asyncGuard } from "./databaseHandler"
+import { createDelegatingProxy } from "./delegation"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -392,6 +395,7 @@ export class Controller {
     public masteryService!: MasteryService
     escalationMappings: Map<string, Record<string, string>> = new Map()
     public progressionService!: ProgressionService
+    public inventoryService!: InventoryService
     public smf!: SMFSupport
     private _pubIdToContractId: Map<string, string> = new Map()
     /** Internal elusive target contracts - only accessible during bootstrap. */
@@ -420,6 +424,49 @@ export class Controller {
             onEscalationReset: new SyncHook(),
             onUserLogin: new SyncHook(),
         }
+
+        this.inventoryService = new InventoryService(this)
+    }
+
+    private _patchRequireTableInventory(): void {
+        const inventoryServiceMethods = new Set([
+            "clearInventoryFor",
+            "clearInventoryCache",
+            "getUnlockableById",
+            "getUnlockablesById",
+            "getDefaultSuitFor",
+            "createInventory",
+            "grantDrops",
+        ])
+
+        const service = this.inventoryService
+
+        const key =
+            "@peacockproject/core/inventory" as keyof typeof generatedPeacockRequireTable
+
+        const original = generatedPeacockRequireTable[key]
+
+        // @ts-expect-error Patching the generated table at runtime.
+        generatedPeacockRequireTable[key] = new Proxy(original, {
+            get(target, prop, receiver) {
+                if (
+                    typeof prop === "string" &&
+                    inventoryServiceMethods.has(prop)
+                ) {
+                    deprecated(
+                        `inventory.${prop}`,
+                        `controller.inventoryService.${prop}`,
+                        "v9",
+                    )
+
+                    return (...args: unknown[]) =>
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (service as any)[prop](...args)
+                }
+
+                return Reflect.get(target, prop, receiver)
+            },
+        })
     }
 
     /**
@@ -467,11 +514,7 @@ export class Controller {
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
      */
     async boot(pluginDevHost: boolean): Promise<void> {
-        // this should never actually be hit, but it makes IntelliJ not
-        // complain that it's unused, so...
-        if (!this.configManager) {
-            throw new Error("All hope is lost.")
-        }
+        this._patchRequireTableInventory()
 
         log(
             LogLevel.INFO,
@@ -1526,4 +1569,18 @@ export async function preserveContracts(
     }
 }
 
-export const controller = new Controller()
+// We need to be able to swap out the global controller instance in tests without invalidating the module graph.
+// This lets us do that until we can get everything to use the IoC model.
+const controllerContainer = { instance: new Controller() }
+
+export const controller: Controller = createDelegatingProxy(controllerContainer)
+
+/**
+ * Replaces the global controller instance. Don't use outside of tests.
+ * @internal
+ */
+export function _dangerouslyOverwriteController(
+    newController: Controller,
+): void {
+    controllerContainer.instance = newController
+}

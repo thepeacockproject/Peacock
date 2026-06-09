@@ -40,11 +40,10 @@ import {
     getSubLocationFromContract,
     mapObjectives,
 } from "../contracts/dataGen"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
 import { getMaxProfileLevel, nilUuid, unlockOrderComparer } from "../utils"
 
-import { createInventory, getUnlockableById } from "../inventory"
 import { createSniperLoadouts, SniperCharacter, SniperLoadout } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
@@ -256,27 +255,18 @@ export async function getPlanningData(
 
     const entrancesInScene = entranceData[scenePath]
 
-    const typedInv = createInventory(
+    const typedInv = controller.inventoryService.createInventory(
         userId,
         gameVersion,
         sublocation,
         contractData.Metadata.LocationSuitOverride,
     )
 
-    const unlockedEntrances = typedInv
-        .filter((item) => item.Unlockable.Type === "access")
-        .map((i) => i.Unlockable)
-        .filter((unlockable) => unlockable.Properties.RepositoryId)
-
-    if (!unlockedEntrances) {
-        log(
-            LogLevel.ERROR,
-            "No matching entrance data found in planning, this is a bug!",
-        )
-        return {
-            error: true,
-        }
-    }
+    const allEntrances = getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        false,
+    ).filter((u) => u.Subtype === "startinglocation")
 
     sublocation.DisplayNameLocKey = `UI_${sublocation.Id}_NAME`
 
@@ -409,7 +399,7 @@ export async function getPlanningData(
         sublocation?.Properties?.LimitedLoadout &&
         getFlag("enableMasteryProgression")
     ) {
-        const loadoutUnlockable = getUnlockableById(
+        const loadoutUnlockable = controller.inventoryService.getUnlockableById(
             gameVersion === "h1"
                 ? // @ts-expect-error This works.
                   sublocation?.Properties?.NormalLoadoutUnlock[
@@ -493,7 +483,7 @@ export async function getPlanningData(
         Entrances:
             contractData.Metadata.Type === "sniper"
                 ? null
-                : unlockedEntrances
+                : allEntrances
                       .filter((unlockable) =>
                           entrancesInScene.includes(
                               unlockable.Properties.RepositoryId || "",

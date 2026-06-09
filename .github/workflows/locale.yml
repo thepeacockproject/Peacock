@@ -12,14 +12,19 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Checkout Peacock
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           path: "./Peacock"
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.0.0
         with:
           node-version-file: "./Peacock/.nvmrc"
           cache: "yarn"
@@ -32,7 +37,7 @@ jobs:
 
       - name: Download RPKG-CLI
         id: rpkgcli
-        uses: robinraju/release-downloader@v1.12
+        uses: step-security/release-downloader@97a991ef6b59ac73abb83e8e4b70a73118d27d44 # v1.12.0
         with:
           repository: "glacier-modding/RPKG-Tool"
           latest: true
@@ -41,7 +46,7 @@ jobs:
 
       - name: Download HMLanguageTools
         id: hmlt
-        uses: robinraju/release-downloader@v1.12
+        uses: step-security/release-downloader@97a991ef6b59ac73abb83e8e4b70a73118d27d44 # v1.12.0
         with:
           repository: "AnthonyFuller/TonyTools"
           latest: true
@@ -60,7 +65,7 @@ jobs:
           yarn rebuild-locale
 
       - name: Push updated RPKG files
-        uses: EndBug/add-and-commit@v9
+        uses: step-security/add-and-commit@6b975a6ae39f11794750730d8846a1d2e84699ba # v10.0.0
         with:
           cwd: "./Peacock"
           add: |

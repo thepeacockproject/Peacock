@@ -54,49 +54,44 @@
                 "Definition": {
                     "Scope": "hit",
                     "Context": {
-                        "Targets": ["1c00525f-cd44-49fa-aff8-c70d2388f031"]
+                        "Target": "1c00525f-cd44-49fa-aff8-c70d2388f031",
+                        "Targets": ["1c00525f-cd44-49fa-aff8-c70d2388f031"],
+                        "KillItemRepositoryId": "00000000-0000-0000-0000-000000000000"
                     },
                     "States": {
                         "Start": {
-                            "Pacify": [
+                            "Pacify": {
+                                "Condition": {
+                                    "$eq": ["$Value.RepositoryId", "$.Target"]
+                                },
+                                "Actions": {
+                                    "$set": [
+                                        "KillItemRepositoryId",
+                                        "$Value.KillItemRepositoryId"
+                                    ]
+                                },
+                                "Transition": "CheckKillItem"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$Value.RepositoryId", "$.Target"]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "CheckKillItem": {
+                            "-": [
                                 {
                                     "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.RepositoryId",
-                                                    "1c00525f-cd44-49fa-aff8-c70d2388f031"
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillItemRepositoryId",
-                                                    "4d0d6b2a-dd81-474c-a412-3bf19af8233d"
-                                                ]
-                                            }
+                                        "$eq": [
+                                            "$.KillItemRepositoryId",
+                                            "4d0d6b2a-dd81-474c-a412-3bf19af8233d"
                                         ]
                                     },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "1c00525f-cd44-49fa-aff8-c70d2388f0314"
-                                        ]
-                                    },
-                                    "Transition": "Failure"
-                                }
-                            ],
-                            "Kill": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "1c00525f-cd44-49fa-aff8-c70d2388f031"
-                                    ]
-                                },
-                                "Transition": "Failure"
-                            }
+                                { "Transition": "Failure" }
+                            ]
                         }
                     }
                 }
@@ -231,7 +226,7 @@
             { "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e" }
         ],
         "Entitlements": ["LOCATION_NORTHSEA"],
-        "LastUpdate": "2025-09-25T10:59:41.0771912Z",
+        "LastUpdate": "2026-06-05T23:42:52.5066523Z",
         "PublicId": "021031339147"
     },
     "UserData": {}

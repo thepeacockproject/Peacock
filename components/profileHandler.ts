@@ -50,7 +50,6 @@ import {
 } from "./databaseHandler"
 import { randomUUID } from "crypto"
 import { getVersionedConfig } from "./configSwizzleManager"
-import { createInventory } from "./inventory"
 import { controller } from "./controller"
 import { loadouts } from "./loadouts"
 import { getFlag } from "./flags"
@@ -206,7 +205,12 @@ profileRouter.post(
     "/UnlockableService/GetInventory",
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
-        res.json(createInventory(req.jwt.unique_name, req.gameVersion))
+        res.json(
+            controller.inventoryService.createInventory(
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
+        )
     },
 )
 
@@ -260,7 +264,10 @@ profileRouter.post(
         writeUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            Inventory: createInventory(req.jwt.unique_name, req.gameVersion),
+            Inventory: controller.inventoryService.createInventory(
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
             Stats: req.body.localStats,
         })
     },

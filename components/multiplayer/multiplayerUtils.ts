@@ -22,7 +22,7 @@ import { nilUuid } from "../utils"
 import { log, LogLevel } from "../loggingInterop"
 import assert from "assert"
 
-import { getUnlockableById } from "../inventory"
+import { controller } from "../controller"
 
 export interface MultiplayerScore {
     Header?: {
@@ -82,10 +82,16 @@ export function getMultiplayerLoadoutData(
     disguiseUnlockableId: string,
     gameVersion: GameVersion,
 ) {
-    let unlockable = getUnlockableById(disguiseUnlockableId, gameVersion)
+    let unlockable = controller.inventoryService.getUnlockableById(
+        disguiseUnlockableId,
+        gameVersion,
+    )
 
     if (!unlockable || unlockable.Type !== "disguise") {
-        unlockable = getUnlockableById("TOKEN_OUTFIT_HITMANSUIT", gameVersion)
+        unlockable = controller.inventoryService.getUnlockableById(
+            "TOKEN_OUTFIT_HITMANSUIT",
+            gameVersion,
+        )
 
         assert.ok(unlockable)
     }

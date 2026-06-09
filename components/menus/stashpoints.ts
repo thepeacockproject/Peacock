@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { createInventory, getUnlockableById, InventoryItem } from "../inventory"
+import type { InventoryItem } from "../inventory"
 import type {
     GameVersion,
     JwtData,
@@ -140,7 +140,7 @@ export function getModernStashData(
         contractData = controller.resolveContract(query.contractid, gameVersion)
     }
 
-    const inventory = createInventory(
+    const inventory = controller.inventoryService.createInventory(
         userId,
         gameVersion,
         getSubLocationByName(
@@ -275,7 +275,7 @@ export function getLegacyStashData(
 
     assert.ok(sublocation, "Sublocation not found")
 
-    const inventory = createInventory(
+    const inventory = controller.inventoryService.createInventory(
         userId,
         gameVersion,
         sublocation,
@@ -307,7 +307,7 @@ export function getLegacyStashData(
                 slotid as keyof typeof loadoutData.loadout
             ]
                 ? {
-                      item: getUnlockableById(
+                      item: controller.inventoryService.getUnlockableById(
                           loadoutData.loadout[
                               slotid as keyof typeof loadoutData.loadout
                           ]!,
@@ -340,7 +340,10 @@ export function getSafehouseCategory(
     gameVersion: GameVersion,
     jwt: JwtData,
 ) {
-    const inventory = createInventory(jwt.unique_name, gameVersion)
+    const inventory = controller.inventoryService.createInventory(
+        jwt.unique_name,
+        gameVersion,
+    )
 
     let safehouseData: SafehouseCategory = {
         Category: "_root",

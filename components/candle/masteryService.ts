@@ -47,7 +47,7 @@ import {
     xpRequiredForSniperLevel,
 } from "../utils"
 
-import { getUnlockablesById } from "../inventory"
+import { controller } from "../controller"
 import assert from "assert"
 
 export class MasteryService {
@@ -395,7 +395,7 @@ export class MasteryService {
         }
 
         // Get all unlockables with matching Ids
-        const unlockableData = getUnlockablesById(
+        const unlockableData = controller.inventoryService.getUnlockablesById(
             Array.from(dropIdSet),
             gameVersion,
         )

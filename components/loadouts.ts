@@ -29,11 +29,11 @@ import { Request, Router } from "express"
 import { json as jsonMiddleware } from "body-parser"
 import { writeFile } from "fs/promises"
 import { nanoid } from "nanoid"
-import { getDefaultSuitFor, versions } from "./utils"
+import { versions } from "./utils"
 import { asyncGuard, getUserData } from "./databaseHandler"
 import { getFlag } from "./flags"
 import { StashpointSlotName } from "./types/gameSchemas"
-import { getUnlockableById } from "./inventory"
+import { controller } from "./controller"
 
 export const REQUIRED_LOADOUT_SLOTS = [
     3, // disguise
@@ -183,7 +183,11 @@ export class Loadouts {
                 gameVersion === "h1"
                     ? "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01"
                     : "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
-            3: getDefaultSuitFor(sublocation, gameVersion, suitOverride),
+            3: controller.inventoryService.getDefaultSuitFor(
+                sublocation,
+                gameVersion,
+                suitOverride,
+            ),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
         }
@@ -225,7 +229,10 @@ export class Loadouts {
             const item = (() => {
                 if (
                     loadout[idx] &&
-                    getUnlockableById(loadout[idx], gameVersion)
+                    controller.inventoryService.getUnlockableById(
+                        loadout[idx],
+                        gameVersion,
+                    )
                 ) {
                     return loadout[idx]
                 }

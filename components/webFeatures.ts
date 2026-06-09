@@ -163,7 +163,7 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
         result.push({
             id: read.Id,
             name: read.Gamertag,
-            platform: read.EpicId ? "Epic" : "Steam",
+            platform: Object.keys(read.LinkedAccounts).join(" / "),
             lastOfficialSync:
                 read.Extensions.LastOfficialSync?.toString() || null,
         })

@@ -1,6 +1,6 @@
 {
     "name": "@peacockproject/monorepo",
-    "version": "8.7.0",
+    "version": "8.8.1",
     "private": true,
     "license": "AGPL-3.0",
     "scripts": {
@@ -16,7 +16,6 @@
         "rebuild-locale": "node resources/rebuildLocale.cjs",
         "optimize": "terser chunk0.js -o chunk0.js -c --toplevel --timings --ecma 2021 -m --source-map \"content='chunk0.js.map'\"",
         "webui": "yarn workspace @peacockproject/web-ui",
-        "typedefs": "yarn workspace @peacockproject/core",
         "run-dev": "node packaging/devLoader.mjs",
         "extract-challenge-data": "node packaging/extractChallengeData.mjs",
         "extract-featured-contracts": "node packaging/extractFeaturedContracts.mjs",
@@ -43,7 +42,7 @@
         "@yarnpkg/fslib": "^3.1.2",
         "@yarnpkg/libzip": "^3.1.1",
         "atomically": "^2.0.3",
-        "axios": "^1.8.2",
+        "axios": "^1.15.2",
         "body-parser": "^2.1.0",
         "clipanion": "^4.0.0-rc.4",
         "commander": "^13.1.0",
@@ -102,7 +101,6 @@
     },
     "workspaces": [
         "webui",
-        "packaging/typedefs",
         "packaging/eslint",
         "tests"
     ],

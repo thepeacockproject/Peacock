@@ -20,6 +20,7 @@ import * as commandService from "./commandService"
 import * as configSwizzleManager from "./configSwizzleManager"
 import * as controller from "./controller"
 import * as databaseHandler from "./databaseHandler"
+import * as delegation from "./delegation"
 import * as entitlementStrategies from "./entitlementStrategies"
 import * as eventHandler from "./eventHandler"
 import * as evergreen from "./evergreen"
@@ -85,6 +86,7 @@ export default {
     "@peacockproject/core/configSwizzleManager": configSwizzleManager,
     "@peacockproject/core/controller": controller,
     "@peacockproject/core/databaseHandler": databaseHandler,
+    "@peacockproject/core/delegation": delegation,
     "@peacockproject/core/entitlementStrategies": entitlementStrategies,
     "@peacockproject/core/eventHandler": eventHandler,
     "@peacockproject/core/evergreen": evergreen,

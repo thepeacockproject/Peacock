@@ -68,7 +68,6 @@ import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
-import { getUnlockableById } from "../inventory"
 import { enqueueEvent } from "../eventHandler"
 import { randomUUID } from "crypto"
 
@@ -1574,7 +1573,7 @@ export class ChallengeService extends ChallengeRegistry {
         isDestination = false,
     ): CompiledChallengeTreeData {
         const drops = challenge.Drops.map((e) =>
-            getUnlockableById(e, gameVersion),
+            this.controller.inventoryService.getUnlockableById(e, gameVersion),
         ).filter(Boolean) as Unlockable[]
 
         if (drops.length !== challenge.Drops.length) {
