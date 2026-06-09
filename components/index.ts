@@ -79,9 +79,17 @@ import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
 import { initializePeacockMenu } from "./menus/settings"
 import { ConfigRouteParams } from "./types/gameSchemas"
+import { getSocketActivationFileDescriptors } from "./socketActivation"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
+
+const listenFds = getSocketActivationFileDescriptors()
+let listenFd: number | null = null
+
+if (listenFds !== null && listenFds.length > 0) {
+    listenFd = listenFds[0]
+}
 
 function uncaught(error: Error): void {
     if (
@@ -577,9 +585,19 @@ export async function startServer(options: {
 
         const httpServer = http.createServer(app)
 
-        log(LogLevel.INFO, `Listening on ${host}:${port}...`)
-        // @ts-expect-error Non-matching method sig
-        httpServer.listen(port, host)
+        if (listenFd !== null) {
+            log(LogLevel.INFO, `Listening on systemd://${listenFd}...`)
+            httpServer.listen({
+                fd: listenFd,
+            })
+        } else {
+            log(LogLevel.INFO, `Listening on ${host}:${port}...`)
+            httpServer.listen({
+                host,
+                port,
+            })
+        }
+
         log(LogLevel.INFO, "Server started.")
 
         if (getFlag("discordRp") === true) {
