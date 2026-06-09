@@ -140,7 +140,7 @@ export const defaultFlags: Flags = {
                     "STEAM",
                     "STEAM_STRICT",
                 ],
-                default: "OFFICIAL", // TODO: Change this to BACKEND when ready.
+                default: "BACKEND",
                 showIngame: false,
             },
             steamApiKey: {
