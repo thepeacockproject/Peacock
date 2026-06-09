@@ -35,6 +35,7 @@ import * as readline from "readline"
 
 const PEACOCK_REPO = "thepeacockproject/Peacock"
 const STAGING_DIR = ".peacock_update_staging"
+const ASSET_NAME_PATTERN = /^Peacock-v\d+\.\d+\.\d+(-(linux|macos))?\.zip$/
 
 interface GitHubAsset {
     name: string
@@ -199,6 +200,15 @@ export async function performAutoUpdate(): Promise<void> {
             ? release.tag_name.slice(1)
             : release.tag_name
 
+        if (!/^\d+\.\d+\.\d+$/.test(latestVersion)) {
+            log(
+                LogLevel.ERROR,
+                `Invalid version format from API: "${release.tag_name}".`,
+                "auto-update",
+            )
+            return
+        }
+
         const comparison = compare(PEACOCKVERSTRING, latestVersion)
 
         if (comparison === 0) {
@@ -249,6 +259,15 @@ export async function performAutoUpdate(): Promise<void> {
                 log(LogLevel.INFO, `  ${a.name}`, "auto-update")
             }
 
+            return
+        }
+
+        if (!ASSET_NAME_PATTERN.test(assetName)) {
+            log(
+                LogLevel.ERROR,
+                `Asset name "${assetName}" has an unexpected format.`,
+                "auto-update",
+            )
             return
         }
 
