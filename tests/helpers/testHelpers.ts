@@ -31,7 +31,7 @@ import {
     _dangerouslyOverwriteController,
 } from "../../components/controller"
 import { loadConfig } from "../mocks/configSwizzleManager"
-import { setFlag } from "../../components/flags.js"
+import { defaultFlags } from "../../components/flags.js"
 
 export function asMock<T>(value: T): Mock {
     return value as Mock
@@ -145,7 +145,7 @@ export async function createControllerInstance() {
     instance._resolveRoot = realRootForTestPurposes
 
     await instance.boot(false)
-    setFlag("steamAuthenticationMethod", "OFFICIAL") // FIXME: external_steam test in oauthToken.test.ts only supports official as an authentication method
+    defaultFlags["peacock"].flags["steamAuthenticationMethod"].default = "OFFICIAL" // FIXME: external_steam test in oauthToken.test.ts only supports official as an authentication method
     _dangerouslyOverwriteController(instance)
     return instance
 }
