@@ -669,6 +669,76 @@
                     }
                 },
                 {
+                    "Id": "66fe5dfa-2014-4f5d-9bb9-460078ed893d",
+                    "Name": "UI_CHALLENGES_SEAGULL_5_MULTI_KILLS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_5_multi_kills.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_5_MULTI_KILLS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["FIREARMS_SNIPER_DRUZHINA_34_ICA"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MultiKillTargets": {
+                                    "Condition": {
+                                        "$gt": ["$Value.KillCount", 1]
+                                    },
+                                    "Transition": "Check"
+                                }
+                            },
+                            "Check": {
+                                "-": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
                     "Id": "83462fc1-7cbd-46c9-8897-506e6d27194b",
                     "Name": "UI_CHALLENGES_SEAGULL_NO_LOOSE_ENDS_NAME",
                     "ImageName": "images/challenges/salty/seagull_no_loose_ends.jpg",
