@@ -40,7 +40,9 @@ function dontLoadJsonPlugin() {
                 return null
             }
 
-            const filePath = path.join(path.dirname(importer), id).replaceAll("\\", "/")
+            const filePath = path
+                .join(path.dirname(importer), id)
+                .replaceAll("\\", "/")
 
             return `${resolvedIdPrefix}${filePath}${ignoreExtension}`
         },
