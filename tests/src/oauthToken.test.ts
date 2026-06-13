@@ -41,7 +41,7 @@ describe("oauthToken", () => {
 
     const getExternalUserData = vi
         .spyOn(databaseHandler, "getExternalUserData")
-        .mockResolvedValue("")
+        .mockResolvedValue(pId)
     const loadUserData = vi
         .spyOn(databaseHandler, "loadUserData")
         // @ts-expect-error This is okay.
