@@ -80,9 +80,17 @@ import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
 import { initializePeacockMenu } from "./menus/settings"
 import { ConfigRouteParams } from "./types/gameSchemas"
+import { getSocketActivationFileDescriptors } from "./socketActivation"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
+
+const listenFds = getSocketActivationFileDescriptors()
+let listenFd: number | null = null
+
+if (listenFds !== null && listenFds.length > 0) {
+    listenFd = listenFds[0]
+}
 
 function uncaught(error: Error): void {
     if (
@@ -357,7 +365,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-23"
+                    req.serverVersion = "8-24"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -492,7 +500,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-23"].includes(
+                ["6-74", "7-3", "7-17", "8-24"].includes(
                     <string>req.serverVersion,
                 )
             ) {
@@ -580,9 +588,19 @@ export async function startServer(options: {
 
         const httpServer = http.createServer(app)
 
-        log(LogLevel.INFO, `Listening on ${host}:${port}...`)
-        // @ts-expect-error Non-matching method sig
-        httpServer.listen(port, host)
+        if (listenFd !== null) {
+            log(LogLevel.INFO, `Listening on systemd://${listenFd}...`)
+            httpServer.listen({
+                fd: listenFd,
+            })
+        } else {
+            log(LogLevel.INFO, `Listening on ${host}:${port}...`)
+            httpServer.listen({
+                host,
+                port,
+            })
+        }
+
         log(LogLevel.INFO, "Server started.")
 
         if (getFlag("discordRp") === true) {

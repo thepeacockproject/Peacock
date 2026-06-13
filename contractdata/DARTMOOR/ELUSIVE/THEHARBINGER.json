@@ -59,16 +59,8 @@
                 "IgnoreIfInactive": true,
                 "CounterVisibleInTile": false,
                 "AllowEtRestartOnSuccess": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
                 "Image": "images/contracts/elusive/s3_filur/obj_neutralize_infection.jpg",
                 "BriefingName": "$loc UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_NAME",
                 "BriefingText": "$loc UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_DESC",
@@ -92,11 +84,7 @@
                         "Visible": false
                     },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Active": {
                             "ActorInfected": [
                                 {
@@ -119,9 +107,7 @@
                                         ]
                                     }
                                 },
-                                {
-                                    "Transition": "Check"
-                                }
+                                { "Transition": "Check" }
                             ],
                             "Kill": [
                                 {
@@ -133,9 +119,6 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$dec": "TargetsCounter"
-                                    },
                                     "Condition": {
                                         "$inarray": {
                                             "in": "$.Targets",
@@ -146,11 +129,10 @@
                                                 ]
                                             }
                                         }
-                                    }
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
                                 },
-                                {
-                                    "Transition": "Check"
-                                }
+                                { "Transition": "Check" }
                             ]
                         },
                         "Check": {
@@ -171,9 +153,7 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Transition": "Active"
-                                }
+                                { "Transition": "Active" }
                             ]
                         },
                         "Success": {
@@ -188,15 +168,37 @@
                                     }
                                 },
                                 {
-                                    "Condition": {
-                                        "$eq": ["$.Visible", true]
-                                    },
+                                    "Condition": { "$eq": ["$.Visible", true] },
                                     "Transition": "Active"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
                                 }
                             ],
                             "ShowNeutralizeObjective": {
                                 "$set": ["Visible", true],
-                                "Transition": "Active"
+                                "Transition": "Check"
                             }
                         }
                     }
@@ -210,22 +212,14 @@
                 "ExcludeFromScoring": true,
                 "AllowEtRestartOnSuccess": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "HeroInfected": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "HeroInfected": { "Transition": "Success" } }
                     }
                 }
             },
@@ -247,15 +241,9 @@
                 "BriefingText": "$loc UI_ET_FILUR_OBJ_47_INFECTED_DESC",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": true },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Category": "primary",
                 "Type": "statemachine",
@@ -271,19 +259,13 @@
                             "header": "UI_ET_FILUR_OBJ_47_INFECTED_COUNTER"
                         }
                     },
-                    "Context": {
-                        "Infection": 0.0
-                    },
+                    "Context": { "Infection": 0 },
                     "States": {
                         "Start": {
                             "HeroInfectionChanged": {
-                                "Actions": {
-                                    "$set": ["Infection", "$Value"]
-                                }
+                                "Actions": { "$set": ["Infection", "$Value"] }
                             },
-                            "HeroCured": {
-                                "Transition": "Success"
-                            }
+                            "HeroCured": { "Transition": "Success" }
                         }
                     }
                 }
