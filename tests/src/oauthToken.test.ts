@@ -77,6 +77,7 @@ describe("oauthToken", () => {
             grant_type: "external_steam",
             steam_userid: "000000000047",
             steam_appid: "1659040",
+            steam_clienttoken: "00000000",
             pId: pId,
         }
 

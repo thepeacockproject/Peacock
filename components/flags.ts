@@ -130,6 +130,26 @@ export const defaultFlags: Flags = {
                 possibleValues: ["SAVEASREQUESTED", "ONLINE", "OFFLINE"],
                 default: "SAVEASREQUESTED",
             },
+            steamAuthenticationMethod: {
+                category: "Services",
+                title: "steamAuthenticationMethod",
+                desc: "How users connecting via Steam should be authenticated. OFFICIAL = Official Servers, BACKEND = Using a separate backend server (uses leaderboardsHost), STEAM = Issues requests to Steam directly from Peacock, requires 'steamApiKey' to be set, STEAM_STRICT = Same as Steam, but will never fallback to official. OFFICIAL is used as a fallback if other methods fail.",
+                possibleValues: [
+                    "OFFICIAL",
+                    "BACKEND",
+                    "STEAM",
+                    "STEAM_STRICT",
+                ],
+                default: "BACKEND",
+                showIngame: false,
+            },
+            steamApiKey: {
+                category: "Services",
+                title: "Steam API Key",
+                desc: "The Steam API key to use when 'steamAuthenticationMethod' is set to 'STEAM' or 'STEAM_STRICT'.",
+                default: "",
+                showIngame: false,
+            },
             liveSplit: {
                 category: "Splitter",
                 title: "LiveSplit",
