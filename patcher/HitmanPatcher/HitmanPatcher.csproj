@@ -7,19 +7,19 @@
 
         <PlatformTarget>x64</PlatformTarget>
         <Prefer32bit>true</Prefer32bit>
-        
+
         <RootNamespace>HitmanPatcher</RootNamespace>
         <AssemblyName>PeacockPatcher</AssemblyName>
 
         <Title>Peacock Patcher</Title>
-        <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
+        <Description>Peacock's HITMAN™ World of Assassination trilogy and 007 First Light game patcher.</Description>
         <Company>The Peacock Project</Company>
         <Product>Peacock Patcher</Product>
-        <Copyright>Copyright © 2020-2025 grappigegovert &amp; The Peacock Project</Copyright>
-        <AssemblyVersion>9.0.1.0</AssemblyVersion>
-        <FileVersion>9.0.1.0</FileVersion>
+        <Copyright>Copyright © 2020-2026 grappigegovert &amp; The Peacock Project</Copyright>
+        <AssemblyVersion>10.0.0.0</AssemblyVersion>
+        <FileVersion>10.0.0.0</FileVersion>
 
-        <ApplicationIcon>patcher.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\patcher.ico</ApplicationIcon>
         <UseWindowsForms>true</UseWindowsForms>
 
         <LangVersion>latest</LangVersion>
@@ -37,14 +37,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Novikov_error.png" />
-        <None Remove="Novikov_standard.png" />
-        <None Remove="Novikov_success.png" />
-        <None Remove="patcher.ico" />
-        <EmbeddedResource Include="Novikov_error.png" />
-        <EmbeddedResource Include="Novikov_standard.png" />
-        <EmbeddedResource Include="Novikov_success.png" />
-        <EmbeddedResource Include="patcher.ico" />
+        <EmbeddedResource Include="Assets\patcher.ico" />
+        <None Remove="Assets\Novikov_error.png" />
+        <None Remove="Assets\Novikov_standard.png" />
+        <None Remove="Assets\Novikov_success.png" />
+        <None Remove="Assets\Bond_standard.png" />
+        <None Remove="Assets\patcher.ico" />
+        <EmbeddedResource Include="Assets\Novikov_error.png" />
+        <EmbeddedResource Include="Assets\Novikov_standard.png" />
+        <EmbeddedResource Include="Assets\Novikov_success.png" />
         <EmbeddedResource Remove="MainForm.resx" />
         <EmbeddedResource Remove="OptionsForm.resx" />
         <EmbeddedResource Remove="TrayOptionsForm.resx" />

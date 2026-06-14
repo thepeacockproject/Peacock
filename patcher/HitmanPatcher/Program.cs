@@ -1,54 +1,50 @@
-﻿using System;
-using System.Security.Principal;
-using System.Windows.Forms;
+﻿using System.Security.Principal;
 
-namespace HitmanPatcher
+namespace HitmanPatcher;
+
+static class Program
 {
-    static class Program
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    private static void Main(string[] args)
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main(string[] args)
-        {
-            Compositions.HasAdmin = CheckForAdmin();
+        Compositions.HasAdmin = CheckForAdmin();
 #if !DEBUG
             Cli.EnsureConsole(args);
 #endif
 
-            Cli.CliOptions o = Cli.CliOptions.FromArguments(args);
+        Cli.CliOptions o = Cli.CliOptions.FromArguments(args);
 
-            if (o.Headless)
-            {
-                // ReSharper disable once LocalizableElement
-                Console.WriteLine(CliLocale.HeadlessBanner);
-                MemoryPatcher.PatchAllProcesses(new Cli.ConsoleLogger(), new MemoryPatcher.Options
-                {
-                    AlwaysSendAuthHeader = true,
-                    CustomConfigDomain = o.Domain,
-                    DisableCertPinning = true,
-                    DisableForceOfflineOnFailedDynamicResources = o.OptionalDynRes,
-                    EnableDynamicResources = true,
-                    SetCustomConfigDomain = true,
-                    UseHttp = o.UseHttp
-                });
-            }
-            else
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                Application.Run(MainForm.GetInstance());
-            }
-        }
-
-        static bool CheckForAdmin()
+        if (o.Headless)
         {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            // ReSharper disable once LocalizableElement
+            Console.WriteLine(CliLocale.HeadlessBanner);
+            MemoryPatcher.PatchAllProcesses(new Cli.ConsoleLogger(), new MemoryPatcher.Options
+            {
+                AlwaysSendAuthHeader = true,
+                CustomConfigDomain = o.Domain,
+                DisableCertPinning = true,
+                DisableForceOfflineOnFailedDynamicResources = o.OptionalDynRes,
+                EnableDynamicResources = true,
+                SetCustomConfigDomain = true,
+                UseHttp = o.UseHttp
+            });
         }
+        else
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
+            Application.Run(MainForm.GetInstance());
+        }
+    }
+
+    static bool CheckForAdmin()
+    {
+        WindowsIdentity identity = WindowsIdentity.GetCurrent();
+        WindowsPrincipal principal = new WindowsPrincipal(identity);
+        return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 }
