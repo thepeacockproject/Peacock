@@ -859,14 +859,23 @@ export async function getMissionEndData(
         gameVersion,
     )
 
+    // some locations (e.g. H2016 professional mode) use a different amount of
+    // XP per level per subpackage, so prefer the subpackage value when present.
+    const masteryXpPerLevel =
+        (query.masteryUnlockableId
+            ? masteryData?.SubPackages?.find(
+                  (subPkg) => subPkg.Id === query.masteryUnlockableId,
+              )?.XpPerLevel
+            : undefined) ?? masteryData?.XpPerLevel
+
     // Calculate the old location progression based on the current one and process it
     const oldLocationXp = completionData.PreviouslySeenXp
         ? completionData.PreviouslySeenXp
         : completionData.XP - totalXpGain
-    let oldLocationLevel = levelForXp(oldLocationXp, masteryData?.XpPerLevel)
+    let oldLocationLevel = levelForXp(oldLocationXp, masteryXpPerLevel)
 
     const newLocationXp = completionData.XP
-    let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
+    let newLocationLevel = levelForXp(newLocationXp, masteryXpPerLevel)
     const userProgressionLocations = userData.Extensions.progression.Locations
 
     if (!query.masteryUnlockableId) {
@@ -893,7 +902,7 @@ export async function getMissionEndData(
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
-            return xpRequiredForLevel(i + 1, masteryData.XpPerLevel)
+            return xpRequiredForLevel(i + 1, masteryXpPerLevel)
         })
     }
 
