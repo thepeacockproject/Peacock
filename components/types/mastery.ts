@@ -31,6 +31,7 @@ export type MasteryPackageDrop = {
 export type MasterySubPackage = {
     Id: string
     MaxLevel?: number
+    XpPerLevel?: number
     Drops: MasteryPackageDrop[]
 }
 

@@ -185,15 +185,29 @@ export class ProgressionService {
                 parentLocationId,
                 contractSession.gameVersion,
             )
+            const subPackageId =
+                contractSession.gameVersion === "h1"
+                    ? (contract.Metadata.Difficulty ?? "normal")
+                    : (sniperUnlockable ?? undefined)
             const locationData = this.getMasteryProgressionForLocation(
                 userProfile,
                 parentLocationId,
-                contractSession.gameVersion === "h1"
-                    ? (contract.Metadata.Difficulty ?? "normal")
-                    : (sniperUnlockable ?? undefined),
+                subPackageId,
             )
 
-            const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+            // subpackages (e.g. H2016 professional mode) may override the max
+            // level and the amount of XP required per level.
+            const subPackage = subPackageId
+                ? masteryData?.SubPackages?.find(
+                      (pkg) => pkg.Id === subPackageId,
+                  )
+                : undefined
+
+            const maxLevel =
+                subPackage?.MaxLevel ||
+                masteryData?.MaxLevel ||
+                DEFAULT_MASTERY_MAXLEVEL
+            const xpPerLevel = subPackage?.XpPerLevel ?? masteryData?.XpPerLevel
             const isEvergreenContract = contract.Metadata.Type === "evergreen"
 
             if (masteryData) {
@@ -207,10 +221,7 @@ export class ProgressionService {
                         ? xpRequiredForEvergreenLevel(maxLevel)
                         : sniperUnlockable
                           ? xpRequiredForSniperLevel(maxLevel)
-                          : xpRequiredForLevel(
-                                maxLevel,
-                                masteryData.XpPerLevel,
-                            ),
+                          : xpRequiredForLevel(maxLevel, xpPerLevel),
                 )
 
                 locationData.Level = clampValue(
@@ -218,7 +229,7 @@ export class ProgressionService {
                         ? evergreenLevelForXp(locationData.Xp)
                         : sniperUnlockable
                           ? sniperLevelForXp(locationData.Xp)
-                          : levelForXp(locationData.Xp, masteryData.XpPerLevel),
+                          : levelForXp(locationData.Xp, xpPerLevel),
                     1,
                     maxLevel,
                 )
