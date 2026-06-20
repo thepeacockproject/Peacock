@@ -621,6 +621,96 @@
             }
         ]
     },
+    "f9b14ab6-b1d0-41ee-971a-454168909e2a": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_STRICT_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_STRICT_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_hokkaido_thenea_frostywalker.jpg",
+        "ObjectivesCategory": "secondary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "ae5d4a49-1ad1-4d71-bf5b-fb63e9ab1902",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_FROSTYWALKER_STRICT_DESC",
+                "Definition": {
+                    "Scope": "hit",
+                    "Constants": {
+                        "FrostyWeapons": [
+                            "d689f87e-c3b1-4018-8e78-2f0025cde2a9",
+                            "a6706101-3aaf-4797-a0f8-a5b6aac9cdfe"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$or": [
+                                                    {
+                                                        "$any": {
+                                                            "in": "$.FrostyWeapons",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$any": {
+                                                    "in": "$.FrostyWeapons",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     "b8cb2051-21ff-5d7a-311c-9f8606a7c28f": {
         "Name": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_NAME",
         "Description": "UI_PEACOCK_GAMECHANGERS_HOKKAIDO_THENEA_CURATORSWITCH_DESC",
