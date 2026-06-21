@@ -4635,6 +4635,49 @@
                     "InclusionData": {
                         "ContractIds": ["667f48a3-7f6b-486e-8f6b-2f782a5c4857"]
                     }
+                },
+                {
+                    "Id": "5cecb675-9e34-349f-0fea-8b43f4a17e28",
+                    "Name": "UI_PEACOCK_ARTEMIS",
+                    "ImageName": "images/contracts/escalation/contractescalation_artemis.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_MUMBAI",
+                    "ParentLocationId": "LOCATION_PARENT_MUMBAI",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "6260472f-19d1-4293-904c-5c26b1f8ea4e"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["b4c961a0-42da-b4cc-b92a-763977de914c"]
+                    }
                 }
             ]
         },
