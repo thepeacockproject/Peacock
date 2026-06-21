@@ -15,6 +15,3 @@ Once you create the PR, the checklist will be added below this comment automatic
 It's just a few reminders to make sure everything is perfect. You can place an "X" in the boxes to tick them off.
 When you have completed the checklist, press the "Ready for review" button.
 -->
-
-- [ ] I have run Prettier to reformat any changed files
-- [ ] I have verified my changes work
