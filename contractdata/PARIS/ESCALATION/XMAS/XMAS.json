@@ -1,5 +1,10 @@
 {
     "Data": {
+        "EnableSaving": false,
+        "Objectives": [],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Paris/Location_parisnoel.brick"
+        ],
         "VR": [
             {
                 "Quality": "base",
@@ -7,7 +12,7 @@
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
                     "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
-                    "assembly:/_pro/scenes/missions/paris/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_ps4perf.brick",
                     "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
                 ]
             },
@@ -20,16 +25,20 @@
                     "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
                 ]
             }
-        ]
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Southern_Comfort.jpg",
         "Title": "UI_PEACOCK_SOUTHERN_COMFORT",
         "Description": "UI_PEACOCK_ESCALATION_PARIS_DESC",
-        "Type": "escalation",
         "Location": "LOCATION_PARIS_NOEL",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
-        "TileImage": "images/contracts/escalation/contractescalation_southern_comfort.jpg",
+        "Type": "escalation",
         "GroupDefinition": {
             "Type": "escalation",
             "Order": [
@@ -38,7 +47,9 @@
                 "7e392d08-e3db-4f96-8bf2-97d28369dbec"
             ]
         },
-        "Entitlements": ["LOCATION_PARIS"],
+        "Entitlements": [
+            "LOCATION_PARIS"
+        ],
         "Season": 0,
         "OriginalSeason": 1
     }

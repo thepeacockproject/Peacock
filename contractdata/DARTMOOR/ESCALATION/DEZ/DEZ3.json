@@ -8,10 +8,10 @@
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Category": "primary",
-                "Image": "images/contracts/escalation/contractescalation_rosebush_terminal.jpg",
+                "Image": "images/contracts/escalation/ContractEscalation_Rosebush_Terminal.jpg",
                 "IsHidden": false,
-                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_FINISH",
-                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_FINISH_DESC",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_OBJ_FINISH_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_FINISH_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": {
                     "IfCompleted": {
@@ -19,13 +19,13 @@
                     }
                 },
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ROSEBUSH_FINISH"
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_OBJ_FINISH_NAME"
                 },
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
+                            "-": {
                                 "Transition": "Success"
                             }
                         }
@@ -49,7 +49,9 @@
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["9f6b010a-b4cc-4bda-8200-f132aaad03a4"]
+                        "Targets": [
+                            "9f6b010a-b4cc-4bda-8200-f132aaad03a4"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -111,7 +113,9 @@
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["bca845d7-81a3-4499-a821-298b5ad3fe47"]
+                        "Targets": [
+                            "bca845d7-81a3-4499-a821-298b5ad3fe47"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -173,7 +177,9 @@
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["3036afda-a6ab-4830-9f9a-192bcd5d958d"]
+                        "Targets": [
+                            "3036afda-a6ab-4830-9f9a-192bcd5d958d"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -235,7 +241,9 @@
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["1639e08a-4150-4a92-a4b3-bcec99b336fe"]
+                        "Targets": [
+                            "1639e08a-4150-4a92-a4b3-bcec99b336fe"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -282,14 +290,13 @@
             }
         ],
         "Bricks": [],
-        "GameChangers": [],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
-                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
                 ]
             },
             {
@@ -299,22 +306,22 @@
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
                 ]
             }
-        ]
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "0fc24d6e-5870-44d3-897a-15f19c4ccef2",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/ContractEscalation_Rosebush.jpg",
         "Title": "UI_PEACOCK_ROSEBUSH3",
-        "Type": "escalation",
+        "Description": "UI_PEACOCK_ESCALATION_DARTMOOR_DESC",
         "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
         "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
+        "Type": "escalation",
         "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
-        "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
-        "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "0706f101-9814-40b1-82e1-2eb2fff82931",
-                "IsNew": true
-            },
             {
                 "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8",
                 "IsNew": true
@@ -330,7 +337,14 @@
             {
                 "Id": "bca06014-1580-4837-916a-95bc9f64d76a",
                 "IsNew": true
+            },
+            {
+                "Id": "0706f101-9814-40b1-82e1-2eb2fff82931",
+                "IsNew": true
             }
+        ],
+        "Entitlements": [
+            "LOCATION_ANCESTRAL"
         ]
     }
 }
