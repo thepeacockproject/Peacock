@@ -289,12 +289,12 @@ export function writeNewUserData(
 /**
  * Gets the value of an external provider binding.
  *
- * @param userId The user's ID.
+ * @param externalUserId The user's ID.
  * @param externalFolder The folder where this provider's users are stored.
  * @param gameVersion The game's version.
  */
 export async function getExternalUserData(
-    userId: string,
+    externalUserId: string,
     externalFolder: string,
     gameVersion: GameVersion,
 ): Promise<string> {
@@ -303,26 +303,33 @@ export async function getExternalUserData(
     if (["scpc", "h1", "h2"].includes(gameVersion)) {
         return (
             await fs.readFile(
-                join("userdata", gameVersion, externalFolder, `${userId}.json`),
+                join(
+                    "userdata",
+                    gameVersion,
+                    externalFolder,
+                    `${externalUserId}.json`,
+                ),
             )
         ).toString()
     }
 
     return (
-        await fs.readFile(join("userdata", externalFolder, `${userId}.json`))
+        await fs.readFile(
+            join("userdata", externalFolder, `${externalUserId}.json`),
+        )
     ).toString()
 }
 
 /**
  * Writes the value of an external provider binding.
  *
- * @param userId The user's ID.
+ * @param externalUserId The user's ID.
  * @param externalFolder The folder where this provider's users are stored.
  * @param userData The data to write to the binding.
  * @param gameVersion The game's version.
  */
 export async function writeExternalUserData(
-    userId: string,
+    externalUserId: string,
     externalFolder: string,
     userData: string,
     gameVersion: GameVersion,
@@ -331,13 +338,18 @@ export async function writeExternalUserData(
 
     if (["scpc", "h1", "h2"].includes(gameVersion)) {
         return await fs.writeFile(
-            join("userdata", gameVersion, externalFolder, `${userId}.json`),
+            join(
+                "userdata",
+                gameVersion,
+                externalFolder,
+                `${externalUserId}.json`,
+            ),
             userData,
         )
     }
 
     return await fs.writeFile(
-        join("userdata", externalFolder, `${userId}.json`),
+        join("userdata", externalFolder, `${externalUserId}.json`),
         userData,
     )
 }

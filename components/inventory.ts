@@ -32,6 +32,7 @@ import {
     LAMBIC_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
     PENICILLIN_UNLOCKABLES,
+    PENICILLIN_ITEMS_UNLOCKABLES,
     SAMBUCA_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
@@ -45,6 +46,8 @@ import {
     TRINITY_UNLOCKABLES,
     WINTERSPORTS_UNLOCKABLES,
     FILUR_UNLOCKABLES,
+    POMADA_UNLOCKABLES,
+    SPORT_UNLOCKABLES,
 } from "./ownership"
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import type { Controller } from "./controller"
@@ -81,12 +84,15 @@ const DELUXE_DATA = [
     ...WINTERSPORTS_UNLOCKABLES,
     ...SAMBUCA_UNLOCKABLES,
     ...PENICILLIN_UNLOCKABLES,
+    ...PENICILLIN_ITEMS_UNLOCKABLES,
     ...TOMORROWLAND_UNLOCKABLES,
     ...LAMBIC_UNLOCKABLES,
     ...FRENCHMARTINI_UNLOCKABLES,
     ...BAIJU_UNLOCKABLES,
     ...BELLINI_UNLOCKABLES,
     ...FILUR_UNLOCKABLES,
+    ...POMADA_UNLOCKABLES,
+    ...SPORT_UNLOCKABLES,
 ]
 
 /**
@@ -556,11 +562,20 @@ export class InventoryService {
                 )
             }
 
+            const H3_ET_PENICILLIN_owned =
+                e.includes("6cdf07da030d4f66acd50eaf3cd234c7") ||
+                e.includes("2973650")
+
+            const H3_VANITY_SPORT_owned =
+                e.includes("16bcef4f91674b00ba3d7f2d4f629cec") ||
+                e.includes("4542910")
+
             if (PENICILLIN_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("6cdf07da030d4f66acd50eaf3cd234c7") ||
-                    e.includes("2973650")
-                )
+                return H3_ET_PENICILLIN_owned
+            }
+
+            if (PENICILLIN_ITEMS_UNLOCKABLES.includes(id)) {
+                return H3_ET_PENICILLIN_owned || H3_VANITY_SPORT_owned
             }
 
             if (TOMORROWLAND_UNLOCKABLES.includes(id)) {
@@ -602,6 +617,17 @@ export class InventoryService {
                 return (
                     e.includes("b135c766d25948c39d7dd316dbc4db53") ||
                     e.includes("4328240")
+                )
+            }
+
+            if (SPORT_UNLOCKABLES.includes(id)) {
+                return H3_VANITY_SPORT_owned
+            }
+
+            if (POMADA_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("d51a3a65928841d5b4cabad20a865006") ||
+                    e.includes("4621250")
                 )
             }
 

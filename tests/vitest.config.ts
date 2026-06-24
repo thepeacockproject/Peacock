@@ -36,11 +36,13 @@ function dontLoadJsonPlugin() {
             }
 
             // trying to resolve test-exclusive data, which can safely be resolved normally
-            if (id.includes("/testData/")) {
+            if (id.includes("/testData/") || id.includes("\\testData\\")) {
                 return null
             }
 
-            const filePath = path.join(path.dirname(importer), id)
+            const filePath = path
+                .join(path.dirname(importer), id)
+                .replaceAll("\\", "/")
 
             return `${resolvedIdPrefix}${filePath}${ignoreExtension}`
         },

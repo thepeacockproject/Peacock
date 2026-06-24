@@ -39,10 +39,12 @@ import {
     EpicH1Strategy,
     EpicH3Strategy,
     IOIStrategy,
+    SteamStrategy,
     SteamH1Strategy,
     SteamH2Strategy,
     SteamScpcStrategy,
 } from "./entitlementStrategies"
+import { getFlag } from "./flags"
 
 export const JWT_SECRET = PEACOCK_DEV
     ? "secret"
@@ -55,6 +57,8 @@ export type OAuthTokenBody = {
         | "external_apple"
         | "refresh_token"
     steam_userid?: string
+    steam_clienttoken?: string
+    steam_identity?: string
     epic_userid?: string
     apple_userid?: string
     apple_refreshtoken?: string
@@ -77,6 +81,7 @@ export type OAuthTokenResponse = {
 
 export const error400: unique symbol = Symbol("http400")
 export const error406: unique symbol = Symbol("http406")
+export const error410: unique symbol = Symbol("http410")
 
 /**
  * This is the code that handles the OAuth token request.
@@ -86,7 +91,9 @@ export const error406: unique symbol = Symbol("http406")
  */
 export async function handleOAuthToken(
     req: RequestWithJwt<never, OAuthTokenBody>,
-): Promise<typeof error400 | typeof error406 | OAuthTokenResponse> {
+): Promise<
+    typeof error400 | typeof error406 | typeof error410 | OAuthTokenResponse
+> {
     const isScpc = req.body.gs === "scpc-prod"
 
     const signOptions = {
@@ -222,18 +229,29 @@ export async function handleOAuthToken(
         }
     } else {
         // if a profile id is supplied
-        getExternalUserData(external_userid, external_users_folder, gameVersion)
-            .then(() => null)
-            .catch(async () => {
-                // external id is not yet linked to this profile
-                await writeExternalUserData(
-                    external_userid,
-                    external_users_folder,
-                    // we've already confirmed this will be there, and it's a GUID
-                    req.body.pId!,
-                    gameVersion,
-                )
-            })
+        const saved_profile_id = await getExternalUserData(
+            external_userid,
+            external_users_folder,
+            gameVersion,
+        ).catch(async () => {
+            // this external user id is not yet linked to any profile
+            await writeExternalUserData(
+                external_userid,
+                external_users_folder,
+                // we've already confirmed this will be there, and it's a GUID
+                req.body.pId!,
+                gameVersion,
+            )
+            return req.body.pId!
+        })
+
+        if (saved_profile_id !== req.body.pId) {
+            log(
+                LogLevel.DEBUG,
+                `410: external user ${external_platform}:${external_userid} tried to login as ${req.body.pId}.`,
+            )
+            return error410 // this external user id is linked to a different profile id than the one supplied.
+        }
     }
 
     try {
@@ -246,17 +264,19 @@ export async function handleOAuthToken(
     /*
        Store user auth for all games except scpc
     */
-    if (!isScpc) {
-        const authContainer = new OfficialServerAuth(
-            gameVersion,
-            req.body.access_token,
-        )
+    const authUser = async () => {
+        if (!isScpc) {
+            const authContainer = new OfficialServerAuth(
+                gameVersion,
+                req.body.access_token,
+            )
 
-        log(LogLevel.DEBUG, `Setting up container with ID ${req.body.pId}.`)
+            log(LogLevel.DEBUG, `Setting up container with ID ${req.body.pId}.`)
 
-        userAuths.set(req.body.pId, authContainer)
+            userAuths.set(req.body.pId!, authContainer)
 
-        await authContainer._initiallyAuthenticate(req)
+            await authContainer._initiallyAuthenticate(req)
+        }
     }
 
     let userData = getUserData(req.body.pId, gameVersion)
@@ -292,6 +312,10 @@ export async function handleOAuthToken(
             return new SteamScpcStrategy().get()
         }
 
+        // Authenticate user with official if we're not on H3 Steam (otherwise the token will be invalidated)
+        if (gameVersion !== "h3" || external_platform !== "steam")
+            await authUser()
+
         if (gameVersion === "h1") {
             if (external_platform === "steam") {
                 return new SteamH1Strategy().get()
@@ -314,10 +338,35 @@ export async function handleOAuthToken(
                     req.body.epic_userid!,
                 )
             } else if (external_platform === "steam") {
-                return await new IOIStrategy(
-                    gameVersion,
-                    STEAM_NAMESPACE_2021,
-                ).get(req.body.pId!)
+                let ents = await new SteamStrategy().get(
+                    req.body.steam_clienttoken!,
+                    req.body.steam_identity!,
+                    req.body.steam_userid!,
+                )
+                await authUser()
+
+                if (ents.length === 0) {
+                    if (
+                        getFlag("steamAuthenticationMethod") === "STEAM_STRICT"
+                    ) {
+                        log(
+                            LogLevel.WARN,
+                            "No entitlements returned by SteamStrategy with strict mode enabled!",
+                        )
+                        return []
+                    }
+
+                    log(
+                        LogLevel.WARN,
+                        "No entitlements returned by SteamStrategy - defaulting to official!",
+                    )
+                    ents = await new IOIStrategy(
+                        gameVersion,
+                        external_appid,
+                    ).get(req.body.pId!)
+                }
+
+                return ents
             } else if (external_platform === "apple") {
                 // TODO
                 return []

@@ -299,7 +299,7 @@ export class MasteryService {
                       ? xpRequiredForEvergreenLevel
                       : xpRequiredForLevel,
                 subPackageId,
-                masteryPkg.XpPerLevel,
+                subPackage?.XpPerLevel ?? masteryPkg.XpPerLevel,
             ),
             Id: isSniper ? subPackageId! : masteryPkg.LocationId,
             SubLocationId: isSniper ? "" : subLocationId,

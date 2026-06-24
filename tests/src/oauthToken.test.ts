@@ -41,7 +41,7 @@ describe("oauthToken", () => {
 
     const getExternalUserData = vi
         .spyOn(databaseHandler, "getExternalUserData")
-        .mockResolvedValue("")
+        .mockResolvedValue(pId)
     const loadUserData = vi
         .spyOn(databaseHandler, "loadUserData")
         // @ts-expect-error This is okay.
@@ -77,6 +77,7 @@ describe("oauthToken", () => {
             grant_type: "external_steam",
             steam_userid: "000000000047",
             steam_appid: "1659040",
+            steam_clienttoken: "00000000",
             pId: pId,
         }
 
