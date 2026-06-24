@@ -20,7 +20,7 @@ import { Controller } from "./controller"
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
-import { GameVersion, JwtData, MissionManifest } from "./types/types"
+import { Campaign, GameVersion, JwtData, MissionManifest } from "./types/types"
 import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { satisfies } from "semver"
@@ -28,7 +28,7 @@ import md5File from "md5-file"
 
 export interface Game {
     version: "h1" | "h2" | "h3"
-    platform: "steam" | "epic" | "microsoft"
+    platform: "steam" | "epic" | "microsoft" | "gog"
     hash: string
     path: string
 }
@@ -57,6 +57,15 @@ export interface Deployment {
     summary: DeploySummary
 }
 
+interface StoryConfigCampaign {
+    Name: string
+    Image: string
+    Type: string
+    Properties: Record<string, unknown>
+    Subgroups?: StoryConfigCampaign[]
+    StoryData: { Type: "Mission" | "Video"; Id: string }[]
+}
+
 export class SMFSupport {
     public readonly deployments: Deployment[] = []
 
@@ -77,6 +86,7 @@ export class SMFSupport {
                     ) as DeploySummary
 
                     if (summary.game.platform === "microsoft") continue
+                    if (!["h1", "h2", "h3"].includes(summary.game.version)) continue
                     if (!existsSync(summary.frameworkPath)) continue
 
                     this.deployments.push({
@@ -87,6 +97,10 @@ export class SMFSupport {
                 }
             }
         }
+
+        this.deployments.sort((a, b) =>
+            a.summary.game.version.localeCompare(b.summary.game.version),
+        )
     }
 
     static get modFrameworkDataPaths(): string[] | false {
@@ -218,6 +232,172 @@ export class SMFSupport {
                     } as const
                 )[deployment.summary.game.version]
             ] = unlockablesData
+
+            const locationsData =
+                this.controller.configManager.configs[
+                    (
+                        {
+                            h1: "LegacyLocationsData",
+                            h2: "H2LocationsData",
+                            h3: "LocationsData",
+                        } as const
+                    )[deployment.summary.game.version]
+                ]
+
+            for (const location of unlockablesData.filter(
+                (item: { Type: string; Subtype: string }) =>
+                    item.Type === "location",
+            )) {
+                if (location.Subtype === "location") {
+                    locationsData.parents[location.Id] = {
+                        ...location,
+                        DisplayNameLocKey: `UI_${location.Id}_NAME`,
+                    }
+                } else {
+                    locationsData.children[location.Id] = {
+                        ...location,
+                        DisplayNameLocKey: `UI_${location.Id}_NAME`,
+                    }
+                }
+            }
+        }
+    }
+
+    private handleWorldMapMetadata(deployment: Deployment) {
+        for (const [scene, assetId] of Object.entries(
+            deployment.summary.serverSideData.worldMapMetadata,
+        )) {
+            const data: {
+                entrances: { id: string }[]
+                AgencyPickups: { id: string }[]
+            } = JSON.parse(readFileSync(join(deployment.path, assetId), "utf8"))
+
+            this.controller.configManager.configs.Entrances[scene] =
+                data.entrances.map((entrance) => entrance.id)
+
+            this.controller.configManager.configs.AgencyPickups[scene] =
+                data.AgencyPickups.map((entrance) => entrance.id)
+        }
+    }
+
+    private handleCampaigns(deployment: Deployment) {
+        if (deployment.summary.serverSideData.storyConfig) {
+            const data: StoryConfigCampaign[] = JSON.parse(
+                readFileSync(
+                    join(
+                        deployment.path,
+                        deployment.summary.serverSideData.storyConfig,
+                    ),
+                    "utf8",
+                ),
+            )
+
+            this.controller.hooks.contributeCampaigns.tap(
+                `smfCampaigns-${deployment.id}`,
+                (
+                    campaigns,
+                    genSingleMission,
+                    genSingleVideo,
+                    gameVersion,
+                    userId,
+                ) => {
+                    if (
+                        this.userPlatforms[userId]?.[1] ===
+                            deployment.summary.game.platform &&
+                        deployment.summary.game.version === gameVersion
+                    ) {
+                        for (const campaign of data) {
+                            const existing = campaigns.find(
+                                (c) => c.Name === campaign.Name,
+                            )
+
+                            if (!existing) {
+                                function convertCampaign(
+                                    campaign: StoryConfigCampaign,
+                                ): Campaign {
+                                    return {
+                                        Name: campaign.Name,
+                                        Image: campaign.Image,
+                                        Type: campaign.Type,
+                                        BackgroundImage: campaign.Properties
+                                            .BackgroundImage as
+                                            | string
+                                            | null
+                                            | undefined,
+                                        Properties: campaign.Properties,
+                                        Subgroups:
+                                            campaign.Subgroups?.map(
+                                                convertCampaign,
+                                            ),
+                                        StoryData: campaign.StoryData.map(
+                                            (data) =>
+                                                data.Type === "Mission"
+                                                    ? genSingleMission(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      )
+                                                    : genSingleVideo(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      ),
+                                        ).filter(Boolean),
+                                    }
+                                }
+
+                                campaigns.push(convertCampaign(campaign))
+                            } else {
+                                function extendCampaign(
+                                    existing: Campaign,
+                                    campaign: StoryConfigCampaign,
+                                ) {
+                                    existing.StoryData.push(
+                                        ...campaign.StoryData.filter(
+                                            (data) =>
+                                                !existing.StoryData.some(
+                                                    (e) =>
+                                                        e.Type === data.Type &&
+                                                        // @ts-expect-error They have the same Type so this is fine
+                                                        (e.Data.Id ||
+                                                            // @ts-expect-error They have the same Type so this is fine
+                                                            e.Data.VideoId) ===
+                                                            data.Id,
+                                                ),
+                                        )
+                                            .map((data) =>
+                                                data.Type === "Mission"
+                                                    ? genSingleMission(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      )
+                                                    : genSingleVideo(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      ),
+                                            )
+                                            .filter(Boolean),
+                                    )
+
+                                    campaign.Subgroups?.forEach((subgroup) => {
+                                        const existingSubgroup =
+                                            existing.Subgroups?.find(
+                                                (c) => c.Name === subgroup.Name,
+                                            )
+
+                                        if (existingSubgroup) {
+                                            extendCampaign(
+                                                existingSubgroup,
+                                                subgroup,
+                                            )
+                                        }
+                                    })
+                                }
+
+                                extendCampaign(existing, campaign)
+                            }
+                        }
+                    }
+                },
+            )
         }
     }
 
@@ -263,6 +443,8 @@ export class SMFSupport {
         for (const deployment of this.deployments) {
             this.handleContracts(deployment)
             this.handleUnlockables(deployment)
+            this.handleWorldMapMetadata(deployment)
+            this.handleCampaigns(deployment)
         }
 
         for (const plugin of new Set(

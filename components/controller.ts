@@ -354,6 +354,7 @@ export class Controller {
                 genSingleMissionFunc: GenSingleMissionFunc,
                 genSingleVideoFunc: GenSingleVideoFunc,
                 gameVersion: GameVersion,
+                userId: string,
             ]
         >
         getSearchResults: AsyncSeriesHook<

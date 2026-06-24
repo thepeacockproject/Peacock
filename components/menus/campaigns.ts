@@ -516,6 +516,7 @@ export function makeCampaigns(
         genSingleMission,
         genSingleVideo,
         gameVersion,
+        userId,
     )
 
     return c.filter(Boolean)
