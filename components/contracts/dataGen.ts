@@ -271,7 +271,7 @@ export function generateUserCentric(
 
         uc.Data.EscalationCompletedLevels = p - 1
         uc.Data.EscalationTotalLevels = getLevelCount(
-            controller.resolveContract(eGroupId, gameVersion),
+            controller.resolveContract(eGroupId, userId, gameVersion),
         )
         uc.Data.EscalationCompleted =
             userData.Extensions.PeacockCompletedEscalations.includes(eGroupId)

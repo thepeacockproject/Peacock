@@ -110,7 +110,11 @@ multiplayerRouter.post(
         const userCentrics = contractIds
             .map((id) =>
                 generateUserCentric(
-                    controller.resolveContract(id, req.gameVersion),
+                    controller.resolveContract(
+                        id,
+                        req.jwt.unique_name,
+                        req.gameVersion,
+                    ),
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),

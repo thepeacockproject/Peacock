@@ -1607,31 +1607,6 @@ export type CPDStore = Record<string, Record<string, string | number | boolean>>
 
 export type ContractProgressionData = Record<string, string | number | boolean>
 
-/** SMF's lastDeploy.json */
-export type SMFLastDeploy = {
-    runtimePath: string
-    retailPath: string
-    skipIntro: boolean
-    outputToSeparateDirectory: boolean
-    loadOrder: string[]
-    modOptions: {
-        [modId: string]: string[]
-    }
-    outputConfigToAppDataOnDeploy: boolean
-    reportErrors: boolean
-    developerMode: boolean
-    knownMods: string[]
-    platform: string
-    lastServerSideStates?: {
-        unlockables?: Unlockable[]
-        contracts?: {
-            [k: string]: MissionManifest
-        }
-        blobs?: Record<string, string>
-        peacockPlugins?: string[]
-    }
-}
-
 export type OfficialSublocation = {
     Location: string
     Xp: number

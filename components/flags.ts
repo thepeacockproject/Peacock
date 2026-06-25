@@ -193,10 +193,10 @@ export const defaultFlags: Flags = {
                 desc: "Forcibly disable installed mod checks",
                 default: false,
             },
-            frameworkDeploySummaryPath: {
+            smfDeploymentsPath: {
                 category: "Modding",
-                title: "frameworkDeploySummaryPath",
-                desc: 'The path of Simple Mod Framework\'s deploy summary file. By default, it is set to "AUTO", which will attempt to locate the file in predefined locations. Alternatively, you can specify a custom path.',
+                title: "smfDeploymentsPath",
+                desc: 'The path of Simple Mod Framework\'s deployments folder. By default, it is set to "AUTO", which will attempt to locate the file in predefined locations. Alternatively, you can specify a custom path.',
                 default: "AUTO",
                 showIngame: false,
             },

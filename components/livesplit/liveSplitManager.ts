@@ -168,7 +168,7 @@ export class LiveSplitManager {
         }
     }
 
-    async failMission(attemptTime: Seconds): Promise<void> {
+    async failMission(userId: string, attemptTime: Seconds): Promise<void> {
         if (!this._checkInit()) {
             return
         }
@@ -182,6 +182,7 @@ export class LiveSplitManager {
             const computedTime = this._addMissionTime(attemptTime)
             this._addTimeCalcEntry(
                 this._currentMission,
+                userId,
                 this._currentMissionGameVersion,
                 computedTime,
                 false,
@@ -191,7 +192,7 @@ export class LiveSplitManager {
         }
     }
 
-    async completeMission(attemptTime: Seconds): Promise<void> {
+    async completeMission(userId: string, attemptTime: Seconds): Promise<void> {
         LiveSplitManager._logAttempt(attemptTime)
 
         if (!this._checkInit()) {
@@ -207,6 +208,7 @@ export class LiveSplitManager {
             const computedTime = this._addMissionTime(attemptTime)
             this._addTimeCalcEntry(
                 this._currentMission,
+                userId,
                 this._currentMissionGameVersion,
                 computedTime,
                 true,
@@ -436,9 +438,14 @@ export class LiveSplitManager {
 
     private _getMissionLocationName(
         contractId: string,
+        userId: string,
         gameVersion: GameVersion,
     ): string | undefined {
-        const contract = controller.resolveContract(contractId, gameVersion)
+        const contract = controller.resolveContract(
+            contractId,
+            userId,
+            gameVersion,
+        )
 
         if (!contract) {
             return undefined
@@ -453,11 +460,16 @@ export class LiveSplitManager {
 
     private _addTimeCalcEntry(
         contractId: string,
+        userId: string,
         gameVersion: GameVersion,
         time: Seconds,
         isCompleted: boolean,
     ) {
-        const location = this._getMissionLocationName(contractId, gameVersion)
+        const location = this._getMissionLocationName(
+            contractId,
+            userId,
+            gameVersion,
+        )
 
         if (!location) return
 

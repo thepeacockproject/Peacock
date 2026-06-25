@@ -429,7 +429,11 @@ app.get(
             ias: 2,
         })
 
-        controller.hooks.onUserLogin.call(req.gameVersion, req.jwt.unique_name)
+        controller.hooks.onUserLogin.call(
+            req.gameVersion,
+            req.jwt.unique_name,
+            req.jwt.platform,
+        )
     },
 )
 

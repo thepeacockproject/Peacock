@@ -17,19 +17,60 @@
  */
 
 import { Controller } from "./controller"
-import { existsSync, readFileSync } from "fs"
+import { existsSync, readdirSync, readFileSync } from "fs"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
-import { MissionManifest, SMFLastDeploy } from "./types/types"
+import { Campaign, GameVersion, JwtData, MissionManifest } from "./types/types"
 import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
-import { menuSystemDatabase } from "./menus/menuSystem"
-import { parse } from "json5"
+import { satisfies } from "semver"
+import md5File from "md5-file"
 
-type LastServerSideData = SMFLastDeploy["lastServerSideStates"]
+export interface Game {
+    version: "h1" | "h2" | "h3"
+    platform: "steam" | "epic" | "microsoft" | "gog"
+    hash: string
+    path: string
+}
+
+export interface ServerSideData {
+    unlockables: string | null
+    repository: string | null
+    contracts: Record<string, string>
+    worldMapMetadata: Record<string, string>
+    storyConfig: string | null
+    peacockPlugins: string[]
+    dynamicResourcesDisabled: boolean
+}
+
+export interface DeploySummary {
+    game: Game
+    frameworkPath: string
+    config: { deployOrder: string[] }
+    modVersions: Record<string, string>
+    serverSideData: ServerSideData
+}
+
+export interface Deployment {
+    id: string
+    path: string
+    summary: DeploySummary
+}
+
+interface StoryConfigCampaign {
+    Name: string
+    Image: string
+    Type: string
+    Properties: Record<string, unknown>
+    Subgroups?: StoryConfigCampaign[]
+    StoryData: { Type: "Mission" | "Video"; Id: string }[]
+}
 
 export class SMFSupport {
-    public readonly lastDeploy: SMFLastDeploy | null
+    public readonly deployments: Deployment[] = []
+
+    private userPlatforms: Record<string, [GameVersion, JwtData["platform"]]> =
+        {}
 
     constructor(private readonly controller: Controller) {
         const dataPaths = SMFSupport.modFrameworkDataPaths
@@ -37,17 +78,34 @@ export class SMFSupport {
         if (dataPaths) {
             for (const dataPath of dataPaths) {
                 if (!existsSync(dataPath)) continue
-                this.lastDeploy = parse(readFileSync(dataPath).toString())
-                return
+
+                for (const game of readdirSync(dataPath)) {
+                    const path = join(dataPath, game)
+                    const summary = JSON.parse(
+                        readFileSync(join(path, "summary.json"), "utf8"),
+                    ) as DeploySummary
+
+                    if (summary.game.platform === "microsoft") continue
+                    if (!["h1", "h2", "h3"].includes(summary.game.version)) continue
+                    if (!existsSync(summary.frameworkPath)) continue
+
+                    this.deployments.push({
+                        id: game,
+                        path,
+                        summary,
+                    })
+                }
             }
         }
 
-        this.lastDeploy = null
+        this.deployments.sort((a, b) =>
+            a.summary.game.version.localeCompare(b.summary.game.version),
+        )
     }
 
     static get modFrameworkDataPaths(): string[] | false {
-        if (getFlag("frameworkDeploySummaryPath") !== "AUTO")
-            return [getFlag("frameworkDeploySummaryPath") as string]
+        if (getFlag("smfDeploymentsPath") !== "AUTO")
+            return [getFlag("smfDeploymentsPath") as string]
 
         switch (process.platform) {
             case "win32":
@@ -56,12 +114,7 @@ export class SMFSupport {
                         join(
                             process.env.LOCALAPPDATA,
                             "Simple Mod Framework",
-                            "deploySummary.json",
-                        ),
-                        join(
-                            process.env.LOCALAPPDATA,
-                            "Simple Mod Framework",
-                            "lastDeploy.json",
+                            "deployments",
                         ),
                     ]) ||
                     false
@@ -73,16 +126,7 @@ export class SMFSupport {
                     join(process.env.HOME, ".local", "share")
 
                 return [
-                    join(
-                        XDG_DATA_HOME,
-                        "app.simple-mod-framework",
-                        "deploySummary.json",
-                    ),
-                    join(
-                        XDG_DATA_HOME,
-                        "app.simple-mod-framework",
-                        "lastDeploy.json",
-                    ),
+                    join(XDG_DATA_HOME, "Simple Mod Framework", "deployments"),
                 ]
             }
 
@@ -109,47 +153,29 @@ export class SMFSupport {
         )
     }
 
-    private handleBlobs(lastServerSideData: LastServerSideData) {
-        if (!lastServerSideData?.blobs) return
-
-        menuSystemDatabase.hooks.getConfig.tap(
-            "SMFBlobs",
-            (name: string, gameVersion: string) => {
-                if (
-                    !(
-                        gameVersion === "h3" &&
-                        (lastServerSideData.blobs?.[name] ||
-                            lastServerSideData.blobs?.[name.slice(1)])
-                    )
-                ) {
-                    return
-                }
-
-                if (!process.env.LOCALAPPDATA) return
-
-                return parse(
-                    readFileSync(
-                        join(
-                            process.env.LOCALAPPDATA as string,
-                            "Simple Mod Framework",
-                            "blobs",
-                            lastServerSideData.blobs[name] ||
-                                lastServerSideData.blobs[name.slice(1)],
-                        ),
-                    ).toString(),
-                )
-            },
-        )
-    }
-
-    private handleContracts(lastServerSideData: LastServerSideData) {
-        if (!lastServerSideData?.contracts) return
-
-        for (const contractData of Object.values(
-            lastServerSideData.contracts,
+    private handleContracts(deployment: Deployment) {
+        for (const assetId of Object.values(
+            deployment.summary.serverSideData.contracts,
         )) {
+            const contractData = JSON.parse(
+                readFileSync(join(deployment.path, assetId), "utf8"),
+            ) as MissionManifest
+
             if (contractData.SMF?.destinations?.peacockIntegration !== false) {
-                this.controller.addMission(contractData)
+                this.controller.hooks.getContractManifest.tap(
+                    `smfContract-${deployment.id}-${assetId}`,
+                    (contractId, userId, gameVersion) => {
+                        if (
+                            contractId === contractData.Metadata.Id &&
+                            (!userId ||
+                                this.userPlatforms[userId]?.[1] ===
+                                    deployment.summary.game.platform) &&
+                            deployment.summary.game.version === gameVersion
+                        ) {
+                            return contractData
+                        }
+                    },
+                )
 
                 if (contractData.SMF?.destinations?.addToDestinations) {
                     this.handleDestination(contractData)
@@ -163,34 +189,243 @@ export class SMFSupport {
         const id = contractData.Metadata.Id
         const placeBefore = contractData.SMF?.destinations.placeBefore
         const placeAfter = contractData.SMF?.destinations.placeAfter
-        // @ts-expect-error I know what I'm doing.
-        const inLocation = (this.controller.missionsInLocation["h3"][
-            location
-        ] ??
-            // @ts-expect-error I know what I'm doing.
-            (this.controller.missionsInLocation["h3"][location] =
-                [])) as string[]
 
-        if (placeBefore) {
-            const index = inLocation.indexOf(placeBefore)
-            inLocation.splice(index, 0, id)
-        } else if (placeAfter) {
-            const index = inLocation.indexOf(placeAfter) + 1
-            inLocation.splice(index, 0, id)
-        } else {
-            inLocation.push(id)
+        for (const game of ["h1", "h2", "h3"] as const) {
+            // @ts-expect-error I know what I'm doing.
+            const inLocation = (this.controller.missionsInLocation[game][
+                location
+            ] ??
+                // @ts-expect-error I know what I'm doing.
+                (this.controller.missionsInLocation[game][location] =
+                    [])) as string[]
+
+            if (placeBefore) {
+                const index = inLocation.indexOf(placeBefore)
+                inLocation.splice(index, 0, id)
+            } else if (placeAfter) {
+                const index = inLocation.indexOf(placeAfter) + 1
+                inLocation.splice(index, 0, id)
+            } else {
+                inLocation.push(id)
+            }
         }
     }
 
-    private handleUnlockables(lastServerSideData: LastServerSideData) {
-        if (lastServerSideData?.unlockables) {
-            this.controller.configManager.configs["allunlockables"] =
-                lastServerSideData.unlockables.slice(1)
+    private handleUnlockables(deployment: Deployment) {
+        if (deployment.summary.serverSideData.unlockables) {
+            const unlockablesData = JSON.parse(
+                readFileSync(
+                    join(
+                        deployment.path,
+                        deployment.summary.serverSideData.unlockables,
+                    ),
+                    "utf8",
+                ),
+            )
+
+            this.controller.configManager.configs[
+                (
+                    {
+                        h1: "Legacyallunlockables",
+                        h2: "H2allunlockables",
+                        h3: "allunlockables",
+                    } as const
+                )[deployment.summary.game.version]
+            ] = unlockablesData
+
+            const locationsData =
+                this.controller.configManager.configs[
+                    (
+                        {
+                            h1: "LegacyLocationsData",
+                            h2: "H2LocationsData",
+                            h3: "LocationsData",
+                        } as const
+                    )[deployment.summary.game.version]
+                ]
+
+            for (const location of unlockablesData.filter(
+                (item: { Type: string; Subtype: string }) =>
+                    item.Type === "location",
+            )) {
+                if (location.Subtype === "location") {
+                    locationsData.parents[location.Id] = {
+                        ...location,
+                        DisplayNameLocKey: `UI_${location.Id}_NAME`,
+                    }
+                } else {
+                    locationsData.children[location.Id] = {
+                        ...location,
+                        DisplayNameLocKey: `UI_${location.Id}_NAME`,
+                    }
+                }
+            }
+        }
+    }
+
+    private handleWorldMapMetadata(deployment: Deployment) {
+        for (const [scene, assetId] of Object.entries(
+            deployment.summary.serverSideData.worldMapMetadata,
+        )) {
+            const data: {
+                entrances: { id: string }[]
+                AgencyPickups: { id: string }[]
+            } = JSON.parse(readFileSync(join(deployment.path, assetId), "utf8"))
+
+            this.controller.configManager.configs.Entrances[scene] =
+                data.entrances.map((entrance) => entrance.id)
+
+            this.controller.configManager.configs.AgencyPickups[scene] =
+                data.AgencyPickups.map((entrance) => entrance.id)
+        }
+    }
+
+    private handleCampaigns(deployment: Deployment) {
+        if (deployment.summary.serverSideData.storyConfig) {
+            const data: StoryConfigCampaign[] = JSON.parse(
+                readFileSync(
+                    join(
+                        deployment.path,
+                        deployment.summary.serverSideData.storyConfig,
+                    ),
+                    "utf8",
+                ),
+            )
+
+            this.controller.hooks.contributeCampaigns.tap(
+                `smfCampaigns-${deployment.id}`,
+                (
+                    campaigns,
+                    genSingleMission,
+                    genSingleVideo,
+                    gameVersion,
+                    userId,
+                ) => {
+                    if (
+                        this.userPlatforms[userId]?.[1] ===
+                            deployment.summary.game.platform &&
+                        deployment.summary.game.version === gameVersion
+                    ) {
+                        for (const campaign of data) {
+                            const existing = campaigns.find(
+                                (c) => c.Name === campaign.Name,
+                            )
+
+                            if (!existing) {
+                                function convertCampaign(
+                                    campaign: StoryConfigCampaign,
+                                ): Campaign {
+                                    return {
+                                        Name: campaign.Name,
+                                        Image: campaign.Image,
+                                        Type: campaign.Type,
+                                        BackgroundImage: campaign.Properties
+                                            .BackgroundImage as
+                                            | string
+                                            | null
+                                            | undefined,
+                                        Properties: campaign.Properties,
+                                        Subgroups:
+                                            campaign.Subgroups?.map(
+                                                convertCampaign,
+                                            ),
+                                        StoryData: campaign.StoryData.map(
+                                            (data) =>
+                                                data.Type === "Mission"
+                                                    ? genSingleMission(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      )
+                                                    : genSingleVideo(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      ),
+                                        ).filter(Boolean),
+                                    }
+                                }
+
+                                campaigns.push(convertCampaign(campaign))
+                            } else {
+                                function extendCampaign(
+                                    existing: Campaign,
+                                    campaign: StoryConfigCampaign,
+                                ) {
+                                    existing.StoryData.push(
+                                        ...campaign.StoryData.filter(
+                                            (data) =>
+                                                !existing.StoryData.some(
+                                                    (e) =>
+                                                        e.Type === data.Type &&
+                                                        // @ts-expect-error They have the same Type so this is fine
+                                                        (e.Data.Id ||
+                                                            // @ts-expect-error They have the same Type so this is fine
+                                                            e.Data.VideoId) ===
+                                                            data.Id,
+                                                ),
+                                        )
+                                            .map((data) =>
+                                                data.Type === "Mission"
+                                                    ? genSingleMission(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      )
+                                                    : genSingleVideo(
+                                                          data.Id,
+                                                          gameVersion,
+                                                      ),
+                                            )
+                                            .filter(Boolean),
+                                    )
+
+                                    campaign.Subgroups?.forEach((subgroup) => {
+                                        const existingSubgroup =
+                                            existing.Subgroups?.find(
+                                                (c) => c.Name === subgroup.Name,
+                                            )
+
+                                        if (existingSubgroup) {
+                                            extendCampaign(
+                                                existingSubgroup,
+                                                subgroup,
+                                            )
+                                        }
+                                    })
+                                }
+
+                                extendCampaign(existing, campaign)
+                            }
+                        }
+                    }
+                },
+            )
         }
     }
 
     public async initSMFSupport() {
-        if (!this.lastDeploy) return
+        for (const idx of [
+            ...new Array(this.deployments.length).keys(),
+        ].toReversed()) {
+            const deployment = this.deployments[idx]
+
+            if (
+                (await md5File(
+                    join(
+                        deployment.summary.game.path,
+                        (
+                            {
+                                h1: "HITMAN.exe",
+                                h2: "HITMAN2.exe",
+                                h3: "HITMAN3.exe",
+                            } as const
+                        )[deployment.summary.game.version],
+                    ),
+                )) !== deployment.summary.game.hash
+            ) {
+                this.deployments.splice(idx, 1)
+            }
+        }
+
+        if (!this.deployments.length) return
 
         log(
             LogLevel.INFO,
@@ -198,29 +433,91 @@ export class SMFSupport {
             "boot",
         )
 
-        const lastServerSideData = this.lastDeploy?.lastServerSideStates
+        this.controller.hooks.onUserLogin.tap(
+            "smfSupport",
+            (gameVersion, userId, platform) => {
+                this.userPlatforms[userId] = [gameVersion, platform]
+            },
+        )
 
-        this.handleUnlockables(lastServerSideData)
-        this.handleContracts(lastServerSideData)
-        this.handleBlobs(lastServerSideData)
+        for (const deployment of this.deployments) {
+            this.handleContracts(deployment)
+            this.handleUnlockables(deployment)
+            this.handleWorldMapMetadata(deployment)
+            this.handleCampaigns(deployment)
+        }
 
-        if (lastServerSideData?.peacockPlugins) {
-            for (const plugin of lastServerSideData.peacockPlugins) {
-                await this.executePlugin(plugin)
-            }
+        for (const plugin of new Set(
+            this.deployments.flatMap(
+                (deployment) =>
+                    deployment.summary.serverSideData.peacockPlugins,
+            ),
+        )) {
+            await this.executePlugin(plugin)
         }
     }
 
     /**
-     * Returns whether a mod is available and installed.
+     * Returns whether a mod is enabled for the given user, by checking the deployments from Simple Mod Framework.
+     * Note that if the user has not yet logged in, this function will return null.
      *
-     * @param modId The mod's ID.
-     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     * @param userId The user ID to check against.
+     * @param modRef The mod ID and SemVer version range, in the form `id@version`.
+     * @returns If the mod is enabled (or the `overrideFrameworkChecks` flag is set).
      */
-    public modIsInstalled(modId: string): boolean {
+    public modEnabledForUser(userId: string, modRef: string): boolean | null {
+        const modId = modRef.split("@")[0]
+        const modVersionRange = modRef.split("@")[1]
+
+        const userInfo = this.userPlatforms[userId]
+
+        if (!userInfo) return null
+
         return (
-            this.lastDeploy?.loadOrder.includes(modId) ||
-            getFlag("overrideFrameworkChecks") === true
+            this.deployments.some(
+                (deployment) =>
+                    deployment.summary.game.version === userInfo[0] &&
+                    deployment.summary.game.platform === userInfo[1] &&
+                    deployment.summary.config.deployOrder.includes(modId) &&
+                    satisfies(
+                        deployment.summary.modVersions[modId],
+                        !isNaN(Number(modVersionRange[0]))
+                            ? `^${modVersionRange}`
+                            : modVersionRange,
+                    ),
+            ) || getFlag("overrideFrameworkChecks") === true
+        )
+    }
+
+    /**
+     * Returns whether a mod is enabled for the given game version and platform, by checking the deployments from Simple Mod Framework.
+     *
+     * @param gameVersion The game version to check against.
+     * @param platform The platform to check against.
+     * @param modRef The mod ID and SemVer version range, in the form `id@version`.
+     * @returns If the mod is enabled (or the `overrideFrameworkChecks` flag is set).
+     */
+    public modEnabledForGame(
+        gameVersion: GameVersion,
+        platform: JwtData["platform"],
+        modRef: string,
+    ): boolean {
+        const modId = modRef.split("@")[0]
+        const modVersionRange = modRef.split("@")[1]
+
+        return (
+            this.deployments.some(
+                (deployment) =>
+                    deployment.summary.game.version === gameVersion &&
+                    deployment.summary.game.platform === platform &&
+                    deployment.summary.config.deployOrder.includes(modId) &&
+                    satisfies(
+                        deployment.summary.modVersions[modId],
+                        !isNaN(Number(modVersionRange[0]))
+                            ? `^${modVersionRange}`
+                            : modVersionRange,
+                    ),
+            ) || getFlag("overrideFrameworkChecks") === true
         )
     }
 }
