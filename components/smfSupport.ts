@@ -20,7 +20,12 @@ import { Controller } from "./controller"
 import { existsSync, readFileSync } from "fs"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
-import { MissionManifest, SMFLastDeploy } from "./types/types"
+import {
+    GameVersion,
+    JwtData,
+    MissionManifest,
+    SMFLastDeploy,
+} from "./types/types"
 import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
@@ -216,8 +221,51 @@ export class SMFSupport {
      *
      * @param modId The mod's ID.
      * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     * @deprecated since v8.9.0, use `controller.smf.modEnabledForUser` or `controller.smf.modEnabledForGame`
      */
     public modIsInstalled(modId: string): boolean {
+        return (
+            this.lastDeploy?.loadOrder.includes(modId) ||
+            getFlag("overrideFrameworkChecks") === true
+        )
+    }
+
+    /**
+     * Returns whether a mod is enabled for the given user, by checking the deployments from Simple Mod Framework.
+     * Note that if the user has not yet logged in, this function will return null.
+     *
+     * @param userId The user ID to check against.
+     * @param modRef The mod ID and SemVer version range, in the form `id@version`.
+     * @returns If the mod is enabled (or the `overrideFrameworkChecks` flag is set).
+     */
+    public modEnabledForUser(userId: string, modRef: string): boolean | null {
+        const modId = modRef.split("@")[0]
+
+        // Until SMFv3, we don't have the necessary information to
+        // actually check more than whether the mod is installed.
+        return (
+            this.lastDeploy?.loadOrder.includes(modId) ||
+            getFlag("overrideFrameworkChecks") === true
+        )
+    }
+
+    /**
+     * Returns whether a mod is enabled for the given game version and platform, by checking the deployments from Simple Mod Framework.
+     *
+     * @param gameVersion The game version to check against.
+     * @param platform The platform to check against.
+     * @param modRef The mod ID and SemVer version range, in the form `id@version`.
+     * @returns If the mod is enabled (or the `overrideFrameworkChecks` flag is set).
+     */
+    public modEnabledForGame(
+        gameVersion: GameVersion,
+        platform: JwtData["platform"],
+        modRef: string,
+    ): boolean {
+        const modId = modRef.split("@")[0]
+
+        // Until SMFv3, we don't have the necessary information to
+        // actually check more than whether the mod is installed.
         return (
             this.lastDeploy?.loadOrder.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
