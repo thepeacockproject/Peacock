@@ -30,6 +30,7 @@ import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
+import { deprecated } from "./utils"
 
 type LastServerSideData = SMFLastDeploy["lastServerSideStates"]
 
@@ -224,6 +225,12 @@ export class SMFSupport {
      * @deprecated since v8.9.0, use `controller.smf.modEnabledForUser` or `controller.smf.modEnabledForGame`
      */
     public modIsInstalled(modId: string): boolean {
+        deprecated(
+            "controller.smf.modIsInstalled",
+            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
+            "v9",
+        )
+
         return (
             this.lastDeploy?.loadOrder.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true

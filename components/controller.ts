@@ -476,14 +476,15 @@ export class Controller {
      *
      * @param modId The mod's ID.
      * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
-     * @deprecated since v5.5.0, use `!controller.smf.modIsInstalled`
+     * @deprecated since v5.5.0, use `!controller.smf.modEnabledForUser` or `!controller.smf.modEnabledForGame`
      */
     public addClientSideModDependency(modId: string): boolean {
-        log(
-            LogLevel.WARN,
-            "controller.addClientSideModDependency is deprecated, use !controller.smf.modIsInstalled instead!",
-            "plugins",
+        deprecated(
+            "controller.addClientSideModDependency",
+            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
+            "v9",
         )
+
         return (
             getFlag("overrideFrameworkChecks") === true ||
             !this.smf.modIsInstalled(modId)
@@ -497,14 +498,15 @@ export class Controller {
      *
      * @param modId The mod's ID.
      * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
-     * @deprecated since v7.0.0, use `controller.smf.modIsInstalled`
+     * @deprecated since v7.0.0, use `controller.smf.modEnabledForUser` or `controller.smf.modEnabledForGame`
      */
     public modIsInstalled(modId: string): boolean {
-        log(
-            LogLevel.WARN,
-            "controller.modIsInstalled is deprecated, use controller.smf.modIsInstalled instead!",
-            "plugins",
+        deprecated(
+            "controller.modIsInstalled",
+            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
+            "v9",
         )
+
         return this.smf.modIsInstalled(modId)
     }
 
