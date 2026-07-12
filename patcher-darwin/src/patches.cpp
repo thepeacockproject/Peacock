@@ -9,6 +9,7 @@ namespace peacock {
 
     PatchRegistry::PatchRegistry() {
         patch_definitions::add_v3_260_1(*this);
+        patch_definitions::add_v3_270_1(*this);
     }
 
     void PatchRegistry::add_version(uint32_t identifier, HitmanVersion version) {
