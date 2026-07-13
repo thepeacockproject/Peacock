@@ -79,12 +79,12 @@ Thank you to people who have contributed!
 
 ## AI Usage Guidelines
 
-You **may not** contribute content generated, in part or in full, by large language 
-models, chatbots or other generative AI tools. This policy covers code, documentation, 
-pull requests, issues, comments, and any other contributions to the Peacock Project, 
-including both this repository and any others under the Peacock Project organization. 
+You **may not** contribute content generated, in part or in full, by large language
+models, chatbots or other generative AI tools. This policy covers code, documentation,
+pull requests, issues, comments, and any other contributions to the Peacock Project,
+including both this repository and any others under the Peacock Project organization.
 
-In addition, you **may not** use this repository or any other repositories under the 
+In addition, you **may not** use this repository or any other repositories under the
 Peacock Project organization to train AI tools.
 
 ## License
