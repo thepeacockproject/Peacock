@@ -21,6 +21,22 @@ import { randomUUID } from "crypto"
 import assert from "assert"
 
 /**
+ * The player gets a choice of which kill method the contract should be created with.
+ * It has the following 4 levels of granularity.
+ * I tried to find a corresponding internal enum from the SDK's `Glacier.h`, but to no avail.
+ */
+export const enum RequiredKillMethodType {
+    /** Any method. */
+    Any = 0,
+    /** Pistol, fiberwire, shotgun, explosive, any thrown, any melee, any poison. */
+    BroadMethod = 1,
+    /** A specific method but not a specific item. consumed_poison, injected_poison, accident_*. Keyed off `KillMethodStrict`. */
+    SpecificMethod = 2,
+    /** A specific item (e.g. screwdriver, or lack thereof in the case of unarmed aka a neck snap). */
+    SpecificRepositoryId = 3,
+}
+
+/**
  * The payload provided to the game for each target in the create menu route.
  */
 export type ContractCreationNpcTargetPayload = {
@@ -31,7 +47,7 @@ export type ContractCreationNpcTargetPayload = {
         KillMethodBroad: string
         KillMethodStrict: string
         RequiredKillMethod: string
-        RequiredKillMethodType: number
+        RequiredKillMethodType: RequiredKillMethodType
     }
     Outfit: {
         RepositoryId: string
@@ -415,7 +431,7 @@ export function genStateMachineKillSuccessCondition(
 export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
     const type = weapon.RequiredKillMethodType
 
-    if (type === 0) {
+    if (type === RequiredKillMethodType.Any) {
         return ContractKillMethod.Any
     }
 
@@ -435,29 +451,33 @@ export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
         case "fiberwire":
             return ContractKillMethod.FiberWire
         case "throw": {
-            return type === 1
+            return type === RequiredKillMethodType.BroadMethod
                 ? ContractKillMethod.AnyThrown
                 : ContractKillMethod.ObjectThrown
         }
         case "melee_lethal": {
-            return type === 1
+            return type === RequiredKillMethodType.BroadMethod
                 ? ContractKillMethod.AnyMelee
                 : ContractKillMethod.ObjectMelee
         }
         case "poison": {
-            if (weapon.KillMethodStrict === "consumed_poison" && type === 2) {
+            if (
+                weapon.KillMethodStrict === "consumed_poison" &&
+                type === RequiredKillMethodType.SpecificMethod
+            ) {
                 return ContractKillMethod.ConsumedPoison
             }
 
             if (
                 weapon.KillMethodStrict === "injected_poison" &&
-                weapon.RequiredKillMethodType === 2
+                weapon.RequiredKillMethodType ===
+                    RequiredKillMethodType.SpecificMethod
             ) {
                 return ContractKillMethod.InjectedPoison
             }
 
             assert(
-                type === 1,
+                type === RequiredKillMethodType.BroadMethod,
                 `Unhandled poison: ${weapon.KillMethodStrict} ${type}`,
             )
 
