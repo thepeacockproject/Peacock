@@ -518,7 +518,6 @@ export const missionsInLocation = {
                 "4fbfae2e-a5e7-4b79-b008-94f6cbcb13cb",
                 "3721e543-b5e6-4af8-a4fc-c92e9a4453bd",
                 "8c6daf5e-5974-4438-af20-71ff570c7ff3",
-                "50201e8d-0552-46f9-8129-2172fefb5054",
             ],
             LOCATION_GREEDY_RACCOON: [
                 "9a461f89-86c5-44e4-998e-f2f66b496aa7",
@@ -610,6 +609,7 @@ export const missionsInLocation = {
                 "09a40d33-4820-454b-89af-a10e0b8d3e08",
                 "74278853-5990-4058-8972-1f10ad12b6d8",
                 "b1fb40d7-c013-4c9f-bb8a-8782e980b11a",
+                "55cd7c79-f6dd-4d58-86e1-d52863488077",
             ],
             LOCATION_ANCESTRAL_BULLDOG: [
                 "bfb56fe6-06db-440a-aafe-42eeeb223fa1",
