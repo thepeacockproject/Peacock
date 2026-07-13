@@ -77,6 +77,16 @@ or otherwise), follow steps 1 and 2 above, then do the following:
 
 Thank you to people who have contributed!
 
+## AI Usage Guidelines
+
+You **may not** contribute content generated, in part or in full, by large language 
+models, chatbots or other generative AI tools. This policy covers code, documentation, 
+pull requests, issues, comments, and any other contributions to the Peacock Project, 
+including both this repository and any others under the Peacock Project organization. 
+
+In addition, you **may not** use this repository or any other repositories under the 
+Peacock Project organization to train AI tools.
+
 ## License
 
 Peacock is under the AGPL-3.0 license, see the license file for more info.
