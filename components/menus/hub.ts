@@ -109,18 +109,23 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
     ] of controller.challengeService.challengePacks.entries()) {
         if (!pack.GameVersions.includes(gameVersion)) continue
 
+        const packCompletion =
+            controller.challengeService.countTotalNCompletedChallenges(
+                controller.challengeService.getChallengesForGroup(
+                    id,
+                    gameVersion,
+                ),
+                userId,
+                gameVersion,
+            )
+
+        if (packCompletion.ChallengesCount === 0) continue
+
         career[id] = {
             Children: [
                 generateCareerEntryChild(
                     locations.parents["LOCATION_PARENT_ICA_FACILITY"],
-                    controller.challengeService.countTotalNCompletedChallenges(
-                        controller.challengeService.getChallengesForGroup(
-                            id,
-                            gameVersion,
-                        ),
-                        userId,
-                        gameVersion,
-                    ),
+                    packCompletion,
                     id,
                 ),
             ],
