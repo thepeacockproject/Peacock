@@ -33,7 +33,7 @@ const legacyContractRouter = Router()
 /**
  * This game changer was modified between H1 and H2 to add pacification tracking, but that crashes in H1, so we use the old version.
  */
-const doNotGetSpottedH1: GameChanger = {
+const doNotGetSpottedSecondaryH1: GameChanger = {
     Id: "b48bb7f9-b630-48cb-a816-720ed7959319",
     Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_NAME",
     Description:
@@ -56,6 +56,54 @@ const doNotGetSpottedH1: GameChanger = {
             },
             Type: "statemachine",
             CombinedDisplayInHud: true,
+            Definition: {
+                Scope: "session",
+                States: {
+                    Start: {
+                        "-": {
+                            Transition: "Success",
+                        },
+                    },
+                    Success: {
+                        Spotted: {
+                            Transition: "Failure",
+                        },
+                        DisguiseBlown: {
+                            Transition: "Failure",
+                        },
+                    },
+                },
+            },
+        },
+    ],
+}
+
+const doNotGetSpottedPrimaryH1: GameChanger = {
+    Id: "9f409781-0a06-4748-b08d-784e78c6d481",
+    Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_NAME",
+    Description:
+        "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_DESC",
+    Icon: "images/challenges/default_challenge_icon.png",
+    IsHidden: null,
+    TileImage:
+        "images/contractconditions/condition_contrac_do_not_be_spotted.jpg",
+    Resource: [],
+    Objectives: [
+        {
+            Id: "88778b57-2a4e-434f-874e-219d4eeb4089",
+            Category: "primary",
+            OnActive: {
+                IfCompleted: {
+                    Visible: false,
+                },
+            },
+            BriefingText:
+                "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_FAIL",
+            HUDTemplate: {
+                display:
+                    "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_OBJ",
+            },
+            Type: "statemachine",
             Definition: {
                 Scope: "session",
                 States: {
@@ -131,8 +179,12 @@ legacyContractRouter.post(
             for (const gameChangerId of contractData.Data.GameChangers) {
                 let gameChanger = gameChangerData[gameChangerId]
 
-                if (gameChangerId === "b48bb7f9-b630-48cb-a816-720ed7959319") {
-                    gameChanger = doNotGetSpottedH1
+                if (gameChangerId === doNotGetSpottedSecondaryH1.Id) {
+                    gameChanger = doNotGetSpottedSecondaryH1
+                }
+
+                if (gameChangerId === doNotGetSpottedPrimaryH1.Id) {
+                    gameChanger = doNotGetSpottedPrimaryH1
                 }
 
                 if (!gameChanger) {
