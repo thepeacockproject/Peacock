@@ -2,11 +2,11 @@
     "$datacontext": {
         "in": "$.",
         "datavalues": {
-            "@global.CacheBuster": "0"
+            "CacheBuster": "$.@global.CacheBuster"
         },
         "do": {
             "$include": {
-                "$path": "$formatstring menusystem/pages/peacock-menu/options.json@{$.@global.CacheBuster}"
+                "$path": "$formatstring menusystem/pages/peacock-menu/options.json@{$.CacheBuster}"
             }
         }
     }
