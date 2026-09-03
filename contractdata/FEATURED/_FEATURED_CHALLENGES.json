@@ -126,9 +126,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -259,9 +274,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -392,9 +422,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -525,9 +570,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -658,9 +718,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -791,9 +866,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -924,9 +1014,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1057,9 +1162,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1190,9 +1310,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1320,9 +1455,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1440,9 +1590,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1560,9 +1725,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1680,9 +1860,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1802,9 +1997,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -1922,9 +2132,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -2044,9 +2269,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
@@ -2164,9 +2404,24 @@
                                 "ContractStart": {
                                     "Condition": {
                                         "$not": {
-                                            "$eq": [
-                                                "$Value.ContractType",
-                                                "featured"
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ContractType",
+                                                        "featured"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.LocationId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Locations"
+                                                    }
+                                                }
                                             ]
                                         }
                                     },
