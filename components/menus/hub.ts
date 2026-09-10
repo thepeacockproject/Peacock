@@ -34,6 +34,7 @@ import {
 } from "../contracts/dataGen"
 import { createLocationsData, getAllGameDestinations } from "./destinations"
 import { makeCampaigns } from "./campaigns"
+import { getFlag } from "../flags"
 
 type CareerEntry = {
     Children: CareerEntryChild[]
@@ -128,7 +129,8 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
             ],
             Name: pack.Name,
             Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
-            IsPack: true,
+            // If IsPack returns false, the tile won't be shown at all.
+            IsPack: (id !== "versus" || !(gameVersion === "h3" && getFlag("hideGhostModeChallengeTile"))),
         }
     }
 
