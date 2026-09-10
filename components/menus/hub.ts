@@ -39,6 +39,8 @@ type CareerEntry = {
     Children: CareerEntryChild[]
     Name: string
     Location: Unlockable
+    // @since v8.9.1 Peacock-only
+    IsPack?: boolean
 }
 
 type CareerEntryChild = {
@@ -126,6 +128,7 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
             ],
             Name: pack.Name,
             Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+            IsPack: true,
         }
     }
 
