@@ -130,7 +130,12 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
             Name: pack.Name,
             Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
             // If IsPack returns false, the tile won't be shown at all.
-            IsPack: (id !== "versus" || !(gameVersion === "h3" && getFlag("hideGhostModeChallengeTile"))),
+            IsPack:
+                id !== "versus" ||
+                !(
+                    gameVersion === "h3" &&
+                    getFlag("hideGhostModeChallengeTile")
+                ),
         }
     }
 
