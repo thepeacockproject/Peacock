@@ -94,7 +94,7 @@ export class MenuSystemDatabase {
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
 
-                    // So we can add a Challenge Packs category + show the ET and Arcade tabs
+                    // So we can add a Challenge Packs category + show the ET and Arcade tiles
                     configs.push(
                         "menusystem/elements/challenges/challengelocationviewtile.json",
                     )
