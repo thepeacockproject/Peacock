@@ -61,6 +61,12 @@ export const defaultFlags: Flags = {
                 desc: "Decides if items are unlocked when there are no associated unlocking approaches. Requires enableMasteryProgression to be true.",
                 default: true,
             },
+            hideGhostModeChallengeTile: {
+                category: "Gameplay",
+                title: "hideGhostModeChallengeTile",
+                desc: "If enabled, the Ghost Mode tile on the Career -> Challenges page will be hidden in HITMAN 3. This does not disable/remove the challenges from that version.",
+                default: false,
+            },
             elusivesAreShown: {
                 category: "Gameplay",
                 title: "elusivesAreShown",

@@ -34,11 +34,14 @@ import {
 } from "../contracts/dataGen"
 import { createLocationsData, getAllGameDestinations } from "./destinations"
 import { makeCampaigns } from "./campaigns"
+import { getFlag } from "../flags"
 
 type CareerEntry = {
     Children: CareerEntryChild[]
     Name: string
     Location: Unlockable
+    // @since v8.9.1 Peacock-only
+    IsPack?: boolean
 }
 
 type CareerEntryChild = {
@@ -126,6 +129,10 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
             ],
             Name: pack.Name,
             Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+            // If IsPack returns false, the tile won't be shown at all.
+            IsPack: getFlag("hideGhostModeChallengeTile")
+                ? !(gameVersion === "h3" && id === "versus")
+                : true,
         }
     }
 

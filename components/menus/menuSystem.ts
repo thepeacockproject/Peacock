@@ -94,8 +94,19 @@ export class MenuSystemDatabase {
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
 
+                    // So we can add a Challenge Packs category + show the ET and Arcade tiles
                     configs.push(
                         "menusystem/elements/challenges/challengelocationviewtile.json",
+                    )
+                    configs.push(
+                        "menusystem/elements/challenges/challengelocationview.json",
+                    )
+                    configs.push(
+                        "menusystem/elements/challenges/data/data_challengelocation_season3.json",
+                    )
+                    // @since v8.9.1 Peacock-only
+                    configs.push(
+                        "menusystem/elements/challenges/data/data_challengelocation_packs.json",
                     )
                 }
 
@@ -167,6 +178,89 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/gamemodes/gamemodearcade_page.json":
                     return getConfig("ArcadePageTemplate", false)
+                case "/elements/challenges/challengelocationview.json":
+                    return {
+                        controller: "container",
+                        children: [
+                            {
+                                pressable: false,
+                                selectable: false,
+                                actions: {
+                                    activated: [
+                                        {
+                                            "set-value": {
+                                                target: "$.@global.CurrentBackgroundImage",
+                                                value: "images/backgrounds/career_challenges.jpg",
+                                            },
+                                        },
+                                        {
+                                            "$if $not $.@global.NoAutoSelectChallenges":
+                                                {
+                                                    $then: {
+                                                        "set-selected": {
+                                                            target: "category_season_3",
+                                                        },
+                                                    },
+                                                },
+                                        },
+                                        {
+                                            "set-value": {
+                                                target: "$.@global.NoAutoSelectChallenges",
+                                                value: true,
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                            {
+                                $datacontext: {
+                                    in: "$.",
+                                    datavalues: {
+                                        Seasons: [
+                                            {
+                                                $include:
+                                                    "menusystem/elements/challenges/data/data_challengelocation_season1.json",
+                                            },
+                                            {
+                                                $include:
+                                                    "menusystem/elements/challenges/data/data_challengelocation_season2.json",
+                                            },
+                                            {
+                                                $include:
+                                                    "menusystem/elements/challenges/data/data_challengelocation_season3.json",
+                                            },
+                                            // This inclusion is the only change from the client's version
+                                            {
+                                                $include:
+                                                    "menusystem/elements/challenges/data/data_challengelocation_packs.json",
+                                            },
+                                        ],
+                                    },
+                                    do: {
+                                        controller: "category",
+                                        id: "sub_category_container",
+                                        row: -1,
+                                        _col: 0,
+                                        view: "menu3.containers.ScrollingTabsContainer",
+                                        ncols: 10,
+                                        direction: "horizontal",
+                                        submenunavigation: true,
+                                        loopedselection: false,
+                                        data: {
+                                            direction: "horizontal",
+                                            submenu: true,
+                                        },
+                                        children: {
+                                            "$each $.Seasons": {
+                                                $include:
+                                                    "menusystem/elements/challenges/challengelocationviewsubtab.json",
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                    }
                 case "/elements/challenges/challengelocationviewtile.json":
                     return {
                         "$if $.IsPack": {
@@ -232,6 +326,44 @@ export class MenuSystemDatabase {
                                         },
                                     },
                                 },
+                            },
+                        },
+                    }
+                case "/elements/challenges/data/data_challengelocation_season3.json":
+                    return {
+                        Season: "3",
+                        ChallengeData: {
+                            $arrayfilter: {
+                                source: "$.ProfileData.ChallengeData.Children",
+                                addCondition: {
+                                    $and: [
+                                        // This condition is the only change from the client's version
+                                        "$isnullorempty $.IsPack",
+                                        {
+                                            $or: [
+                                                {
+                                                    $and: [
+                                                        "$not $eq($.Location.Properties.Season,1)",
+                                                        "$not $eq($.Location.Properties.Season,2)",
+                                                    ],
+                                                },
+                                                "$eq($.Location.Id,LOCATION_PARENT_ICA_FACILITY)",
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                        },
+                    }
+
+                // @since v8.9.1 Peacock-only
+                case "/elements/challenges/data/data_challengelocation_packs.json":
+                    return {
+                        Season: "challengepacks",
+                        ChallengeData: {
+                            $arrayfilter: {
+                                source: "$.ProfileData.ChallengeData.Children",
+                                addCondition: "$.IsPack",
                             },
                         },
                     }
