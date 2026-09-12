@@ -18,7 +18,6 @@
 
 import type * as core from "express-serve-static-core"
 
-import type { ContractCreationNpcTargetPayload } from "../statemachines/contractCreation"
 import { Request } from "express"
 import {
     ChallengeContext,
@@ -1150,22 +1149,6 @@ export interface GameLocationsData {
             Location: Unlockable
             SubLocation: Unlockable
         }[]
-    }
-}
-
-/**
- * The body sent with the CreateFromParams request from the game during the final phase of contract creation.
- *
- * @see ContractCreationNpcTargetPayload
- */
-export interface CreateFromParamsBody {
-    creationData: {
-        Title: string
-        Description: string
-        ContractId: string
-        ContractPublicId: string
-        Targets: ContractCreationNpcTargetPayload[]
-        ContractConditionIds: string[]
     }
 }
 

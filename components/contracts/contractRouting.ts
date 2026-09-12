@@ -25,6 +25,7 @@ import {
     uuidRegex,
 } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
+import { z } from "zod"
 import {
     enqueueEvent,
     getSession,
@@ -35,7 +36,6 @@ import {
 import { controller } from "../controller"
 import { getConfig } from "../configSwizzleManager"
 import type {
-    CreateFromParamsBody,
     GameChanger,
     MissionManifest,
     MissionManifestObjective,
@@ -53,7 +53,11 @@ import {
     createTimeLimit,
 } from "../statemachines/contractCreation"
 import { createSniperLoadouts, SniperCharacter } from "../menus/sniper"
-import { GetForPlay2Body } from "../types/gameSchemas"
+import {
+    CreateFromParamsBody,
+    createFromParamsBodySchema,
+    GetForPlay2Body,
+} from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
@@ -246,6 +250,21 @@ contractRoutingRouter.post(
         req: RequestWithJwt<Record<never, never>, CreateFromParamsBody>,
         res,
     ) => {
+        const parsed = createFromParamsBodySchema.safeParse(req.body)
+
+        if (!parsed.success) {
+            res.status(400).end()
+            log(
+                LogLevel.WARN,
+                `Rejected a malformed CreateFromParams request: ${z.prettifyError(
+                    parsed.error,
+                )}`,
+            )
+            return
+        }
+
+        const { creationData } = parsed.data
+
         const gameChangerData = getConfig<Record<string, GameChanger>>(
             "GameChangerProperties",
             true,
@@ -287,7 +306,7 @@ contractRoutingRouter.post(
             return
         }
 
-        for (const target of req.body.creationData.Targets) {
+        for (const target of creationData.Targets) {
             if (!target.Selected) {
                 continue
             }
@@ -295,25 +314,21 @@ contractRoutingRouter.post(
             objectives.push(...createObjectivesForTarget(target))
         }
 
-        req.body.creationData.ContractConditionIds.forEach(
-            (contractConditionId) => {
-                if (gameChangerData[contractConditionId]) {
-                    gamechangers.push(contractConditionId)
-                } else if (
-                    contractConditionId ===
-                    "1a596216-381e-4592-9798-26f156973942"
-                ) {
-                    // Optional time limit
-                    objectives.push(createTimeLimit(timeLimit, true))
-                } else if (
-                    contractConditionId ===
-                    "3d6f9119-7ec8-496f-ab4c-ed9757d976a4"
-                ) {
-                    // Mandatory time limit
-                    objectives.push(createTimeLimit(timeLimit, false))
-                }
-            },
-        )
+        creationData.ContractConditionIds.forEach((contractConditionId) => {
+            if (gameChangerData[contractConditionId]) {
+                gamechangers.push(contractConditionId)
+            } else if (
+                contractConditionId === "1a596216-381e-4592-9798-26f156973942"
+            ) {
+                // Optional time limit
+                objectives.push(createTimeLimit(timeLimit, true))
+            } else if (
+                contractConditionId === "3d6f9119-7ec8-496f-ab4c-ed9757d976a4"
+            ) {
+                // Mandatory time limit
+                objectives.push(createTimeLimit(timeLimit, false))
+            }
+        })
 
         const theVersion = `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}.${ServerVer._Revision}`
 
@@ -324,8 +339,8 @@ contractRoutingRouter.post(
                 Bricks: contractData.Data.Bricks,
             },
             Metadata: {
-                Title: req.body.creationData.Title,
-                Description: req.body.creationData.Description,
+                Title: creationData.Title,
+                Description: creationData.Description,
                 Entitlements: contractData.Metadata.Entitlements,
                 ScenePath: contractData.Metadata.ScenePath,
                 Location: contractData.Metadata.Location,
@@ -334,14 +349,12 @@ contractRoutingRouter.post(
                 GameVersion: theVersion,
                 ServerVersion: theVersion,
                 Type: "usercreated",
-                Id: req.body.creationData.ContractId,
-                PublicId: req.body.creationData.ContractPublicId,
-                TileImage: `$($repository ${req.body.creationData.Targets[0]?.RepositoryId}).Image`,
-                GroupObjectiveDisplayOrder: req.body.creationData.Targets.map(
-                    (t) => ({
-                        Id: t.RepositoryId,
-                    }),
-                ),
+                Id: creationData.ContractId,
+                PublicId: creationData.ContractPublicId,
+                TileImage: `$($repository ${creationData.Targets[0]?.RepositoryId}).Image`,
+                GroupObjectiveDisplayOrder: creationData.Targets.map((t) => ({
+                    Id: t.RepositoryId,
+                })),
                 CreationTimestamp: new Date().toISOString(),
             },
             UserData: {},

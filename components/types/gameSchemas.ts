@@ -17,6 +17,8 @@
  */
 
 import { MissionType } from "./types"
+import { z } from "zod"
+import { publicIdRegex, uuidRegex } from "../utils"
 
 export type MissionEndRequestQuery = Partial<{
     contractSessionId: string
@@ -197,3 +199,51 @@ export type ConfigRouteParams = {
     audience: string
     serverVersion: string
 }
+
+/**
+ * Game UUID is (basically) a UUID, and any valid hexidecimal character is accepted in any spot (including the reserved slot for the UUID v4 version marker.)
+ * (See e.g. The Showstopper, which is not a valid UUIDv4)
+ */
+const gameUuid = z.string().regex(uuidRegex)
+
+/**
+ * One target in the create-contract payload, as described by {@link ContractCreationNpcTargetPayload}.
+ */
+const contractCreationNpcTarget = z.object({
+    RepositoryId: gameUuid,
+    Selected: z.boolean(),
+    Weapon: z.object({
+        RepositoryId: gameUuid,
+        KillMethodBroad: z.string(),
+        KillMethodStrict: z.string(),
+        RequiredKillMethod: z.string(),
+        // the four levels of granularity in RequiredKillMethodType
+        RequiredKillMethodType: z.union([
+            z.literal(0),
+            z.literal(1),
+            z.literal(2),
+            z.literal(3),
+        ]),
+    }),
+    Outfit: z.object({
+        RepositoryId: gameUuid,
+        Required: z.boolean(),
+        IsHitmanSuit: z.boolean(),
+    }),
+})
+
+/**
+ * The body sent with the `CreateFromParams` request from the game during the final phase of contract creation.
+ */
+export const createFromParamsBodySchema = z.object({
+    creationData: z.object({
+        Title: z.string(),
+        Description: z.string(),
+        ContractId: gameUuid,
+        ContractPublicId: z.string().regex(publicIdRegex),
+        Targets: z.array(contractCreationNpcTarget),
+        ContractConditionIds: z.array(z.string()),
+    }),
+})
+
+export type CreateFromParamsBody = z.infer<typeof createFromParamsBodySchema>
