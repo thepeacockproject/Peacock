@@ -51,7 +51,7 @@ import {
     fastClone,
     getRemoteService,
     hitmapsUrl,
-    safePublicIdRegex,
+    publicIdRegex,
     versions,
 } from "./utils"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
@@ -673,7 +673,7 @@ export class Controller {
     ): Promise<MissionManifest> {
         const publicId = manifest.Metadata.PublicId
 
-        if (!publicId || !safePublicIdRegex.test(publicId)) {
+        if (!publicId || !publicIdRegex.test(publicId)) {
             throw new Error(
                 `Refusing to save contract ${manifest.Metadata.Id}: unsafe public ID`,
             )

@@ -19,9 +19,7 @@
 import { describe, expect, test } from "vitest"
 import { createFromParamsBodySchema } from "../../components/types/gameSchemas"
 import { nilUuid } from "../../components/utils"
-import {
-    RequiredKillMethodType
-} from "../../components/statemachines/contractCreation.js"
+import { RequiredKillMethodType } from "../../components/statemachines/contractCreation.js"
 
 /** a realistic payload, as the game sends it at the end of contract creation */
 const validBody = {
@@ -80,7 +78,7 @@ describe("CreateFromParams schema", () => {
             ["traversal after a valid id", "113468897792/../../evil"],
             ["trailing junk", "113468897792evil"],
             ["leading junk", "evil113468897792"],
-            ["too short", "06856262622"],
+            ["eleven digits", "12345678901"],
             ["empty", ""],
             ["not a string", 113468897792],
         ])("%s", (_name, publicId) => {
