@@ -122,15 +122,30 @@ namespace peacock {
         };
     }
 
-    /// Extract the branch offset (in bytes) from a TBNZ/TBZ instruction.
-    static int32_t decode_tbnz_offset(const uint8_t *bytes) {
+    /// Extract the branch offset (in bytes) from a conditional branch
+    /// instruction: CBZ/CBNZ, TBZ/TBNZ or B.cond.
+    static std::optional<int32_t> decode_cond_branch_offset(const uint8_t *bytes) {
         uint32_t word;
         memcpy(&word, bytes, kArm64InstructionAlignment);
-        auto imm14 = static_cast<int32_t>((word >> 5) & 0x3FFF);
-        // Sign-extend from 14 bits
-        if (imm14 & 0x2000)
-            imm14 |= ~0x3FFF;
-        return imm14 << 2;
+
+        if ((word & 0x7E000000u) == 0x34000000u || // CBZ / CBNZ
+            (word & 0xFF000010u) == 0x54000000u) { // B.cond
+            auto imm19 = static_cast<int32_t>((word >> 5) & 0x7FFFF);
+            // Sign-extend from 19 bits
+            if (imm19 & 0x40000)
+                imm19 |= ~0x7FFFF;
+            return imm19 << 2;
+        }
+
+        if ((word & 0x7E000000u) == 0x36000000u) { // TBZ / TBNZ
+            auto imm14 = static_cast<int32_t>((word >> 5) & 0x3FFF);
+            // Sign-extend from 14 bits
+            if (imm14 & 0x2000)
+                imm14 |= ~0x3FFF;
+            return imm14 << 2;
+        }
+
+        return std::nullopt;
     }
 
     /// Read a 4-byte vector from the binary data at the given offset.
@@ -170,14 +185,21 @@ namespace peacock {
         const uint64_t certpin_offset = certpin_matches[0] + 12;
 
         // Build replacement: same branch target, but unconditional
-        const int32_t certpin_branch_offset =
-                decode_tbnz_offset(&exe_data[certpin_offset]);
+        const auto certpin_branch_offset =
+                decode_cond_branch_offset(&exe_data[certpin_offset]);
+        if (!certpin_branch_offset) {
+            log("AOB scan failed: expected TBNZ at certpin patch");
+            return std::nullopt;
+        }
         auto certpin_orig = read_bytes(exe_data, certpin_offset);
-        auto certpin_repl = encode_arm64_b(certpin_branch_offset);
+        auto certpin_repl = encode_arm64_b(*certpin_branch_offset);
 
         // In the HTTP request header builder, two conditional branches gate
-        // Authorization header injection:
+        // Authorization header injection. Both branch to the same location
+        // (past the header injection). The compiler has emitted two shapes
+        // for the second check so far:
         //
+        // 3.260.1:
         //   bl   isHttps             ; ?? ?? ?? 94
         //   cbz  w0, +??             ; ?? ?? ?? 34  ← patch 1 (NOP)
         //   mov  x0, x19             ; E0 03 13 AA
@@ -186,11 +208,31 @@ namespace peacock {
         //   orr  w8, w21, w8         ; A8 02 08 2A
         //   tbnz w8, #0, +??         ; ?? ?? 00 37  ← patch 2 (NOP)
         //
-        // We anchor on the distinctive mov+bl+eor+orr+tbnz sequence,
-        // then derive the cbz position (4 bytes before the mov).
+        // 3.270.1 and later:
+        //   bl   isHttps             ; ?? ?? ?? 94
+        //   cbz  w0, +??             ; ?? ?? ?? 34  ← patch 1 (NOP)
+        //   mov  x0, x19             ; E0 03 13 AA
+        //   bl   authStateCheck      ; ?? ?? ?? 94
+        //   and  w8, w21, w0         ; A8 02 00 0A
+        //   cmp  w8, #0x1            ; 1F 05 00 71
+        //   b.ne +??                 ; ?? ?? ?? 54  ← patch 2 (NOP)
+        //
+        // We anchor on the mov+bl+<2 insns>+branch sequence, then derive the
+        // cbz position (4 bytes before the mov). Exactly one of the shapes
+        // must match exactly once.
 
-        auto auth_matches = find_pattern(exe_data, 0,
-                                         "E0 03 13 AA ? ? ? 94 08 00 00 52 A8 02 08 2A ? ? 00 37");
+        static constexpr const char *kAuthHeaderPatterns[] = {
+            // 3.270.1+: and / cmp / b.ne
+            "E0 03 13 AA ? ? ? 94 A8 02 00 0A 1F 05 00 71 ? ? ? 54",
+            // 3.260.1: eor / orr / tbnz
+            "E0 03 13 AA ? ? ? 94 08 00 00 52 A8 02 08 2A ? ? 00 37",
+        };
+
+        std::vector<int> auth_matches;
+        for (const char *pattern: kAuthHeaderPatterns) {
+            const auto matches = find_pattern(exe_data, 0, pattern);
+            auth_matches.insert(auth_matches.end(), matches.begin(), matches.end());
+        }
 
         if (auth_matches.size() != 1) {
             log("AOB scan failed: authheader pattern found " +
@@ -199,7 +241,7 @@ namespace peacock {
         }
 
         const uint64_t auth1_offset = auth_matches[0] - 4; // cbz before mov
-        const uint64_t auth2_offset = auth_matches[0] + 16; // tbnz at end
+        const uint64_t auth2_offset = auth_matches[0] + 16; // conditional branch at end
 
         auto auth1_orig = read_bytes(exe_data, auth1_offset);
         auto auth2_orig = read_bytes(exe_data, auth2_offset);
@@ -208,6 +250,23 @@ namespace peacock {
         if (auth1_orig[3] != 0x34) {
             log("AOB scan failed: expected CBZ at authheader patch 1 "
                 "(got 0x" + to_hex(auth1_orig[3]) + ")");
+            return std::nullopt;
+        }
+
+        // Both branches must skip to the same place, otherwise this is not the gate we're looking for.
+        const auto auth1_branch = decode_cond_branch_offset(&exe_data[auth1_offset]);
+        const auto auth2_branch = decode_cond_branch_offset(&exe_data[auth2_offset]);
+        if (!auth1_branch || !auth2_branch) {
+            log("AOB scan failed: authheader patch sites are not conditional branches");
+            return std::nullopt;
+        }
+
+        const int64_t auth1_target = static_cast<int64_t>(auth1_offset) + *auth1_branch;
+        const int64_t auth2_target = static_cast<int64_t>(auth2_offset) + *auth2_branch;
+        if (auth1_target != auth2_target) {
+            log("AOB scan failed: authheader branches diverge (cbz -> 0x" +
+                to_hex(auth1_target) + ", second branch -> 0x" +
+                to_hex(auth2_target) + ")");
             return std::nullopt;
         }
 
@@ -259,13 +318,13 @@ namespace peacock {
         }
 
         log("AOB scan succeeded:");
-        log("  certpin:               0x" + to_hex(certpin_offset));
-        log("  authheader[0] (cbz):   0x" + to_hex(auth1_offset));
-        log("  authheader[1] (tbnz):  0x" + to_hex(auth2_offset));
-        log("  protocol:              0x" + to_hex(protocol_offset));
-        log("  configdomain:          0x" + to_hex(configdomain_offset));
-        log("  dynres_enable:         0x" + to_hex(dynres_enable_offset));
-        log("  dynres_noforceoffline: 0x" + to_hex(dynres_noforceoffline_offset));
+        log("  certpin:                   0x" + to_hex(certpin_offset));
+        log("  authheader[0] (cbz):       0x" + to_hex(auth1_offset));
+        log("  authheader[1] (b.ne/tbnz): 0x" + to_hex(auth2_offset));
+        log("  protocol:                  0x" + to_hex(protocol_offset));
+        log("  configdomain:              0x" + to_hex(configdomain_offset));
+        log("  dynres_enable:             0x" + to_hex(dynres_enable_offset));
+        log("  dynres_noforceoffline:     0x" + to_hex(dynres_noforceoffline_offset));
 
         static const std::vector nop(kNop, kNop + kArm64InstructionAlignment);
 
