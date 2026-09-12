@@ -772,10 +772,19 @@ export type TargetCondition = {
     /**
      * The target condition type. This can be one of the following:
      * - `killmethod` - A way to kill the target.
+     * - `killmethod_specificitem` - One specific item. Always paired with a `RepositoryId`.
      * - `hitmansuit` - Specifies the outfit must be any suit that you can start a level with which (but not a disguise).
      * - `disguise` - Specifies the outfit must be a specific disguise.
+     *
+     * Note IOI's contract also use `weapon` and `weapontype`, which are only for scene specific props AFAICT.
      */
-    Type: "killmethod" | "hitmansuit" | "disguise"
+    Type:
+        | "killmethod"
+        | "killmethod_specificitem"
+        | "hitmansuit"
+        | "disguise"
+        | "weapon"
+        | "weapontype"
     RepositoryId?: RepositoryId
     /**
      * If the game should display the objective as optional or not.

@@ -208,7 +208,9 @@ export function createObjectivesForTarget(
         targetSm.TargetConditions ??= []
 
         targetSm.TargetConditions.push({
-            Type: "killmethod",
+            Type: requiresSpecificItem(params.Weapon)
+                ? "killmethod_specificitem"
+                : "killmethod",
             RepositoryId: params.Weapon.RepositoryId,
             // for contract creation it's always optional, only escalations set hard fail conditions
             HardCondition: false,
@@ -220,6 +222,21 @@ export function createObjectivesForTarget(
     }
 
     return objectives
+}
+
+/**
+ * Whether the player asked for one specific item rather than a whole kill
+ * method. Methods with no item behind them (accidents, a neck snap) come
+ * through as the nil UUID, and IOI's own contracts keep those as a plain
+ * `killmethod`, so they are not treated as item-specific here.
+ * @param weapon The weapon details from the request.
+ */
+function requiresSpecificItem(weapon: Weapon): boolean {
+    return (
+        weapon.RequiredKillMethodType ===
+            RequiredKillMethodType.SpecificRepositoryId &&
+        weapon.RepositoryId !== nilUuid
+    )
 }
 
 /**
@@ -410,11 +427,7 @@ export function genStateMachineKillSuccessCondition(
                   },
               }
 
-    if (
-        weapon.RequiredKillMethodType ===
-            RequiredKillMethodType.SpecificRepositoryId &&
-        weapon.RepositoryId !== nilUuid
-    ) {
+    if (requiresSpecificItem(weapon)) {
         return {
             $and: [
                 methodCondition,
