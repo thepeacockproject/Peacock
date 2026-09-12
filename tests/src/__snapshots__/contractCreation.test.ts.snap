@@ -2364,19 +2364,9 @@ exports[`real world input data with createObjectivesForTarget > kill conditions:
                   {
                     "$any": {
                       "?": {
-                        "$or": [
-                          {
-                            "$eq": [
-                              "$.#",
-                              "pistol",
-                            ],
-                          },
-                          {
-                            "$eq": [
-                              "$.#",
-                              "close_combat_pistol_elimination",
-                            ],
-                          },
+                        "$eq": [
+                          "$.#",
+                          "close_combat_pistol_elimination",
                         ],
                       },
                       "in": [
@@ -2710,18 +2700,28 @@ exports[`real world input data with createObjectivesForTarget > kill conditions:
                     ],
                   },
                   {
-                    "$any": {
-                      "?": {
+                    "$and": [
+                      {
+                        "$any": {
+                          "?": {
+                            "$eq": [
+                              "$.#",
+                              "melee_lethal",
+                            ],
+                          },
+                          "in": [
+                            "$Value.KillMethodBroad",
+                            "$Value.KillMethodStrict",
+                          ],
+                        },
+                      },
+                      {
                         "$eq": [
-                          "$.#",
-                          "melee_lethal",
+                          "$Value.KillItemRepositoryId",
+                          "12cb6b51-a6dd-4bf5-9653-0ab727820cac",
                         ],
                       },
-                      "in": [
-                        "$Value.KillMethodBroad",
-                        "$Value.KillMethodStrict",
-                      ],
-                    },
+                    ],
                   },
                 ],
               },
@@ -2874,18 +2874,28 @@ exports[`real world input data with createObjectivesForTarget > kill conditions:
                     ],
                   },
                   {
-                    "$any": {
-                      "?": {
+                    "$and": [
+                      {
+                        "$any": {
+                          "?": {
+                            "$eq": [
+                              "$.#",
+                              "throw",
+                            ],
+                          },
+                          "in": [
+                            "$Value.KillMethodBroad",
+                            "$Value.KillMethodStrict",
+                          ],
+                        },
+                      },
+                      {
                         "$eq": [
-                          "$.#",
-                          "throw",
+                          "$Value.KillItemRepositoryId",
+                          "12cb6b51-a6dd-4bf5-9653-0ab727820cac",
                         ],
                       },
-                      "in": [
-                        "$Value.KillMethodBroad",
-                        "$Value.KillMethodStrict",
-                      ],
-                    },
+                    ],
                   },
                 ],
               },

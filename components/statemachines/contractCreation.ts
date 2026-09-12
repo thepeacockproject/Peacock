@@ -19,6 +19,7 @@
 import type { MissionManifestObjective, RepositoryId } from "../types/types"
 import { randomUUID } from "crypto"
 import assert from "assert"
+import { nilUuid } from "../utils"
 
 /**
  * The player gets a choice of which kill method the contract should be created with.
@@ -378,50 +379,53 @@ export function genStateMachineKillSuccessCondition(
 ): KillSuccessStateCondition {
     const km = weaponToKillMethod(weapon)
 
-    if (km === ContractKillMethod.PistolElimination) {
+    // a plain pistol kill can register as either "pistol" or, at close range,
+    // "close_combat_pistol_elimination", so "any pistol" has to accept both.
+    const methodCondition =
+        km === ContractKillMethod.Pistol
+            ? {
+                  $any: {
+                      "?": {
+                          $or: [
+                              {
+                                  $eq: ["$.#", "pistol"],
+                              },
+                              {
+                                  $eq: [
+                                      "$.#",
+                                      "close_combat_pistol_elimination",
+                                  ],
+                              },
+                          ],
+                      },
+                      in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+                  },
+              }
+            : {
+                  $any: {
+                      "?": {
+                          $eq: ["$.#", weapon.RequiredKillMethod],
+                      },
+                      in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+                  },
+              }
+
+    if (
+        weapon.RequiredKillMethodType ===
+            RequiredKillMethodType.SpecificRepositoryId &&
+        weapon.RepositoryId !== nilUuid
+    ) {
         return {
-            $any: {
-                "?": {
-                    $or: [
-                        {
-                            $eq: ["$.#", "pistol"],
-                        },
-                        {
-                            $eq: ["$.#", "close_combat_pistol_elimination"],
-                        },
-                    ],
+            $and: [
+                methodCondition,
+                {
+                    $eq: ["$Value.KillItemRepositoryId", weapon.RepositoryId],
                 },
-                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-            },
+            ],
         }
     }
 
-    if (km === ContractKillMethod.Pistol) {
-        return {
-            $any: {
-                "?": {
-                    $or: [
-                        {
-                            $eq: ["$.#", "pistol"],
-                        },
-                        {
-                            $eq: ["$.#", "close_combat_pistol_elimination"],
-                        },
-                    ],
-                },
-                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-            },
-        }
-    }
-
-    return {
-        $any: {
-            "?": {
-                $eq: ["$.#", weapon.RequiredKillMethod],
-            },
-            in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-        },
-    }
+    return methodCondition
 }
 
 /**
