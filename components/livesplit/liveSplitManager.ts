@@ -46,6 +46,7 @@ export class LiveSplitManager {
     constructor() {
         this._initialized = false
         this._initializationAttempted = false
+        // the rule on speedrun.com is a 1s reset minimum across all maps
         this._resetMinimum = 1
         this._currentMission = undefined
         this._inValidCampaignRun = false
@@ -61,18 +62,6 @@ export class LiveSplitManager {
     /*
      * PUBLIC INTERFACE
      */
-
-    missionIntentResolved(contractId: string, startId: string): void {
-        if (
-            LiveSplitManager._isClub27(contractId) &&
-            LiveSplitManager._isBangkokDefaultStartLocation(startId)
-        ) {
-            this._resetMinimum = 10
-            return
-        }
-
-        this._resetMinimum = 0
-    }
 
     async startMission(
         contractId: string,
@@ -377,22 +366,6 @@ export class LiveSplitManager {
         }
     }
 
-    private static _isClub27(contractId: string): boolean {
-        return [
-            "db341d9f-58a4-411d-be57-0bc4ed85646b",
-            "ad5f9051-045d-4b8e-8a4d-d84429f467f8",
-        ].includes(contractId)
-    }
-
-    private static _isBangkokDefaultStartLocation(
-        startLocationId: string,
-    ): boolean {
-        return [
-            "9ddbd515-2519-4c16-98aa-0f87af5d8ef5",
-            // maybe more?
-        ].includes(startLocationId)
-    }
-
     private async _setGameTime(totalTime: Seconds): Promise<void> {
         // IMPORTANT to floor to int before sending to livesplit or else parsing will fail silently...
         const flooredTime = Math.floor(totalTime)
@@ -412,13 +385,9 @@ export class LiveSplitManager {
     private _addMissionTime(time: Seconds): Seconds {
         let computedTime = Math.floor(time)
 
-        // always add at least minimum, which is usually 0 except on cutscenes where
-        // you can gain an advantage by restarting in cs (bangkok, sgail specific starts)
+        // always add at least the minimum of 1s for every reset
         if (time <= this._resetMinimum) {
             computedTime = this._resetMinimum
-        } else if (time > 0 && time <= 1) {
-            // if in game time is between 0 and 1, add full second
-            computedTime = 1
         }
 
         this._currentMissionTotalTime += computedTime
