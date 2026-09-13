@@ -383,7 +383,7 @@ menuDataRouter.get(
             res.json({
                 template:
                     req.gameVersion === "h3"
-                        ? null
+                        ? getConfig("H3StashpointTemplate", false)
                         : getVersionedConfig(
                               "StashpointTemplate",
                               req.gameVersion,
