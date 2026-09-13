@@ -74,6 +74,7 @@ import EiderDashboard from "../static/EiderDashboard.json"
 import H2allunlockables from "../static/H2allunlockables.json"
 import H2DestinationsData from "../static/H2DestinationsData.json"
 import H2StashpointTemplate from "../static/H2StashpointTemplate.json"
+import H3StashpointTemplate from "../static/H3StashpointTemplate.json"
 import H2StoreData from "../static/H2StoreData.json"
 import H2ContractSearchResponseTemplate from "../static/H2ContractSearchResponseTemplate.json"
 import H2LocationsData from "../static/H2LocationsData.json"
@@ -178,6 +179,7 @@ const configs = {
     H2allunlockables,
     H2DestinationsData,
     H2StashpointTemplate,
+    H3StashpointTemplate,
     H2StoreData,
     H2ContractSearchResponseTemplate,
     H2LocationsData,
