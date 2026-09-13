@@ -23,6 +23,7 @@ import {
     getMaxProfileLevel,
     isSuit,
     parsePageNumber,
+    publicIdRegex,
     unlockLevelComparer,
     unlockOrderComparer,
     uuidRegex,
@@ -839,8 +840,6 @@ async function lookupContractPublicId(
     userId: string,
     gameVersion: GameVersion,
 ) {
-    const publicIdRegex = /\d{12}/
-
     while (publicid.includes("-")) {
         publicid = publicid.replace("-", "")
     }

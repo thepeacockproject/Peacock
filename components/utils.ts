@@ -75,6 +75,11 @@ export const uuidRegex =
 export const contractTypes = ["featured", "usercreated"]
 
 /**
+ * A contract's public ID.
+ */
+export const publicIdRegex = /^\d{12}$/
+
+/**
  * A list of game versions, except scpc.
  */
 export const versions: Exclude<GameVersion, "scpc">[] = ["h1", "h2", "h3"]

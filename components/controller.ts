@@ -51,6 +51,7 @@ import {
     fastClone,
     getRemoteService,
     hitmapsUrl,
+    publicIdRegex,
     versions,
 } from "./utils"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
@@ -665,19 +666,28 @@ export class Controller {
      *
      * @param manifest The contract's data (mission manifest, a.k.a. mission JSON).
      * @return The manifest that got passed, in case you want to use chaining.
+     * @throws Error If the manifest's public ID is missing or is not safe to use as a filename.
      */
     public async commitNewContract(
         manifest: MissionManifest,
     ): Promise<MissionManifest> {
+        const publicId = manifest.Metadata.PublicId
+
+        if (!publicId || !publicIdRegex.test(publicId)) {
+            throw new Error(
+                `Refusing to save contract ${manifest.Metadata.Id}: unsafe public ID`,
+            )
+        }
+
         const j = JSON.stringify(manifest, undefined, 4)
 
         log(
             LogLevel.INFO,
-            `Saving generated contract ${manifest.Metadata.Id} to contracts/${manifest.Metadata.PublicId}.json`,
+            `Saving generated contract ${manifest.Metadata.Id} to contracts/${publicId}.json`,
             "contracts",
         )
 
-        const name = `contracts/${manifest.Metadata.PublicId}.json`
+        const name = `contracts/${publicId}.json`
 
         await writeFile(name, j)
 
@@ -1038,13 +1048,12 @@ export class Controller {
         contractData.Metadata.CreatorUserId =
             "fadb923c-e6bb-4283-a537-eb4d1150262e"
 
-        await writeFile(
-            `contracts/${pubId}.json`,
-            JSON.stringify(contractData, undefined, 4),
-        )
         await this.commitNewContract(contractData)
 
-        log(LogLevel.DEBUG, `Saved contract to contracts/${pubId}.json`)
+        log(
+            LogLevel.DEBUG,
+            `Saved contract to contracts/${contractData.Metadata.PublicId}.json`,
+        )
 
         return contractData
     }
