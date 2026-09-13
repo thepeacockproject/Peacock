@@ -49,7 +49,6 @@ import {
     BodyHiddenC2SEvent,
     ContractStartC2SEvent,
     Evergreen_Payout_DataC2SEvent,
-    HeroSpawn_LocationC2SEvent,
     ItemDroppedC2SEvent,
     ItemPickedUpC2SEvent,
     KillC2SEvent,
@@ -808,12 +807,6 @@ function saveEvents(
         }
 
         switch (event.Name) {
-            case "HeroSpawn_Location":
-                liveSplitManager.missionIntentResolved(
-                    event.ContractId,
-                    (<HeroSpawn_LocationC2SEvent>event).Value.RepositoryId,
-                )
-                break
             case "Kill": {
                 let couldCauseNoticedKill = true
 
