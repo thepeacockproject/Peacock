@@ -64,14 +64,15 @@ export class LiveSplitManager {
 
     missionIntentResolved(contractId: string, startId: string): void {
         if (
-            LiveSplitManager._isClub27(contractId) &&
-            LiveSplitManager._isBangkokDefaultStartLocation(startId)
+            (LiveSplitManager._isClub27(contractId) &&
+                LiveSplitManager._isBangkokDefaultStartLocation(startId)) ||
+            LiveSplitManager._isSarajevoSixLevel(contractId)
         ) {
             this._resetMinimum = 10
             return
         }
 
-        this._resetMinimum = 0
+        this._resetMinimum = 1
     }
 
     async startMission(
@@ -393,6 +394,13 @@ export class LiveSplitManager {
         ].includes(startLocationId)
     }
 
+    private static _isSarajevoSixLevel(contractId: string): boolean {
+        return [
+            "*contractId*",
+            // TODO: Add S6 level contract IDs
+        ].includes(contractId)
+    }
+
     private async _setGameTime(totalTime: Seconds): Promise<void> {
         // IMPORTANT to floor to int before sending to livesplit or else parsing will fail silently...
         const flooredTime = Math.floor(totalTime)
@@ -412,13 +420,10 @@ export class LiveSplitManager {
     private _addMissionTime(time: Seconds): Seconds {
         let computedTime = Math.floor(time)
 
-        // always add at least minimum, which is usually 0 except on cutscenes where
+        // always add a minimum reset penalty, which is 1s except on cutscenes where
         // you can gain an advantage by restarting in cs (bangkok, sgail specific starts)
         if (time <= this._resetMinimum) {
             computedTime = this._resetMinimum
-        } else if (time > 0 && time <= 1) {
-            // if in game time is between 0 and 1, add full second
-            computedTime = 1
         }
 
         this._currentMissionTotalTime += computedTime
