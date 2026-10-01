@@ -6346,6 +6346,92 @@
             "OrderIndex": 5,
             "Challenges": [
                 {
+                    "Id": "96467a34-3aeb-4dc3-ad05-a4e0451cb242",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA_RUBBERDUCK_KNIFE_NAME",
+                    "ImageName": "images/contracts/elusive/s3_sambuca3/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA_RUBBERDUCK_KNIFE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_SAMBUCA_RUBBERDUCK_PROXIMITY_FLASH"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_MIAMI",
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
+                    "Type": "contract",
+                    "RuntimeType": "Hit",
+                    "OrderIndex": 10000,
+                    "Definition": {
+                        "Context": {
+                            "EligibleSuits": [
+                                "31bea185-c848-4f26-9775-059d98aaa2dd",
+                                "874c4c48-0a8b-49e9-883e-49fc5f1fb051"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "DisguiseBlown": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": {
+                                    "Condition": {
+                                        "$eq": ["$Value.event", "spotted"]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "in": "$.EligibleSuits",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "06a58b66-56f4-45c3-ba1b-d03998212289",
+                            "ecf353e8-3dd8-4958-b255-f963926aea51",
+                            "de9788cc-b9c4-47fc-b5df-86451cd82c43",
+                            "debdf04c-4c5b-480c-806a-b1e8b648c5ca"
+                        ]
+                    }
+                },
+                {
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
                     "Id": "cbfb5e85-b93a-4030-be5f-4ec28c14335e",
                     "Name": "UI_CHALLENGES_ET_SAMBUCA3_CONTRACT_STARTED_NAME",

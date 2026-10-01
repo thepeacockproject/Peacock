@@ -7035,6 +7035,93 @@
             ]
         },
         {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
+            "Challenges": [
+                {
+                    "Id": "876fe6a0-e6c9-4fbb-b8d5-1ed05b542080",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_BELLINI_RUBBERDUCK_MIRROR_NAME",
+                    "ImageName": "images/contracts/elusive/s3_bellini/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_BELLINI_RUBBERDUCK_MIRROR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_TGA_B_RUBBERDUCK_PROXIMITY_EXPLOSIVE"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "EligibleSuits": [
+                                "0177b6ca-12c0-4884-8ac5-ec1587e4e712",
+                                "21d4cfaf-ffdf-4bcb-b771-a75637dbd96c"
+                            ],
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": { "Transition": "Failure" },
+                                "Kill": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$any": {
+                                                "in": "$.EligibleSuits",
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.OutfitRepositoryId"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "MirrorTraversed": [
+                                    {
+                                        "Actions": { "$inc": "Count" }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$gt": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "exit_gate": { "Transition": "Success" }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "fdb75833-2588-453a-9178-b917b5de952c",
+                            "6678cf8a-f614-4536-9584-e649351f40c2"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGON",
             "Image": "images/challenges/categories/packargon/tile.jpg",
             "Icon": "challenge_category_feats",

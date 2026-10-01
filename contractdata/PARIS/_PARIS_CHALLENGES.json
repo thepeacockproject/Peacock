@@ -6460,6 +6460,89 @@
             "OrderIndex": 5,
             "Challenges": [
                 {
+                    "Id": "5bc50f99-fcdf-47da-8393-8d0a47303e74",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_FRENCHMARTINI_RUBBERDUCK_COLDFISH_NAME",
+                    "ImageName": "images/contracts/elusive/s3_frenchmartini/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_FRENCHMARTINI_RUBBERDUCK_COLDFISH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_FRENTINI_RUBBERDUCK_REMOTE_DISTRACTION"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": { "DealSmith": false },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "StartingSuit": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value",
+                                                "2ff30b74-ad20-4f61-9c97-8c272e72770f"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ff03d5cb-6f3b-4233-808f-368905a21a82"
+                                        ]
+                                    },
+                                    "Actions": { "$set": ["DealSmith", true] }
+                                },
+                                "setpieces": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "20a459c2-ca77-4a86-9a82-42f7932b7716"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$.DealSmith", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "PendingKill"
+                                }
+                            },
+                            "PendingKill": {
+                                "exit_gate": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "685c527d-2da2-49e7-9e9e-bf7f675ea779",
+                            "80582fdb-c77e-4d6a-b33f-1f14f34b72c4"
+                        ]
+                    }
+                },
+                {
                     "Id": "07444b4f-d50c-4550-a3c4-b14ec666776d",
                     "Name": "UI_CHALLENGES_ET_FRENCHMARTINI_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/ET_FRENCHMARTINI_SilentAssassin.jpg",

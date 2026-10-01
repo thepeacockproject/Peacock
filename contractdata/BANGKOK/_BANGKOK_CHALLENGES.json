@@ -6095,6 +6095,123 @@
             "OrderIndex": 5,
             "Challenges": [
                 {
+                    "Id": "de71c322-77a8-4df9-9a9c-27ba073ca17a",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_BAIJU_RUBBERDUCK_BEATER_NAME",
+                    "ImageName": "images/actors/elusive_baiju_face.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_BAIJU_RUBBERDUCK_BEATER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_BAIJU_RUBBERDUCK_PROXIMITY_CONCUSSION"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "EligibleContestants": [
+                                "923e2fec-4af8-41ae-a52b-b8cc74084b5e",
+                                "4fff144f-b279-431b-abaa-aee85ff7a2d7",
+                                "4ef75b0f-bba5-4c4d-aa20-8fe32a92ace3",
+                                "de98b52c-895a-4058-b6a4-730b4887f34a"
+                            ],
+                            "EligibleSuits": [
+                                "2a807111-ea6f-4fb3-a89d-cc6f6798fa11",
+                                "03980d8f-9979-4bb5-b6a0-817b65126b79"
+                            ],
+                            "Goal": 4
+                        },
+                        "Context": {
+                            "Count": 0,
+                            "KilledTargets": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": { "Transition": "Failure" },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "in": "$.EligibleSuits",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "in": "$.EligibleContestants",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "unarmed"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Goal", "$.Count"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "7a303745-5d33-4db8-814a-3de1dda00a59",
+                            "3fa83d8d-eb75-4973-926a-6052ee5b2aa4"
+                        ]
+                    }
+                },
+                {
                     "Id": "78a729de-3da3-4237-b113-d364b35e991d",
                     "Name": "UI_CHALLENGES_ET_BAIJU_CONTRACT_STARTED_NAME",
                     "ImageName": "images/challenges/elusive_target/ET_BAIJU_Started.jpg",
