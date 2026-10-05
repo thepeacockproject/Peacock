@@ -1068,30 +1068,50 @@ export class Controller {
         this._pubIdToContractId.clear()
         const fs = asyncGuard.getFs()
 
+        const _addMission = (contract: string, manifest: MissionManifest) => {
+            if (!validateMission(manifest)) {
+                log(
+                    LogLevel.ERROR,
+                    `Contract ${contract} failed validation!`,
+                    "contracts",
+                )
+                return
+            }
+
+            this.contracts.set(manifest.Metadata.Id, manifest)
+
+            if (manifest.Metadata.PublicId) {
+                this._pubIdToContractId.set(
+                    manifest.Metadata.PublicId,
+                    manifest.Metadata.Id,
+                )
+            }
+        }
+
         const contracts = await glob("contracts/**/*.{json,ocre}")
+        // Load prp files with lower priority
+        contracts.push(...(await glob("contracts/**/*.prp")))
 
         for (const contract of contracts) {
             try {
-                const manifest = parse(
-                    (await fs.readFile(contract)).toString(),
-                ) as MissionManifest
+                const manifests = Array<MissionManifest>()
 
-                if (!validateMission(manifest)) {
-                    log(
-                        LogLevel.ERROR,
-                        `Contract ${contract} failed validation!`,
-                        "contracts",
+                if (contract.endsWith(".prp")) {
+                    manifests.push(
+                        ...(unpack(
+                            await fs.readFile(contract),
+                        ) as MissionManifest[]),
                     )
-                    continue
+                } else {
+                    manifests.push(
+                        parse(
+                            (await fs.readFile(contract)).toString(),
+                        ) as MissionManifest,
+                    )
                 }
 
-                this.contracts.set(manifest.Metadata.Id, manifest)
-
-                if (manifest.Metadata.PublicId) {
-                    this._pubIdToContractId.set(
-                        manifest.Metadata.PublicId,
-                        manifest.Metadata.Id,
-                    )
+                for (const manifest of manifests) {
+                    _addMission(contract, manifest)
                 }
             } catch (e) {
                 log(
