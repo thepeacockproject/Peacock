@@ -1259,7 +1259,7 @@ export async function getMissionEndData(
             XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
             LocationHideProgression: masteryData?.HideProgression || false,
-            ProdileId1: jwt.unique_name,
+            ProfileId1: jwt.unique_name,
             stars: calculateScoreResult.stars,
             ScoreDetails: {
                 Headlines: calculateScoreResult.scoringHeadlines,
