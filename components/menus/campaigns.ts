@@ -431,6 +431,14 @@ export function makeCampaigns(
                                 "0b616e62-af0c-495b-82e3-b778e82b5912",
                                 gameVersion,
                             ),
+                            genSingleMission(
+                                "debdf04c-4c5b-480c-806a-b1e8b648c5ca",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "f840fce7-242f-435f-b482-1c990818a758",
+                                gameVersion,
+                            ),
                         ],
                     },
                     pzCampaign,
@@ -454,11 +462,11 @@ export function makeCampaigns(
                                 gameVersion,
                             ),
                             genSingleMission(
-                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
+                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
                                 gameVersion,
                             ),
                             genSingleMission(
-                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
+                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
                                 gameVersion,
                             ),
                         ],
