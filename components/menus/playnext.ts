@@ -94,6 +94,23 @@ function getSeasonId(index: number): string {
 }
 
 /**
+ * Gets the intro video ID for a given contract ID.
+ */
+function getIntroVideoForContractId(contractId: string): string | undefined {
+    switch (contractId) {
+        // Another Life <= Long Shot
+        case "82f55837-e26c-41bf-bc6e-fa97b7981fbc":
+            return "intro_skunk"
+        // The Ark Society <= Precautions
+        case "0d225edf-40cd-4f20-a30f-b62a373801d3":
+            return "intro_magpie"
+        // On Top of The World <= Story so far
+        case "7d85f2b0-80ca-49be-a2b7-d56f67faf252":
+            return "intro_gecko"
+    }
+}
+
+/**
  * Generates a "Continue Story" tile for play next given a contract ID and other details.
  *
  * @param userId The user's ID.
@@ -236,6 +253,7 @@ export function getGamePlayNextData(
             cats.push(
                 createPlayNextMission(userId, nextMissionId, gameVersion, {
                     CampaignName: `UI_SEASON_${nextSeasonId}`,
+                    IntroVideoId: getIntroVideoForContractId(nextMissionId),
                 }),
             )
         }
