@@ -214,22 +214,26 @@ export class ProgressionService {
                 assert.ok(locationData, `location ${location} not found`)
                 const previousLevel = locationData.Level
 
+                let xpForLevel = (level: number) =>
+                    xpRequiredForLevel(level, xpPerLevel)
+                let levelFromXp = (xp: number) => levelForXp(xp, xpPerLevel)
+
+                if (isEvergreenContract) {
+                    xpForLevel = xpRequiredForEvergreenLevel
+                    levelFromXp = evergreenLevelForXp
+                } else if (sniperUnlockable) {
+                    xpForLevel = xpRequiredForSniperLevel
+                    levelFromXp = sniperLevelForXp
+                }
+
                 locationData.Xp = clampValue(
                     locationData.Xp + masteryXp + actionXp,
                     0,
-                    isEvergreenContract
-                        ? xpRequiredForEvergreenLevel(maxLevel)
-                        : sniperUnlockable
-                          ? xpRequiredForSniperLevel(maxLevel)
-                          : xpRequiredForLevel(maxLevel, xpPerLevel),
+                    xpForLevel(maxLevel),
                 )
 
                 locationData.Level = clampValue(
-                    isEvergreenContract
-                        ? evergreenLevelForXp(locationData.Xp)
-                        : sniperUnlockable
-                          ? sniperLevelForXp(locationData.Xp)
-                          : levelForXp(locationData.Xp, xpPerLevel),
+                    levelFromXp(locationData.Xp),
                     1,
                     maxLevel,
                 )
