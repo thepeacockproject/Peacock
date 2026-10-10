@@ -279,8 +279,13 @@ function isChallengeInContract(
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
+    // A non-global challenge with nothing in its InclusionData to match against can only be
+    // location-wide. H2/H3 data always types these explicitly, but H2016 data omits "Type".
     const isForLocation =
-        challenge.Type === "location" || challenge.Type === "parentlocation"
+        challenge.Type === "location" ||
+        challenge.Type === "parentlocation" ||
+        (!challenge.InclusionData?.ContractIds?.length &&
+            !challenge.InclusionData?.ContractTypes?.length)
 
     // Is this for the current location?
     const isCurrentLocation =
