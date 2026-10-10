@@ -16,38 +16,64 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { factory } from "@rdil/factorygirl"
+import { Factory } from "fishery"
 import { MissionManifest } from "../../components/types/types"
 
-type ContractFactoryTraits = "usercreated"
+type ContractTransientParams = {
+    /** Whether the contract should look like one made in Contracts Mode. */
+    usercreated: boolean
+}
 
 function pad(n: number, places: number) {
     return n.toString(10).padStart(places, "0")
 }
 
-export const contractFactory = factory<MissionManifest, ContractFactoryTraits>(
-    (utils) => ({
-        Data: {
-            Objectives: [],
-            Bricks: [],
-        },
-        Metadata: {
-            Id: utils.sequentialUuid("id"),
-            Title: `Amazing contract ${utils.sequentialValue("title")}`,
-            Description: `Amazing contract ${utils.sequentialValue("description")}`,
-            Location: "LOCATION_PARENT_PARIS",
-            Type: "mission",
-            ScenePath:
-                "assembly:/_pro/scenes/missions/paris/_scene_fashionshowhit_01.entity",
-            Entitlements: [],
-        },
-    }),
-    ({ trait }) => {
-        trait("usercreated", (_, { sequentialValue }) => ({
+/**
+ * Turns a sequence number into a deterministic UUID-shaped string.
+ */
+function sequentialUuid(n: number): string {
+    return n
+        .toString(16)
+        .padStart(32, "0")
+        .replace(
+            /^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})$/,
+            "$1-$2-$3-$4-$5",
+        )
+}
+
+class ContractFactory extends Factory<
+    MissionManifest,
+    ContractTransientParams
+> {
+    usercreated() {
+        return this.transient({ usercreated: true })
+    }
+}
+
+export const contractFactory = ContractFactory.define(
+    ({ sequence, transientParams }) => {
+        const contract: MissionManifest = {
+            Data: {
+                Objectives: [],
+                Bricks: [],
+            },
             Metadata: {
-                Type: "usercreated",
-                PublicId: `1-01-${pad(sequentialValue("publicId"), 7)}-${pad(sequentialValue("publicId-end"), 2)}}`,
-            } as never,
-        }))
+                Id: sequentialUuid(sequence),
+                Title: `Amazing contract ${sequence}`,
+                Description: `Amazing contract ${sequence}`,
+                Location: "LOCATION_PARENT_PARIS",
+                Type: "mission",
+                ScenePath:
+                    "assembly:/_pro/scenes/missions/paris/_scene_fashionshowhit_01.entity",
+                Entitlements: [],
+            },
+        }
+
+        if (transientParams.usercreated) {
+            contract.Metadata.Type = "usercreated"
+            contract.Metadata.PublicId = `1-01-${pad(sequence, 7)}-${pad(sequence, 2)}`
+        }
+
+        return contract
     },
 )

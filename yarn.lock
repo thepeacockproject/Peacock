@@ -784,8 +784,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@peacockproject/tests@workspace:tests"
   dependencies:
-    "@rdil/factorygirl": "npm:^0.2.0"
     "@vitest/ui": "npm:^4.1.0"
+    fishery: "npm:^2.4.0"
     vite: "npm:^8.0.1"
     vitest: "npm:^4.1.0"
   languageName: unknown
@@ -1142,16 +1142,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10/bed9c7e8de243a5ec3b93bb6a5860950b0dba359b6680c84d57c7a655e123dec9b5891c5dfe81ab970652e7779fe2ad102a23177c7896dde95f7340817d47ae5
-  languageName: node
-  linkType: hard
-
-"@rdil/factorygirl@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@rdil/factorygirl@npm:0.2.0"
-  dependencies:
-    es-toolkit: "npm:^1.31.0"
-    tslib: "npm:^2.8.1"
-  checksum: 10/4492c37dd4250759ef829e6d857b1a81f63e77164d1e75e3f19456b4d3a0c908ea2616fa4078897e0267c28d74e38ffbd47491ccc01ce9fc4b33475f1e31f9ab
   languageName: node
   linkType: hard
 
@@ -2470,18 +2460,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-toolkit@npm:^1.31.0":
-  version: 1.31.0
-  resolution: "es-toolkit@npm:1.31.0"
-  dependenciesMeta:
-    "@trivago/prettier-plugin-sort-imports@4.3.0":
-      unplugged: true
-    prettier-plugin-sort-re-exports@0.0.1:
-      unplugged: true
-  checksum: 10/6d9d88901f6e9589c991d2f9cd85df8076eb02dc472a5661477332fb9870c23e0b13170a19cd37cfe58839717792b132a44aecc6e4954c1e57cddb6c5f531570
-  languageName: node
-  linkType: hard
-
 "esbuild-register@npm:^3.6.0":
   version: 3.6.0
   resolution: "esbuild-register@npm:3.6.0"
@@ -2926,6 +2904,15 @@ __metadata:
     locate-path: "npm:^6.0.0"
     path-exists: "npm:^4.0.0"
   checksum: 10/07955e357348f34660bde7920783204ff5a26ac2cafcaa28bace494027158a97b9f56faaf2d89a6106211a8174db650dd9f503f9c0d526b1202d5554a00b9095
+  languageName: node
+  linkType: hard
+
+"fishery@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "fishery@npm:2.4.0"
+  dependencies:
+    lodash.mergewith: "npm:^4.6.2"
+  checksum: 10/53c0be0ba101eb64b94258bc30d648b093f65a4304635d8c7188162935f746abb40adbce8c63d77c1b21466cf0fba5de95b7e5e2db15e1c1bf186afba6e47cdc
   languageName: node
   linkType: hard
 
@@ -3779,6 +3766,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10/d0ea2dd0097e6201be083865d50c3fb54fbfbdb247d9cc5950e086c991f448b7ab0cdab0d57eacccb43473d3f2acd21e134db39f22dac2d6c9ba6bf26978e3d6
+  languageName: node
+  linkType: hard
+
+"lodash.mergewith@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "lodash.mergewith@npm:4.6.2"
+  checksum: 10/aea75a4492541a4902ac7e551dc6c54b722da0c187f84385d02e8fc33a7ae3454b837822446e5f63fcd5ad1671534ea408740b776670ea4d9c7890b10105fce0
   languageName: node
   linkType: hard
 
@@ -5339,7 +5333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.8.1":
+"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
