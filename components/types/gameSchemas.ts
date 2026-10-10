@@ -18,7 +18,7 @@
 
 import { MissionType } from "./types"
 import { z } from "zod"
-import { publicIdRegex, uuidRegex } from "../utils"
+import { nilUuid, publicIdRegex, uuidRegex } from "../utils"
 
 export type MissionEndRequestQuery = Partial<{
     contractSessionId: string
@@ -213,7 +213,9 @@ const contractCreationNpcTarget = z.object({
     RepositoryId: gameUuid,
     Selected: z.boolean(),
     Weapon: z.object({
-        RepositoryId: gameUuid,
+        // the game omits this for kill methods with no item behind them (e.g. accidents).
+        // recorded payloads and IOI's own contracts use the nil UUID for those, so fall back to it (see #739)
+        RepositoryId: gameUuid.default(nilUuid),
         KillMethodBroad: z.string(),
         KillMethodStrict: z.string(),
         RequiredKillMethod: z.string(),

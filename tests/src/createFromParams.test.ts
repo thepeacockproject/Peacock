@@ -19,7 +19,11 @@
 import { describe, expect, test } from "vitest"
 import { createFromParamsBodySchema } from "../../components/types/gameSchemas"
 import { nilUuid } from "../../components/utils"
-import { RequiredKillMethodType } from "../../components/statemachines/contractCreation.js"
+import {
+    ContractCreationNpcTargetPayload,
+    createObjectivesForTarget,
+    RequiredKillMethodType,
+} from "../../components/statemachines/contractCreation.js"
 
 /** a realistic payload, as the game sends it at the end of contract creation */
 const validBody = {
@@ -45,7 +49,7 @@ const validBody = {
                     Required: true,
                     IsHitmanSuit: true,
                 },
-            },
+            } as ContractCreationNpcTargetPayload,
         ],
     },
 }
@@ -68,6 +72,61 @@ describe("CreateFromParams schema", () => {
         body.creationData.Targets[0].Weapon.RequiredKillMethodType = 2
 
         expect(createFromParamsBodySchema.safeParse(body).success).toBe(true)
+    })
+
+    // regression test for #739: the game sends no weapon RepositoryId at all for
+    // kill methods that have no item behind them
+    describe("accepts a weapon with no RepositoryId", () => {
+        test.each([
+            ["any accident", "accident", "", "accident", 1],
+            ["fall accident", "accident", "accident_push", "accident_push", 2],
+            [
+                "explosion accident",
+                "accident",
+                "accident_explosion",
+                "accident_explosion",
+                2,
+            ],
+        ])("%s", (_name, broad, strict, required, type) => {
+            const body = clone(validBody)
+            const weapon = body.creationData.Targets[0].Weapon
+            weapon.RepositoryId = undefined
+            weapon.KillMethodBroad = broad
+            weapon.KillMethodStrict = strict
+            weapon.RequiredKillMethod = required
+            weapon.RequiredKillMethodType = type as RequiredKillMethodType
+
+            const parsed = createFromParamsBodySchema.safeParse(body)
+
+            expect(parsed.success).toBe(true)
+            // the missing ID is filled in with the nil UUID, like the game sends for other accidents
+            expect(
+                parsed.data?.creationData.Targets[0].Weapon.RepositoryId,
+            ).toBe(nilUuid)
+        })
+
+        test("the parsed target still yields a plain kill method condition", () => {
+            const body = clone(validBody)
+            const weapon = body.creationData.Targets[0].Weapon
+            delete weapon.RepositoryId
+            weapon.KillMethodBroad = "accident"
+            weapon.KillMethodStrict = "accident_push"
+            weapon.RequiredKillMethod = "accident_push"
+            weapon.RequiredKillMethodType = 2
+
+            const parsed = createFromParamsBodySchema.parse(body)
+            const objectives = createObjectivesForTarget(
+                parsed.creationData.Targets[0],
+            )
+            const killCondition = objectives[0].TargetConditions?.find(
+                (c) => c.KillMethod === "accident_push",
+            )
+
+            expect(killCondition).toMatchObject({
+                Type: "killmethod",
+                RepositoryId: nilUuid,
+            })
+        })
     })
 
     describe("rejects public IDs that are unsafe as filenames", () => {

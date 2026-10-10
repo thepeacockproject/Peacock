@@ -44,14 +44,14 @@ export type ContractCreationNpcTargetPayload = {
     RepositoryId: string
     Selected: boolean
     Weapon: {
-        RepositoryId: string
+        RepositoryId: RepositoryId | undefined
         KillMethodBroad: string
         KillMethodStrict: string
         RequiredKillMethod: string
         RequiredKillMethodType: RequiredKillMethodType
     }
     Outfit: {
-        RepositoryId: string
+        RepositoryId: RepositoryId
         Required: boolean
         IsHitmanSuit: boolean
     }
