@@ -272,6 +272,9 @@
                         "icon": "stashpointempty"
                     },
                     "children": {
+                        "$setpageargs": {
+                            "location": "$.UserCentric.Contract.Metadata.Location"
+                        },
                         "view": "menu3.containers.ListContainer",
                         "controller": "list",
                         "toshow": "$arg ShowSlotName",
@@ -437,7 +440,7 @@
                                                                                     "$if ": {
                                                                                         "$condition": {
                                                                                             "$or": [
-                                                                                                "$not $eqs ($.Item.Unlockable.Id,TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT)",
+                                                                                                "$not $eqs ($.Item.Unlockable.Id,TOKEN_OUTFIT_WET_SUIT)",
                                                                                                 "$not $eqs ($arg location,LOCATION_NEWZEALAND)"
                                                                                             ]
                                                                                         },
