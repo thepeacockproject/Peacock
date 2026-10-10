@@ -201,7 +201,7 @@ export type ConfigRouteParams = {
 }
 
 /**
- * Game UUID is (basically) a UUID, and any valid hexidecimal character is accepted in any spot (including the reserved slot for the UUID v4 version marker.)
+ * Game UUID is (basically) a UUID, and any valid hexadecimal character is accepted in any spot (including the reserved slot for the UUID v4 version marker.)
  * (See e.g. The Showstopper, which is not a valid UUIDv4)
  */
 const gameUuid = z.string().regex(uuidRegex)
