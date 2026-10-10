@@ -147,3 +147,20 @@ export async function createControllerInstance() {
     _dangerouslyOverwriteController(instance)
     return instance
 }
+
+export function pad(n: number, places: number) {
+    return n.toString(10).padStart(places, "0")
+}
+
+/**
+ * Turns a sequence number into a deterministic UUID-shaped string.
+ */
+export function sequentialUuid(n: number): string {
+    return n
+        .toString(16)
+        .padStart(32, "0")
+        .replace(
+            /^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})$/,
+            "$1-$2-$3-$4-$5",
+        )
+}
