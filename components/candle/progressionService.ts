@@ -243,11 +243,9 @@ export class ProgressionService {
                     const masteryLocationDrops = this.getLocationMasteryDrops(
                         contractSession.gameVersion,
                         isEvergreenContract,
-                        sniperUnlockable
-                            ? masteryData.SubPackages?.find(
-                                  (pkg) => pkg.Id === sniperUnlockable,
-                              )?.Drops || []
-                            : masteryData.Drops || [],
+                        // Sub-packages cover both sniper rifles and H2016
+                        // difficulties, so prefer them when one was resolved.
+                        subPackage?.Drops ?? masteryData.Drops ?? [],
                         previousLevel,
                         locationData.Level,
                     ).filter(Boolean) as Unlockable[]
