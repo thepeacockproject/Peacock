@@ -104,9 +104,9 @@ export class ProgressionService {
 
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
-            theLocation[subPkgId]
+              theLocation[subPkgId]
             : // @ts-expect-error Todo?
-            theLocation
+              theLocation
     }
 
     // Return mastery drops from location from a level range
@@ -187,10 +187,11 @@ export class ProgressionService {
         // We can't grant sniper XP here as it's based on final score, so we skip updating mastery
         // until we call this in mission end.
         if (contract.Metadata.Type !== "sniper" || sniperUnlockable) {
-            const masteryData = this.controller.masteryService.getMasteryPackage(
-                parentLocationId,
-                contractSession.gameVersion,
-            )
+            const masteryData =
+                this.controller.masteryService.getMasteryPackage(
+                    parentLocationId,
+                    contractSession.gameVersion,
+                )
             const subPackageId =
                 contractSession.gameVersion === "h1"
                     ? (contract.Metadata.Difficulty ?? "normal")
@@ -205,8 +206,8 @@ export class ProgressionService {
             // level and the amount of XP required per level.
             const subPackage = subPackageId
                 ? masteryData?.SubPackages?.find(
-                    (pkg) => pkg.Id === subPackageId,
-                )
+                      (pkg) => pkg.Id === subPackageId,
+                  )
                 : undefined
 
             const maxLevel =
@@ -271,7 +272,7 @@ export class ProgressionService {
 
                 userProfile.Extensions.CPD[contract.Metadata.CpdId][
                     "EvergreenLevel"
-                    ] = locationData?.Level ?? 0
+                ] = locationData?.Level ?? 0
             }
         }
 

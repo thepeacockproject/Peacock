@@ -401,10 +401,11 @@ export class MasteryService {
         }
 
         // Get all unlockables with matching Ids
-        const unlockableData = this.controller.inventoryService.getUnlockablesById(
-            Array.from(dropIdSet),
-            gameVersion,
-        )
+        const unlockableData =
+            this.controller.inventoryService.getUnlockablesById(
+                Array.from(dropIdSet),
+                gameVersion,
+            )
 
         // Put all unlockabkes in a map for quick lookup
         const mapped: [string, Unlockable][] = unlockableData.map(
