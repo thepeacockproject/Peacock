@@ -552,8 +552,8 @@ export class Controller {
         )
 
         this.challengeService = new ChallengeService(this)
-        this.masteryService = new MasteryService()
-        this.progressionService = new ProgressionService()
+        this.masteryService = new MasteryService(this)
+        this.progressionService = new ProgressionService(this)
         this.smf = new SMFSupport(this)
 
         this._addElusiveTargets()
