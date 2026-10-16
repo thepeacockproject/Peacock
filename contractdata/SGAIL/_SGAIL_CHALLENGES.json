@@ -4192,6 +4192,137 @@
             "OrderIndex": 5,
             "Challenges": [
                 {
+                    "Id": "b0e6dfb5-be19-4a01-a830-300993a40f82",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_POMADA_RUBBERDUCK_MUAYTHAI_NAME",
+                    "ImageName": "images/contracts/elusive/s3_pomada/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_POMADA_RUBBERDUCK_MUAYTHAI_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_POMADA_RUBBERDUCK_PROXIMITY_CONCUSSION"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 0,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "EligibleSuits": [
+                                "f6b2c8bb-121d-48d7-934d-0ad462ba289d",
+                                "c0a26cb3-6860-4a15-b5ef-ade3d3d1a119"
+                            ],
+                            "EligibleDucks": [
+                                "a185b8ab-7096-4872-8bc5-c0387137edc4",
+                                "5dae5d54-122a-401f-b9e1-747355317336",
+                                "2bdf5016-e70b-4ac9-a3d5-f35b6743c09a",
+                                "67b6eb96-89c6-43ce-ba7a-526b092a55f9"
+                            ],
+                            "DuckDown": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "StartingSuit": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$any": {
+                                                "in": "$.EligibleSuits",
+                                                "?": {
+                                                    "$eq": ["$Value", "$.#"]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "Pacify": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "in": "$.EligibleDucks",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "DuckDown"
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": ["$.DuckDown", 1]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "unarmed"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "50201e8d-0552-46f9-8129-2172fefb5054",
+                            "55cd7c79-f6dd-4d58-86e1-d52863488077"
+                        ]
+                    }
+                },
+                {
                     "Id": "36cb8505-de75-4516-8188-8dfea7737155",
                     "Name": "UI_CHALLENGES_ET_POMADA_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/ET_Pomada_SilentAssassin.jpg",
