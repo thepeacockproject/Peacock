@@ -157,9 +157,21 @@ profileRouter.post(
     },
 )
 
+// Game client sends unlockableIds available offline, add them to inventory
 profileRouter.post(
     "/ProfileService/SynchronizeOfflineUnlockables",
-    (_, res) => {
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt, res) => {
+        controller.inventoryService.grantDrops(
+            req.jwt.unique_name,
+            controller.inventoryService.getUnlockablesById(
+                req.body.unlockableIds,
+                req.gameVersion,
+            ),
+            req.gameVersion,
+        )
+
         res.status(204).end()
     },
 )

@@ -968,6 +968,28 @@ function saveEvents(
                     log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 }
 
+                // Add contract drops to inventory
+                const contract = controller.resolveContract(
+                    event.ContractId,
+                    gameVersion,
+                )
+                let contractDrops: string[] = []
+                if (contract.Metadata.RequiredUnlockable) {
+                    contractDrops.push(contract.Metadata.RequiredUnlockable)
+                }
+                if (contract.Metadata.Drops) {
+                    for (const drop of contract.Metadata.Drops) {
+                        contractDrops.push(drop)
+                    }
+                }
+                controller.inventoryService.grantDrops(
+                    userId,
+                    controller.inventoryService.getUnlockablesById(
+                        contractDrops,
+                        gameVersion,
+                    ),
+                    gameVersion,
+                )
                 break
             case "ObjectiveCompleted":
                 session.completedObjectives.add(

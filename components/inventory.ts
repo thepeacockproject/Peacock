@@ -278,6 +278,13 @@ export class InventoryService {
         return (acc: [Unlockable[], Unlockable[]], unlockable: Unlockable) => {
             let unlockableChallengeId: string
             let unlockableMasteryData: UnlockableMasteryData | undefined
+            const contractDropIds = this.controller.getInternalContractDropIds()
+            const grantContractDrop =
+                contractDropIds.has(unlockable.Id) &&
+                (!getFlag("enableSpoilerAlerts") ||
+                    userProfile.Extensions.PeacockUnlockedContractDrops.includes(
+                        unlockable.Id,
+                    ))
 
             // Handles unlockables that belong to a package or unlocked gear from evergreen
             if (packagedUnlocks.has(unlockable.Id)) {
@@ -287,7 +294,10 @@ export class InventoryService {
             }
 
             // Handles packages
-            else if (unlockable.Type === "package") {
+            else if (
+                unlockable.Type === "package" &&
+                (!contractDropIds.has(unlockable.Id) || grantContractDrop)
+            ) {
                 for (const pkgUnlockableId of unlockable.Properties.Unlocks ||
                     []) {
                     packagedUnlocks.set(pkgUnlockableId, true)
@@ -350,11 +360,13 @@ export class InventoryService {
                     unlockable.Subtype === "evergreen"
                 const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
 
-                if (isEvergreen || isDeluxe) {
+                if (isEvergreen || isDeluxe || grantContractDrop) {
                     acc[0].push(unlockable)
                 } else if (
                     ISOLATED_UNLOCKABLES_EXEMPT.includes(unlockable.Id) ||
-                    getFlag("enableIsolatedUnlockables")
+                    (getFlag("enableIsolatedUnlockables") &&
+                        // Do not give or remove contract drops here
+                        !contractDropIds.has(unlockable.Id))
                 ) {
                     /**
                      *  List of untracked items when they are enabled (to award to user until they are tracked to corresponding challenges)
@@ -788,7 +800,11 @@ export class InventoryService {
         )
     }
 
-    grantDrops(profileId: string, drops: Unlockable[]): void {
+    grantDrops(
+        profileId: string,
+        drops: Unlockable[],
+        gameVersion: GameVersion,
+    ): void {
         if (!this.inventoryUserCache.has(profileId)) {
             assert.fail(`User ${profileId} does not have an inventory??!`)
         }
@@ -796,6 +812,43 @@ export class InventoryService {
         if (!getFlag("enableMasteryProgression")) {
             // mastery is disabled, everything is already unlocked, don't double-unlock
             return
+        }
+
+        drops = drops.filter(
+            (drop) =>
+                drop.Type !== "evergreenmastery" &&
+                // Remove drop if it is already in the cache
+                !this.inventoryUserCache
+                    .get(profileId)
+                    .some((e) => e.InstanceId === drop.Guid),
+        )
+
+        if (drops.length === 0) {
+            return
+        }
+
+        const userData = getUserData(profileId, gameVersion)
+        for (const drop of drops) {
+            // If there is a package in the drop, call grantDrops on its unlocks
+            if (drop.Properties.Unlocks) {
+                this.grantDrops(
+                    profileId,
+                    this.getUnlockablesById(
+                        drop.Properties.Unlocks,
+                        gameVersion,
+                    ),
+                    gameVersion,
+                )
+            }
+            // If it is a contract drop, save the id into userdata
+            if (
+                this.controller.getInternalContractDropIds().has(drop.Id) &&
+                !userData.Extensions.PeacockUnlockedContractDrops.includes(
+                    drop.Id,
+                )
+            ) {
+                userData.Extensions.PeacockUnlockedContractDrops.push(drop.Id)
+            }
         }
 
         const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
@@ -808,9 +861,7 @@ export class InventoryService {
         this.inventoryUserCache.set(profileId, [
             ...new Set([
                 ...(this.inventoryUserCache.get(profileId) || []),
-                ...inventoryItems.filter(
-                    (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
-                ),
+                ...inventoryItems,
             ]),
         ])
     }

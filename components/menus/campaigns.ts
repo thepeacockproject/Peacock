@@ -23,6 +23,7 @@ import type {
     CampaignVideo,
     GameVersion,
     GenSingleMissionFunc,
+    GenSingleVideoFunc,
     StoryData,
     Video,
 } from "../types/types"
@@ -65,58 +66,76 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
     }
 }
 
-function genSingleVideo(
-    videoId: string,
-    gameVersion: GameVersion,
-): CampaignVideo {
-    const videos = getConfig<Record<string, Video>>("Videos", true) // we modify videos so we need to clone this
-    const video = videos[videoId]
+const genSingleVideoFactory = (userId: string): GenSingleVideoFunc => {
+    return function genSingleVideo(
+        videoId: string,
+        gameVersion: GameVersion,
+        // Videos.json does not specify a RequiredUnlockable for videos
+        requiredUnlockableId?: string,
+    ): CampaignVideo {
+        const videos = getConfig<Record<string, Video>>("Videos", true) // we modify videos so we need to clone this
+        const video = videos[videoId]
 
-    switch (gameVersion) {
-        case "h1": {
-            // h1 videos have no entitlements
-            video.Entitlements = []
-
-            break
-        }
-        case "h2": {
-            if (video.Data.DlcName === "GAME_STORE_METADATA_GAME_TITLE") {
-                video.Data.DlcName = "GAME_STORE_METADATA_S2_GAME_TITLE"
-                video.Data.DlcImage =
-                    "images/livetile/dlc/wide_logo_hitman2.png"
-            }
-
-            if (video.Data.DlcName.includes("METADATA_DLC")) {
-                video.Data.DlcName.replace(
-                    "METADATA_DLC",
-                    "METADATA_LEGACY_DLC",
-                )
-                video.Data.DlcImage.replace("wide_logo", "wide_logo_legacy")
-            }
-
-            // Void entitlements unless it's LOCATION_NEWZEALAND, that is currently the only known entitlement for S2 maps
-            if (!video.Entitlements.includes("LOCATION_NEWZEALAND")) {
+        switch (gameVersion) {
+            case "h1": {
+                // h1 videos have no entitlements
                 video.Entitlements = []
+
+                break
+            }
+            case "h2": {
+                if (video.Data.DlcName === "GAME_STORE_METADATA_GAME_TITLE") {
+                    video.Data.DlcName = "GAME_STORE_METADATA_S2_GAME_TITLE"
+                    video.Data.DlcImage =
+                        "images/livetile/dlc/wide_logo_hitman2.png"
+                }
+
+                if (video.Data.DlcName.includes("METADATA_DLC")) {
+                    video.Data.DlcName.replace(
+                        "METADATA_DLC",
+                        "METADATA_LEGACY_DLC",
+                    )
+                    video.Data.DlcImage.replace("wide_logo", "wide_logo_legacy")
+                }
+
+                // Void entitlements unless it's LOCATION_NEWZEALAND, that is currently the only known entitlement for S2 maps
+                if (!video.Entitlements.includes("LOCATION_NEWZEALAND")) {
+                    video.Entitlements = []
+                }
+
+                break
+            }
+            case "h3": {
+                video.Data = {
+                    DlcName: "GAME_STORE_METADATA_S3_GAME_TITLE",
+                    DlcImage: "images/livetile/dlc/tile_hitman3.jpg",
+                }
+
+                break
             }
 
-            break
-        }
-        case "h3": {
-            video.Data = {
-                DlcName: "GAME_STORE_METADATA_S3_GAME_TITLE",
-                DlcImage: "images/livetile/dlc/tile_hitman3.jpg",
-            }
-
-            break
+            default:
+                break
         }
 
-        default:
-            break
-    }
+        // If the requiredUnlockableId is not in inventory, set IsLocked and LockedReason
+        if (
+            requiredUnlockableId &&
+            !controller.inventoryService
+                .createInventory(userId, gameVersion)
+                .some((e) => e.Unlockable.Id === requiredUnlockableId)
+        ) {
+            video.IsLocked = true
+            video.LockedReason = controller.inventoryService.getUnlockableById(
+                requiredUnlockableId,
+                gameVersion,
+            ).Properties.HowToUnlock
+        }
 
-    return {
-        Type: "Video",
-        Data: video,
+        return {
+            Type: "Video",
+            Data: video,
+        }
     }
 }
 
@@ -132,6 +151,7 @@ export function makeCampaigns(
     userId: string,
 ): Campaign[] {
     const genSingleMission = genSingleMissionFactory(userId)
+    const genSingleVideo = genSingleVideoFactory(userId)
 
     let c: Campaign[] = []
 
@@ -139,27 +159,47 @@ export function makeCampaigns(
         genSingleMission("1436cbe4-164b-450f-ad2c-77dec88f53dd", gameVersion),
         genSingleVideo("prologue_intermission1", gameVersion),
         genSingleMission("1d241b00-f585-4e3d-bc61-3095af1b96e2", gameVersion),
-        genSingleVideo("prologue_intermission2", gameVersion),
+        genSingleVideo(
+            "prologue_intermission2",
+            gameVersion,
+            "ACCESS_HIT_POLARBEAR_MODULE_002B",
+        ),
         genSingleMission("b573932d-7a34-44f1-bcf4-ea8f79f75710", gameVersion),
-        genSingleVideo("prologue_intermission3", gameVersion),
+        genSingleVideo(
+            "prologue_intermission3",
+            gameVersion,
+            "ACCESS_HIT_POLARBEAR_GRADUATION",
+        ),
         genSingleMission("ada5f2b1-8529-48bb-a596-717f75f5eacb", gameVersion),
-        genSingleVideo("prologue_intermission4", gameVersion),
+        genSingleVideo(
+            "prologue_intermission4",
+            gameVersion,
+            "ACCESS_HIT_PEACOCK",
+        ),
     ]
 
     const s1StoryData: StoryData[] = [
         genSingleMission("00000000-0000-0000-0000-000000000200", gameVersion),
-        genSingleVideo("debriefing_peacock", gameVersion),
+        genSingleVideo("debriefing_peacock", gameVersion, "ACCESS_HIT_OCTOPUS"),
         genSingleMission("00000000-0000-0000-0000-000000000600", gameVersion),
-        genSingleVideo("debriefing_octopus", gameVersion),
+        genSingleVideo("debriefing_octopus", gameVersion, "ACCESS_HIT_SPIDER"),
         genSingleMission("00000000-0000-0000-0000-000000000400", gameVersion),
-        genSingleVideo("debriefing_spider", gameVersion),
+        genSingleVideo("debriefing_spider", gameVersion, "ACCESS_HIT_TIGER"),
         genSingleMission("db341d9f-58a4-411d-be57-0bc4ed85646b", gameVersion),
-        genSingleVideo("debriefing_tiger", gameVersion),
+        genSingleVideo("debriefing_tiger", gameVersion, "ACCESS_HIT_BULL"),
         genSingleMission("42bac555-bbb9-429d-a8ce-f1ffdf94211c", gameVersion),
-        genSingleVideo("bull_secret_room", gameVersion),
-        genSingleVideo("debriefing_bull", gameVersion),
+        genSingleVideo(
+            "bull_secret_room",
+            gameVersion,
+            "ACCESS_HIT_SNOW_CRANE",
+        ),
+        genSingleVideo("debriefing_bull", gameVersion, "ACCESS_HIT_SNOW_CRANE"),
         genSingleMission("0e81a82e-b409-41e9-9e3b-5f82e57f7a12", gameVersion),
-        genSingleVideo("debriefing_snowcrane", gameVersion),
+        genSingleVideo(
+            "debriefing_snowcrane",
+            gameVersion,
+            "ACCESS_HIT_S1_CONCLUSION",
+        ),
     ]
 
     let prologueCampaign: Campaign,
@@ -174,28 +214,50 @@ export function makeCampaigns(
                 "c65019e5-43a8-4a33-8a2a-84c750a5eeb3",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_sheep", gameVersion),
+            genSingleVideo(
+                "debriefing_sheep",
+                gameVersion,
+                "ACCESS_HIT_FLAMINGO",
+            ),
             genSingleMission(
                 "c1d015b4-be08-4e44-808e-ada0f387656f",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_flamingo", gameVersion),
+            genSingleVideo(
+                "debriefing_flamingo",
+                gameVersion,
+                "ACCESS_HIT_HIPPO",
+            ),
             genSingleMission(
                 "422519be-ed2e-44df-9dac-18f739d44fd9",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_hippo", gameVersion),
+            genSingleVideo(
+                "debriefing_hippo",
+                gameVersion,
+                "ACCESS_HIT_MONGOOSE",
+            ),
             genSingleMission(
                 "0fad48d7-3d0f-4c66-8605-6cbe9c3a46d7",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_mongoose", gameVersion),
-            genSingleVideo("intro_skunk", gameVersion),
+            genSingleVideo(
+                "debriefing_mongoose",
+                gameVersion,
+                "ACCESS_HIT_SKUNK",
+            ),
+            genSingleVideo("intro_skunk", gameVersion, "ACCESS_HIT_SKUNK"),
             genSingleMission(
                 "82f55837-e26c-41bf-bc6e-fa97b7981fbc",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_skunk", gameVersion),
+            genSingleVideo(
+                "debriefing_skunk",
+                gameVersion,
+                gameVersion === "h3"
+                    ? "ACCESS_HIT_DUGONG"
+                    : "ACCESS_HIT_MAGPIE",
+            ),
             ...(gameVersion === "h3"
                 ? [
                       genSingleMission(
@@ -204,22 +266,34 @@ export function makeCampaigns(
                       ),
                   ]
                 : []),
-            genSingleVideo("intro_magpie", gameVersion),
+            genSingleVideo("intro_magpie", gameVersion, "ACCESS_HIT_MAGPIE"),
             genSingleMission(
                 "0d225edf-40cd-4f20-a30f-b62a373801d3",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_magpie", gameVersion),
+            genSingleVideo(
+                "debriefing_magpie",
+                gameVersion,
+                "ACCESS_HIT_S2_CONCLUSION",
+            ),
             genSingleMission(
                 "7a03a97d-238c-48bd-bda0-e5f279569cce",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_raccoon", gameVersion),
+            genSingleVideo(
+                "debriefing_raccoon",
+                gameVersion,
+                "ACCESS_HIT_STINGRAY",
+            ),
             genSingleMission(
                 "095261b5-e15b-4ca1-9bb7-001fb85c5aaa",
                 gameVersion,
             ),
-            genSingleVideo("debriefing_stingray", gameVersion),
+            genSingleVideo(
+                "debriefing_stingray",
+                gameVersion,
+                "ACCESS_HIT_S2_EXPANSION_CONCLUSION",
+            ),
         ]
 
         const s3StoryData: StoryData[] | undefined =
@@ -230,32 +304,56 @@ export function makeCampaigns(
                           "7d85f2b0-80ca-49be-a2b7-d56f67faf252",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_gecko", gameVersion),
+                      genSingleVideo(
+                          "debriefing_gecko",
+                          gameVersion,
+                          "ACCESS_HIT_BULLDOG",
+                      ),
                       genSingleMission(
                           "755984a8-fb0b-4673-8637-95cfe7d34e0f",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_bulldog", gameVersion),
+                      genSingleVideo(
+                          "debriefing_bulldog",
+                          gameVersion,
+                          "ACCESS_HIT_FOX",
+                      ),
                       genSingleMission(
                           "ebcd14b2-0786-4ceb-a2a4-e771f60d0125",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_fox", gameVersion),
+                      genSingleVideo(
+                          "debriefing_fox",
+                          gameVersion,
+                          "ACCESS_HIT_RAT",
+                      ),
                       genSingleMission(
                           "3d0cbb8c-2a80-442a-896b-fea00e98768c",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_rat", gameVersion),
+                      genSingleVideo(
+                          "debriefing_rat",
+                          gameVersion,
+                          "ACCESS_HIT_LLAMA",
+                      ),
                       genSingleMission(
                           "d42f850f-ca55-4fc9-9766-8c6a2b5c3129",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_llama", gameVersion),
+                      genSingleVideo(
+                          "debriefing_llama",
+                          gameVersion,
+                          "ACCESS_HIT_WOLVERINE",
+                      ),
                       genSingleMission(
                           "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
                           gameVersion,
                       ),
-                      genSingleVideo("debriefing_wolverine", gameVersion),
+                      genSingleVideo(
+                          "debriefing_wolverine",
+                          gameVersion,
+                          "ACCESS_HIT_S3_CONCLUSION",
+                      ),
                   ]
                 : undefined
 

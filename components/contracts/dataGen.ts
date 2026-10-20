@@ -226,11 +226,29 @@ export function generateUserCentric(
         lastPlayed = new Date(played[id].LastPlayedAt!).toISOString()
     }
 
+    let isLocked: boolean = false
+    let lockedReason: string = ""
+
+    // If the RequiredUnlockable of a contract is not in inventory, set IsLocked and LockedReason
+    const requiredUnlockableId = contractData.Metadata.RequiredUnlockable
+    if (
+        requiredUnlockableId &&
+        !controller.inventoryService
+            .createInventory(userId, gameVersion)
+            .some((e) => e.Unlockable.Id === requiredUnlockableId)
+    ) {
+        isLocked = true
+        lockedReason = controller.inventoryService.getUnlockableById(
+            requiredUnlockableId,
+            gameVersion,
+        ).Properties.HowToUnlock
+    }
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
-            IsLocked: subLocation?.Properties?.IsLocked || false,
-            LockedReason: "",
+            IsLocked: isLocked,
+            LockedReason: lockedReason,
             LocationLevel: completionData.Level,
             LocationMaxLevel: completionData.MaxLevel,
             LocationCompletion: completionData.Completion,
