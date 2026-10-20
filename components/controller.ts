@@ -47,7 +47,6 @@ import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
     addDashesToPublicId,
-    deprecated,
     fastClone,
     getRemoteService,
     hitmapsUrl,
@@ -441,96 +440,12 @@ export class Controller {
         this.inventoryService = new InventoryService(this)
     }
 
-    private _patchRequireTableInventory(): void {
-        const inventoryServiceMethods = new Set([
-            "clearInventoryFor",
-            "clearInventoryCache",
-            "getUnlockableById",
-            "getUnlockablesById",
-            "getDefaultSuitFor",
-            "createInventory",
-            "grantDrops",
-        ])
-
-        const service = this.inventoryService
-
-        const key =
-            "@peacockproject/core/inventory" as keyof typeof generatedPeacockRequireTable
-
-        const original = generatedPeacockRequireTable[key]
-
-        // @ts-expect-error Patching the generated table at runtime.
-        generatedPeacockRequireTable[key] = new Proxy(original, {
-            get(target, prop, receiver) {
-                if (
-                    typeof prop === "string" &&
-                    inventoryServiceMethods.has(prop)
-                ) {
-                    deprecated(
-                        `inventory.${prop}`,
-                        `controller.inventoryService.${prop}`,
-                        "v9",
-                    )
-
-                    return (...args: unknown[]) =>
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (service as any)[prop](...args)
-                }
-
-                return Reflect.get(target, prop, receiver)
-            },
-        })
-    }
-
-    /**
-     * You should use {@link smf.modIsInstalled} instead!
-     *
-     * Returns whether a mod is UNAVAILABLE.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
-     * @deprecated since v5.5.0, use `!controller.smf.modEnabledForUser` or `!controller.smf.modEnabledForGame`
-     */
-    public addClientSideModDependency(modId: string): boolean {
-        deprecated(
-            "controller.addClientSideModDependency",
-            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
-            "v9",
-        )
-
-        return (
-            getFlag("overrideFrameworkChecks") === true ||
-            !this.smf.modIsInstalled(modId)
-        )
-    }
-
-    /**
-     * You should use {@link smf.modIsInstalled} instead!
-     *
-     * Returns whether a mod is available and installed.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
-     * @deprecated since v7.0.0, use `controller.smf.modEnabledForUser` or `controller.smf.modEnabledForGame`
-     */
-    public modIsInstalled(modId: string): boolean {
-        deprecated(
-            "controller.modIsInstalled",
-            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
-            "v9",
-        )
-
-        return this.smf.modIsInstalled(modId)
-    }
-
     /**
      * Starts the service and loads in all contracts.
      *
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
      */
     async boot(pluginDevHost: boolean): Promise<void> {
-        this._patchRequireTableInventory()
-
         log(
             LogLevel.INFO,
             "Booting Peacock internal services - this may take a moment.",

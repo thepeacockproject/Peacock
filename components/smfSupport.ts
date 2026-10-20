@@ -30,7 +30,6 @@ import path, { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
-import { deprecated } from "./utils"
 
 type LastServerSideData = SMFLastDeploy["lastServerSideStates"]
 
@@ -215,26 +214,6 @@ export class SMFSupport {
                 await this.executePlugin(plugin)
             }
         }
-    }
-
-    /**
-     * Returns whether a mod is available and installed.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
-     * @deprecated since v8.9.0, use `controller.smf.modEnabledForUser` or `controller.smf.modEnabledForGame`
-     */
-    public modIsInstalled(modId: string): boolean {
-        deprecated(
-            "controller.smf.modIsInstalled",
-            "controller.smf.modEnabledForUser or controller.smf.modEnabledForGame",
-            "v9",
-        )
-
-        return (
-            this.lastDeploy?.loadOrder.includes(modId) ||
-            getFlag("overrideFrameworkChecks") === true
-        )
     }
 
     /**
