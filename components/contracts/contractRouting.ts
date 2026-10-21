@@ -77,6 +77,7 @@ contractRoutingRouter.post(
 
         const contractData = controller.resolveContract(
             req.body.id,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -294,6 +295,7 @@ contractRoutingRouter.post(
 
         const contractData = controller.resolveContract(
             sessionDetails.contractId,
+            req.jwt.unique_name,
             sessionDetails.gameVersion,
         )
 
@@ -372,6 +374,7 @@ contractRoutingRouter.post(
     (req: RequestWithJwt<never, { contractId: string }>, res) => {
         const contract = controller.resolveContract(
             req.body.contractId,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 

@@ -137,7 +137,11 @@ export function getModernStashData(
     let contractData: MissionManifest | undefined = undefined
 
     if (query.contractid) {
-        contractData = controller.resolveContract(query.contractid, gameVersion)
+        contractData = controller.resolveContract(
+            query.contractid,
+            userId,
+            gameVersion,
+        )
     }
 
     const inventory = controller.inventoryService.createInventory(
@@ -253,6 +257,7 @@ export function getLegacyStashData(
 
     const contractData = controller.resolveContract(
         query.contractid,
+        userId,
         gameVersion,
     )
 

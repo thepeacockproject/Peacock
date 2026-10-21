@@ -32,6 +32,7 @@ import type {
     GenSingleMissionFunc,
     GenSingleVideoFunc,
     Hit,
+    JwtData,
     MissionManifest,
     PeacockLocationsData,
     PlayNextGetCampaignsHookReturn,
@@ -347,7 +348,12 @@ export class Controller {
             ]
         >
         getContractManifest: SyncBailHook<
-            [contractId: string, gameVersion: GameVersion, isGroup: boolean],
+            [
+                contractId: string,
+                userId: string | null,
+                gameVersion: GameVersion,
+                isGroup: boolean,
+            ],
             MissionManifest | [MissionManifest, boolean] | undefined
         >
         fixContract: SyncHook<
@@ -360,6 +366,7 @@ export class Controller {
                 genSingleMissionFunc: GenSingleMissionFunc,
                 genSingleVideoFunc: GenSingleVideoFunc,
                 gameVersion: GameVersion,
+                userId: string,
             ]
         >
         getSearchResults: AsyncSeriesHook<
@@ -371,7 +378,13 @@ export class Controller {
         >
         onMissionEnd: SyncHook<[session: ContractSession]>
         onEscalationReset: SyncHook<[groupId: string]>
-        onUserLogin: SyncHook<[gameVersion: GameVersion, userId: string]>
+        onUserLogin: SyncHook<
+            [
+                gameVersion: GameVersion,
+                userId: string,
+                platform: JwtData["platform"],
+            ]
+        >
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -494,9 +507,7 @@ export class Controller {
             log(LogLevel.ERROR, e)
         }
 
-        if (this.smf.lastDeploy) {
-            await this.smf.initSMFSupport()
-        }
+        await this.smf.initSMFSupport()
 
         await this._loadPlugins()
 
@@ -509,7 +520,7 @@ export class Controller {
 
     private _getETALocations(): void {
         for (const cId of orderedETAs) {
-            const contract = this.resolveContract(cId, "h3", true)
+            const contract = this.resolveContract(cId, null, "h3", true)
 
             if (!contract) {
                 continue
@@ -521,7 +532,7 @@ export class Controller {
             )
 
             for (const lId of contract.Metadata.GroupDefinition.Order) {
-                const level = this.resolveContract(lId, "h3", false)
+                const level = this.resolveContract(lId, null, "h3", false)
 
                 if (!level) {
                     continue
@@ -571,6 +582,7 @@ export class Controller {
 
         return this.resolveContract(
             this._pubIdToContractId.get(pubId)!,
+            currentUserId,
             gameVersion,
         )
     }
@@ -617,6 +629,7 @@ export class Controller {
 
     private getGroupContract(
         contract: MissionManifest,
+        userId: string | null,
         gameVersion: GameVersion,
     ): MissionManifest {
         if (escalationTypes.includes(contract.Metadata.Type)) {
@@ -625,8 +638,11 @@ export class Controller {
             }
 
             return (
-                this.resolveContract(contract.Metadata.InGroup, gameVersion) ??
-                contract
+                this.resolveContract(
+                    contract.Metadata.InGroup,
+                    userId,
+                    gameVersion,
+                ) ?? contract
             )
         }
 
@@ -717,14 +733,11 @@ export class Controller {
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(
-        id: string | undefined,
+        id: string,
+        userId: string | null,
         gameVersion: GameVersion,
         getGroup = false,
     ): MissionManifest | undefined {
-        if (!id) {
-            return undefined
-        }
-
         // no matter what, this function is so widely used that it's almost certain
         // at some point, it'll be called with either a boolean or undefined as game version,
         // because people haven't updated their plugins yet.
@@ -741,6 +754,7 @@ export class Controller {
 
         let optionalPluginJson = this.hooks.getContractManifest.call(
             id,
+            userId,
             gameVersion,
             getGroup,
         )
@@ -761,6 +775,7 @@ export class Controller {
             if (getGroup) {
                 optionalPluginJson = this.getGroupContract(
                     optionalPluginJson as MissionManifest,
+                    userId,
                     gameVersion,
                 )
             }
@@ -774,7 +789,11 @@ export class Controller {
             return this.fixContract(
                 fastClone(
                     getGroup
-                        ? this.getGroupContract(registryJson, gameVersion)
+                        ? this.getGroupContract(
+                              registryJson,
+                              userId,
+                              gameVersion,
+                          )
                         : registryJson,
                 ),
                 gameVersion,
@@ -789,7 +808,7 @@ export class Controller {
             return this.fixContract(
                 fastClone(
                     getGroup
-                        ? this.getGroupContract(openCtJson, gameVersion)
+                        ? this.getGroupContract(openCtJson, userId, gameVersion)
                         : openCtJson,
                 ),
                 gameVersion,
@@ -804,7 +823,11 @@ export class Controller {
             return this.fixContract(
                 fastClone(
                     getGroup
-                        ? this.getGroupContract(officialJson, gameVersion)
+                        ? this.getGroupContract(
+                              officialJson,
+                              userId,
+                              gameVersion,
+                          )
                         : officialJson,
                 ),
                 gameVersion,
@@ -889,7 +912,7 @@ export class Controller {
         }
 
         for (let i = 0; i < order.length; i++) {
-            const next = this.resolveContract(order[i], "h3")
+            const next = this.resolveContract(order[i], null, "h3")
 
             if (!next) {
                 log(
@@ -1351,7 +1374,7 @@ export class Controller {
             ...this.hooks.getContractManifest.allTapNames,
             ...discoveryIdPool,
         ])) {
-            const contract = this.resolveContract(contractId, "h3")
+            const contract = this.resolveContract(contractId, null, "h3")
 
             if (!contract?.Metadata?.GroupDefinition) {
                 continue
@@ -1364,7 +1387,7 @@ export class Controller {
             const order = contract.Metadata.GroupDefinition.Order
 
             while (i + 1 <= order.length) {
-                const next = this.resolveContract(order[i], "h3")
+                const next = this.resolveContract(order[i], null, "h3")
 
                 if (!next) {
                     log(
@@ -1418,7 +1441,7 @@ export function contractIdToHitObject(
     gameVersion: GameVersion,
     userId: string,
 ): Hit | undefined {
-    const contract = controller.resolveContract(contractId, gameVersion)
+    const contract = controller.resolveContract(contractId, userId, gameVersion)
 
     if (!contract) {
         return undefined
@@ -1456,6 +1479,7 @@ export function contractIdToHitObject(
     }
 
     const challenges = controller.challengeService.getGroupedChallengeLists(
+        userId,
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parentLocation?.Id,
