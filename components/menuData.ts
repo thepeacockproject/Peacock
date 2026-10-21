@@ -23,6 +23,7 @@ import {
     getMaxProfileLevel,
     isSuit,
     parsePageNumber,
+    publicIdRegex,
     unlockLevelComparer,
     unlockOrderComparer,
     uuidRegex,
@@ -382,7 +383,7 @@ menuDataRouter.get(
             res.json({
                 template:
                     req.gameVersion === "h3"
-                        ? null
+                        ? getConfig("H3StashpointTemplate", false)
                         : getVersionedConfig(
                               "StashpointTemplate",
                               req.gameVersion,
@@ -844,8 +845,6 @@ async function lookupContractPublicId(
     userId: string,
     gameVersion: GameVersion,
 ) {
-    const publicIdRegex = /\d{12}/
-
     while (publicid.includes("-")) {
         publicid = publicid.replace("-", "")
     }

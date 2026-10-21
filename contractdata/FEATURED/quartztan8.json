@@ -1,0 +1,265 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$bef74a3d-b453-4952-ac35-2d415ccd1f9d",
+                "$77ad1380-a6c6-4ff5-9810-20d8e43ba47e",
+                "$97ba2cf9-345e-402c-977a-8413a3851271",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_95d1c5bd-72de-4236-97c0-b96fc5d92fa8_0.jpg",
+                "BriefingName": "Retrieve poolball",
+                "HUDTemplate": {
+                    "display": "retrieve poolball"
+                },
+                "BriefingText": "retrieve poolball",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "95d1c5bd-72de-4236-97c0-b96fc5d92fa8"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/actors/actor_44df9ad6-8f2f-48fa-9a48-0ccda85e0008_0_0_0.jpg",
+                "BriefingName": "VANISHER",
+                "HUDTemplate": {
+                    "display": "Pacify Vanisher with the pool ball"
+                },
+                "BriefingText": "Pacify Vanisher with the pool ball",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["28595162-719b-4659-b42d-e90d1a387c65"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "28595162-719b-4659-b42d-e90d1a387c65"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "95d1c5bd-72de-4236-97c0-b96fc5d92fa8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "28595162-719b-4659-b42d-e90d1a387c654"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "28595162-719b-4659-b42d-e90d1a387c65"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "97ba2cf9-345e-402c-977a-8413a3851271",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "Ball On Face",
+                "Image": "images/contracts/featured/quartztan8_hit.jpg",
+                "HUDTemplate": {
+                    "display": "Pacify 10 guards with the pool ball"
+                },
+                "BriefingText": "Pacify 10 guards with the pool ball",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "AmountToPacify": 10,
+                        "Targets": [],
+                        "TargetsCounter": 0
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_TORENIA_PACIFY_HEAD"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": {
+                                "Actions": {
+                                    "$dec": "AmountToPacify",
+                                    "$inc": "TargetsCounter"
+                                },
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.ActorType", 1]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "95d1c5bd-72de-4236-97c0-b96fc5d92fa8"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "CheckCount"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Actions": {
+                                        "$set": ["TargetsCounter", 0]
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$.AmountToPacify", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "91b90b75-6a21-406f-abe4-025f2bd35224",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/contracts/featured/quartztan8_stuck.jpg",
+                "BriefingName": "Ball grab",
+                "BriefingText": "Do not drop the pool ball",
+                "HUDTemplate": {
+                    "display": "Do not drop the pool ball",
+                    "iconType": 0
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "95d1c5bd-72de-4236-97c0-b96fc5d92fa8"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "95d1c5bd-72de-4236-97c0-b96fc5d92fa8"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Bricks": [],
+        "Entrances": ["bd73b983-9f48-4d2d-9340-5368603edb99"],
+        "MandatoryLoadout": [
+            {
+                "Id": "suit",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "d743fe65-e46b-47d9-9b25-f6c0925fc822"
+                }
+            },
+            {
+                "Id": "PISTOL",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "b2d514ba-86d6-456a-be10-7592a30dcae1"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Title": "The Catalina Augment",
+        "Description": "Most ez to made...<br/><br/>Created by: Quartz Tan<br/>Curated by: Quartz Tan",
+        "Entitlements": ["LOCATION_COLOMBIA"],
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo_rafflesia.entity",
+        "Location": "LOCATION_COLOMBIA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.22.0.0",
+        "ServerVersion": "8.22.0.0",
+        "Type": "featured",
+        "Id": "1afcd317-d15d-49ce-9541-105e30a0118f",
+        "PublicId": "012329335947",
+        "TileImage": "images/contracts/featured/quartztan8.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "91b90b75-6a21-406f-abe4-025f2bd35224"
+            },
+            {
+                "Id": "97ba2cf9-345e-402c-977a-8413a3851271"
+            },
+            {
+                "Id": "d8528681-3577-49c9-aad5-73aed977fd18"
+            },
+            {
+                "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d"
+            },
+            {
+                "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e"
+            }
+        ],
+        "CreationTimestamp": "2026-01-29T13:50:49.693Z"
+    },
+    "UserData": {}
+}

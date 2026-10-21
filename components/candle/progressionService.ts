@@ -17,7 +17,7 @@
  */
 
 import { getSubLocationByName } from "../contracts/dataGen"
-import { controller } from "../controller"
+import type { Controller } from "../controller"
 import type {
     ContractSession,
     GameVersion,
@@ -41,6 +41,12 @@ import { MasteryPackageDrop } from "../types/mastery"
 import assert from "assert"
 
 export class ProgressionService {
+    private readonly controller: Controller
+
+    constructor(controller: Controller) {
+        this.controller = controller
+    }
+
     // NOTE: Official will always grant XP to both Location Mastery and the Player Profile
     grantProfileProgression(
         actionXp: number,
@@ -73,9 +79,9 @@ export class ProgressionService {
         // Award provided drops. E.g. From challenges. Don't run this function
         // if there aren't any drops being granted.
         if (dropIds.length > 0) {
-            controller.inventoryService.grantDrops(
+            this.controller.inventoryService.grantDrops(
                 userProfile.Id,
-                controller.inventoryService
+                this.controller.inventoryService
                     .getUnlockablesById(dropIds, contractSession.gameVersion)
                     .filter(Boolean) as Unlockable[],
             )
@@ -115,7 +121,7 @@ export class ProgressionService {
             .filter((drop) => drop.Level > minLevel && drop.Level <= maxLevel)
             .map((drop) => drop.Id)
 
-        const unlockables = controller.inventoryService.getUnlockablesById(
+        const unlockables = this.controller.inventoryService.getUnlockablesById(
             unlockableIds,
             gameVersion,
         )
@@ -136,7 +142,7 @@ export class ProgressionService {
 
             if (evergreenGearUnlockables.length) {
                 unlockables.push(
-                    ...controller.inventoryService.getUnlockablesById(
+                    ...this.controller.inventoryService.getUnlockablesById(
                         evergreenGearUnlockables,
                         gameVersion,
                     ),
@@ -156,7 +162,7 @@ export class ProgressionService {
         location: string,
         sniperUnlockable?: string,
     ): void {
-        const contract = controller.resolveContract(
+        const contract = this.controller.resolveContract(
             contractSession.contractId,
             userProfile.Id,
             contractSession.gameVersion,
@@ -182,10 +188,11 @@ export class ProgressionService {
         // We can't grant sniper XP here as it's based on final score, so we skip updating mastery
         // until we call this in mission end.
         if (contract.Metadata.Type !== "sniper" || sniperUnlockable) {
-            const masteryData = controller.masteryService.getMasteryPackage(
-                parentLocationId,
-                contractSession.gameVersion,
-            )
+            const masteryData =
+                this.controller.masteryService.getMasteryPackage(
+                    parentLocationId,
+                    contractSession.gameVersion,
+                )
             const subPackageId =
                 contractSession.gameVersion === "h1"
                     ? (contract.Metadata.Difficulty ?? "normal")
@@ -215,22 +222,26 @@ export class ProgressionService {
                 assert.ok(locationData, `location ${location} not found`)
                 const previousLevel = locationData.Level
 
+                let xpForLevel = (level: number) =>
+                    xpRequiredForLevel(level, xpPerLevel)
+                let levelFromXp = (xp: number) => levelForXp(xp, xpPerLevel)
+
+                if (isEvergreenContract) {
+                    xpForLevel = xpRequiredForEvergreenLevel
+                    levelFromXp = evergreenLevelForXp
+                } else if (sniperUnlockable) {
+                    xpForLevel = xpRequiredForSniperLevel
+                    levelFromXp = sniperLevelForXp
+                }
+
                 locationData.Xp = clampValue(
                     locationData.Xp + masteryXp + actionXp,
                     0,
-                    isEvergreenContract
-                        ? xpRequiredForEvergreenLevel(maxLevel)
-                        : sniperUnlockable
-                          ? xpRequiredForSniperLevel(maxLevel)
-                          : xpRequiredForLevel(maxLevel, xpPerLevel),
+                    xpForLevel(maxLevel),
                 )
 
                 locationData.Level = clampValue(
-                    isEvergreenContract
-                        ? evergreenLevelForXp(locationData.Xp)
-                        : sniperUnlockable
-                          ? sniperLevelForXp(locationData.Xp)
-                          : levelForXp(locationData.Xp, xpPerLevel),
+                    levelFromXp(locationData.Xp),
                     1,
                     maxLevel,
                 )
@@ -240,15 +251,13 @@ export class ProgressionService {
                     const masteryLocationDrops = this.getLocationMasteryDrops(
                         contractSession.gameVersion,
                         isEvergreenContract,
-                        sniperUnlockable
-                            ? masteryData.SubPackages?.find(
-                                  (pkg) => pkg.Id === sniperUnlockable,
-                              )?.Drops || []
-                            : masteryData.Drops || [],
+                        // Sub-packages cover both sniper rifles and H2016
+                        // difficulties, so prefer them when one was resolved.
+                        subPackage?.Drops ?? masteryData.Drops ?? [],
                         previousLevel,
                         locationData.Level,
                     ).filter(Boolean) as Unlockable[]
-                    controller.inventoryService.grantDrops(
+                    this.controller.inventoryService.grantDrops(
                         userProfile.Id,
                         masteryLocationDrops,
                     )

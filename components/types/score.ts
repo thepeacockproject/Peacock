@@ -154,7 +154,7 @@ export type MissionEndResult = {
         XPGain: number
         ChallengesCompleted: number
         LocationHideProgression: boolean
-        ProdileId1?: string
+        ProfileId1?: string
         stars?: number
         ScoreDetails: {
             Headlines: ScoringHeadline[]

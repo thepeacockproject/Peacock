@@ -1,0 +1,216 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "fa823bee-6c10-4e12-a4df-71d2ee22e805",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Category": "primary",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    }
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/featured/quartztan1_obj.jpg",
+                "BriefingName": "LURE",
+                "BriefingText": "lure 10 different NPCs in 10 different ways",
+                "HUDTemplate": {
+                    "display": "lure 10 different NPCs in 10 different ways",
+                    "iconType": 10
+                },
+                "Definition": {
+                    "Context": {
+                        "LuredNPCs": [],
+                        "Luretypes": [],
+                        "TargetsCounter": 0,
+                        "TargetsGoal": 10
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_OBJECTIVES_TARG_HEADER"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "Investigate_Curious": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetsCounter",
+                                        "$dec": "TargetsGoal",
+                                        "$pushunique": [
+                                            "Luretypes",
+                                            "$Value.InvestigationType"
+                                        ]
+                                    },
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$not": {
+                                                    "$inarray": {
+                                                        "in": "$.LuredNPCs",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$inarray": {
+                                                        "in": "$.Luretypes",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.InvestigationType"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "LuredNPCs",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Condition": {
+                                        "$not": {
+                                            "$inarray": {
+                                                "in": "$.LuredNPCs",
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsCounter", 10]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "b7cd372c-48d1-48b1-9f1f-7db0a5e7fb22",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/featured/quartztan1_kill.jpg",
+                "BriefingName": "Killruious",
+                "BriefingText": "You can kill NPCs who get lured.",
+                "HUDTemplate": {
+                    "display": "You can kill NPCs who get lured",
+                    "iconType": 0
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Investigate_Curious": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Title": "FINAL LURE TEST",
+        "Description": "??<br/><br/>Created by: Quartz Tan<br/>Curated by: Quartz Tan",
+        "ScenePath": "assembly:/_pro/scenes/missions/thefacility/_scene_polarbear_005.entity",
+        "Location": "LOCATION_ICA_FACILITY",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.23.0.0",
+        "ServerVersion": "8.23.0.0",
+        "Type": "featured",
+        "Id": "73c4baaf-81a0-435c-9893-e54836ba0000",
+        "PublicId": "001803903247",
+        "TileImage": "images/contracts/featured/quartztan1.jpg",
+        "CreationTimestamp": "2026-05-17T09:30:40.333Z"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,361 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$853fce74-74bf-4bf2-9b62-410dade67223",
+                "$47de2b7d-eae7-4d60-9987-154078ff11e9",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "853fce74-74bf-4bf2-9b62-410dade67223",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository f83376a4-6e56-4f2a-8122-151b272108fd).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository f83376a4-6e56-4f2a-8122-151b272108fd).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["f83376a4-6e56-4f2a-8122-151b272108fd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "f83376a4-6e56-4f2a-8122-151b272108fd"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "49765e76-dea7-4ad4-b502-2bad7727a15f",
+                        "HardCondition": true,
+                        "ObjectiveId": "55e298ec-f396-4bb2-980c-7612fce65c07",
+                        "KillMethod": "consumed_poison"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "55e298ec-f396-4bb2-980c-7612fce65c07",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["f83376a4-6e56-4f2a-8122-151b272108fd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f83376a4-6e56-4f2a-8122-151b272108fd"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "consumed_poison"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f83376a4-6e56-4f2a-8122-151b272108fd"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- DEFAULT SL: Eliminate Agents -----",
+                "Id": "47de2b7d-eae7-4d60-9987-154078ff11e9",
+                "IgnoreIfInactive": true,
+                "Category": "primary",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/fox/Fox_Eliminate_Lesser_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_SH_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_OBJ_FIND_AGENTS_HEADER",
+                "LongBriefingText": "You must kill 5 to make exit appear,and it's good to make this contract less boring...",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_SH_TITLE"
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_HUD",
+                                        "data": [
+                                            "$.AgentsKilledCounter",
+                                            "$.Questionmark"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Targets": [],
+                        "Agents": [
+                            "252428ca-3f8e-4477-b2b9-58f18cff3e44",
+                            "abd1c0e7-e406-43bd-9185-419029c5bf3d",
+                            "922deccd-7fb4-45d9-ae3d-2cf11915c403",
+                            "b8e7e65b-587e-471b-894d-282cda6614d4",
+                            "2ab07903-e958-4af6-b01c-b62058745ce1",
+                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994",
+                            "633398ac-c4b4-4441-852d-ae6460172025",
+                            "eb024a5e-9580-49dc-a519-bb92c886f3b1",
+                            "1305c2e4-6394-4cfa-b873-22adbd0c9702",
+                            "8b29da09-461f-44d7-9042-d4fde829b9f2"
+                        ],
+                        "Questionmark": "4",
+                        "AgentsKilledCounter": 0,
+                        "AgentsKilledGoal": 4,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "StartMainObjectives": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "FoxTargetIdentification": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Agents",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Actions": {
+                                    "$pushunique": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
+                                }
+                            },
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$inc": "AgentsKilledCounter",
+                                        "$dec": "update_counter"
+                                    },
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "f83376a4-6e56-4f2a-8122-151b272108fd"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.AgentsKilledCounter", 4]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "-": {
+                                "Actions": {
+                                    "$set": ["Questionmark", "4"],
+                                    "$dec": "update_counter"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hidden objective to check for lesser targets killed before being active -----",
+                "Id": "8814dcc8-cc82-47e3-9536-19211d65ec07",
+                "IgnoreIfInactive": true,
+                "UpdateActivationWhileCompleted": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "ContextListeners": {
+                        "RemainingTargetsCount": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_FOX_ELIMINATE_REMAINING_LESSER_AGENTS_COUNT_HEAD"
+                        }
+                    },
+                    "Context": {
+                        "Targets": [
+                            "252428ca-3f8e-4477-b2b9-58f18cff3e44",
+                            "abd1c0e7-e406-43bd-9185-419029c5bf3d",
+                            "922deccd-7fb4-45d9-ae3d-2cf11915c403",
+                            "b8e7e65b-587e-471b-894d-282cda6614d4",
+                            "2ab07903-e958-4af6-b01c-b62058745ce1",
+                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994",
+                            "633398ac-c4b4-4441-852d-ae6460172025",
+                            "eb024a5e-9580-49dc-a519-bb92c886f3b1",
+                            "1305c2e4-6394-4cfa-b873-22adbd0c9702",
+                            "8b29da09-461f-44d7-9042-d4fde829b9f2"
+                        ],
+                        "RemainingTargetsCount": 10
+                    },
+                    "States": {
+                        "Start": {
+                            "exit_gate": {
+                                "Transition": "Success"
+                            },
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$dec": "RemainingTargetsCount"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingTargetsCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "FoxTargetIdentification": [
+                                {
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingTargetsCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/edgy/mission_fox/mission_fox.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "Priceless Drink",
+        "Description": "Boring...<br/><br/>Created by: Quartz Tan<br/>Curated by: Quartz Tan",
+        "Entitlements": ["LOCATION_EDGY"],
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
+        "Location": "LOCATION_EDGY_FOX",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.22.0.0",
+        "ServerVersion": "8.22.0.0",
+        "Type": "featured",
+        "Id": "7e3f8426-7037-42ae-8a01-462734c8ec07",
+        "PublicId": "029603884447",
+        "TileImage": "images/contracts/featured/quartztan5.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "f83376a4-6e56-4f2a-8122-151b272108fd"
+            }
+        ],
+        "CreationTimestamp": "2026-01-30T07:38:01.769Z"
+    },
+    "UserData": {}
+}

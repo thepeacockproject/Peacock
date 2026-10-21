@@ -19,6 +19,23 @@
 import type { MissionManifestObjective, RepositoryId } from "../types/types"
 import { randomUUID } from "crypto"
 import assert from "assert"
+import { nilUuid } from "../utils"
+
+/**
+ * The player gets a choice of which kill method the contract should be created with.
+ * It has the following 4 levels of granularity.
+ * I tried to find a corresponding internal enum from the SDK's `Glacier.h`, but to no avail.
+ */
+export const enum RequiredKillMethodType {
+    /** Any method. */
+    Any = 0,
+    /** Pistol, fiberwire, shotgun, explosive, any thrown, any melee, any poison. */
+    BroadMethod = 1,
+    /** A specific method but not a specific item. consumed_poison, injected_poison, accident_*. Keyed off `KillMethodStrict`. */
+    SpecificMethod = 2,
+    /** A specific item (e.g. screwdriver, or lack thereof in the case of unarmed aka a neck snap). */
+    SpecificRepositoryId = 3,
+}
 
 /**
  * The payload provided to the game for each target in the create menu route.
@@ -27,14 +44,14 @@ export type ContractCreationNpcTargetPayload = {
     RepositoryId: string
     Selected: boolean
     Weapon: {
-        RepositoryId: string
+        RepositoryId: RepositoryId | undefined
         KillMethodBroad: string
         KillMethodStrict: string
         RequiredKillMethod: string
-        RequiredKillMethodType: number
+        RequiredKillMethodType: RequiredKillMethodType
     }
     Outfit: {
-        RepositoryId: string
+        RepositoryId: RepositoryId
         Required: boolean
         IsHitmanSuit: boolean
     }
@@ -191,7 +208,9 @@ export function createObjectivesForTarget(
         targetSm.TargetConditions ??= []
 
         targetSm.TargetConditions.push({
-            Type: "killmethod",
+            Type: requiresSpecificItem(params.Weapon)
+                ? "killmethod_specificitem"
+                : "killmethod",
             RepositoryId: params.Weapon.RepositoryId,
             // for contract creation it's always optional, only escalations set hard fail conditions
             HardCondition: false,
@@ -203,6 +222,21 @@ export function createObjectivesForTarget(
     }
 
     return objectives
+}
+
+/**
+ * Whether the player asked for one specific item rather than a whole kill
+ * method. Methods with no item behind them (accidents, a neck snap) come
+ * through as the nil UUID, and IOI's own contracts keep those as a plain
+ * `killmethod`, so they are not treated as item-specific here.
+ * @param weapon The weapon details from the request.
+ */
+function requiresSpecificItem(weapon: Weapon): boolean {
+    return (
+        weapon.RequiredKillMethodType ===
+            RequiredKillMethodType.SpecificRepositoryId &&
+        weapon.RepositoryId !== nilUuid
+    )
 }
 
 /**
@@ -362,50 +396,49 @@ export function genStateMachineKillSuccessCondition(
 ): KillSuccessStateCondition {
     const km = weaponToKillMethod(weapon)
 
-    if (km === ContractKillMethod.PistolElimination) {
+    // a plain pistol kill can register as either "pistol" or, at close range,
+    // "close_combat_pistol_elimination", so "any pistol" has to accept both.
+    const methodCondition =
+        km === ContractKillMethod.Pistol
+            ? {
+                  $any: {
+                      "?": {
+                          $or: [
+                              {
+                                  $eq: ["$.#", "pistol"],
+                              },
+                              {
+                                  $eq: [
+                                      "$.#",
+                                      "close_combat_pistol_elimination",
+                                  ],
+                              },
+                          ],
+                      },
+                      in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+                  },
+              }
+            : {
+                  $any: {
+                      "?": {
+                          $eq: ["$.#", weapon.RequiredKillMethod],
+                      },
+                      in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+                  },
+              }
+
+    if (requiresSpecificItem(weapon)) {
         return {
-            $any: {
-                "?": {
-                    $or: [
-                        {
-                            $eq: ["$.#", "pistol"],
-                        },
-                        {
-                            $eq: ["$.#", "close_combat_pistol_elimination"],
-                        },
-                    ],
+            $and: [
+                methodCondition,
+                {
+                    $eq: ["$Value.KillItemRepositoryId", weapon.RepositoryId],
                 },
-                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-            },
+            ],
         }
     }
 
-    if (km === ContractKillMethod.Pistol) {
-        return {
-            $any: {
-                "?": {
-                    $or: [
-                        {
-                            $eq: ["$.#", "pistol"],
-                        },
-                        {
-                            $eq: ["$.#", "close_combat_pistol_elimination"],
-                        },
-                    ],
-                },
-                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-            },
-        }
-    }
-
-    return {
-        $any: {
-            "?": {
-                $eq: ["$.#", weapon.RequiredKillMethod],
-            },
-            in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-        },
-    }
+    return methodCondition
 }
 
 /**
@@ -415,7 +448,7 @@ export function genStateMachineKillSuccessCondition(
 export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
     const type = weapon.RequiredKillMethodType
 
-    if (type === 0) {
+    if (type === RequiredKillMethodType.Any) {
         return ContractKillMethod.Any
     }
 
@@ -435,29 +468,33 @@ export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
         case "fiberwire":
             return ContractKillMethod.FiberWire
         case "throw": {
-            return type === 1
+            return type === RequiredKillMethodType.BroadMethod
                 ? ContractKillMethod.AnyThrown
                 : ContractKillMethod.ObjectThrown
         }
         case "melee_lethal": {
-            return type === 1
+            return type === RequiredKillMethodType.BroadMethod
                 ? ContractKillMethod.AnyMelee
                 : ContractKillMethod.ObjectMelee
         }
         case "poison": {
-            if (weapon.KillMethodStrict === "consumed_poison" && type === 2) {
+            if (
+                weapon.KillMethodStrict === "consumed_poison" &&
+                type === RequiredKillMethodType.SpecificMethod
+            ) {
                 return ContractKillMethod.ConsumedPoison
             }
 
             if (
                 weapon.KillMethodStrict === "injected_poison" &&
-                weapon.RequiredKillMethodType === 2
+                weapon.RequiredKillMethodType ===
+                    RequiredKillMethodType.SpecificMethod
             ) {
                 return ContractKillMethod.InjectedPoison
             }
 
             assert(
-                type === 1,
+                type === RequiredKillMethodType.BroadMethod,
                 `Unhandled poison: ${weapon.KillMethodStrict} ${type}`,
             )
 

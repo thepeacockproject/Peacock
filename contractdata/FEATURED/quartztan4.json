@@ -1,0 +1,811 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea003",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea004",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea005",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea006",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea007",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea008",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea009",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea010",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea011",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea012",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea013",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea014",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea015",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea016",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea017",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea018",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea019",
+                "$ea9d11d2-aa15-4a05-ad1d-5480973ea020",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Chameleon (Part 1) -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea001",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_NORTHSEA_47_MASTER_OF_DISGUISE_NAME",
+                "BriefingText": "$loc UI_CHALLENGES_NORTHSEA_47_MASTER_OF_DISGUISE_DESC",
+                "Type": "statemachine",
+                "ShowInHud": false,
+                "HUDTemplate": {},
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ContractStart": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Chameleon (Part 2) -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea002",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_NORTHSEA_47_MASTER_OF_DISGUISE_NAME",
+                "BriefingText": "$loc UI_CHALLENGES_NORTHSEA_47_MASTER_OF_DISGUISE_DESC",
+                "Type": "statemachine",
+                "ShowInHud": false,
+                "HUDTemplate": {},
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Tim Quinn -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea003",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_efd59292-9719-4b72-bfc3-9f7c1f649515_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_QUINN_NAME",
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_QUINN_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_QUINN_NAME",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "efd59292-9719-4b72-bfc3-9f7c1f649515"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Ark Member -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea004",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_b8b1d3c2-cf47-4a44-acc8-d8aa965ec8d8_0.jpg",
+                "BriefingName": "$loc THEISLAND_CIVILIAN_ARKIANTIER2_M_PRO99821_NAME_B8B1D3C2-CF47-4A44-ACC8-D8AA965EC8D8",
+                "BriefingText": "$loc THEISLAND_CIVILIAN_ARKIANTIER2_M_PRO99821_DESCRIPTION_B8B1D3C2-CF47-4A44-ACC8-D8AA965EC8D8",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_CIVILIAN_ARKIANTIER2_M_PRO99821_NAME_B8B1D3C2-CF47-4A44-ACC8-D8AA965EC8D8",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "b8b1d3c2-cf47-4a44-acc8-d8aa965ec8d8"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "b8b1d3c2-cf47-4a44-acc8-d8aa965ec8d8"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Architect -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea005",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_8d2b15f2-1d23-4b5e-b128-d2f47b53faf7_0.jpg",
+                "BriefingName": "$loc THEISLAND_CIVILIAN_ARKIANTIER3_M_PRO99819_NAME_8D2B15F2-1D23-4B5E-B128-D2F47B53FAF7",
+                "BriefingText": "$loc THEISLAND_CIVILIAN_ARKIANTIER3_M_PRO99819_DESCRIPTION_8D2B15F2-1D23-4B5E-B128-D2F47B53FAF7",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_CIVILIAN_ARKIANTIER3_M_PRO99819_NAME_8D2B15F2-1D23-4B5E-B128-D2F47B53FAF7",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8d2b15f2-1d23-4b5e-b128-d2f47b53faf7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8d2b15f2-1d23-4b5e-b128-d2f47b53faf7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Guard -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea006",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_6565bf3a-aa59-44f5-9b89-ef645f99d4fa_0.jpg",
+                "BriefingName": "$loc THEISLAND_GUARD_KEEPER_M_PRO99779_NAME_6565BF3A-AA59-44F5-9B89-EF645F99D4FA",
+                "BriefingText": "$loc THEISLAND_GUARD_KEEPER_M_PRO99779_DESCRIPTION_6565BF3A-AA59-44F5-9B89-EF645F99D4FA",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_GUARD_KEEPER_M_PRO99779_NAME_6565BF3A-AA59-44F5-9B89-EF645F99D4FA",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "6565bf3a-aa59-44f5-9b89-ef645f99d4fa"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Elite Guard -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea007",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_84c55eed-6891-40b3-9449-6881b53fabdd_0.jpg",
+                "BriefingName": "$loc THEISLAND_GUARD_SENTINEL_M_PRO99793_NAME_84C55EED-6891-40B3-9449-6881B53FABDD",
+                "BriefingText": "$loc THEISLAND_GUARD_SENTINEL_M_PRO99793_DESCRIPTION_84C55EED-6891-40B3-9449-6881B53FABDD",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_SERVANT_M_PRO99815_NAME_415C3C97-3C45-43A8-B930-40BECE444A55",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "84c55eed-6891-40b3-9449-6881b53fabdd"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Raider -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea008",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_58f91772-a202-49e4-a558-159f762d78e3_0.jpg",
+                "BriefingName": "$loc THEISLAND_GUARD_GUARDIAN_M_PRO99782_NAME_58F91772-A202-49E4-A558-159F762D78E3",
+                "BriefingText": "$loc THEISLAND_GUARD_GUARDIAN_M_PRO99782_DESCRIPTION_58F91772-A202-49E4-A558-159F762D78E3",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_GUARD_GUARDIAN_M_PRO99782_NAME_58F91772-A202-49E4-A558-159F762D78E3",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "58f91772-a202-49e4-a558-159f762d78e3"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Custodian -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea009",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_04d72492-1b6b-4e6b-8372-5e65dc209cc4_0.jpg",
+                "BriefingName": "$loc THEISLAND_WORKER_CUSTODIAN_M_PRO99795_NAME_04D72492-1B6B-4E6B-8372-5E65DC209CC4",
+                "BriefingText": "$loc THEISLAND_WORKER_CUSTODIAN_M_PRO99795_DESCRIPTION_04D72492-1B6B-4E6B-8372-5E65DC209CC4",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_CUSTODIAN_M_PRO99795_NAME_04D72492-1B6B-4E6B-8372-5E65DC209CC4",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "04d72492-1b6b-4e6b-8372-5e65dc209cc4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "04d72492-1b6b-4e6b-8372-5e65dc209cc4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Blake Nathaniel -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea010",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_d40fe7e8-ec8d-429b-a86b-7844c0e4d1c7_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_BLAKENATHANIEL_M_PRO99776_NAME_D40FE7E8-EC8D-429B-A86B-7844C0E4D1C7",
+                "BriefingText": "$loc THEISLAND_UNIQUE_BLAKENATHANIEL_M_PRO99776_NAME_D40FE7E8-EC8D-429B-A86B-7844C0E4D1C7",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_BLAKENATHANIEL_M_PRO99776_NAME_D40FE7E8-EC8D-429B-A86B-7844C0E4D1C7",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "d40fe7e8-ec8d-429b-a86b-7844c0e4d1c7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Jebediah Block -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea011",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_bef91840-e5aa-4a44-9f2e-30c732b1f7be_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_MASTER_M_PRO99828_NAME_BEF91840-E5AA-4A44-9F2E-30C732B1F7BE",
+                "BriefingText": "$loc THEISLAND_UNIQUE_MASTER_M_PRO99828_DESCRIPTION_BEF91840-E5AA-4A44-9F2E-30C732B1F7BE",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_MASTER_M_PRO99828_NAME_BEF91840-E5AA-4A44-9F2E-30C732B1F7BE",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "bef91840-e5aa-4a44-9f2e-30c732b1f7be"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Burial Robes -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea012",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_ae340f4d-6282-48d0-8e0d-c3dcb414bb4f_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_JANUSBURIALCLOTHES_M_PRO99775_NAME_AE340F4D-6282-48D0-8E0D-C3DCB414BB4F",
+                "BriefingText": "$loc THEISLAND_UNIQUE_JANUSBURIALCLOTHES_M_PRO99775_DESCRIPTION_AE340F4D-6282-48D0-8E0D-C3DCB414BB4F",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_JANUSBURIALCLOTHES_M_PRO99775_NAME_AE340F4D-6282-48D0-8E0D-C3DCB414BB4F",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "ae340f4d-6282-48d0-8e0d-c3dcb414bb4f"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Initiate -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea013",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_daf223e8-0b22-405f-a3b9-40d2b9992c2f_0.jpg",
+                "BriefingName": "$loc THEISLAND_CIVILIAN_INITIATE_M_PRO9XXXX_NAME_DAF223E8-0B22-405F-A3B9-40D2B9992C2F",
+                "BriefingText": "$loc THEISLAND_CIVILIAN_INITIATE_M_PRO9XXXX_DESCRIPTION_DAF223E8-0B22-405F-A3B9-40D2B9992C2F",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_CIVILIAN_INITIATE_M_PRO9XXXX_NAME_DAF223E8-0B22-405F-A3B9-40D2B9992C2F",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "daf223e8-0b22-405f-a3b9-40d2b9992c2f"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Chef -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea014",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_e4aeb186-bedd-41a1-b4c0-bb9c49bc7982_0.jpg",
+                "BriefingName": "$loc THEISLAND_WORKER_KITCHEN_CHEF_M_PRO99800_NAME_E4AEB186-BEDD-41A1-B4C0-BB9C49BC7982",
+                "BriefingText": "$loc THEISLAND_WORKER_KITCHEN_CHEF_M_PRO99800_DESCRIPTION_E4AEB186-BEDD-41A1-B4C0-BB9C49BC7982",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_KITCHEN_CHEF_M_PRO99800_NAME_E4AEB186-BEDD-41A1-B4C0-BB9C49BC7982",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "e4aeb186-bedd-41a1-b4c0-bb9c49bc7982"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "e4aeb186-bedd-41a1-b4c0-bb9c49bc7982"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Event Stuff -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea015",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_e3d61bbf-5b28-45cb-88bd-b386f5daa605_0.jpg",
+                "BriefingName": "$loc THEISLAND_WORKER_WAITER_M_PRO99805_NAME_E3D61BBF-5B28-45CB-88BD-B386F5DAA605",
+                "BriefingText": "$loc THEISLAND_WORKER_WAITER_M_PRO99805_DESCRIPTION_E3D61BBF-5B28-45CB-88BD-B386F5DAA605",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_WAITER_M_PRO99805_NAME_E3D61BBF-5B28-45CB-88BD-B386F5DAA605",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "e3d61bbf-5b28-45cb-88bd-b386f5daa605"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "e3d61bbf-5b28-45cb-88bd-b386f5daa605"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Butler -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea016",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_e9a9b20d-93de-48b7-8840-73411bace252_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_BUTLER_M_PRO99835_NAME_E9A9B20D-93DE-48B7-8840-73411BACE252",
+                "BriefingText": "$loc THEISLAND_UNIQUE_BUTLER_M_PRO99835_DESCRIPTION_E9A9B20D-93DE-48B7-8840-73411BACE252",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_BUTLER_M_PRO99835_NAME_E9A9B20D-93DE-48B7-8840-73411BACE252",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "e9a9b20d-93de-48b7-8840-73411bace252"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Entertainer -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea017",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_f9a34b19-f9ff-44a9-b232-86b1b8fcdbb0_0.jpg",
+                "BriefingName": "$loc THEISLAND_WORKER_ENTERTAINER_M_PRO99810_NAME_F9A34B19-F9FF-44A9-B232-86B1B8FCDBB0",
+                "BriefingText": "$loc THEISLAND_WORKER_ENTERTAINER_M_PRO99810_DESCRIPTION_F9A34B19-F9FF-44A9-B232-86B1B8FCDBB0",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_ENTERTAINER_M_PRO99810_NAME_F9A34B19-F9FF-44A9-B232-86B1B8FCDBB0",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "f9a34b19-f9ff-44a9-b232-86b1b8fcdbb0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Castle Stuff -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea018",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_415c3c97-3c45-43a8-b930-40bece444a55_0.jpg",
+                "BriefingName": "$loc THEISLAND_WORKER_SERVANT_M_PRO99815_NAME_415C3C97-3C45-43A8-B930-40BECE444A55",
+                "BriefingText": "$loc THEISLAND_WORKER_SERVANT_M_PRO99815_DESCRIPTION_415C3C97-3C45-43A8-B930-40BECE444A55",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_WORKER_SERVANT_M_PRO99815_NAME_415C3C97-3C45-43A8-B930-40BECE444A55",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "415c3c97-3c45-43a8-b930-40bece444a55"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Master of Ceremonies -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea019",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_9db0a810-7549-4932-b0ab-9d6241afdc2c_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_MASTEROFCEREMONIES_M_PRO99773_NAME_9DB0A810-7549-4932-B0AB-9D6241AFDC2C",
+                "BriefingText": "$loc THEISLAND_UNIQUE_MASTEROFCEREMONIES_M_PRO99773_DESCRIPTION_9DB0A810-7549-4932-B0AB-9D6241AFDC2C",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_MASTEROFCEREMONIES_M_PRO99773_NAME_9DB0A810-7549-4932-B0AB-9D6241AFDC2C",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "9db0a810-7549-4932-b0ab-9d6241afdc2c"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Knight's Armour -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea020",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_fae73e92-2307-4163-8e9f-30401ca884bf_0.jpg",
+                "BriefingName": "$loc THEISLAND_UNIQUE_KNIGHTARMOUR_M_PRO99845_NAME_FAE73E92-2307-4163-8E9F-30401CA884BF",
+                "BriefingText": "$loc THEISLAND_UNIQUE_KNIGHTARMOUR_M_PRO99845_DESCRIPTION_FAE73E92-2307-4163-8E9F-30401CA884BF",
+                "HUDTemplate": {
+                    "display": "$loc THEISLAND_UNIQUE_KNIGHTARMOUR_M_PRO99845_NAME_FAE73E92-2307-4163-8E9F-30401CA884BF",
+                    "iconType": 22
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- The Disruptor -----",
+                "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea021",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "BriefingText": "The Disruptor must remain alive.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Constants": {
+                        "RepositoryId": "531a270c-67a1-41a1-8dfd-c84a4e8ee127"
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "$.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/theark/elusive_penicillin.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "Master of Disguise: Penicillin",
+        "Description": "The Disruptor must remain alive for Anti-Softlock purposes.<br/><br/>Created by: GamingWithGriddy<br/>Curated by: Quartz Tan",
+        "Entitlements": ["LOCATION_NORTHSEA"],
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.22.0.0",
+        "ServerVersion": "8.22.0.0",
+        "Type": "featured",
+        "Id": "ea9d11d2-aa15-4a05-ad1d-5480973ea000",
+        "PublicId": "021840590847",
+        "TileImage": "images/contracts/featured/quartztan4.jpg",
+        "GroupObjectiveDisplayOrder": [],
+        "CreationTimestamp": "2026-02-01T14:04:06.847Z"
+    },
+    "UserData": {}
+}

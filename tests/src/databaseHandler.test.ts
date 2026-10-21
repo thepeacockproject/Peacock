@@ -38,7 +38,7 @@ describe("contract session storage", () => {
     testWithFakeFs(
         "can read and write a basic contract session",
         async ({ fakeFs, expect }) => {
-            const basicFakeSession = contractSessionFactory()
+            const basicFakeSession = contractSessionFactory.build()
 
             await writeContractSession(
                 "nullSlot_jeff_fakeSessionId",

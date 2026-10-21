@@ -1,0 +1,330 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$ae03a508-532f-48a9-aa0d-e0f13ae8b6c9", "Completed"]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "ae03a508-532f-48a9-aa0d-e0f13ae8b6c9",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/unlockables/item_perspective_3350a399-11f3-43dc-a958-562783439474_0.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_NOEL_5PRESENTS_NAME",
+                "BriefingText": "Share your heart to dustbins and briefcases,do not drop it or pick it up",
+                "HUDTemplate": {
+                    "display": "Share your heart to dustbins and briefcases",
+                    "iconType": 49
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Itemplaced": 0,
+                        "CollectionStates": 0,
+                        "Itemgoal": 21,
+                        "Itemkeep": 21,
+                        "ItemplacedExtra": 0
+                    },
+                    "ContextListeners": {
+                        "Itemgoal": {
+                            "type": "objective-counter",
+                            "header": "ui_prop_melee_heart_name"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemRemovedFromInventory": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3350a399-11f3-43dc-a958-562783439474"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": [
+                                        {
+                                            "$inc": "Itemplaced"
+                                        },
+                                        {
+                                            "$dec": "Itemgoal"
+                                        },
+                                        {
+                                            "$dec": "Itemkeep"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3350a399-11f3-43dc-a958-562783439474"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$.Itemgoal", 0]
+                                            },
+                                            {
+                                                "$eq": ["$.Itemkeep", 0]
+                                            },
+                                            {
+                                                "$eq": ["$.ItemplacedExtra", 0]
+                                            },
+                                            {
+                                                "$eq": ["$.CollectionStates", 0]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["CollectionStates", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3350a399-11f3-43dc-a958-562783439474"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3350a399-11f3-43dc-a958-562783439474"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "b7cd372c-48d1-48b1-9f1f-7db0a5e7fb21",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/unlockables/item_perspective_12cb6b51-a6dd-4bf5-9653-0ab727820cac_0.jpg",
+                "BriefingName": "no Screwdriver",
+                "BriefingText": "DO NOT pick up Screwdriver",
+                "LongBriefingText": "because you can throw heart infinite times after you open the hole.",
+                "HUDTemplate": {
+                    "display": "Do not use Screwdriver",
+                    "iconType": 999
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "12cb6b51-a6dd-4bf5-9653-0ab727820cac"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "PISTOL",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "b0f87b4e-a41c-4771-8c74-f56574129679"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            },
+            {
+                "Id": "HEART",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "3350a399-11f3-43dc-a958-562783439474"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Title": "the shared love",
+        "Description": "The inscribed words surface in the heart.<br/><br/>My love, abandon it here.<br/><br/>Created by: Quartz Tan<br/>Curated by: Quartz Tan",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
+        "Location": "LOCATION_GREEDY_RACCOON",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.22.0.0",
+        "ServerVersion": "8.22.0.0",
+        "Type": "featured",
+        "Id": "6502d8be-e6f2-4eea-aee5-38cc13ec5a89",
+        "PublicId": "024134330447",
+        "TileImage": "images/contracts/featured/quartztan6.jpg",
+        "CreationTimestamp": "2026-01-29T04:27:16.056Z"
+    },
+    "UserData": {}
+}

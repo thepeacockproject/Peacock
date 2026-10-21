@@ -47,10 +47,16 @@ import {
     xpRequiredForSniperLevel,
 } from "../utils"
 
-import { controller } from "../controller"
+import type { Controller } from "../controller"
 import assert from "assert"
 
 export class MasteryService {
+    private readonly controller: Controller
+
+    constructor(controller: Controller) {
+        this.controller = controller
+    }
+
     /**
      * @Key1 Game version.
      * @Key2 The parent location Id.
@@ -395,10 +401,11 @@ export class MasteryService {
         }
 
         // Get all unlockables with matching Ids
-        const unlockableData = controller.inventoryService.getUnlockablesById(
-            Array.from(dropIdSet),
-            gameVersion,
-        )
+        const unlockableData =
+            this.controller.inventoryService.getUnlockablesById(
+                Array.from(dropIdSet),
+                gameVersion,
+            )
 
         // Put all unlockabkes in a map for quick lookup
         const mapped: [string, Unlockable][] = unlockableData.map(

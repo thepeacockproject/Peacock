@@ -1,0 +1,446 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$1806a100-98c7-4932-a93e-35c50f6461ac",
+                "$2806a100-98c7-4932-a93e-35c50f6461ac",
+                "$3806a100-98c7-4932-a93e-35c50f6461ac",
+                "$4806a100-98c7-4932-a93e-35c50f6461ac",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "1806a100-98c7-4932-a93e-35c50f6461ac",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "Cottonmouth",
+                "Image": "images/challenges/hokkaido/biker_katana_kill.jpg",
+                "HUDTemplate": {
+                    "display": "Assassinate a target with the katana while disguised as the Motorcyclist."
+                },
+                "BriefingText": "Assassinate a target with the katana while disguised as the Motorcyclist.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Disguise_On": {
+                            "Disguise": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.OutfitRepositoryId",
+                                                "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                            ]
+                                        },
+                                        {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.KillItemRepositoryId"
+                                                    ]
+                                                },
+                                                "in": [
+                                                    "5631dace-7f4a-4df8-8e97-b47373b815ff",
+                                                    "d439fb64-8713-4c54-a3f3-90730dbdf370"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "End_Contract": {
+                            "ContractEnd": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Disguise": {
+                                "Transition": "Failure"
+                            }
+                        },
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                    ]
+                                },
+                                "Transition": "Disguise_On"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2806a100-98c7-4932-a93e-35c50f6461ac",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "Copperhead",
+                "Image": "images/challenges/hokkaido/biker_knife_kill.jpg",
+                "HUDTemplate": {
+                    "display": "Assassinate a target with a lethally thrown kitchen knife while disguised as the Motorcyclist."
+                },
+                "BriefingText": "Assassinate a target with a lethally thrown kitchen knife while disguised as the Motorcyclist.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Disguise_On": {
+                            "Disguise": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                            ]
+                                        },
+                                        {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "DeadlyThrow"
+                                                    ]
+                                                },
+                                                "in": "$Value.DamageEvents"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "End_Contract": {
+                            "ContractEnd": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Disguise": {
+                                "Transition": "Failure"
+                            }
+                        },
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                    ]
+                                },
+                                "Transition": "Disguise_On"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "3806a100-98c7-4932-a93e-35c50f6461ac",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "Sidewinder",
+                "Image": "images/challenges/hokkaido/biker_poison_kill.jpg",
+                "HUDTemplate": {
+                    "display": "Assassinate a target with lethal poison while disguised as the Motorcyclist."
+                },
+                "BriefingText": "Assassinate a target with lethal poison while disguised as the Motorcyclist.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Disguise_On": {
+                            "Disguise": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.OutfitRepositoryId",
+                                                "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.KillClass",
+                                                "poison"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Level_Setup_Events": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Event_metricvalue",
+                                        "Poison_Kill"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "End_Contract": {
+                            "ContractEnd": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Disguise": {
+                                "Transition": "Failure"
+                            }
+                        },
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                    ]
+                                },
+                                "Transition": "Disguise_On"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4806a100-98c7-4932-a93e-35c50f6461ac",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "California Mountain Snake",
+                "Image": "images/challenges/hokkaido/biker_drown_kill.jpg",
+                "HUDTemplate": {
+                    "display": "Assassinate a target by drowning them while disguised as the Motorcyclist."
+                },
+                "BriefingText": "Assassinate a target by drowning them while disguised as the Motorcyclist.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Disguise_On": {
+                            "Disguise": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.OutfitRepositoryId",
+                                                "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.KillMethodStrict",
+                                                "accident_drown"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "End_Contract": {
+                            "ContractEnd": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Disguise": {
+                                "Transition": "Failure"
+                            }
+                        },
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                    ]
+                                },
+                                "Transition": "Disguise_On"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9c2c10e3-ccfd-4523-a70a-c2707afff1e2",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "ExcludeFromScoring": true,
+                "Image": "images/challenges/hokkaido/biker_master_biker.jpg",
+                "BriefingName": "This is art",
+                "BriefingText": "Once you equip the Motorcyclist disguise, you cannot change disguises again, or you will fail the mission.",
+                "HUDTemplate": {
+                    "display": "Once you equip the Motorcyclist disguise, you cannot change disguises again, or you will fail the mission.",
+                    "iconType": 8
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value",
+                                                    "8e01f48f-ef06-448c-9d22-5d58c4414968"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "WearingDexterDisguise"
+                                }
+                            ]
+                        },
+                        "WearingDexterDisguise": {
+                            "Disguise": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "000a90db-f03b-40d4-9d30-74ae5b47b2ba",
+                "ObjectiveType": "custom",
+                "Image": "images/challenges/hokkaido/biker_master_biker.jpg",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "BriefingName": "$loc UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_BIKER",
+                "BriefingText": "$loc UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_BIKER",
+                "HUDTemplate": {
+                    "display": "$loc UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_BIKER"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": [
+                            "88836cf0-852e-4244-9aa3-90174467b5b1",
+                            "f4eb50bc-1a58-4487-a568-de5ffe19b7ff",
+                            "5087ab4a-586c-4967-967c-487cc2d17c92",
+                            "84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f",
+                            "6c9474f0-30eb-4bac-af97-2541a9173bab",
+                            "84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f",
+                            "c04167bc-f321-4e0b-be51-0b5e662d2669",
+                            "5651198f-9ef7-4f3c-908b-a570f1cd64e2",
+                            "2f47716a-2663-461b-bd8c-2dfdccc720c6",
+                            "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                        ],
+                        "KilledTargets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledTargets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "($.KilledTargets).Count",
+                                            "($.Targets).Count"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_moscowmule.brick",
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/mission_hokkaido_ts6_seabreeze.brick",
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_dirtyoctopus.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "The Art of Revenge",
+        "Description": "I always come back.<br/><br/>Created by: LaoHuang<br/>Curated by: Quartz Tan",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/scene_mamushi.entity",
+        "Location": "LOCATION_HOKKAIDO_MAMUSHI",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.19.0.0",
+        "ServerVersion": "8.19.0.0",
+        "Type": "featured",
+        "Id": "a1b83a6e-86ad-4561-b83c-dc890d71c87c",
+        "PublicId": "037915855647",
+        "TileImage": "images/contracts/featured/quartztan7.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "ca50b57a-9a88-457f-bb5f-dc2bf5a64ade"
+            }
+        ],
+        "CreationTimestamp": "2025-05-10T16:13:43.281Z"
+    },
+    "UserData": {}
+}

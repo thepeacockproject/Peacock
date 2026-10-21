@@ -1,0 +1,153 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "3eb4aff5-34c7-4341-9009-56ab52da75ea",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 6240a1a1-f5ef-43b9-8665-7829fb0c0b52).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 6240a1a1-f5ef-43b9-8665-7829fb0c0b52).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["6240a1a1-f5ef-43b9-8665-7829fb0c0b52"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6240a1a1-f5ef-43b9-8665-7829fb0c0b52"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "447f1127-cb91-4d23-9eb3-93dda67ef54f",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository df7a1d47-6e8e-4609-af56-9142347be325).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository df7a1d47-6e8e-4609-af56-9142347be325).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["df7a1d47-6e8e-4609-af56-9142347be325"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "df7a1d47-6e8e-4609-af56-9142347be325"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "74344e66-15de-43f7-aa1c-4f3dc129d673",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 61350e1a-f853-4ce0-9128-743ece3daf52).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 61350e1a-f853-4ce0-9128-743ece3daf52).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["61350e1a-f853-4ce0-9128-743ece3daf52"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "61350e1a-f853-4ce0-9128-743ece3daf52"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/elusive_bramble.brick",
+            "assembly:/_pro/scenes/missions/ancestral/elusive_vesper.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "Garden Mystery",
+        "Description": "A house that cannot be entered, a legendary assassin. How should he fulfill the contract?<br/><br/>Created by: LaoHuang<br/>Curated by: Quartz Tan",
+        "Entitlements": [],
+        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_smoothsnake.entity",
+        "Location": "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.15.0.0",
+        "ServerVersion": "8.15.0.0",
+        "Type": "featured",
+        "Id": "65cd1b41-56ed-4107-a65a-cbcbbc5e33a0",
+        "PublicId": "033696261647",
+        "TileImage": "images/contracts/featured/quartztan2.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "6240a1a1-f5ef-43b9-8665-7829fb0c0b52"
+            },
+            {
+                "Id": "df7a1d47-6e8e-4609-af56-9142347be325"
+            },
+            {
+                "Id": "6a4dadfc-107e-4149-93b0-733a9e33fa66"
+            }
+        ],
+        "CreationTimestamp": "2024-06-15T14:08:04.277Z"
+    },
+    "UserData": {}
+}

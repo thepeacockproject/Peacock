@@ -14,6 +14,7 @@ add_executable(PeacockPatcher
         src/patcher.cpp
         src/patches.cpp
         src/patch_definitions/v3_260_1.cpp
+        src/patch_definitions/v3_270_1.cpp
         src/version.cpp
 )
 

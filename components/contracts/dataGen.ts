@@ -287,7 +287,6 @@ export function generateUserCentric(
  * @param objectives The objectives.
  * @param gameChangers The game changers.
  * @param displayOrder The order in which to display the objectives.
- * @param isEvergreenSafehouse Is the contract the Safehouse?
  * @returns The converted objectives.
  */
 export function mapObjectives(

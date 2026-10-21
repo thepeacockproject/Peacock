@@ -16,15 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { factory } from "@rdil/factorygirl"
+import { Factory } from "fishery"
 import {
     ContractSession,
     PeacockCameraStatus,
 } from "../../components/types/types"
 import { contractFactory } from "./contract"
 
-export const contractSessionFactory = factory<ContractSession, "">(() => {
-    const contract = contractFactory()
+export const contractSessionFactory = Factory.define<ContractSession>(() => {
+    const contract = contractFactory.build()
 
     return {
         Id: "fakeSessionId",

@@ -224,16 +224,6 @@ export abstract class ChallengeRegistry {
             },
         ],
         [
-            "ammonia-pack",
-            {
-                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_AMMONIA",
-                Description: "",
-                GameVersions: ["h3"],
-                Image: "images/challenges/categories/packammonia/tile.jpg",
-                Icon: "challenge_category_feats",
-            },
-        ],
-        [
             "argentum-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
@@ -260,6 +250,16 @@ export abstract class ChallengeRegistry {
                 Description: "",
                 GameVersions: ["h3"],
                 Image: "images/challenges/categories/packcheesecake/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+        [
+            "ammonia-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_AMMONIA",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packammonia/tile.jpg",
                 Icon: "challenge_category_feats",
             },
         ],

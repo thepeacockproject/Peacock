@@ -1,0 +1,124 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "e8baea5e-979f-4f1d-b7cb-f16c3b29936d",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 0ce09454-f422-49a2-945f-f9ff195e42b5).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 0ce09454-f422-49a2-945f-f9ff195e42b5).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["0ce09454-f422-49a2-945f-f9ff195e42b5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "0ce09454-f422-49a2-945f-f9ff195e42b5"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "36402728-1197-4a3c-a8ac-1fed399a2344",
+                        "HardCondition": false,
+                        "ObjectiveId": "4ad16df4-7c5f-4e87-9850-7c98633481c6",
+                        "KillMethod": ""
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "4ad16df4-7c5f-4e87-9850-7c98633481c6",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["0ce09454-f422-49a2-945f-f9ff195e42b5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0ce09454-f422-49a2-945f-f9ff195e42b5"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "36402728-1197-4a3c-a8ac-1fed399a2344"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "0ce09454-f422-49a2-945f-f9ff195e42b5"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "White Cargo Mystery",
+        "Description": "Easier than you think<br/><br/>Created by: WINNODD<br/>Curated by: Quartz Tan",
+        "Entitlements": ["LOCATION_TRAPPED"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/trapped/scene_wolverine.entity",
+        "Location": "LOCATION_TRAPPED_WOLVERINE",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.9.0.0",
+        "ServerVersion": "8.9.0.0",
+        "Type": "featured",
+        "Id": "d6e1e6d7-1d30-4007-883a-efb527fd5451",
+        "PublicId": "032279435147",
+        "TileImage": "images/contracts/featured/quartztan10.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "0ce09454-f422-49a2-945f-f9ff195e42b5"
+            }
+        ],
+        "CreationTimestamp": "2022-09-04T09:29:09.304Z"
+    },
+    "UserData": {}
+}

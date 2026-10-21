@@ -1,0 +1,126 @@
+{
+    "Metadata": {
+        "Id": "f840fce7-242f-435f-b482-1c990818a758",
+        "CodeName_Hint": "Greentini (Special Assignment)",
+        "Release": "3.280.x Special Assignment",
+        "Type": "flashback",
+        "Subtype": "specialassignment",
+        "Location": "LOCATION_OPULENT_GREENTINI",
+        "Title": "ET_Greentini_SA_Contract_Title",
+        "Description": "ET_GREENTINI_CONTRACT_DESC",
+        "TileImage": "Images/Contracts/Special/Special_Greentini_Tile.jpg",
+        "BriefingVideo": "briefing_greentini",
+        "DebriefingVideo": "debriefing_greentini",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/opulent/scene_greentini.entity",
+        "OnlyNeoVR": true,
+        "Entitlements": ["H3_ET_GREENTINI"],
+        "CreationTimestamp": "2026-07-01T09:30:40.6504427+01:00",
+        "CreatorUserId": "00000000-0000-0000-0000-000000000000",
+        "IsPublished": true
+    },
+    "Data": {
+        "EnableSaving": true,
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/opulent/mission_greentini.brick",
+            "assembly:/_PRO/scenes/missions/opulent/tutorial_greentini.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/opulent/dev_greentini.brick",
+            "assembly:/_PRO/scenes/missions/opulent/dev_tutorial_greentini.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/opulent/vr_overrides_greentini.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/vr_overrides_greentini.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "1060af5b-b069-4a7d-909b-c2237bca3d6c",
+            "ca4d53ee-8f86-4cda-938c-d46dfd0a54ee",
+            "95bedac5-8293-4b67-ad5e-79d6016b67a5",
+            "637d1a8d-73a9-431f-a34f-cc2971a3a9de",
+            "b89ae599-9fca-461f-8b4f-ca85cf7d2f22",
+            "f13e8776-9e01-4dea-bb7e-c191e75ad742",
+            "59224315-c825-42ce-a121-ee0d09558431"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate target -----",
+                "Id": "8ee3276d-91e9-4fbd-96a2-7da420b3f0f9",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "36e7a631-e72b-4dfa-a0f8-574422b919f9"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Destroy crops -----",
+                "Id": "0d09e192-bd67-4af5-a3ce-672f646e8779",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "Images/Contracts/Elusive/S3_Greentini/CustomObjective.jpg",
+                "BriefingName": "$loc ET_Greentini_Objective_Farm_Name",
+                "BriefingText": "$loc ET_Greentini_Objective_Farm_Text",
+                "LongBriefingText": "$loc ET_Greentini_Objective_Farm_Long",
+                "HUDTemplate": {
+                    "display": "$loc ET_Greentini_Objective_Farm_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "Percentage": {
+                            "type": "objective-counter",
+                            "subtype": "percent",
+                            "header": "ET_Greentini_Objective_Farm_PoisonedPercentage"
+                        }
+                    },
+                    "Context": {
+                        "Percentage": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "Greentini_CropsDestroyed": {
+                                "Transition": "Success"
+                            },
+                            "Greentini_SetPoisonedPercentage": [
+                                {
+                                    "Actions": {
+                                        "$set": ["Percentage", "$Value"]
+                                    }
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "-": [
+                                {
+                                    "Actions": {
+                                        "$set": ["Percentage", 0]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "UserData": {}
+}

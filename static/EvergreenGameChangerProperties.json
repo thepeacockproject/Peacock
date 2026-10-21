@@ -3470,6 +3470,12 @@
                 "IgnoreIfInactive": true,
                 "Type": "statemachine",
                 "Definition": {
+                    "Constants": {
+                        "ValidSetpieceIds": [
+                            "a7e6923b-7c68-466e-9090-a684ef220942",
+                            "faf11e5a-24e8-4ae7-8ea9-b8d9029330d5"
+                        ]
+                    },
                     "ContextListeners": {
                         "update_counter": {
                             "type": "custom",
@@ -3512,10 +3518,15 @@
                                             "$eq": ["$Value.IsTarget", true]
                                         },
                                         {
-                                            "$eq": [
-                                                "$Value.SetPieceId",
-                                                "a7e6923b-7c68-466e-9090-a684ef220942"
-                                            ]
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.SetPieceId"
+                                                    ]
+                                                },
+                                                "in": "$.ValidSetpieceIds"
+                                            }
                                         }
                                     ]
                                 },
@@ -9080,6 +9091,13 @@
                 "IgnoreIfInactive": true,
                 "Type": "statemachine",
                 "Definition": {
+                    "Constants": {
+                        "ValidSetpieceIds": [
+                            "62c0f1aa-41ba-45c0-800d-b6c34b98a544",
+                            "90922481-cf35-455b-9321-8baceb51ed62",
+                            "bdd77fdb-7b58-4dbf-9d78-9e0ad52e6e0c"
+                        ]
+                    },
                     "ContextListeners": {
                         "update_counter": {
                             "type": "custom",
@@ -9122,20 +9140,15 @@
                                             "$eq": ["$Value.IsTarget", true]
                                         },
                                         {
-                                            "$or": [
-                                                {
+                                            "$any": {
+                                                "?": {
                                                     "$eq": [
-                                                        "$Value.SetPieceId",
-                                                        "62c0f1aa-41ba-45c0-800d-b6c34b98a544"
+                                                        "$.#",
+                                                        "$Value.SetPieceId"
                                                     ]
                                                 },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.SetPieceId",
-                                                        "90922481-cf35-455b-9321-8baceb51ed62"
-                                                    ]
-                                                }
-                                            ]
+                                                "in": "$.ValidSetpieceIds"
+                                            }
                                         }
                                     ]
                                 },
@@ -14316,6 +14329,13 @@
                 "IgnoreIfInactive": true,
                 "Type": "statemachine",
                 "Definition": {
+                    "Constants": {
+                        "ValidSetpieceIds": [
+                            "a083c159-3a82-4a2d-ac00-872c4b84afa0",
+                            "a7e6923b-7c68-466e-9090-a684ef220942",
+                            "faf11e5a-24e8-4ae7-8ea9-b8d9029330d5"
+                        ]
+                    },
                     "ContextListeners": {
                         "update_counter": {
                             "type": "custom",
@@ -14367,20 +14387,15 @@
                                             "$eq": ["$Value.IsTarget", true]
                                         },
                                         {
-                                            "$or": [
-                                                {
+                                            "$any": {
+                                                "?": {
                                                     "$eq": [
-                                                        "$Value.SetPieceId",
-                                                        "a083c159-3a82-4a2d-ac00-872c4b84afa0"
+                                                        "$.#",
+                                                        "$Value.SetPieceId"
                                                     ]
                                                 },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.SetPieceId",
-                                                        "a7e6923b-7c68-466e-9090-a684ef220942"
-                                                    ]
-                                                }
-                                            ]
+                                                "in": "$.ValidSetpieceIds"
+                                            }
                                         }
                                     ]
                                 },

@@ -48,10 +48,10 @@ import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
     addDashesToPublicId,
-    deprecated,
     fastClone,
     getRemoteService,
     hitmapsUrl,
+    publicIdRegex,
     versions,
 } from "./utils"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
@@ -85,6 +85,18 @@ import { createDelegatingProxy } from "./delegation"
  * Each of the string arrays is one page.
  */
 export const featuredContractGroups: string[][] = [
+    [
+        "73c4baaf-81a0-435c-9893-e54836ba0000",
+        "65cd1b41-56ed-4107-a65a-cbcbbc5e33a0",
+        "7406ace8-08e5-4323-ac10-8a5e5bbb3ee7",
+        "ea9d11d2-aa15-4a05-ad1d-5480973ea000",
+        "7e3f8426-7037-42ae-8a01-462734c8ec07",
+        "6502d8be-e6f2-4eea-aee5-38cc13ec5a89",
+        "a1b83a6e-86ad-4561-b83c-dc890d71c87c",
+        "1afcd317-d15d-49ce-9541-105e30a0118f",
+        "727031d7-bc21-416d-aafb-27dea7a627e6",
+        "d6e1e6d7-1d30-4007-883a-efb527fd5451",
+    ],
     [
         "6275f476-b90a-4f79-abf3-bf30af020ad8",
         "ee0411d6-b3e7-4320-b56b-25c45d8a9d61",
@@ -441,55 +453,12 @@ export class Controller {
         this.inventoryService = new InventoryService(this)
     }
 
-    private _patchRequireTableInventory(): void {
-        const inventoryServiceMethods = new Set([
-            "clearInventoryFor",
-            "clearInventoryCache",
-            "getUnlockableById",
-            "getUnlockablesById",
-            "getDefaultSuitFor",
-            "createInventory",
-            "grantDrops",
-        ])
-
-        const service = this.inventoryService
-
-        const key =
-            "@peacockproject/core/inventory" as keyof typeof generatedPeacockRequireTable
-
-        const original = generatedPeacockRequireTable[key]
-
-        // @ts-expect-error Patching the generated table at runtime.
-        generatedPeacockRequireTable[key] = new Proxy(original, {
-            get(target, prop, receiver) {
-                if (
-                    typeof prop === "string" &&
-                    inventoryServiceMethods.has(prop)
-                ) {
-                    deprecated(
-                        `inventory.${prop}`,
-                        `controller.inventoryService.${prop}`,
-                        "v9",
-                    )
-
-                    return (...args: unknown[]) =>
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (service as any)[prop](...args)
-                }
-
-                return Reflect.get(target, prop, receiver)
-            },
-        })
-    }
-
     /**
      * Starts the service and loads in all contracts.
      *
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
      */
     async boot(pluginDevHost: boolean): Promise<void> {
-        this._patchRequireTableInventory()
-
         log(
             LogLevel.INFO,
             "Booting Peacock internal services - this may take a moment.",
@@ -511,8 +480,8 @@ export class Controller {
         )
 
         this.challengeService = new ChallengeService(this)
-        this.masteryService = new MasteryService()
-        this.progressionService = new ProgressionService()
+        this.masteryService = new MasteryService(this)
+        this.progressionService = new ProgressionService(this)
         this.smf = new SMFSupport(this)
 
         this._addElusiveTargets()
@@ -624,19 +593,28 @@ export class Controller {
      *
      * @param manifest The contract's data (mission manifest, a.k.a. mission JSON).
      * @return The manifest that got passed, in case you want to use chaining.
+     * @throws Error If the manifest's public ID is missing or is not safe to use as a filename.
      */
     public async commitNewContract(
         manifest: MissionManifest,
     ): Promise<MissionManifest> {
+        const publicId = manifest.Metadata.PublicId
+
+        if (!publicId || !publicIdRegex.test(publicId)) {
+            throw new Error(
+                `Refusing to save contract ${manifest.Metadata.Id}: unsafe public ID`,
+            )
+        }
+
         const j = JSON.stringify(manifest, undefined, 4)
 
         log(
             LogLevel.INFO,
-            `Saving generated contract ${manifest.Metadata.Id} to contracts/${manifest.Metadata.PublicId}.json`,
+            `Saving generated contract ${manifest.Metadata.Id} to contracts/${publicId}.json`,
             "contracts",
         )
 
-        const name = `contracts/${manifest.Metadata.PublicId}.json`
+        const name = `contracts/${publicId}.json`
 
         await writeFile(name, j)
 
@@ -1008,13 +986,12 @@ export class Controller {
         contractData.Metadata.CreatorUserId =
             "fadb923c-e6bb-4283-a537-eb4d1150262e"
 
-        await writeFile(
-            `contracts/${pubId}.json`,
-            JSON.stringify(contractData, undefined, 4),
-        )
         await this.commitNewContract(contractData)
 
-        log(LogLevel.DEBUG, `Saved contract to contracts/${pubId}.json`)
+        log(
+            LogLevel.DEBUG,
+            `Saved contract to contracts/${contractData.Metadata.PublicId}.json`,
+        )
 
         return contractData
     }

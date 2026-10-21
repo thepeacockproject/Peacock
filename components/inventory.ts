@@ -46,8 +46,10 @@ import {
     TRINITY_UNLOCKABLES,
     WINTERSPORTS_UNLOCKABLES,
     FILUR_UNLOCKABLES,
-    POMADA_UNLOCKABLES,
     SPORT_UNLOCKABLES,
+    POMADA_UNLOCKABLES,
+    EG04_UNLOCKABLES,
+    GREENTINI_UNLOCKABLES,
 } from "./ownership"
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import type { Controller } from "./controller"
@@ -91,8 +93,10 @@ const DELUXE_DATA = [
     ...BAIJU_UNLOCKABLES,
     ...BELLINI_UNLOCKABLES,
     ...FILUR_UNLOCKABLES,
-    ...POMADA_UNLOCKABLES,
     ...SPORT_UNLOCKABLES,
+    ...POMADA_UNLOCKABLES,
+    ...EG04_UNLOCKABLES,
+    ...GREENTINI_UNLOCKABLES,
 ]
 
 /**
@@ -377,11 +381,17 @@ export class InventoryService {
                 return false
             }
 
-            if (
-                unlockContainer.Unlockable.Type === "disguise" &&
-                !unlockContainer.Unlockable.Properties.OrderIndex
-            ) {
-                return false
+            // filter out level-specific disguises
+            if (gameVersion === "h3") {
+                if (unlockContainer.Unlockable.SubType === "disguise")
+                    return false
+            } else {
+                if (
+                    unlockContainer.Unlockable.Type === "disguise" &&
+                    !unlockContainer.Unlockable.Properties.OrderIndex
+                ) {
+                    return false
+                }
             }
 
             if (gameVersion === "h1") {
@@ -628,6 +638,20 @@ export class InventoryService {
                 return (
                     e.includes("d51a3a65928841d5b4cabad20a865006") ||
                     e.includes("4621250")
+                )
+            }
+
+            if (EG04_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("7b3bf47c436644ea8fea4f95317d431c") ||
+                    e.includes("4944070")
+                )
+            }
+
+            if (GREENTINI_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("d396d245e23a401b8422116db9026a27") ||
+                    e.includes("4911210")
                 )
             }
 

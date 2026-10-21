@@ -13,6 +13,49 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
+                    "Id": "fd92b16b-8937-4a07-a525-ebf03f231325",
+                    "Name": "UI_NONI_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Noni_Group.jpg",
+                    "Description": "UI_NONI_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_OPULENT",
+                    "ParentLocationId": "LOCATION_PARENT_OPULENT",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "ed26cb68-ba01-4117-bbc3-e2f933f98996"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["6b42daeb-9878-4b44-a0b9-e09377208ad5"]
+                    }
+                },
+                {
                     "Id": "bcb8572c-0c1d-4460-be62-8fb4297653cc",
                     "Name": "UI_PERSIMMON_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Persimmon_Group.jpg",

@@ -1,0 +1,493 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "ae03a508-532f-48a9-aa0d-e0f13ae8b6c9",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "ForceShowOnLoadingScreen": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": true
+                    }
+                },
+                "Image": "images/credits/logos/placeholder_logo.png",
+                "HUDTemplate": {
+                    "display": "111"
+                },
+                "BriefingName": "$loc UI_CHALLENGES_COLOMBIA_EXP_KEYMASTER_NAME",
+                "BriefingText": "$loc UI_CHALLENGES_OCTOPUS_EXP_ACT_DEAD_DESC",
+                "LongBriefingText": "$loc UI_CHALLENGES_SKUNK_47_MASTER_OF_KEY_DESC",
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1cb3588e-2c08-491e-9731-287f6bc335e4",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_1cb3588e-2c08-491e-9731-287f6bc335e4_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_EXIT_CONSTRUCTION_VAN_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_EXIT_CONSTRUCTION_VAN_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_EXIT_CONSTRUCTION_VAN_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "b89e5053-5bc1-4b6b-ab76-5c37f2994138",
+                            "55d381d5-deff-4423-93bf-9c2e0a2946a0"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "1cb3588e-2c08-491e-9731-287f6bc335e4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "51123583-df1f-44bb-8e9f-dbf094398008",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_51123583-df1f-44bb-8e9f-dbf094398008_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_EXIT_ROADWORK_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_EXIT_ROADWORK_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_EXIT_ROADWORK_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["73541af7-4aed-4c3a-9eef-a78a0e181223"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "51123583-df1f-44bb-8e9f-dbf094398008"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1199dd3c-1f48-4d2c-97a9-7824ef0b9d93",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_1199dd3c-1f48-4d2c-97a9-7824ef0b9d93_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_FUMIGATION_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_FUMIGATION_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_FUMIGATION_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "5f307b57-55e8-4f56-97f3-397df9e3dd96",
+                            "53c1bee8-289a-498b-8b09-1167a981fd5c"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "1199dd3c-1f48-4d2c-97a9-7824ef0b9d93"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1bf72d0f-cb85-453b-ab50-8a562b036145",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_1bf72d0f-cb85-453b-ab50-8a562b036145_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "B8F0BF6C-4826-4DE2-A785-2D139967E09C",
+                            "53C1BEE8-289A-498B-8B09-1167A981FD5C"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "1bf72d0f-cb85-453b-ab50-8a562b036145"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "88503ca5-299d-409a-a7cd-2f0d121f00d3",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_88503ca5-299d-409a-a7cd-2f0d121f00d3_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_FORSALE_BEDROOM_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_FORSALE_BEDROOM_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_FORSALE_BEDROOM_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "88503ca5-299d-409a-a7cd-2f0d121f00d3"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "f0f9747b-d723-4b2f-b929-1741b347af89",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_f0f9747b-d723-4b2f-b929-1741b347af89_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_FORSALE_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_FORSALE_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_FORSALE_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "E461B60A-E060-4AE2-B1FC-DECA39D39358",
+                            "53406E7A-83D4-4DFD-A5F9-839D6F5E3BAA"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "f0f9747b-d723-4b2f-b929-1741b347af89"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "0183a8df-60e0-49a3-805e-b86cf6684bf4",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_0183a8df-60e0-49a3-805e-b86cf6684bf4_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_ONVACATION_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_ONVACATION_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_ONVACATION_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["88E277B3-9BF8-4032-9985-113DEC131436"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0183a8df-60e0-49a3-805e-b86cf6684bf4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "114b91c7-9229-4ba2-897b-e295355522f9",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_114b91c7-9229-4ba2-897b-e295355522f9_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_CASSIDY_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "56E854BC-F006-4CC6-99D9-85FC6898901D",
+                            "A3E5C2F6-3D0E-468F-B9C6-529C726D6BF8",
+                            "F2CDAE94-9505-4D57-A70F-515DDC234878",
+                            "77B2757E-DC71-4BF7-8070-F0367A0457C3"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "114b91c7-9229-4ba2-897b-e295355522f9"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9278d474-0511-469a-9004-146d9b8b69fc",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_9278d474-0511-469a-9004-146d9b8b69fc_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_RENOVATION_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_RENOVATION_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_RENOVATION_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": [
+                            "95FC9E66-0251-42DB-A6CE-23DBCABC760D",
+                            "04099E27-3441-4488-B005-94E651DD4878",
+                            "B463286F-9CC6-4DF1-859F-FB11D0D56246",
+                            "A29B0EAD-5A35-48CD-BEF2-76BF1BA3A344",
+                            "BA03BF42-41A4-4907-956C-6066D485F72D"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "9278d474-0511-469a-9004-146d9b8b69fc"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1ad45788-f818-4765-b3f4-fda572d352f4",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_1ad45788-f818-4765-b3f4-fda572d352f4_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_PUBLIC_SHED_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_PUBLIC_SHED_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_PUBLIC_SHED_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["77C78674-D54B-4C77-AD84-3454BA6FAD9E"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "1ad45788-f818-4765-b3f4-fda572d352f4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "80817803-c62e-4e64-8709-e1acfa23d1ee",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_80817803-c62e-4e64-8709-e1acfa23d1ee_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEYCARD_SKUNK_VAULT_NAME",
+                "BriefingText": "$loc UI_PROP_KEYCARD_SKUNK_VAULT_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEYCARD_SKUNK_VAULT_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["A8FA9F5E-0513-41C7-BF41-EF16BAB177CD"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "80817803-c62e-4e64-8709-e1acfa23d1ee"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "64da56e6-f0ad-40ab-8c8e-5842a924b3f7",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_64da56e6-f0ad-40ab-8c8e-5842a924b3f7_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_GRANNY_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_GRANNY_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_GRANNY_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["856B2AA2-E224-48C3-B890-01FDF4DBA6DE"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "64da56e6-f0ad-40ab-8c8e-5842a924b3f7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "ef155ff9-4abf-4b8e-b1f0-8b4989fa95da",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": false,
+                "Image": "images/unlockables/item_perspective_ef155ff9-4abf-4b8e-b1f0-8b4989fa95da_0.jpg",
+                "BriefingName": "$loc UI_PROP_KEY_SKUNK_BBQ_HOUSE_NAME",
+                "BriefingText": "$loc UI_PROP_KEY_SKUNK_BBQ_HOUSE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PROP_KEY_SKUNK_BBQ_HOUSE_NAME",
+                    "iconType": 26
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Allies": ["A8FA9F5E-0513-41C7-BF41-EF16BAB177CD"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "ef155ff9-4abf-4b8e-b1f0-8b4989fa95da"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "Key Collector--whittleton creek",
+        "Description": "Take it bald...<br/><br/>Go www.hitmaps.com to see kll keys locations.<br/><br/>Created by: Quartz Tan<br/>Curated by: Quartz Tan",
+        "Entitlements": ["LOCATION_NORTHAMERICA"],
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "Location": "LOCATION_NORTHAMERICA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.22.0.0",
+        "ServerVersion": "8.22.0.0",
+        "Type": "featured",
+        "Id": "7406ace8-08e5-4323-ac10-8a5e5bbb3ee7",
+        "PublicId": "022248859647",
+        "TileImage": "images/contracts/featured/quartztan3.jpg",
+        "CreationTimestamp": "2026-01-29T10:56:08.589Z"
+    },
+    "UserData": {}
+}

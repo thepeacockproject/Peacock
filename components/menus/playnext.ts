@@ -31,6 +31,8 @@ import assert from "assert"
  * Main story campaign ordered mission IDs.
  */
 export const orderedMainCampaignMissions: string[] = [
+    // The Final Test
+    "ada5f2b1-8529-48bb-a596-717f75f5eacb",
     // h1
     "00000000-0000-0000-0000-000000000200",
     "00000000-0000-0000-0000-000000000600",
@@ -80,11 +82,11 @@ export const sniperMissionIds: string[] = [
  * Gets the ID for a season based on the main mission index.
  */
 function getSeasonId(index: number): string {
-    if (index <= 5) {
+    if (index <= 6) {
         return "1"
     }
 
-    if (index <= 14) {
+    if (index <= 15) {
         return "2"
     }
 
