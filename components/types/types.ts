@@ -1527,6 +1527,7 @@ export type HitsCategoryCategory = {
 export type PlayNextCampaignDetails = {
     CampaignName: string
     ParentCampaignName?: string
+    IntroVideoId?: string
 }
 
 export type PlayNextGetCampaignsHookReturn = {
