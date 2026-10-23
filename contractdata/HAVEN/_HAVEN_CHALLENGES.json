@@ -4613,6 +4613,130 @@
             "OrderIndex": 5,
             "Challenges": [
                 {
+                    "Id": "8cd4a1d0-37d6-4c0d-aafe-c8c36df2bed3",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_GREENTINI_RUBBERDUCK_SIZZLES_NAME",
+                    "ImageName": "images/contracts/elusive/s3_greentini/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_GREENTINI_RUBBERDUCK_SIZZLES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_GREENTINI_RUBBERDUCK_PROXIMITY_SEDATIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_OPULENT_STINGRAY",
+                    "ParentLocationId": "LOCATION_PARENT_OPULENT",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "EligibleSuit": "a058b4da-8ca0-4d3e-9db5-95ad07c8e135",
+                            "CropsGone": false,
+                            "DJTrap": false,
+                            "DistractCane": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": { "Transition": "Failure" },
+                                "Greentini_CropsDestroyed": {
+                                    "Actions": {
+                                        "$set": ["CropsGone", true]
+                                    }
+                                },
+                                "setpieces": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3c5d150c-0911-444d-b407-6f83927c8717"
+                                            ]
+                                        },
+                                        "Actions": { "$set": ["DJTrap", true] }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "e852dbdb-9143-42a2-b7fb-fe1a8a6adfc0"
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$set": ["DistractCane", true]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.OutfitRepositoryId",
+                                                        "$.EligibleSuit"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_electric"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": ["$.CropsGone", true]
+                                                },
+                                                { "$eq": ["$.DJTrap", true] },
+                                                {
+                                                    "$eq": [
+                                                        "$.DistractCane",
+                                                        true
+                                                    ]
+                                                },
+                                                { "$eq": ["$Value.RoomId", 86] }
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "51529ac5-dfab-439b-a9fd-c2dd618e4d10",
+                            "6b42daeb-9878-4b44-a0b9-e09377208ad5",
+                            "f840fce7-242f-435f-b482-1c990818a758"
+                        ]
+                    }
+                },
+                {
                     "Id": "1512d455-b2b6-46d8-ab97-344135315745",
                     "Name": "UI_CHALLENGES_ET_GREENTINI_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/ET_Greentini_SilentAssassin.jpg",
