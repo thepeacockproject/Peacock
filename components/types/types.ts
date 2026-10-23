@@ -498,6 +498,7 @@ export type UserProfile = {
             [contractId: string]: ContractHistory
         }
         PeacockCompletedEscalations: string[]
+        PeacockUnlockedContractDrops: string[]
         Saves: {
             [slot: string]: {
                 Timestamp: number
@@ -1506,6 +1507,7 @@ export type GenSingleMissionFunc = (
 export type GenSingleVideoFunc = (
     videoId: string,
     gameVersion: GameVersion,
+    requiredUnlockableId?: string,
 ) => CampaignVideo
 
 /**

@@ -668,6 +668,22 @@ export class Controller {
                             !brick.includes("override_constantjeff.brick"),
                     )
 
+                // H2 does not have ACCESS_HIT_DUGONG unlockable, replace it with ACCESS_HIT_MAGPIE
+                if (
+                    contract.Metadata.RequiredUnlockable &&
+                    contract.Metadata.RequiredUnlockable === "ACCESS_HIT_DUGONG"
+                )
+                    contract.Metadata.RequiredUnlockable = "ACCESS_HIT_MAGPIE"
+
+                if (contract.Metadata.Drops) {
+                    contract.Metadata.Drops = contract.Metadata.Drops.map(
+                        (drop) =>
+                            drop === "ACCESS_HIT_DUGONG"
+                                ? "ACCESS_HIT_MAGPIE"
+                                : drop,
+                    )
+                }
+
                 break
             }
             case "h3": {
@@ -1325,6 +1341,11 @@ export class Controller {
     /** @internal */
     _resolveRoot = PEACOCK_DEV ? process.cwd() : __dirname
 
+    private _internalContractDropIds = new Set<string>()
+    public getInternalContractDropIds(): Set<string> {
+        return this._internalContractDropIds
+    }
+
     private async _loadInternalContracts(): Promise<void> {
         const buf = await readFile(
             join(this._resolveRoot, "resources", "contracts.prp"),
@@ -1336,6 +1357,22 @@ export class Controller {
         }
 
         registerInternals(decompressed.b)
+
+        // Collect all drop ids from internal contracts, used in inventory when filtering for unlocked contract drops
+        for (const contract of decompressed.b) {
+            if (contract.Metadata.RequiredUnlockable) {
+                this._internalContractDropIds.add(
+                    contract.Metadata.RequiredUnlockable,
+                )
+            }
+
+            if (contract.Metadata.Drops) {
+                for (const drop of contract.Metadata.Drops) {
+                    this._internalContractDropIds.add(drop)
+                }
+            }
+        }
+
         this._internalElusives = decompressed.el
         this.scanForGroups()
     }
