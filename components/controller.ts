@@ -674,6 +674,7 @@ export class Controller {
                     contract.Metadata.RequiredUnlockable === "ACCESS_HIT_DUGONG"
                 )
                     contract.Metadata.RequiredUnlockable = "ACCESS_HIT_MAGPIE"
+
                 if (contract.Metadata.Drops) {
                     contract.Metadata.Drops = contract.Metadata.Drops.map(
                         (drop) =>
@@ -682,6 +683,7 @@ export class Controller {
                                 : drop,
                     )
                 }
+
                 break
             }
             case "h3": {
@@ -1363,6 +1365,7 @@ export class Controller {
                     contract.Metadata.RequiredUnlockable,
                 )
             }
+
             if (contract.Metadata.Drops) {
                 for (const drop of contract.Metadata.Drops) {
                     this._internalContractDropIds.add(drop)

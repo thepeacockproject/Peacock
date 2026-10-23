@@ -39,6 +39,7 @@ import {
     SaveFile,
     UpdateUserSaveFileTableBody,
     UserProfile,
+    Unlockable,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -165,10 +166,9 @@ profileRouter.post(
     (req: RequestWithJwt, res) => {
         controller.inventoryService.grantDrops(
             req.jwt.unique_name,
-            controller.inventoryService.getUnlockablesById(
-                req.body.unlockableIds,
-                req.gameVersion,
-            ),
+            controller.inventoryService
+                .getUnlockablesById(req.body.unlockableIds, req.gameVersion)
+                .filter(Boolean) as Unlockable[],
             req.gameVersion,
         )
 

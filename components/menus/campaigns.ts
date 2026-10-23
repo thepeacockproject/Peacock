@@ -126,10 +126,14 @@ const genSingleVideoFactory = (userId: string): GenSingleVideoFunc => {
                 .some((e) => e.Unlockable.Id === requiredUnlockableId)
         ) {
             video.IsLocked = true
-            video.LockedReason = controller.inventoryService.getUnlockableById(
+            const unlockable = controller.inventoryService.getUnlockableById(
                 requiredUnlockableId,
                 gameVersion,
-            ).Properties.HowToUnlock
+            )
+
+            if (unlockable?.Properties.HowToUnlock) {
+                video.LockedReason = unlockable.Properties.HowToUnlock
+            }
         }
 
         return {

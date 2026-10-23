@@ -231,6 +231,7 @@ export function generateUserCentric(
 
     // If the RequiredUnlockable of a contract is not in inventory, set IsLocked and LockedReason
     const requiredUnlockableId = contractData.Metadata.RequiredUnlockable
+
     if (
         requiredUnlockableId &&
         !controller.inventoryService
@@ -238,10 +239,14 @@ export function generateUserCentric(
             .some((e) => e.Unlockable.Id === requiredUnlockableId)
     ) {
         isLocked = true
-        lockedReason = controller.inventoryService.getUnlockableById(
+        const unlockable = controller.inventoryService.getUnlockableById(
             requiredUnlockableId,
             gameVersion,
-        ).Properties.HowToUnlock
+        )
+
+        if (unlockable?.Properties.HowToUnlock) {
+            lockedReason = unlockable.Properties.HowToUnlock
+        }
     }
 
     const uc: UserCentricContract = {

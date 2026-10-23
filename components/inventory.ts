@@ -819,7 +819,7 @@ export class InventoryService {
                 drop.Type !== "evergreenmastery" &&
                 // Remove drop if it is already in the cache
                 !this.inventoryUserCache
-                    .get(profileId)
+                    .get(profileId)!
                     .some((e) => e.InstanceId === drop.Guid),
         )
 
@@ -828,6 +828,7 @@ export class InventoryService {
         }
 
         const userData = getUserData(profileId, gameVersion)
+
         for (const drop of drops) {
             // If there is a package in the drop, call grantDrops on its unlocks
             if (drop.Properties.Unlocks) {
@@ -836,10 +837,11 @@ export class InventoryService {
                     this.getUnlockablesById(
                         drop.Properties.Unlocks,
                         gameVersion,
-                    ),
+                    ).filter(Boolean) as Unlockable[],
                     gameVersion,
                 )
             }
+
             // If it is a contract drop, save the id into userdata
             if (
                 this.controller.getInternalContractDropIds().has(drop.Id) &&
