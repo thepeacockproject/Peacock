@@ -56,6 +56,49 @@
                     }
                 },
                 {
+                    "Id": "c71fedd6-5d26-456f-a631-4e3e7f97266f",
+                    "Name": "UI_CHAYOTE_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Chayote_Group.jpg",
+                    "Description": "UI_CHAYOTE_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_NEWZEALAND_SHAMROCK",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "68da4173-fc8d-48c1-9d5d-d08ae0d00d9d"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["12d6658c-2b19-42b8-aedd-809e7dd873a2"]
+                    }
+                },
+                {
                     "Id": "bcb8572c-0c1d-4460-be62-8fb4297653cc",
                     "Name": "UI_PERSIMMON_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Persimmon_Group.jpg",

@@ -1,0 +1,394 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/sheep/mission_shamrock.brick",
+            "assembly:/_PRO/scenes/missions/sheep/arcade_chayote_level2.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/sheep/dev_shamrock.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            }
+        ],
+        "EnableExits": {
+            "$eq": ["$2971a127-e6b4-4a7f-bc20-343aa8cc840f", "Completed"]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- The Brighton Paradox: Kill Everyone -----",
+                "Id": "2971a127-e6b4-4a7f-bc20-343aa8cc840f",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CHAYOTE_LEVEL2_OBJ_BRIGHTON_PARADOX_NAME",
+                "BriefingText": "$loc UI_CHAYOTE_LEVEL2_OBJ_BRIGHTON_PARADOX_DESC",
+                "Image": "images/contracts/elusive/S3_Shamrock/obj_brightonparadox.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CHAYOTE_LEVEL2_OBJ_BRIGHTON_PARADOX_NAME"
+                },
+                "ForceShowOnLoadingScreen": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "4027efb8-e960-4a67-99e7-2a1cecb1c62d",
+                            "e98f72ed-7552-4898-808b-32c1468ae906",
+                            "a89561c1-427d-4ff4-8584-defb54929289",
+                            "4768530f-e512-478d-a144-685f8b2c3b80",
+                            "e0ba80b1-a577-46e0-bf48-ae2f1f58f267",
+                            "b36ae351-52b4-4a73-a4ce-199451b6da43",
+                            "83e37874-bac8-43b2-83d1-4f770bbbf450",
+                            "6ff2d314-cf1e-4170-97aa-8d949d70bc55",
+                            "fcbae091-4dbe-4c2e-85f3-2def5c7043e6",
+                            "0b1a14ae-9ac2-4706-9deb-d9adb3aa926e",
+                            "f65fd4f3-4cfb-4551-b9c5-6ac6540b4f91",
+                            "8b64d190-b591-47be-9acd-7c36bed5c7b2",
+                            "477e1650-b4c5-4bc4-a379-ad9205ecb0b8",
+                            "2070e598-04c2-4bc1-b846-ff3bf7184b03",
+                            "e64728d8-10c4-462b-b30d-94ad0e3ed35b",
+                            "73488478-54d7-46b8-ac07-1b20c0f013d9",
+                            "249d5b9b-144e-4d49-8774-fbcb20d888d7",
+                            "c1d98654-02ca-4c56-9b8f-5170602f8c18",
+                            "e8ad58a3-82b0-42f5-bf1c-25b6283e23f3",
+                            "0e0b7f78-1e8c-4df6-9d2c-e3817820cfb4",
+                            "d3db8f79-c9d2-4caa-85ab-9b5c782316f4",
+                            "5c05cb40-b8c2-46e9-af8b-95b41ff68a16",
+                            "6596294d-bd6b-473b-913d-a05936b3ddac"
+                        ],
+                        "ForceUpdateCounters": 0
+                    },
+                    "ContextListeners": {
+                        "Targets": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_WHITEDRYAS_OBJ_COUNTER",
+                            "count": "($.Targets).Count"
+                        },
+                        "ForceUpdateCounters": {
+                            "type": "force-update",
+                            "target": "Targets"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$inc": "ForceUpdateCounters"
+                                },
+                                "Transition": "Active"
+                            }
+                        },
+                        "Active": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Actions": {
+                                    "$remove": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["($.Targets).Count", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Active"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- The Bunnies are our Friends -----",
+                "Id": "5cb2337c-02a0-40e5-a8f3-47953c4b2821",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CHAYOTE_LEVEL2_OBJ_BUNNY_FRIENDS_NAME",
+                "BriefingText": "$loc UI_CHAYOTE_LEVEL2_OBJ_BUNNY_FRIENDS",
+                "Image": "images/contracts/elusive/S3_Shamrock/obj_jamie.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CHAYOTE_LEVEL2_OBJ_BUNNY_FRIENDS",
+                    "iconType": 17
+                },
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "Friends": [
+                            "aea3db0e-e42a-49b9-999f-adb250c92770",
+                            "33389e00-0ed7-4ec8-820b-321c78d88677",
+                            "8b5d5230-ccff-4ebb-8a5c-7513f7856b45",
+                            "0af67fd4-f0c5-42e8-8621-4f9826b400d1",
+                            "b5827dce-7c6d-46e7-9cca-ea5fc22aabad",
+                            "21cb9c0c-bad1-4efc-bf73-845196128531",
+                            "9a4a9c8e-50cc-45f5-8a80-f280d8d694e4",
+                            "9bbeb3cb-0347-4ab8-ba4f-06513e657566",
+                            "c76b56c0-eca7-477a-8cf9-c0cedd6a4410",
+                            "9277d4db-2438-4d2e-87fb-7b7145d3f155",
+                            "fcb86eec-2626-4172-acad-7fe057ac0dfd",
+                            "611961ca-5dc2-42b8-813d-7a0f542e71e8"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Friends",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Friends",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Blackout Dummy -----",
+                "Id": "cc0d10df-ef89-4e3f-9287-66f55bc69ed4",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Blackout": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$cc0d10df-ef89-4e3f-9287-66f55bc69ed4", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SHAMROCK_TIMER_EXPOSURE",
+                    "iconType": 8
+                },
+                "Id": "dfa239a8-f026-4adf-9c93-8359c023590f",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 180
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Failure"
+                            },
+                            "SuccessTimer": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Escape Dummy -----",
+                "Id": "d55f5811-2be8-45af-bd64-f43f218d4fc4",
+                "Category": "primary",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_OBJ_SHAMROCK_DESC",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Shamrock_Escaped": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Exposure Dummy -----",
+                "Id": "4a8f3f26-8456-44cf-ac22-4e7a2b47fcef",
+                "Category": "primary",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_SHAMROCK_TIMER_EXPOSURE",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Server_Fail": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "68da4173-fc8d-48c1-9d5d-d08ae0d00d9d",
+        "CodeName_Hint": "Arcade Chayote [Shamrock]- Level 2",
+        "Release": "3.290.x Arcade",
+        "Type": "arcade",
+        "InGroup": "12d6658c-2b19-42b8-aedd-809e7dd873a2",
+        "Location": "LOCATION_NEWZEALAND_SHAMROCK",
+        "LocationSuitOverride": "TOKEN_OUTFIT_SHEEP_HERO_SHAMROCKSUIT",
+        "Title": "UI_CONTRACT_CHAYOTE_LEVEL02_NAME",
+        "Description": "UI_CONTRACT_SHAMROCK_DESC",
+        "TileImage": "images/contracts/elusive/s3_shamrock/Title.jpg",
+        "BriefingVideo": "briefing_shamrock",
+        "DebriefingVideo": "debriefing_shamrock",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/sheep/scene_shamrock.entity",
+        "CreationTimestamp": "2026-10-29T09:39:49.9891446Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "2971a127-e6b4-4a7f-bc20-343aa8cc840f",
+                "IsNew": true
+            },
+            {
+                "Id": "5cb2337c-02a0-40e5-a8f3-47953c4b2821",
+                "IsNew": true
+            }
+        ],
+        "Entitlements": ["H3_ET_SHAMROCK"],
+        "PublicId": "099505669747"
+    },
+    "UserData": {}
+}
