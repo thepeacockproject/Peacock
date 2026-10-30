@@ -452,6 +452,7 @@ export function castUserProfile(
         "PeacockPlayedContracts",
         "PeacockCompletedEscalations",
         "CPD",
+        "PeacockUnlockedContractDrops",
     ]) {
         if (!Object.hasOwn(j.Extensions, item)) {
             log(LogLevel.DEBUG, `Err missing property ${item}`)
@@ -482,6 +483,10 @@ export function castUserProfile(
 
             if (item === "PeacockPlayedContracts") {
                 j.Extensions.PeacockPlayedContracts = {}
+            }
+
+            if (item === "PeacockUnlockedContractDrops") {
+                j.Extensions.PeacockUnlockedContractDrops = []
             }
 
             dirty = true
