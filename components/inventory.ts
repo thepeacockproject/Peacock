@@ -50,6 +50,8 @@ import {
     POMADA_UNLOCKABLES,
     EG04_UNLOCKABLES,
     GREENTINI_UNLOCKABLES,
+    EG05_UNLOCKABLES,
+    SHAMROCK_UNLOCKABLES,
 } from "./ownership"
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import type { Controller } from "./controller"
@@ -97,6 +99,8 @@ const DELUXE_DATA = [
     ...POMADA_UNLOCKABLES,
     ...EG04_UNLOCKABLES,
     ...GREENTINI_UNLOCKABLES,
+    ...EG05_UNLOCKABLES,
+    ...SHAMROCK_UNLOCKABLES,
 ]
 
 /**
@@ -652,6 +656,20 @@ export class InventoryService {
                 return (
                     e.includes("d396d245e23a401b8422116db9026a27") ||
                     e.includes("4911210")
+                )
+            }
+
+            if (EG05_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("34cd5f9f19ab44cc8766089dab207bf0") ||
+                    e.includes("5235600")
+                )
+            }
+
+            if (SHAMROCK_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("4bbcb2ba387642e694d3c9c9b74b4919") ||
+                    e.includes("5235590")
                 )
             }
 
