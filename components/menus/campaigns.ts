@@ -442,7 +442,7 @@ export function makeCampaigns(
                             genSingleMission(
                                 "fae02c6c-1ead-44e6-a899-028f3ebef941",
                                 gameVersion,
-                            )
+                            ),
                         ],
                     },
                     pzCampaign,
