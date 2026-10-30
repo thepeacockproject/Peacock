@@ -45,6 +45,7 @@ export function withLookupDialog(
 
     const contract = controller.resolveContract(
         req.query.contractId,
+        req.jwt.unique_name,
         req.gameVersion,
     )
 
@@ -134,6 +135,7 @@ export function directRoute(req: RequestWithJwt, res: Response): void {
 
     const contract = controller.resolveContract(
         req.params.contractId,
+        req.jwt.unique_name,
         req.gameVersion,
     )
 
