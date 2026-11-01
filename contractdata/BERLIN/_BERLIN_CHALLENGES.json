@@ -4151,6 +4151,129 @@
             ]
         },
         {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
+            "Challenges": [
+                {
+                    "Id": "d591cbbd-f52f-4433-a9bf-a2363115b0d6",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_TOMORROWLAND_RUBBERDUCK_DROP_NAME",
+                    "ImageName": "images/contracts/elusive/s3_tomorrowland/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_TOMORROWLAND_RUBBERDUCK_DROP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_TOMORROWLAND_RUBBERDUCK_PROXIMITY_EXPLOSIVE"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_EDGY",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "VodkaMartiniOnTable": false,
+                            "EligibleSuits": [
+                                "5fabfe45-e581-4bc3-af41-8c9726dfc1b0"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": { "Transition": "Failure" },
+                                "setpieces": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "c5bace1e-7642-4321-893a-9a7acb6ef783"
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$set": [
+                                                "VodkaMartiniOnTable",
+                                                true
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "4449c62a-3fc7-4911-a8f4-02dd2f55da83"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$.VodkaMartiniOnTable",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Countdown"
+                                    }
+                                ]
+                            },
+                            "Countdown": {
+                                "$timer": {
+                                    "Condition": { "$after": 5 },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "in": "$.EligibleSuits",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.OutfitRepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_suspended_object"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "1f0f3c70-b559-48ea-aca4-b64c8c762b69",
+                            "f1e3dcdc-2247-4da8-bf8e-856f5fd23888"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
             "Image": "images/challenges/categories/packargentum/tile.jpg",
             "Icon": "challenge_category_feats",
