@@ -27,6 +27,7 @@ import type {
     GameVersion,
     MissionManifest,
     PeacockLocationsData,
+    PeacockContentMode,
     RegistryChallenge,
     Unlockable,
     UserProfile,
@@ -70,6 +71,7 @@ import { getUserEscalationProgress } from "../contracts/escalations/escalationSe
 
 import { enqueueEvent } from "../eventHandler"
 import { randomUUID } from "crypto"
+import { getFlag } from "../flags"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -328,10 +330,18 @@ export abstract class ChallengeRegistry {
 
         const set = locationMap.get(groupId)!
 
+        const peacockContent = <PeacockContentMode>getFlag("peacockContent")
+
         for (const challenge of challenges) {
             challenge.inGroup = groupId
             challenge.inLocation = location
             challenge.Type ??= "contract"
+
+            if (challenge.Tags.includes("peacock")) {
+                if (peacockContent === "NOXP") challenge.Rewards.MasteryXP = 0
+                else if (peacockContent === "DISABLED") continue
+            }
+
             this.challenges[gameVersion].set(challenge.Id, challenge)
             set.add(challenge.Id)
             this.checkHeuristics(challenge, gameVersion)
