@@ -39,6 +39,7 @@ import {
     SaveFile,
     UpdateUserSaveFileTableBody,
     UserProfile,
+    Unlockable,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -157,9 +158,20 @@ profileRouter.post(
     },
 )
 
+// Game client sends unlockableIds available offline, add them to inventory
 profileRouter.post(
     "/ProfileService/SynchronizeOfflineUnlockables",
-    (_, res) => {
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt, res) => {
+        controller.inventoryService.grantDrops(
+            req.jwt.unique_name,
+            controller.inventoryService
+                .getUnlockablesById(req.body.unlockableIds, req.gameVersion)
+                .filter(Boolean) as Unlockable[],
+            req.gameVersion,
+        )
+
         res.status(204).end()
     },
 )

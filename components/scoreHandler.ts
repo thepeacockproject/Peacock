@@ -1178,7 +1178,11 @@ export async function getMissionEndData(
             )
             .map((e) => e.Unlockable)
 
-        controller.inventoryService.grantDrops(jwt.unique_name, toGrant)
+        controller.inventoryService.grantDrops(
+            jwt.unique_name,
+            toGrant,
+            gameVersion,
+        )
     }
 
     // Challenge Drops

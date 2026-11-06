@@ -84,6 +84,7 @@ export class ProgressionService {
                 this.controller.inventoryService
                     .getUnlockablesById(dropIds, contractSession.gameVersion)
                     .filter(Boolean) as Unlockable[],
+                contractSession.gameVersion,
             )
         }
 
@@ -259,6 +260,7 @@ export class ProgressionService {
                     this.controller.inventoryService.grantDrops(
                         userProfile.Id,
                         masteryLocationDrops,
+                        contractSession.gameVersion,
                     )
                 }
             }
