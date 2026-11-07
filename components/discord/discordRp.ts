@@ -351,6 +351,8 @@ export function scenePathToRpAsset(
             return ["hawkenightcall", "Nightcall", "Hawke's Bay"]
         case "assembly:/_pro/scenes/missions/sheep/scene_opuntia.entity":
             return ["opuntia", "Opuntia", "Hawke's Bay"]
+        case "assembly:/_pro/scenes/missions/sheep/scene_shamrock.entity":
+            return ["elusiveshamrock", "The Host", "Hawke's Bay"]
 
         // sgail
         case "assembly:/_pro/scenes/missions/theark/scene_magpie.entity":

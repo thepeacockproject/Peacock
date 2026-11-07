@@ -1,0 +1,546 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/sheep/mission_shamrock.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/sheep/dev_shamrock.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/sheep/vr_overrides_shamrock.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Shamrock -----",
+                "Id": "91d55dca-d4aa-4413-888a-5d8fab29f327",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "4027efb8-e960-4a67-99e7-2a1cecb1c62d"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Podcast Dummy -----",
+                "Id": "3d306351-eb6e-4168-924d-522b6fe9e403",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "PodcastDone": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Podcast Dummy - To exclude scoring of Jamies objective when he is not killed -----",
+                "Id": "dc808aae-ff74-4b84-8fbd-04120f30be67",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "Target": "aea3db0e-e42a-49b9-999f-adb250c92770"
+                    },
+                    "Context": {
+                        "Completed": false
+                    },
+                    "States": {
+                        "Start": {
+                            "PodcastDone": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$.Target", "$Value.RepositoryId"]
+                                },
+                                "Actions": {
+                                    "$set": ["Completed", true]
+                                }
+                            },
+                            "exit_gate": {
+                                "Condition": {
+                                    "$eq": ["$.Completed", false]
+                                },
+                                "Transition": "Start"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Datacenter Dummy -----",
+                "Id": "44acea3a-4d33-4723-96cf-548ee603a0a6",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Caught4k": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Blackout Dummy -----",
+                "Id": "b10f8d23-24a6-4cb0-892d-aad075a17bbb",
+                "ExcludeFromScoring": true,
+                "Category": "condition",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Blackout": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Destroy Datacenter -----",
+                "Id": "0ed7e367-0056-414c-8103-e7c5313672f3",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "UpdateActivationWhileCompleted": true,
+                "AllowEtRestartOnSuccess": true,
+                "Activation": {
+                    "$eq": [
+                        "$44acea3a-4d33-4723-96cf-548ee603a0a6",
+                        "Completed"
+                    ]
+                },
+                "Image": "images/contracts/elusive/S3_Shamrock/obj_server.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SHAMROCK_OBJ_DATACENTER_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_SHAMROCK_OBJ_DATACENTER_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SHAMROCK_OBJ_DATACENTER_TITLE",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Server_Completed": {
+                                "Transition": "Success"
+                            },
+                            "Server_Fail": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    },
+                    "IfFailed": {
+                        "Ignore": true
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$b10f8d23-24a6-4cb0-892d-aad075a17bbb", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SHAMROCK_TIMER_EXPOSURE",
+                    "iconType": 8
+                },
+                "Id": "3c1afb91-48eb-4290-919d-c5088ea21b83",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 180
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Failure"
+                            },
+                            "SuccessTimer": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Broccoli Brayden -----",
+                "Id": "7434843c-c8cb-48de-bfaa-c72468e70b42",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 6596294d-bd6b-473b-913d-a05936b3ddac).Name"
+                        }
+                    }
+                },
+                "UpdateActivationWhileCompleted": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$3d306351-eb6e-4168-924d-522b6fe9e403",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "Target": "6596294d-bd6b-473b-913d-a05936b3ddac"
+                    },
+                    "Context": {
+                        "Targets": [],
+                        "Activated": false
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$pushunique": ["Targets", "$.Target"]
+                                }
+                            },
+                            "PodcastDone": {
+                                "Actions": {
+                                    "$set": ["Activated", true]
+                                }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$.Target", "$Value.RepositoryId"]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Activated", true]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "OnActive": {
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfFailed": {
+                        "Visible": false,
+                        "Ignore": true
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Creepy Chase -----",
+                "Id": "8daddb7d-3504-43b3-b3dd-35eb3df04e35",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5c05cb40-b8c2-46e9-af8b-95b41ff68a16).Name"
+                        }
+                    }
+                },
+                "UpdateActivationWhileCompleted": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$3d306351-eb6e-4168-924d-522b6fe9e403",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "Target": "5c05cb40-b8c2-46e9-af8b-95b41ff68a16"
+                    },
+                    "Context": {
+                        "Targets": [],
+                        "Activated": false
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$pushunique": ["Targets", "$.Target"]
+                                }
+                            },
+                            "PodcastDone": {
+                                "Actions": {
+                                    "$set": ["Activated", true]
+                                }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$.Target", "$Value.RepositoryId"]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Activated", true]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "OnActive": {
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfFailed": {
+                        "Visible": false,
+                        "Ignore": true
+                    }
+                }
+            },
+            {
+                "_comment": "----- [OPTIONAL] Eliminate Jamie -----",
+                "Id": "8027d839-e4d5-4d28-8249-5907739187c2",
+                "Category": "secondary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SHAMROCK_OBJ_EDITOR_TITLE",
+                    "optional": true
+                },
+                "UpdateActivationWhileCompleted": true,
+                "IgnoreIfInactive": true,
+                "DisplayAsKillObjective": true,
+                "AllowEtRestartOnSuccess": true,
+                "Activation": {
+                    "$eq": [
+                        "$dc808aae-ff74-4b84-8fbd-04120f30be67",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "Target": "aea3db0e-e42a-49b9-999f-adb250c92770"
+                    },
+                    "Context": {
+                        "Targets": [],
+                        "Activated": false
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$pushunique": ["Targets", "$.Target"]
+                                }
+                            },
+                            "PodcastDone": {
+                                "Actions": {
+                                    "$set": ["Activated", true]
+                                }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$.Target", "$Value.RepositoryId"]
+                                },
+                                "Transition": "Check"
+                            }
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Activated", true]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "OnActive": {
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                }
+            },
+            {
+                "_comment": "----- Escape Dummy  -----",
+                "Id": "88006d7a-2a6e-4783-8a13-d288a91dc1f8",
+                "Category": "primary",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_OBJ_SHAMROCK_DESC",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Shamrock_Escaped": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "fae02c6c-1ead-44e6-a899-028f3ebef941",
+        "CodeName_Hint": "Shamrock (Special Assignment)",
+        "Release": "3.290.x Special Assignment",
+        "Type": "flashback",
+        "Subtype": "specialassignment",
+        "Location": "LOCATION_NEWZEALAND_SHAMROCK",
+        "LocationSuitOverride": "TOKEN_OUTFIT_SHEEP_HERO_SHAMROCKSUIT",
+        "Title": "UI_CONTRACT_SHAMROCK_SA_TITLE",
+        "Description": "UI_CONTRACT_SHAMROCK_DESC",
+        "TileImage": "Images/Contracts/Special/Special_Shamrock_Tile.jpg",
+        "BriefingVideo": "briefing_shamrock",
+        "DebriefingVideo": "debriefing_shamrock",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/sheep/scene_shamrock.entity",
+        "CreationTimestamp": "2026-10-29T09:39:20.5543739Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Entrances": ["434c5ebf-df13-466f-85d0-21b13048faad"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_SHAMROCK_HERO_SHAMROCKSUIT",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "f3c142dc-790c-4b70-932a-9afaa01b26dd"
+                }
+            }
+        ],
+        "IsPublished": true,
+        "Entitlements": ["H3_ET_SHAMROCK"],
+        "PublicId": "099487689647"
+    },
+    "UserData": {}
+}

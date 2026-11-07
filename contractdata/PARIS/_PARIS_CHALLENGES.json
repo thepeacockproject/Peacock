@@ -5441,6 +5441,59 @@
                     "InclusionData": {
                         "ContractIds": ["07bbf22b-d6ae-4883-bec2-122eeeb7b665"]
                     }
+                },
+                {
+                    "Id": "a285c630-b9e7-44b4-93b7-5ac81fd89c38",
+                    "Name": "UI_CHALLENGES_PARIS_VANISHING_NAME",
+                    "ImageName": "images/challenges/paris/paris_vanish.jpg",
+                    "Description": "UI_CHALLENGES_PARIS_VANISHING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_VAMPIREMAGICIAN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "EvadeBlame": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "DisguiseBlown": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value",
+                                                "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "EvadeBlame"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"]
                 }
             ]
         },

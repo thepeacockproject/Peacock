@@ -105,6 +105,10 @@ export const H3_EPIC_ENTITLEMENTS = [
     "7b3bf47c436644ea8fea4f95317d431c",
     // GREENTINI:
     "d396d245e23a401b8422116db9026a27",
+    // EG05:
+    "34cd5f9f19ab44cc8766089dab207bf0",
+    // SHAMROCK:
+    "4bbcb2ba387642e694d3c9c9b74b4919",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
