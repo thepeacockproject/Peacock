@@ -361,6 +361,7 @@ export const missionsInLocation = {
         LOCATION_HOKKAIDO_MAMUSHI: ["c414a084-a7b9-43ce-b6ca-590620acd87e"],
         LOCATION_HOKKAIDO_FLU: ["a2befcec-7799-4987-9215-6a152cb6a320"],
         LOCATION_NEWZEALAND: ["c65019e5-43a8-4a33-8a2a-84c750a5eeb3"],
+        LOCATION_NEWZEALAND_SHAMROCK: ["fae02c6c-1ead-44e6-a899-028f3ebef941"],
         LOCATION_MIAMI: ["c1d015b4-be08-4e44-808e-ada0f387656f"],
         LOCATION_MIAMI_COTTONMOUTH: ["f1ba328f-e3dd-4ef8-bb26-0363499fdd95"],
         LOCATION_MIAMI_SAMBUCA: ["debdf04c-4c5b-480c-806a-b1e8b648c5ca"],
@@ -597,7 +598,10 @@ export const missionsInLocation = {
                 "b4d555eb-e2c9-40c2-b155-328a7019fd28",
             ],
             LOCATION_HOKKAIDO: ["6678cf8a-f614-4536-9584-e649351f40c2"],
-            LOCATION_NEWZEALAND: ["39cc0603-4348-4dbf-9bd3-733cadf2913c"],
+            LOCATION_NEWZEALAND: [
+                "39cc0603-4348-4dbf-9bd3-733cadf2913c",
+                "12d6658c-2b19-42b8-aedd-809e7dd873a2",
+            ],
             LOCATION_MIAMI: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
             LOCATION_COLOMBIA: ["90121ee0-0431-4a97-9bc8-8a7e2ca30d65"],
             LOCATION_NORTHAMERICA: [
