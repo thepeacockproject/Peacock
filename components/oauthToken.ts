@@ -147,6 +147,12 @@ export async function handleOAuthToken(
             break
         }
         case "external_apple":
+            if (
+                !/^\d{6}\.[\da-f]{32}\.\d{4}$/.test(req.body.apple_userid || "")
+            ) {
+                return error400 // invalid apple user id
+            }
+
             external_platform = "apple"
             external_userid = req.body.apple_userid || ""
             external_users_folder = "appleids"
