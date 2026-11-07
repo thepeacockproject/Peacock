@@ -19,6 +19,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserProfile } from "../../components/types/types"
 import {
+    error400,
     error406,
     handleOAuthToken,
     JWT_SECRET,
@@ -144,6 +145,43 @@ describe("oauthToken", () => {
 
         expect((res as OAuthTokenResponse).token_type).toBe("bearer")
         expect((accessToken.payload as any).unique_name).toBe(pId)
+    })
+
+    it("external_apple accepts a valid apple user id", async () => {
+        const request = mockRequestWithJwt<never, any>()
+        request.body = {
+            grant_type: "external_apple",
+            apple_userid: "000000.0123456789abcdef0123456789abcdef.0047",
+            pId: pId,
+        }
+
+        await handleOAuthToken(request)
+
+        expect(getExternalUserData).toHaveBeenCalledWith(
+            "000000.0123456789abcdef0123456789abcdef.0047",
+            "appleids",
+            "h3",
+        )
+    })
+
+    it.each([
+        "../../../etc/passwd",
+        "..\\..\\options",
+        "000000.0123456789abcdef0123456789abcdef.0047/../../x",
+        "",
+        undefined,
+    ])("external_apple rejects invalid apple user id '%j'", async (id) => {
+        const request = mockRequestWithJwt<never, any>()
+        request.body = {
+            grant_type: "external_apple",
+            apple_userid: id,
+            pId: pId,
+        }
+
+        const res = await handleOAuthToken(request)
+
+        expect(res).toBe(error400)
+        expect(getExternalUserData).not.toHaveBeenCalled()
     })
 
     it("refresh_token - missing auth header", async () => {
