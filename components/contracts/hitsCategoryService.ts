@@ -149,9 +149,13 @@ export class HitsCategoryService {
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
-            .tap(tapName, (contracts, gameVersion) => {
+            .tap(tapName, (contracts, gameVersion, userId) => {
                 for (const id of orderedETs) {
-                    const contract = controller.resolveContract(id, gameVersion)
+                    const contract = controller.resolveContract(
+                        id,
+                        userId,
+                        gameVersion,
+                    )
 
                     switch (gameVersion) {
                         case "h1":
@@ -233,7 +237,7 @@ export class HitsCategoryService {
 
         this.hitsCategories
             .for("ContractAttack")
-            .tap(tapName, (contracts, gameVersion) => {
+            .tap(tapName, (contracts, gameVersion, userId) => {
                 // We need to push Peacock contracts first to work around H2 not
                 // having the "order" property for $arraygroupby. (The game just crashes)
                 const nEscalations: string[] = []
@@ -244,6 +248,7 @@ export class HitsCategoryService {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(
                             id,
+                            userId,
                             gameVersion,
                         )
 

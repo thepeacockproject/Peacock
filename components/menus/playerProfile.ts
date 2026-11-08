@@ -93,6 +93,7 @@ export function getPlayerProfileData(
         // TODO: Make getDestinationCompletion do something like this.
         const challenges = controller.challengeService.getChallengesForLocation(
             subLocation.Id,
+            userId,
             gameVersion,
         )
 

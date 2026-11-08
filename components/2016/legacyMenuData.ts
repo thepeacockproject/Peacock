@@ -132,6 +132,7 @@ legacyMenuDataRouter.get(
 
             const normalChallenges =
                 controller.challengeService.getGroupedChallengeLists(
+                    req.jwt.unique_name,
                     {
                         type: ChallengeFilterType.ParentLocation,
                         parent: parentLocation.Id,
@@ -196,6 +197,7 @@ legacyMenuDataRouter.get(
 
             const pro1Challenges =
                 controller.challengeService.getGroupedChallengeLists(
+                    req.jwt.unique_name,
                     {
                         type: ChallengeFilterType.ParentLocation,
                         parent: parentLocation.Id,

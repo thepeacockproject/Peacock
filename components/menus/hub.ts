@@ -94,6 +94,7 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
         gameVersion !== "scpc"
             ? controller.resolveContract(
                   contractCreationTutorialId,
+                  userId,
                   gameVersion,
               )!
             : undefined
@@ -212,6 +213,7 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
         const parent = locations.children[child].Properties.ParentLocation
         const challenges = controller.challengeService.getChallengesForLocation(
             child,
+            userId,
             gameVersion,
         )
         const challengeCompletion =
@@ -250,7 +252,7 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
             userId,
             gameVersion,
         ),
-        LocationsData: createLocationsData(gameVersion, true),
+        LocationsData: createLocationsData(userId, gameVersion, true),
         ProfileData: {
             ChallengeData: {
                 Children: Object.values(career),

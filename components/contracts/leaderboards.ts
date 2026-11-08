@@ -53,7 +53,7 @@ export async function getLeaderboardEntries(
 ): Promise<GameFacingLeaderboardData | undefined> {
     let difficulty = "unset"
 
-    const contract = controller.resolveContract(contractId, gameVersion)
+    const contract = controller.resolveContract(contractId, null, gameVersion)
 
     if (!contract) {
         return undefined
