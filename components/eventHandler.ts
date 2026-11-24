@@ -30,6 +30,7 @@ import {
     S2CEventWithTimestamp,
     Seconds,
     ServerToClientEvent,
+    Unlockable,
 } from "./types/types"
 import { contractTypes, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
@@ -962,13 +963,39 @@ function saveEvents(
                 session.timerEnd = event.Timestamp
                 log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 break
-            case "ContractEnd":
+            case "ContractEnd": {
                 if (!session.timerEnd) {
                     session.timerEnd = event.Timestamp
                     log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 }
 
+                // Add contract drops to inventory
+                const contract = controller.resolveContract(
+                    event.ContractId,
+                    gameVersion,
+                )
+                const contractDrops: string[] = []
+
+                if (contract?.Metadata.RequiredUnlockable) {
+                    contractDrops.push(contract.Metadata.RequiredUnlockable)
+                }
+
+                if (contract?.Metadata.Drops) {
+                    for (const drop of contract.Metadata.Drops) {
+                        contractDrops.push(drop)
+                    }
+                }
+
+                controller.inventoryService.grantDrops(
+                    userId,
+                    controller.inventoryService
+                        .getUnlockablesById(contractDrops, gameVersion)
+                        .filter(Boolean) as Unlockable[],
+                    gameVersion,
+                )
+
                 break
+            }
             case "ObjectiveCompleted":
                 session.completedObjectives.add(
                     (<ObjectiveCompletedC2SEvent>event).Value.Id,

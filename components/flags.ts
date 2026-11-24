@@ -61,6 +61,12 @@ export const defaultFlags: Flags = {
                 desc: "Decides if items are unlocked when there are no associated unlocking approaches. Requires enableMasteryProgression to be true.",
                 default: true,
             },
+            enableSpoilerAlerts: {
+                category: "Gameplay",
+                title: "enableSpoilerAlerts",
+                desc: "Decides if spoiler alerts are shown when story missions are not yet completed. Requires enableMasteryProgression to be true.",
+                default: true,
+            },
             hideGhostModeChallengeTile: {
                 category: "Gameplay",
                 title: "hideGhostModeChallengeTile",
