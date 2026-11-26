@@ -5694,6 +5694,149 @@
                     }
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
+            "Challenges": [
+                {
+                    "Id": "d727065d-79e7-4335-916e-2cef0c2956d0",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_FILUR_RUBBERDUCK_HAZMAT_NAME",
+                    "ImageName": "images/contracts/elusive/s3_filur/title.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_FILUR_RUBBERDUCK_HAZMAT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        "TOKEN_PROP_DEVICE_FILUR_RUBBERDUCK_PROXIMITY_EMETIC"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "OybekInfected": false,
+                            "OybekSick": false,
+                            "EligibleSuits": "10b47b82-aa17-4ac7-b028-bee1ac27f976"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ActorInfected": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["OybekInfected", true]
+                                    }
+                                },
+                                "Disguise": { "Transition": "Failure" },
+                                "HeroInfected": { "Transition": "Failure" },
+                                "HeroCured": { "Transition": "Failure" },
+                                "ActorCured": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.actor_R_ID",
+                                                    "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                                ]
+                                            },
+                                            { "$eq": ["$.OybekInfected", true] }
+                                        ]
+                                    },
+                                    "Actions": { "$set": ["OybekSick", true] }
+                                },
+                                "ActorNoMoreSick": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.actor_R_ID",
+                                                    "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                                ]
+                                            },
+                                            { "$eq": ["$.OybekSick", true] }
+                                        ]
+                                    },
+                                    "Actions": { "$set": ["OybekSick", false] }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": ["$.OybekSick", true]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.OutfitRepositoryId",
+                                                        "$.EligibleSuits"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "accident"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "ae44d9d6-3795-47b5-ad74-250d8f9aec22",
+                            "34c21c64-515a-4a43-9fd0-378211060122"
+                        ]
+                    }
+                }
+            ]
         }
     ]
 }
