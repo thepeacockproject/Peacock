@@ -444,7 +444,19 @@
                         "Success": {
                             "Kill": {
                                 "Condition": {
-                                    "$eq": ["$.IsExiting", 0]
+                                    "$and": [
+                                        {
+                                            "$eq": ["$.IsExiting", 0]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$eq": [
+                                                    "$Value.IsBodyHidden",
+                                                    true
+                                                ]
+                                            }
+                                        }
+                                    ]
                                 },
                                 "Actions": {
                                     "$set": ["DeadBodiesHidden", false]
@@ -477,6 +489,11 @@
                                 "Transition": "Failure"
                             },
                             "Kill": {
+                                "Condition": {
+                                    "$not": {
+                                        "$eq": ["$Value.IsBodyHidden", true]
+                                    }
+                                },
                                 "Actions": {
                                     "$set": ["DeadBodiesHidden", false]
                                 }
@@ -1412,7 +1429,19 @@
                         "Success": {
                             "Kill": {
                                 "Condition": {
-                                    "$eq": ["$.IsExiting", 0]
+                                    "$and": [
+                                        {
+                                            "$eq": ["$.IsExiting", 0]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$eq": [
+                                                    "$Value.IsBodyHidden",
+                                                    true
+                                                ]
+                                            }
+                                        }
+                                    ]
                                 },
                                 "Actions": {
                                     "$set": ["DeadBodiesHidden", false]
@@ -1445,6 +1474,11 @@
                                 "Transition": "Failure"
                             },
                             "Kill": {
+                                "Condition": {
+                                    "$not": {
+                                        "$eq": ["$Value.IsBodyHidden", true]
+                                    }
+                                },
                                 "Actions": {
                                     "$set": ["DeadBodiesHidden", false]
                                 }
@@ -8165,6 +8199,17 @@
                 }
             }
         ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "99944e19-228d-48d5-9812-fe17137b5126": {
+        "Name": "UI_CONTRACT_NIGHTPHLOX_ADDENTRANCES_NAME",
+        "Description": "UI_CONTRACT_NIGHTPHLOX_ADDENTRANCES_NAME",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/entrances/Grog_Entrance_Alternative.jpg",
+        "Resource": [],
+        "Objectives": [],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
     },
