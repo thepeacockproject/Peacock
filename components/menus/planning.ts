@@ -123,7 +123,11 @@ export async function getPlanningData(
         }
     }
 
-    let contractData = controller.resolveContract(contractId, gameVersion)
+    let contractData = controller.resolveContract(
+        contractId,
+        userId,
+        gameVersion,
+    )
 
     if (!contractData) {
         return {
@@ -154,7 +158,11 @@ export async function getPlanningData(
         // now reassign properties and continue
         contractId = group["1"]
 
-        contractData = controller.resolveContract(contractId, gameVersion)
+        contractData = controller.resolveContract(
+            contractId,
+            userId,
+            gameVersion,
+        )
     }
 
     if (!contractData) {
@@ -182,6 +190,7 @@ export async function getPlanningData(
     if (escalation) {
         const groupContractData = controller.resolveContract(
             escalationGroupId,
+            userId,
             gameVersion,
         )
 
@@ -213,7 +222,11 @@ export async function getPlanningData(
 
             assert(typeof newLevelId === "string", "newLevelId is not a string")
 
-            contractData = controller.resolveContract(newLevelId, gameVersion)
+            contractData = controller.resolveContract(
+                newLevelId,
+                userId,
+                gameVersion,
+            )
         }
     }
 

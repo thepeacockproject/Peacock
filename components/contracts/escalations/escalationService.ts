@@ -119,7 +119,7 @@ export function getPlayEscalationInfo(
     }
 
     const totalLevelCount = getLevelCount(
-        controller.resolveContract(groupContractId, gameVersion),
+        controller.resolveContract(groupContractId, userId, gameVersion),
     )
 
     let nextContractId = "00000000-0000-0000-0000-000000000000"

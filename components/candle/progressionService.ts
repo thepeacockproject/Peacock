@@ -165,6 +165,7 @@ export class ProgressionService {
     ): void {
         const contract = this.controller.resolveContract(
             contractSession.contractId,
+            userProfile.Id,
             contractSession.gameVersion,
         )
 

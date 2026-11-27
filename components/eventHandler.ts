@@ -303,7 +303,7 @@ export function newSession(
 ): void {
     const timestamp = new Date()
 
-    const contract = controller.resolveContract(contractId, gameVersion)
+    const contract = controller.resolveContract(contractId, userId, gameVersion)
 
     assert.ok(contract, `Failed to load ${contractId}`)
 
@@ -547,6 +547,7 @@ function contractFailed(
 
     const json = controller.resolveContract(
         session.contractId,
+        session.userId,
         session.gameVersion,
     )!
     const userData = getUserData(session.userId, session.gameVersion)
@@ -566,9 +567,9 @@ function contractFailed(
     if (session.timerStart !== 0) {
         // @ts-expect-error TypeScript still hates dates
         const timeTotal: Seconds = session.timerEnd - session.timerStart
-        liveSplitManager.failMission(timeTotal)
+        liveSplitManager.failMission(session.userId, timeTotal)
     } else {
-        liveSplitManager.failMission(0)
+        liveSplitManager.failMission(session.userId, 0)
     }
 
     // If this is a contract, update the contract in the played list
@@ -681,6 +682,7 @@ function saveEvents(
 
         const contract = controller.resolveContract(
             session.contractId,
+            session.userId,
             gameVersion,
         )
         const contractType = contract?.Metadata?.Type?.toLowerCase()

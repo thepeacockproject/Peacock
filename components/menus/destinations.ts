@@ -126,6 +126,7 @@ export function getDestinationCompletion(
 
     const userData = getUserData(userId, gameVersion)
     const challenges = controller.challengeService.getGroupedChallengeLists(
+        userId,
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
@@ -260,12 +261,14 @@ export function getAllGameDestinations(
  * Creates the game's LocationsData object, and optionally removes locations
  * that don't provide a contract creation ID.
  *
+ * @param userId The user's ID.
  * @param gameVersion The game version.
  * @param excludeIfNoContracts If true, locations that don't support contract
  * creation will not be returned.
  * @returns The locations that can be played.
  */
 export function createLocationsData(
+    userId: string | null,
     gameVersion: GameVersion,
     excludeIfNoContracts = false,
 ): GameLocationsData {
@@ -303,6 +306,7 @@ export function createLocationsData(
             locData.parents[sublocation.Properties.ParentLocation]
         const creationContract = controller.resolveContract(
             sublocation.Properties.CreateContractId!,
+            userId,
             gameVersion,
         )
 
@@ -426,7 +430,7 @@ export function getDestination(
     // Add VR Tutorial
     if (gameVersion === "h3" && LOCATION === "LOCATION_PARENT_ICA_FACILITY") {
         const userCentric = generateUserCentric(
-            controller.resolveContract(vrTutorialId, "h3"),
+            controller.resolveContract(vrTutorialId, userId, "h3"),
             userId,
             "h3",
         )

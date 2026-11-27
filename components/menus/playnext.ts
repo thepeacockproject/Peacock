@@ -118,7 +118,11 @@ export function createPlayNextMission(
                 Content: {
                     ContractId: contractId,
                     UserCentricContract: generateUserCentric(
-                        controller.resolveContract(contractId, gameVersion),
+                        controller.resolveContract(
+                            contractId,
+                            userId,
+                            gameVersion,
+                        ),
                         userId,
                         gameVersion,
                     ),
@@ -149,15 +153,21 @@ export type PlayNextCategory = {
 
 /**
  * Generates tiles for recommended mission stories given a contract ID.
+ * @param userId The user's ID.
  * @param contractId The contract ID.
  * @param gameVersion The game's version.
  * @returns The tile object.
  */
 export function createMainOpportunityTile(
     contractId: string,
+    userId: string | null,
     gameVersion: GameVersion,
 ): PlayNextCategory {
-    const contractData = controller.resolveContract(contractId, gameVersion)
+    const contractData = controller.resolveContract(
+        contractId,
+        userId,
+        gameVersion,
+    )
 
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
@@ -240,7 +250,7 @@ export function getGamePlayNextData(
             )
         }
 
-        cats.push(createMainOpportunityTile(contractId, gameVersion))
+        cats.push(createMainOpportunityTile(contractId, userId, gameVersion))
     }
 
     const pzIdIndex = orderedPZMissions.indexOf(contractId)

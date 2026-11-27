@@ -501,6 +501,7 @@ profileRouter.post(
 
         const json = controller.resolveContract(
             req.body.contractId,
+            req.jwt.unique_name,
             req.gameVersion,
             true,
         )

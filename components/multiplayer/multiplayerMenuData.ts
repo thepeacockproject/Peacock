@@ -131,7 +131,11 @@ multiplayerMenuDataRouter.get(
                 Presets: presets,
                 UserCentricContracts: [...contractIds].map((contractId) => {
                     return generateUserCentric(
-                        controller.resolveContract(contractId, req.gameVersion),
+                        controller.resolveContract(
+                            contractId,
+                            req.jwt.unique_name,
+                            req.gameVersion,
+                        ),
                         req.jwt.unique_name,
                         req.gameVersion,
                     )
