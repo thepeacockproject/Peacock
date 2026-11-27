@@ -1,0 +1,832 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/rocky/mission_grog.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/rocky/dev_grog.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_grog_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "5fe7be68-33b1-4202-9aca-bf911da8ab8e"
+        ],
+        "Stashpoints": [
+            "014b27fd-8fd0-488e-9b81-335ccba583a6",
+            "3a84ae8e-0196-49ef-978e-39d9fdcf5591",
+            "05d93ed4-b32f-4459-8f8d-b391a5bccacc"
+        ],
+        "GameChangers": [],
+        "Objectives": [
+            {
+                "_comment": "---- Contact Client  (planning) ----",
+                "Id": "88ef9383-1d1c-41f9-8955-9f58c44ee5f3",
+                "Image": "Images/Contracts/Elusive/S3_Grog/ContactClientObjective.jpg",
+                "BriefingName": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_NAME",
+                "LongBriefingText": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_LONG",
+                "BriefingText": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_HUD",
+                    "iconType": 17
+                },
+                "AllowEtRestartOnSuccess": true,
+                "ForceShowOnLoadingScreen": true,
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "GameStarted": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Activate Main flow objectives",
+                "Id": "132470ab-d661-4447-af27-19784cc198f4",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "DefaultStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Activate Alternative flow objectives",
+                "Id": "121d22c6-555b-4dac-99c8-57f9ab0b437f",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "AlternativeStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---- Contact Client ----",
+                "Id": "6ff5bc4b-6a48-4601-93c3-072273ad022a",
+                "Image": "Images/Contracts/Elusive/S3_Grog/ContactClientObjective.jpg",
+                "BriefingName": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_NAME",
+                "LongBriefingText": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_LONG",
+                "BriefingText": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_GROG_OBJECTIVE_CONTACT_HUD",
+                    "iconType": 17
+                },
+                "AllowEtRestartOnSuccess": true,
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$132470ab-d661-4447-af27-19784cc198f4",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ClientMet": {
+                                "Transition": "Success"
+                            },
+                            "AlternativeStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Rum Pirate (secondary, main flow) -----",
+                "Id": "778db0a4-5014-4271-8b3b-5d32e82492b3",
+                "HUDTemplate": {
+                    "optional": true,
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_A_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$1da58690-8372-490b-b644-6ad7be590846",
+                        "$132470ab-d661-4447-af27-19784cc198f4",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "50751716-3fe4-4a60-8c05-5b70aefb1e69"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Soup Pirate (secondary, main flow) -----",
+                "Id": "4eef6f0d-11b3-4070-bb11-94c4086d6bda",
+                "HUDTemplate": {
+                    "optional": true,
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_B_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$1da58690-8372-490b-b644-6ad7be590846",
+                        "$132470ab-d661-4447-af27-19784cc198f4",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "7c8dae23-d119-4ee9-8343-333ed84f61f4"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Boom Pirate (secondary, main flow) -----",
+                "Id": "4c6a546a-9f70-48af-8b88-c738a3ab45ef",
+                "HUDTemplate": {
+                    "optional": true,
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_C_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$1da58690-8372-490b-b644-6ad7be590846",
+                        "$132470ab-d661-4447-af27-19784cc198f4",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "bc7a6f0c-43b1-41d0-b13d-285efa3bd8de"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "(Primary) Eliminate Rum pirate (alternative flow) or collect treasure (invisible, main flow)",
+                "Id": "f041d732-d71e-4a42-b494-b6ef9b7fb9e0",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_A_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "Category": "primary",
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$121d22c6-555b-4dac-99c8-57f9ab0b437f",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "kill",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "50751716-3fe4-4a60-8c05-5b70aefb1e69"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "TreasureFound": {
+                                "Transition": "Success"
+                            },
+                            "AlternativeStartingLocation": {
+                                "Transition": "AlternativeFlow"
+                            }
+                        },
+                        "AlternativeFlow": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "(Primary) Eliminate Soup pirate (alternative flow) or collect treasure (invisible, main flow)",
+                "Id": "e582a991-8df4-486c-8dd6-d5c6ca99c55d",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_B_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "Category": "primary",
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$121d22c6-555b-4dac-99c8-57f9ab0b437f",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "kill",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "7c8dae23-d119-4ee9-8343-333ed84f61f4"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "TreasureFound": {
+                                "Transition": "Success"
+                            },
+                            "AlternativeStartingLocation": {
+                                "Transition": "AlternativeFlow"
+                            }
+                        },
+                        "AlternativeFlow": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "(Primary) Eliminate Boom pirate (alternative flow) or collect treasure (invisible, main flow)",
+                "Id": "edfacf76-be1b-43a2-a908-ced3993eed98",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_ET_GROG_TARGET_C_NAME"
+                        }
+                    }
+                },
+                "IsHidden": true,
+                "Category": "primary",
+                "DisplayAsKillObjective": true,
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$121d22c6-555b-4dac-99c8-57f9ab0b437f",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "kill",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "bc7a6f0c-43b1-41d0-b13d-285efa3bd8de"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "TreasureFound": {
+                                "Transition": "Success"
+                            },
+                            "AlternativeStartingLocation": {
+                                "Transition": "AlternativeFlow"
+                            }
+                        },
+                        "AlternativeFlow": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---- Hide objective to eliminate pirates (main flow) ----",
+                "Id": "1da58690-8372-490b-b644-6ad7be590846",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ShowPiratesObjectives": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Get Artefact Pieces -----",
+                "Id": "1ba3eb4d-e7a2-4bea-893f-d53efe6bfacf",
+                "Image": "Images/Contracts/Elusive/S3_Grog/CluesObjective.jpg",
+                "BriefingName": "$loc UI_ET_GROG_OBJECTIVE_GATHER_NAME",
+                "LongBriefingText": "$loc UI_ET_GROG_OBJECTIVE_GATHER_LONG",
+                "BriefingText": "$loc UI_ET_GROG_OBJECTIVE_GATHER_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_GROG_OBJECTIVE_GATHER_HUD",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "AllowEtRestartOnSuccess": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "Type": "statemachine",
+                "Scope": "session",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$6c632286-64c3-4f61-bc90-e91ddc9f378c",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "SpyglassPiecesAcquired": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_ET_GROG_OBJECTIVE_GATHER_DYNAMIC_TITLE",
+                                        "data": [
+                                            "$.SpyglassPiecesAcquired",
+                                            "$.SpyglassPiecesRequired"
+                                        ]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "Context": {
+                        "SpyglassPiecesAcquired": 0,
+                        "SpyglassPiecesRequired": 3
+                    },
+                    "States": {
+                        "Start": {
+                            "ArtefactPiecesFound": [
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "SpyglassPiecesAcquired",
+                                            "$Value"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.SpyglassPiecesAcquired",
+                                            "$.SpyglassPiecesRequired"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "AlternativeStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---- Hide objective to find artefact pieces ----",
+                "Id": "6c632286-64c3-4f61-bc90-e91ddc9f378c",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "DefaultStartingLocation": {
+                                "Transition": "Pending"
+                            }
+                        },
+                        "Pending": {
+                            "EnableArtefactObjectives": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Get the Treasure -----",
+                "Id": "9c04ffdd-f67f-4c24-957c-448643e67415",
+                "Image": "Images/Contracts/Elusive/S3_Grog/TreasureObjective.jpg",
+                "BriefingName": "$loc UI_ET_GROG_OBJECTIVE_FIND_TREASURE_NAME",
+                "BriefingText": "$loc UI_ET_GROG_OBJECTIVE_FIND_TREASURE_TEXT",
+                "LongBriefingText": "$loc UI_ET_GROG_OBJECTIVE_FIND_TREASURE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_GROG_OBJECTIVE_FIND_TREASURE_NAME",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "AllowEtRestartOnSuccess": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$1ba3eb4d-e7a2-4bea-893f-d53efe6bfacf",
+                        "$ce76872e-8271-4424-97cb-59954bcfb43a",
+                        "Completed"
+                    ]
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "TreasureFound": {
+                                "Transition": "Success"
+                            },
+                            "AlternativeStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---- Hide objective to get the treasure ----",
+                "Id": "ce76872e-8271-4424-97cb-59954bcfb43a",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "DefaultStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "3b8a3e6f-6038-4093-af35-3aca5d55acae",
+        "CodeName_Hint": "Arcade Rambutan [Grog]- Level 1",
+        "Release": "3.300.x Arcade",
+        "Type": "arcade",
+        "InGroup": "aabf4cd6-fc2b-49d9-80cb-e40bab45deec",
+        "Location": "LOCATION_ROCKY_GROG",
+        "Title": "UI_CONTRACT_RAMBUTAN_LEVEL01_NAME",
+        "Description": "UI_CONTRACT_GROG_DESC",
+        "TileImage": "images/contracts/elusive/s3_grog/Title.jpg",
+        "BriefingVideo": "briefing_grog",
+        "DebriefingVideo": "debriefing_grog",
+        "ScenePath": "assembly:/_pro/scenes/missions/rocky/scene_grog.entity",
+        "Entitlements": [
+            "LOCATION_ROCKY"
+        ],
+        "CreationTimestamp": "2026-11-26T09:35:58.0722623Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "PublicId": "099198699247"
+    },
+    "UserData": {}
+}
