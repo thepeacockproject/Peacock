@@ -30,9 +30,7 @@
                 "Definition": {
                     "Scope": "session",
                     "Context": {
-                        "Targets": [
-                            "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
-                        ]
+                        "Targets": ["4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"]
                     },
                     "States": {
                         "Start": {
@@ -165,10 +163,7 @@
                                                 "$any": {
                                                     "in": "$.KilledActors",
                                                     "?": {
-                                                        "$eq": [
-                                                            "$.#",
-                                                            "$.##"
-                                                        ]
+                                                        "$eq": ["$.#", "$.##"]
                                                     }
                                                 }
                                             }
@@ -194,10 +189,7 @@
                                 },
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.Visible",
-                                            true
-                                        ]
+                                        "$eq": ["$.Visible", true]
                                     },
                                     "Transition": "Active"
                                 }
@@ -229,10 +221,7 @@
                                 }
                             ],
                             "ShowNeutralizeObjective": {
-                                "$set": [
-                                    "Visible",
-                                    true
-                                ],
+                                "$set": ["Visible", true],
                                 "Transition": "Check"
                             }
                         }
@@ -315,10 +304,7 @@
                         "Start": {
                             "HeroInfectionChanged": {
                                 "Actions": {
-                                    "$set": [
-                                        "Infection",
-                                        "$Value"
-                                    ]
+                                    "$set": ["Infection", "$Value"]
                                 }
                             },
                             "HeroCured": {
@@ -379,9 +365,7 @@
         "CreationTimestamp": "2026-11-26T09:35:25.3005821Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "IsPublished": true,
-        "Entitlements": [
-            "H3_ET_FILUR"
-        ],
+        "Entitlements": ["H3_ET_FILUR"],
         "PublicId": "099175989547"
     },
     "UserData": {}
