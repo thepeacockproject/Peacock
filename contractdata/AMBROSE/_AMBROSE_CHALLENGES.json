@@ -3330,10 +3330,7 @@
                                     "Transition": "Success"
                                 },
                                 "AccidentBodyFound": {
-                                    "$set": [
-                                        "LastAccidentTime",
-                                        "$Timestamp"
-                                    ]
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
                                 },
                                 "Witnesses": {
                                     "Condition": {
@@ -3409,10 +3406,7 @@
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.IsTarget",
-                                                true
-                                            ]
+                                            "$eq": ["$Value.IsTarget", true]
                                         },
                                         "Actions": {
                                             "$pushunique": [
@@ -3471,18 +3465,12 @@
                                             ]
                                         },
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.event",
-                                                "spotted"
-                                            ]
+                                            "$eq": ["$Value.event", "spotted"]
                                         }
                                     },
                                     {
                                         "Actions": {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                true
-                                            ]
+                                            "$set": ["RecordingDestroyed", true]
                                         },
                                         "Condition": {
                                             "$or": [
@@ -3537,10 +3525,7 @@
                             "Start": {
                                 "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.IsTarget",
-                                            true
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
                                     "Transition": "Success"
                                 }
