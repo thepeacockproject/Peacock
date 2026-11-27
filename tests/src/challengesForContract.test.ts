@@ -97,4 +97,76 @@ describe("getChallengesForContract", () => {
             expect(groups.discovery).toHaveLength(19)
         })
     })
+
+    describe("sub-locations with ExcludeParentChallenges", () => {
+        // The Mutiny (special assignment), in LOCATION_ROCKY_GROG
+        const GROG = "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+        // The Harbinger (special assignment), in LOCATION_ANCESTRAL_FILUR
+        const FILUR = "88a9ea3b-25a2-4b11-a2fe-b7d5b4893a7e"
+        // Patient Zero, in LOCATION_HOKKAIDO_FLU
+        const PATIENT_ZERO = "a2befcec-7799-4987-9215-6a152cb6a320"
+        // "Discover Hokkaido", which is for the whole of LOCATION_PARENT_HOKKAIDO
+        const DISCOVER_HOKKAIDO = "94c9c926-c682-4f78-8cd6-92e9e2c32330"
+
+        for (const [name, contractId] of [
+            ["The Mutiny", GROG],
+            ["The Harbinger", FILUR],
+        ]) {
+            testWithFakeFs(
+                `${name} has its own challenges, and only those`,
+                async () => {
+                    const groups = await challengesFor(contractId, "h3")
+                    const challenges = Object.values(groups).flat()
+
+                    expect(Object.keys(groups).sort()).toEqual([
+                        "assassination",
+                        "classic",
+                        "feats",
+                        "targets",
+                    ])
+
+                    for (const challenge of challenges) {
+                        expect(
+                            challenge.InclusionData?.ContractIds,
+                            `${challenge.Name} is for this contract`,
+                        ).toContain(contractId)
+                    }
+                },
+            )
+        }
+
+        testWithFakeFs(
+            "the destination doesn't have its parent's challenges",
+            () => {
+                const groups =
+                    controller.challengeService.getChallengesForLocation(
+                        "LOCATION_ROCKY_GROG",
+                        "h3",
+                    )
+
+                expect(groups.assassination).toHaveLength(10)
+                expect(groups.discovery).toBeUndefined()
+                expect(groups["argon-pack"]).toBeUndefined()
+                expect(groups["cheesecake-pack"]).toBeUndefined()
+
+                for (const challenge of Object.values(groups).flat()) {
+                    expect(challenge.Type, challenge.Name).not.toBe(
+                        "parentlocation",
+                    )
+                }
+            },
+        )
+
+        testWithFakeFs(
+            "sub-locations without the flag still get their parent's challenges",
+            async () => {
+                const groups = await challengesFor(PATIENT_ZERO, "h3")
+
+                expect(groups.discovery.map((c) => c.Id)).toContain(
+                    DISCOVER_HOKKAIDO,
+                )
+                expect(groups["argon-pack"]).toHaveLength(1)
+            },
+        )
+    })
 })

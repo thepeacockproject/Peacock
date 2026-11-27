@@ -24,8 +24,10 @@ import {
     InclusionData,
     MissionManifest,
     MissionType,
+    PeacockLocationsData,
     RegistryChallenge,
 } from "../types/types"
+import { getVersionedConfig } from "../configSwizzleManager"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
@@ -189,6 +191,35 @@ export function isChallengeForDifficulty(
 }
 
 /**
+ * Checks if a sub-location only has the challenges of its own contracts, and
+ * none of the challenges that apply to the whole of its parent location
+ * (e.g. "Discover Ambrose Island" does not exist in The Mutiny).
+ *
+ * This is controlled by the `ExcludeParentChallenges` property of the
+ * sub-location in the locations data.
+ *
+ * @param locationId The ID of the sub-location.
+ * @param gameVersion The game version.
+ * @returns Whether challenges from the parent location should be left out.
+ */
+export function excludesParentChallenges(
+    locationId: string,
+    gameVersion: GameVersion,
+): boolean {
+    // This runs once per challenge, so don't clone the locations data.
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        gameVersion,
+        false,
+    )
+
+    return (
+        locations.children[locationId]?.Properties.ExcludeParentChallenges ===
+        true
+    )
+}
+
+/**
  * Judges whether a challenge should be included in the challenges list of a contract.
  * Requires the challenge and the contract share the same parent location.
  * Will throw if the contract is not found.
@@ -238,9 +269,13 @@ function isChallengeInContract(
         `Can't find contract ${contractId} for ${gameVersion}, but need to check if challenge ${challenge.Id} belongs to it`,
     )
 
+    // Some sub-locations don't get anything from their parent location.
+    const excludeParent = excludesParentChallenges(locationId, gameVersion)
+
     if (challenge.Type === "global") {
         return (
-            challenge.Tags.some((t) => /-pack$/.test(t)) ||
+            // Challenge pack challenges are shown in every contract of the location they're in.
+            (!excludeParent && challenge.Tags.some((t) => /-pack$/.test(t))) ||
             inclusionDataCheck(
                 // Global challenges should not be shown for "tutorial" missions unless for the career page,
                 // despite the InclusionData somehow saying otherwise.
@@ -292,8 +327,9 @@ function isChallengeInContract(
         // Is this challenge's location one of these things:
         // 1. The current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
         // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
+        //    Sub-locations with "ExcludeParentChallenges" are the exception.
         challenge.LocationId === locationId ||
-        challenge.LocationId === challenge.ParentLocationId
+        (challenge.LocationId === challenge.ParentLocationId && !excludeParent)
 
     const isPro1 = challenge.Tags.includes("pro1")
 

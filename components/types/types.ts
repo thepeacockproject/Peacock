@@ -651,6 +651,16 @@ export type Unlockable = {
         IsFreeDLC?: boolean
         HideProgression?: boolean
         ExcludeParentRewards?: boolean
+        /**
+         * Peacock-specific, for sub-locations: this sub-location only has the
+         * challenges of its own contracts, and none of the challenges that
+         * apply to the whole of its parent location.
+         *
+         * The official servers hardcode which sub-locations this applies to
+         * (the celebrity elusive target/special assignment ones), so it is
+         * not in the official data and has to be added when a new one releases.
+         */
+        ExcludeParentChallenges?: boolean
         Quality?: number | string
         UpcomingContent?: boolean
         UpcomingKey?: "UI_MENU_LIVETILE_CONTENT_UPCOMING_HEADLINE" | string
