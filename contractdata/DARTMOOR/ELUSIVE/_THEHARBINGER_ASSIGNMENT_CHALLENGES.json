@@ -574,6 +574,61 @@
                     "InclusionData": {
                         "ContractIds": ["88a9ea3b-25a2-4b11-a2fe-b7d5b4893a7e"]
                     }
+                },
+                {
+                    "Id": "83252367-5913-4049-b78e-4fca70b25410",
+                    "Name": "UI_GUAVA_OUTBREAKENTRANCE_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/elusive/s3_filur/story1.jpg",
+                    "Description": "UI_GUAVA_OUTBREAKENTRANCE_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": ["STARTING_LOCATION_ANCESTRAL_FILUR_OUTBREAK"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_ANCESTRAL_FILUR",
+                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "0ad684cc-0be7-4875-be0b-b9c567872e20"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "OpportunityEvents": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "$.Target"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Event",
+                                                    "Completed"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "easy"],
+                    "InclusionData": {
+                        "Locations": ["LOCATION_ANCESTRAL_FILUR"]
+                    }
                 }
             ]
         },
