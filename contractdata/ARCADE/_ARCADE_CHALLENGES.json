@@ -13,10 +13,10 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
-                    "Id": "fd92b16b-8937-4a07-a525-ebf03f231325",
-                    "Name": "UI_NONI_COMPLETION_CHALLENGE_NAME",
-                    "ImageName": "images/contracts/arcade/Arcade_Noni_Group.jpg",
-                    "Description": "UI_NONI_COMPLETION_CHALLENGE_DESC",
+                    "Id": "24b2ce93-09f1-44ad-8920-d472c2fe5e23",
+                    "Name": "UI_RAMBUTAN_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Rambutan_Group.jpg",
+                    "Description": "UI_RAMBUTAN_COMPLETION_CHALLENGE_DESC",
                     "Rewards": {
                         "MasteryXP": 4000
                     },
@@ -26,8 +26,8 @@
                     "HideProgression": false,
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
                     "Icon": "arcademode",
-                    "LocationId": "LOCATION_PARENT_OPULENT",
-                    "ParentLocationId": "LOCATION_PARENT_OPULENT",
+                    "LocationId": "LOCATION_ROCKY_GROG",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
                     "Type": "contract",
                     "DifficultyLevels": [],
                     "OrderIndex": 10000,
@@ -42,7 +42,7 @@
                                     "Condition": {
                                         "$eq": [
                                             "$ContractId",
-                                            "ed26cb68-ba01-4117-bbc3-e2f933f98996"
+                                            "727917a6-db1d-46ee-b6b8-7621266e30ad"
                                         ]
                                     },
                                     "Transition": "Success"
@@ -52,10 +52,9 @@
                     },
                     "Tags": ["arcade", "hard"],
                     "InclusionData": {
-                        "ContractIds": ["6b42daeb-9878-4b44-a0b9-e09377208ad5"]
+                        "ContractIds": ["aabf4cd6-fc2b-49d9-80cb-e40bab45deec"]
                     }
-                },
-                {
+                },{
                     "Id": "c71fedd6-5d26-456f-a631-4e3e7f97266f",
                     "Name": "UI_CHAYOTE_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Chayote_Group.jpg",
@@ -96,6 +95,49 @@
                     "Tags": ["arcade", "hard"],
                     "InclusionData": {
                         "ContractIds": ["12d6658c-2b19-42b8-aedd-809e7dd873a2"]
+                    }
+                },
+                {
+                    "Id": "fd92b16b-8937-4a07-a525-ebf03f231325",
+                    "Name": "UI_NONI_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Noni_Group.jpg",
+                    "Description": "UI_NONI_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_OPULENT",
+                    "ParentLocationId": "LOCATION_PARENT_OPULENT",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "ed26cb68-ba01-4117-bbc3-e2f933f98996"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["6b42daeb-9878-4b44-a0b9-e09377208ad5"]
                     }
                 },
                 {
