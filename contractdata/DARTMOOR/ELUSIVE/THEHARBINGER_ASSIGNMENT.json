@@ -1,0 +1,388 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Entrances": [
+            "0aec817c-738e-4381-bbd4-a13b5d1c6730",
+            "5314c86b-7173-412b-a0b5-b0d9af2da722",
+            "d4ec0c94-02b2-4aae-be9e-cbb5cc7d7e4a",
+            "3812ea57-e29c-42cb-b93a-ea2d3e6a6806",
+            "64edfb0d-c620-44af-887d-8c1b5e65090b"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Filur -----",
+                "Id": "a1e06fc2-0cbe-4fdd-836a-23ada0c1594c",
+                "Image": "images/actors/elusive_Filur_face.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FILUR_TARGET_NAME",
+                "BriefingText": "$loc UI_CONTRACT_FILUR_TARGET_INTEL",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL_NO_GLOBAL_FONT",
+                            "data": "$loc UI_CONTRACT_FILUR_TARGET_NAME"
+                        }
+                    }
+                },
+                "DisplayAsKillObjective": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "4a9a11bf-e93d-4cdc-9852-4f3a5b9812f3"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "--- Neutralize Infection ---",
+                "Id": "fd4d1f46-e57c-4fef-add5-eec1f211c21a",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "CounterVisibleInTile": false,
+                "AllowEtRestartOnSuccess": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
+                "Image": "images/contracts/elusive/s3_filur/obj_neutralize_infection.jpg",
+                "BriefingName": "$loc UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_NAME",
+                "BriefingText": "$loc UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_HUD",
+                    "iconType": 19
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_ET_FILUR_OBJ_NEUTRALIZE_INFECTED_COUNTER"
+                        }
+                    },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [],
+                        "TargetsCounter": 0,
+                        "Visible": false
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Active": {
+                            "ActorInfected": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetsCounter",
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "ActorCured": [
+                                {
+                                    "Actions": {
+                                        "$dec": "TargetsCounter",
+                                        "$remove": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Transition": "Check"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$dec": "TargetsCounter"
+                                    }
+                                },
+                                {
+                                    "Transition": "Check"
+                                }
+                            ]
+                        },
+                        "Check": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$all": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$any": {
+                                                    "in": "$.KilledActors",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$.##"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Active"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "ActorInfected": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetsCounter",
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.Visible",
+                                            true
+                                        ]
+                                    },
+                                    "Transition": "Active"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$dec": "TargetsCounter"
+                                    }
+                                }
+                            ],
+                            "ShowNeutralizeObjective": {
+                                "$set": [
+                                    "Visible",
+                                    true
+                                ],
+                                "Transition": "Check"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "--- Listener for Player Infection ---",
+                "Id": "4a12109d-cd28-4714-8c37-374ce52ca783",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "AllowEtRestartOnSuccess": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "HeroInfected": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$4a12109d-cd28-4714-8c37-374ce52ca783",
+                        "Completed"
+                    ]
+                },
+                "Comment": "--- Player Infection Logic ---",
+                "Id": "b63eab0f-1b0e-4d4c-9577-493dc4db1e9f",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "CounterVisibleInTile": false,
+                "AllowEtRestartOnSuccess": true,
+                "Image": "images/contracts/elusive/s3_filur/obj_47_infected.jpg",
+                "BriefingName": "$loc UI_ET_FILUR_OBJ_47_INFECTED_NAME",
+                "BriefingText": "$loc UI_ET_FILUR_OBJ_47_INFECTED_DESC",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Category": "primary",
+                "Type": "statemachine",
+                "HUDTemplate": {
+                    "display": "$loc UI_ET_FILUR_OBJ_47_INFECTED_HUD",
+                    "iconType": 73
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Infection": {
+                            "type": "objective-counter",
+                            "subtype": "percent",
+                            "header": "UI_ET_FILUR_OBJ_47_INFECTED_COUNTER"
+                        }
+                    },
+                    "Context": {
+                        "Infection": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "HeroInfectionChanged": {
+                                "Actions": {
+                                    "$set": [
+                                        "Infection",
+                                        "$Value"
+                                    ]
+                                }
+                            },
+                            "HeroCured": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/mission_filur.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/ancestral/dev_filur.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "88a9ea3b-25a2-4b11-a2fe-b7d5b4893a7e",
+        "CodeName_Hint": "Filur (Special Assignment)",
+        "Release": "3.300.x Elusive (Special Assignment)",
+        "Type": "flashback",
+        "Subtype": "specialassignment",
+        "Location": "LOCATION_ANCESTRAL_FILUR",
+        "LocationSuitOverride": "TOKEN_OUTFIT_HERO_FILUR_SUIT",
+        "Title": "UI_CONTRACT_FILUR_SA_TITLE",
+        "Description": "UI_CONTRACT_FILUR_DESC",
+        "TileImage": "images/contracts/Special/Special_Filur_Tile.jpg",
+        "BriefingVideo": "briefing_filur",
+        "DebriefingVideo": "debriefing_filur",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_filur.entity",
+        "CreationTimestamp": "2026-11-26T09:35:25.3005821Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "Entitlements": [
+            "H3_ET_FILUR"
+        ],
+        "PublicId": "099175989547"
+    },
+    "UserData": {}
+}
