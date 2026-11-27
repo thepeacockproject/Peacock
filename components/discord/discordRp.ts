@@ -389,6 +389,9 @@ export function scenePathToRpAsset(
                 "Shadows in the Water",
                 "Ambrose Island",
             ]
+        case "assembly:/_pro/scenes/missions/rocky/scene_grog.entity":
+        case "assembly:/_pro/scenes/missions/rocky/scene_rambutan_level2.entity":
+            return ["elusivegrog", "The Mutiny", "Ambrose Island"]
 
         // sniper
         case "assembly:/_pro/scenes/missions/caged/mission_falcon/scene_falcon_sniper.entity":
