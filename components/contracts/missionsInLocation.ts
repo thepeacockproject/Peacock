@@ -379,11 +379,13 @@ export const missionsInLocation = {
         LOCATION_OPULENT_GREENTINI: ["f840fce7-242f-435f-b482-1c990818a758"],
         LOCATION_GOLDEN_GECKO: ["7d85f2b0-80ca-49be-a2b7-d56f67faf252"],
         LOCATION_ANCESTRAL_BULLDOG: ["755984a8-fb0b-4673-8637-95cfe7d34e0f"],
+        LOCATION_ANCESTRAL_FILUR: ["88a9ea3b-25a2-4b11-a2fe-b7d5b4893a7e"],
         LOCATION_EDGY_FOX: ["ebcd14b2-0786-4ceb-a2a4-e771f60d0125"],
         LOCATION_WET_RAT: ["3d0cbb8c-2a80-442a-896b-fea00e98768c"],
         LOCATION_ELEGANT_LLAMA: ["d42f850f-ca55-4fc9-9766-8c6a2b5c3129"],
         LOCATION_TRAPPED_WOLVERINE: ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"],
         LOCATION_ROCKY_DUGONG: ["b2aac100-dfc7-4f85-b9cd-528114436f6c"],
+        LOCATION_ROCKY_GROG: ["41e999eb-0903-4a0e-9be6-9c850bb6d144"],
         LOCATION_SNUG: ["f8ec92c2-4fa2-471e-ae08-545480c746ee"],
         escalations: {
             LOCATION_ICA_FACILITY_SHIP: [
@@ -598,16 +600,17 @@ export const missionsInLocation = {
                 "b4d555eb-e2c9-40c2-b155-328a7019fd28",
             ],
             LOCATION_HOKKAIDO: ["6678cf8a-f614-4536-9584-e649351f40c2"],
-            LOCATION_NEWZEALAND: [
-                "39cc0603-4348-4dbf-9bd3-733cadf2913c",
+            LOCATION_NEWZEALAND: ["39cc0603-4348-4dbf-9bd3-733cadf2913c"],
+            LOCATION_NEWZEALAND_SHAMROCK: [
                 "12d6658c-2b19-42b8-aedd-809e7dd873a2",
             ],
-            LOCATION_MIAMI: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
+            LOCATION_MIAMI_SAMBUCA: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
             LOCATION_COLOMBIA: ["90121ee0-0431-4a97-9bc8-8a7e2ca30d65"],
             LOCATION_NORTHAMERICA: [
                 "5081776a-86b6-4935-a83e-631a65ba8ee8",
                 "cab4293f-e359-419d-aa6f-83d91a158cf5",
             ],
+            LOCATION_ROCKY_GROG: ["aabf4cd6-fc2b-49d9-80cb-e40bab45deec"],
             LOCATION_NORTHSEA: [
                 "b9f55fc3-c53f-4661-a4b6-9956303422aa",
                 "6de90688-ad4c-457e-ae25-c4bbc8f55196",
@@ -617,13 +620,15 @@ export const missionsInLocation = {
                 "b1fb40d7-c013-4c9f-bb8a-8782e980b11a",
                 "55cd7c79-f6dd-4d58-86e1-d52863488077",
             ],
-            LOCATION_OPULENT_STINGRAY: ["6b42daeb-9878-4b44-a0b9-e09377208ad5"],
+            LOCATION_OPULENT_GREENTINI: [
+                "6b42daeb-9878-4b44-a0b9-e09377208ad5",
+            ],
             LOCATION_ANCESTRAL_BULLDOG: [
                 "bfb56fe6-06db-440a-aafe-42eeeb223fa1",
                 "80cf04de-8e0b-4f38-b094-600753e2ac24",
                 "85a67f31-75ce-40f5-a281-7765791f58ca",
-                "34c21c64-515a-4a43-9fd0-378211060122",
             ],
+            LOCATION_ANCESTRAL_FILUR: ["34c21c64-515a-4a43-9fd0-378211060122"],
             LOCATION_EDGY_FOX: [
                 "d21e2e91-602c-49d2-9d42-e8bcfb810e9a",
                 "be787ec9-e7b9-4984-bb39-fda4c71705ec",
