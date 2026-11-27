@@ -545,6 +545,14 @@ export function makeCampaigns(
                                 "fae02c6c-1ead-44e6-a899-028f3ebef941",
                                 gameVersion,
                             ),
+                            genSingleMission(
+                                "41e999eb-0903-4a0e-9be6-9c850bb6d144",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "88a9ea3b-25a2-4b11-a2fe-b7d5b4893a7e",
+                                gameVersion,
+                            ),
                         ],
                     },
                     pzCampaign,
