@@ -1,0 +1,1918 @@
+{
+    "meta": {
+        "Location": "LOCATION_ROCKY_GROG",
+        "GameVersions": [
+            "h3"
+        ]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "14f9106f-1acf-43a1-b53f-237c773c6a91",
+                    "Name": "UI_CHALLENGES_GROG_SA_POPPETS_NAME",
+                    "ImageName": "images/challenges/rocky/grog_voodoo.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_POPPETS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 2,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "VoodooDolls": [
+                                "495f783c-3c89-42c1-bb4c-23f671beb2f4",
+                                "f5a0c6a2-88c8-4040-8f94-58a56676881e",
+                                "12d234c5-b438-441f-8139-d0fffb83debc"
+                            ]
+                        },
+                        "Context": {
+                            "TargetsKilled": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.VoodooDolls",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "TargetsKilled"
+                                        },
+                                        "Transition": "Started"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$inarray": {
+                                                            "in": "$.VoodooDolls",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.TargetsKilled",
+                                                "($.VoodooDolls).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            },
+                            "Started": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.VoodooDolls",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "TargetsKilled"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$inarray": {
+                                                            "in": "$.VoodooDolls",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.TargetsKilled",
+                                                "($.VoodooDolls).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 1
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "cdcc53ca-124c-4c26-8e37-c319fde62d15",
+                    "Name": "UI_CHALLENGES_GROG_SA_CANNONEER_NAME",
+                    "ImageName": "images/challenges/rocky/grog_cannon.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_CANNONEER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 3,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bc7a6f0c-43b1-41d0-b13d-285efa3bd8de"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "220c166f-fb83-4561-a02b-ebf13b990a9c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "medium",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "334a3dad-3e65-4eb0-93ba-76db906900d3",
+                    "Name": "UI_CHALLENGES_GROG_SA_IRONLIVER_NAME",
+                    "ImageName": "images/challenges/rocky/grog_rum.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_IRONLIVER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 4,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "50751716-3fe4-4a60-8c05-5b70aefb1e69"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "43a3e0b2-9533-4295-a3fa-a2af8c45a721"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "medium",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "bf732289-1b12-4ea3-ab20-09c949d57036",
+                    "Name": "UI_CHALLENGES_GROG_SA_BROTHFOUL_NAME",
+                    "ImageName": "images/challenges/rocky/grog_soup.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_BROTHFOUL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 5,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Grog_SoupEaten": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "medium",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "55eb788e-059a-4fb4-8b04-a81dba7ee533",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_FIBER_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_fiberwire.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_FIBER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 101,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "easy",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "644db2eb-30d9-41cf-9d52-57edff8e2e42",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_ACCIDENT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_accident.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_ACCIDENT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 102,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Accident",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "easy",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "7fb64a27-08e7-4a78-a5af-56de3a2dd622",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_DROWN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_drown.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 103,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_drown"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "easy",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "14eb38e5-bd1c-400f-b818-c1264544344e",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_HEADSHOT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_headshot.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_HEADSHOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 104,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "easy",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "3c9ee9a8-4d05-42bb-b2bb-70abb2b6784a",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_POISON_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_poison.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_ASSASINATION_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 105,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "easy",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "37862a39-c09b-49ad-8b07-19142f0546ad",
+                    "Name": "UI_CHALLENGES_GROG_SA_47_MASTER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_versatile.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_47_MASTER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 106,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "14eb38e5-bd1c-400f-b818-c1264544344e",
+                                "644db2eb-30d9-41cf-9d52-57edff8e2e42",
+                                "55eb788e-059a-4fb4-8b04-a81dba7ee533",
+                                "7fb64a27-08e7-4a78-a5af-56de3a2dd622",
+                                "3c9ee9a8-4d05-42bb-b2bb-70abb2b6784a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "assassination"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "OrderIndex": 2,
+            "Challenges": [
+                {
+                    "Id": "11e6bf64-0ba0-4c05-a6ba-0c957e9ce6ff",
+                    "Name": "UI_CHALLENGES_GROG_SA_PACIFIST_NAME",
+                    "ImageName": "images/challenges/rocky/grog_pacifism.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_PACIFIST_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [
+                        "STARTING_LOCATION_GROG_ALTERNATIVE"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 1,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ObjectiveCompleted": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "9c04ffdd-f67f-4c24-957c-448643e67415"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "medium",
+                        "feats"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+            "Image": "images/challenges/categories/targets/tile.jpg",
+            "Icon": "challenge_category_targets",
+            "CategoryId": "targets",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "OrderIndex": 3,
+            "Challenges": [
+                {
+                    "Id": "79c9e9ae-7805-448e-974a-966d4a42d71a",
+                    "Name": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_NAME_B",
+                    "ImageName": "images/challenges/elusive_target/et_GROG_SA_targetdown_c.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_DESC_B",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bc7a6f0c-43b1-41d0-b13d-285efa3bd8de"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "targets"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "ced18b91-db0f-4812-8bd6-93833ec31f38",
+                    "Name": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_NAME_A",
+                    "ImageName": "images/challenges/elusive_target/et_GROG_SA_targetdown_a.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_DESC_A",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "50751716-3fe4-4a60-8c05-5b70aefb1e69"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "targets"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "f1caafdc-5fc9-46ed-bc82-5128e7cfa543",
+                    "Name": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_NAME_C",
+                    "ImageName": "images/challenges/elusive_target/et_GROG_SA_targetdown_b.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_TARGET_KILLED_DESC_C",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7c8dae23-d119-4ee9-8343-333ed84f61f4"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "targets"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "OrderIndex": 4,
+            "Challenges": [
+                {
+                    "Id": "420dd5f2-f285-4eff-81af-346d42fd2743",
+                    "Name": "UI_CHALLENGES_GROG_SA_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [
+                        "easy"
+                    ],
+                    "OrderIndex": 201,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": [
+                                        "LastAccidentTime",
+                                        "$Timestamp"
+                                    ]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.event",
+                                                "spotted"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                true
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "classic",
+                        "difficulty_easy"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "5326f3f6-1189-42a8-9ca9-0ae628ffc223",
+                    "Name": "UI_CHALLENGES_GROG_SA_SILENT_ASSASSIN_SUIT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_SILENT_ASSASSIN_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [
+                        "easy"
+                    ],
+                    "OrderIndex": 202,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": [
+                                        "LastAccidentTime",
+                                        "$Timestamp"
+                                    ]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.event",
+                                                "spotted"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                true
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "suitonly",
+                        "classic",
+                        "difficulty_easy"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "7cc1d601-a1d6-4ecb-bf0d-5c7dd8921483",
+                    "Name": "UI_CHALLENGES_GROG_SA_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [
+                        "easy"
+                    ],
+                    "OrderIndex": 203,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "AllTargets": [
+                                "50751716-3fe4-4a60-8c05-5b70aefb1e69",
+                                "7c8dae23-d119-4ee9-8343-333ed84f61f4",
+                                "bc7a6f0c-43b1-41d0-b13d-285efa3bd8de"
+                            ]
+                        },
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "SniperKillSierraCar": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.AllTargets",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "SniperKillSierraCar": {
+                                    "$set": [
+                                        "SniperKillSierraCar",
+                                        true
+                                    ]
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$not": {
+                                                                "$contains": [
+                                                                    "$Value.KillItemCategory",
+                                                                    "sniperrifle"
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$or": [
+                                                                {
+                                                                    "$not": {
+                                                                        "$eq": [
+                                                                            "$Value.RepositoryId",
+                                                                            "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "$and": [
+                                                                        {
+                                                                            "$eq": [
+                                                                                "$Value.RepositoryId",
+                                                                                "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "$eq": [
+                                                                                "$.SniperKillSierraCar",
+                                                                                false
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$not": {
+                                                                "$eq": [
+                                                                    "$Value.KillContext",
+                                                                    1
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.event",
+                                                "spotted"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                true
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "sniper",
+                        "classic",
+                        "difficulty_easy"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "749e9019-4612-4277-9299-4a0ab7e24485",
+                    "Name": "UI_CHALLENGES_GROG_SA_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [
+                        "easy"
+                    ],
+                    "OrderIndex": 204,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "classic",
+                        "difficulty_easy"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                },
+                {
+                    "Id": "77248a16-81d3-4142-8e17-cd98a27598b3",
+                    "Name": "UI_CHALLENGES_GROG_SA_BIG4_NAME",
+                    "ImageName": "Images/Challenges/profile_challenges/classics_location_normal.jpg",
+                    "Description": "UI_CHALLENGES_GROG_SA_BIG4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [
+                        "easy"
+                    ],
+                    "OrderIndex": 205,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "ced18b91-db0f-4812-8bd6-93833ec31f38",
+                                "f1caafdc-5fc9-46ed-bc82-5128e7cfa543",
+                                "79c9e9ae-7805-448e-974a-966d4a42d71a",
+                                "420dd5f2-f285-4eff-81af-346d42fd2743",
+                                "5326f3f6-1189-42a8-9ca9-0ae628ffc223",
+                                "7cc1d601-a1d6-4ecb-bf0d-5c7dd8921483",
+                                "749e9019-4612-4277-9299-4a0ab7e24485"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "hard",
+                        "difficulty_easy",
+                        "classic"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "41e999eb-0903-4a0e-9be6-9c850bb6d144"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
