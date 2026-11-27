@@ -228,61 +228,6 @@
                     }
                 },
                 {
-                    "Id": "83252367-5913-4049-b78e-4fca70b25410",
-                    "Name": "UI_GUAVA_OUTBREAKENTRANCE_CHALLENGE_NAME",
-                    "ImageName": "images/contracts/elusive/s3_filur/story1.jpg",
-                    "Description": "UI_GUAVA_OUTBREAKENTRANCE_CHALLENGE_DESC",
-                    "Rewards": {
-                        "MasteryXP": 1000
-                    },
-                    "Drops": ["STARTING_LOCATION_ANCESTRAL_FILUR_OUTBREAK"],
-                    "IsPlayable": true,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
-                    "Icon": "arcademode",
-                    "LocationId": "LOCATION_PARENT_ANCESTRAL",
-                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Constants": {
-                            "Target": "0ad684cc-0be7-4875-be0b-b9c567872e20"
-                        },
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "OpportunityEvents": {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.RepositoryId",
-                                                    "$.Target"
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.Event",
-                                                    "Completed"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["arcade", "easy"],
-                    "InclusionData": {
-                        "ContractIds": ["34c21c64-515a-4a43-9fd0-378211060122"]
-                    }
-                },
-                {
                     "Id": "1b8bc722-399e-4fe6-98bc-f2410c22cbcd",
                     "Name": "UI_TAMARILLO_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_TAMARILLO_Group.jpg",
