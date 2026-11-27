@@ -109,6 +109,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "34cd5f9f19ab44cc8766089dab207bf0",
     // SHAMROCK:
     "4bbcb2ba387642e694d3c9c9b74b4919",
+    // EG06:
+    "87468ebe8a6e4fc98a4517ca8480d51a",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
